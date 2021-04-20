@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 import planetsApi from '../services/starWarsApi';
 
@@ -50,5 +51,9 @@ function PlanetsProvider({ children }) {
       { children }
     </PlanetsContext.Provider>);
 }
+
+PlanetsProvider.propTypes = {
+  children: PropTypes.node,
+}.isRequired;
 
 export default PlanetsProvider;
