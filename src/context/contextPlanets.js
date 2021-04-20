@@ -52,10 +52,7 @@ function ContextPlanets({ children }) {
       }
       if (compare === 'maior que') {
         return optionValue > compareValue;
-      }
-      if (compare === 'igual a') {
-        return optionValue === compareValue;
-      }
+      } return optionValue === compareValue;
     });
     setFilteredPlanets(getFilter);
   };
