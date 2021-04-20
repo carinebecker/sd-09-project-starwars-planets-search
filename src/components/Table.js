@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 // import PropTypes from 'prop-types';
 import SWContext from '../StarWarsContext';
 
+import TableFilters from './TableFilters';
 import TableHeader from './TableHeader';
 import TableData from './TableData';
 
@@ -10,10 +11,13 @@ function Table() {
   const { planetsToFilter } = context;
 
   return (
-    <table>
-      <TableHeader />
-      <TableData planetsToFilter={ planetsToFilter } />
-    </table>
+    <>
+      <TableFilters />
+      <table>
+        <TableHeader />
+        <TableData planetsToFilter={ planetsToFilter } />
+      </table>
+    </>
   );
 }
 

@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 
 import SWContext from '../StarWarsContext';
 import services from '../services';
+import utils from '../utils';
 
 function Provider({ children }) {
   const [data, setData] = useState({});
   const [planetsToFilter, setPlanetsToFilter] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     async function getData() {
@@ -17,7 +23,18 @@ function Provider({ children }) {
     getData();
   }, []);
 
-  const contextValue = { data, planetsToFilter };
+  useEffect(() => {
+    const { name } = filters.filterByName;
+    const { filterByName } = utils;
+    const filteredPlanets = filterByName(data.results, name);
+    setPlanetsToFilter(filteredPlanets);
+  }, [filters.filterByName]);
+
+  const contextValue = {
+    data,
+    planetsToFilter,
+    setFilters,
+  };
 
   return (
     <SWContext.Provider value={ contextValue }>
