@@ -3,3 +3,5 @@ export async function fetchPlanets(url) {
   const retrievedPlanets = await resolvePlanets.json();
   return retrievedPlanets.results;
 }
+
+export const StarWars = 'StarWars';
