@@ -32,7 +32,7 @@ const PlanetsList = () => {
       setData(results);
       setIsLoading(false);
     });
-  }, []);
+  }, [setData, setIsLoading]);
   const planets = (isLoading) ? '' : data.results;
   return (
     <div>
