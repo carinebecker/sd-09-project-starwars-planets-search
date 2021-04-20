@@ -1,9 +1,9 @@
 import React from 'react';
-import './App.css';
+import PlanetList from './pages/PlanetList';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <PlanetList />
   );
 }
 
