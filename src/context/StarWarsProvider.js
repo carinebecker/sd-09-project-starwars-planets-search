@@ -7,17 +7,37 @@ const StarWarsProvider = ({ children }) => {
   // usado para guardar a lista de planetas
   const [data, setData] = useState();
 
+  // armazena os planetas filtrados pelo filtro customizado
+  const [filteredPlanets, setFilteredPlanets] = useState();
+
   // initial state dos filtros
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
+
+  // gerencia o estado do filtro customizado
+  const [customFilter, setCustomFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
+
+  const changeCustomFilter = (event) => {
+    const { name, value } = event.target;
+    setCustomFilter({
+      ...customFilter,
+      [name]: value,
+    });
+  };
 
   // usado para pegar a lista de planetas
   const getPlanetsData = async () => {
     const planetData = await fetchPlanets();
     setData(planetData);
+    setFilteredPlanets(planetData);
   };
 
   // filter by name
@@ -31,6 +51,22 @@ const StarWarsProvider = ({ children }) => {
     });
   };
 
+  // funcao para filtrar usando o filtro de valores numericos
+  const filterPlanetsByNumericValue = ({ column, comparison, value }) => {
+    const filteredPlanetList = data.filter((planet) => {
+      const columnData = Number(planet[column]);
+      const numberedValue = Number(value);
+      if (comparison === 'maior que') {
+        return columnData > numberedValue;
+      }
+      if (comparison === 'menor que') {
+        return columnData < numberedValue;
+      }
+      return columnData === numberedValue;
+    });
+    setFilteredPlanets(filteredPlanetList);
+  };
+
   // guarda a lista de planetas assim que o componente é iniciado
   useEffect(() => {
     getPlanetsData();
@@ -41,6 +77,10 @@ const StarWarsProvider = ({ children }) => {
     setData,
     filters,
     filterByName,
+    customFilter,
+    changeCustomFilter,
+    filteredPlanets,
+    filterPlanetsByNumericValue,
   };
 
   return (
