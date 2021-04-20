@@ -1,12 +1,16 @@
 import React from 'react';
-import FilterPlanets from './components/FilterPlanets';
+import FilterPlanetsByName from './components/FilterPlanetsByName';
+import FilterPlanetsGeneral from './components/FilterPlanetsGeneral';
 import Table from './components/Table';
 import ContextPlanets from './context/contextPlanets';
 
 function App() {
   return (
     <ContextPlanets>
-      <FilterPlanets />
+      <FilterPlanetsByName />
+      <hr />
+      <FilterPlanetsGeneral />
+      <hr />
       <Table />
     </ContextPlanets>
   );

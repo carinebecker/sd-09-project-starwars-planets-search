@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { savePlanets } from '../context/contextPlanets';
 
-export default function FilterPlanets() {
+export default function FilterPlanetsByName() {
   const { searchByName, setSearchByName } = useContext(savePlanets);
   return (
     <div>

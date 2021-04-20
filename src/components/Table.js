@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { savePlanets } from '../context/contextPlanets';
 
 export default function Table() {
-  const { filters } = useContext(savePlanets);
+  const { filteredPlanets } = useContext(savePlanets);
   return (
     <div>
       <table>
@@ -25,8 +25,8 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          { filters.map((planet) => (
-            <tr key={ planet.name }>
+          { filteredPlanets.map((planet, index) => (
+            <tr key={ index }>
               <td>{ planet.name }</td>
               <td>{ planet.rotation_period }</td>
               <td>{ planet.orbital_period }</td>
@@ -38,6 +38,7 @@ export default function Table() {
               <td>{ planet.population }</td>
               <td>{ planet.films }</td>
               <td>{ planet.created }</td>
+              <td>{ planet.edited }</td>
               <td>{ planet.url }</td>
             </tr>
           ))}
