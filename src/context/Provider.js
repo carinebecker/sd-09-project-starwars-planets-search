@@ -6,6 +6,17 @@ import getPlanets from '../service/starWarsAPI';
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const objFilter = {
+    filterByName: {
+      name: '',
+    },
+  };
+  const [filters, setFilters] = useState(objFilter);
+
+  const getName = (name) => {
+    const objToFilter = { ...filters, filterByName: { name } };
+    setFilters(objToFilter);
+  };
 
   const getData = async () => {
     const planets = await getPlanets();
@@ -17,7 +28,7 @@ const Provider = ({ children }) => {
     getData();
   }, []);
 
-  const contextValue = { data, loading };
+  const contextValue = { data, loading, getName, filters };
   return (
     <StarWarsContext.Provider value={ contextValue }>
       {children}
@@ -26,7 +37,7 @@ const Provider = ({ children }) => {
 };
 
 Provider.propTypes = {
-  children: PropTypes.objectOf(PropTypes.element),
+  children: PropTypes.node,
 }.isRequired;
 
 export default Provider;

@@ -1,8 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Table = () => {
-  const { data, loading } = useContext(StarWarsContext);
+  const { data, loading, filters } = useContext(StarWarsContext);
+  const [filtered, setFiltered] = useState([]);
+
+  useEffect(() => {
+    let filteredPlanets = data;
+    filteredPlanets = filteredPlanets.filter((item) => item.name.toUpperCase()
+      .includes(filters.filterByName.name.toUpperCase()));
+    setFiltered(filteredPlanets);
+  }, [filters, data]);
 
   const renderTableHead = () => {
     const head = Object.keys(data[0]);
@@ -18,7 +26,7 @@ const Table = () => {
   const renderRow = (planet) => {
     const row = Object.values(planet);
     return (
-      <tr>
+      <tr key={ planet.name }>
         {row.map((item) => <td key={ item }>{ item }</td>)}
       </tr>
     );
@@ -26,7 +34,7 @@ const Table = () => {
 
   const renderTableBody = () => (
     <tbody>
-      {data.map((planet) => renderRow(planet))}
+      {filtered.map((planet) => renderRow(planet))}
     </tbody>
   );
 
