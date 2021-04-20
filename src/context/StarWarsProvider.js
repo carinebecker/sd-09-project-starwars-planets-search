@@ -82,10 +82,10 @@ const StarWarsProvider = ({ children }) => {
       const columnData = Number(planet[column]);
       const numberedValue = Number(value);
       if (comparison === 'maior que') {
-        return columnData >= numberedValue;
+        return columnData > numberedValue;
       }
       if (comparison === 'menor que') {
-        return columnData <= numberedValue;
+        return columnData < numberedValue;
       }
       return columnData === numberedValue;
     });
