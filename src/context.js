@@ -6,6 +6,7 @@ export const Context = createContext();
 
 export const Provider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({ filterByNumericValue: [] });
 
   useEffect(() => {
     async function fecthData() {
@@ -18,6 +19,8 @@ export const Provider = ({ children }) => {
   const contextValue = {
     data,
     setData,
+    filters,
+    setFilters,
   };
 
   return (
