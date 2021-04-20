@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function renderListItem(planet) {
@@ -14,8 +14,7 @@ function renderListItem(planet) {
 
 function Table() {
   const { data, isLoading/* , getPlanets */ } = useContext(TableContext);
-
- /*  useEffect(() => {
+  /*  useEffect(() => {
     getPlanets();
   }, [getPlanets]); */
 
