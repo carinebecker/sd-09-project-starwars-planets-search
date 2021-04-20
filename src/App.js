@@ -1,9 +1,18 @@
 import React from 'react';
 import './App.css';
+import Table from './components/Table';
+import FilterButtons from './components/FilterButtons';
+import StarWarsProvider from './context/StarWarsProvider';
 
 function App() {
   return (
-    <span>Hello, App! Bora começar</span>
+    <div>
+      <StarWarsProvider>
+        <FilterButtons />
+        <Table />
+      </StarWarsProvider>
+    </div>
+
   );
 }
 
