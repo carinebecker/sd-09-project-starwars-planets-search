@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import starsWContext from '../../context/starsWContext';
 
 export default function Table() {
-  const { data } = useContext(starsWContext);
+  const { data, filters: { filterByName: { name = '' } } } = useContext(starsWContext);
 
   const rowHead = () => (
     <tr>
@@ -23,33 +23,36 @@ export default function Table() {
   );
 
   const rowBody = () => (
-    data.results.map((element) => (
-      <tr key={ element.name }>
-        <td>{element.name}</td>
-        <td>{element.rotation_period}</td>
-        <td>{element.orbital_period}</td>
-        <td>{element.diameter}</td>
-        <td>{element.climate}</td>
-        <td>{element.gravity}</td>
-        <td>{element.terrain}</td>
-        <td>{element.surface_water}</td>
-        <td>{element.population}</td>
-        <td>{element.films}</td>
-        <td>{element.edited}</td>
-        <td>{element.created}</td>
-        <td>{element.url}</td>
-      </tr>
-    )));
+    data.results.filter((element) => element.name.includes(name))
+      .map((element) => (
+        <tr key={ element.name }>
+          <td>{element.name}</td>
+          <td>{element.rotation_period}</td>
+          <td>{element.orbital_period}</td>
+          <td>{element.diameter}</td>
+          <td>{element.climate}</td>
+          <td>{element.gravity}</td>
+          <td>{element.terrain}</td>
+          <td>{element.surface_water}</td>
+          <td>{element.population}</td>
+          <td>{element.films}</td>
+          <td>{element.edited}</td>
+          <td>{element.created}</td>
+          <td>{element.url}</td>
+        </tr>
+      )));
 
   if (!data.results) return '';
   return (
-    <table>
-      <thead>
-        { rowHead() }
-      </thead>
-      <tbody>
-        { rowBody() }
-      </tbody>
-    </table>
+    <div>
+      <table>
+        <thead>
+          { rowHead() }
+        </thead>
+        <tbody>
+          { rowBody() }
+        </tbody>
+      </table>
+    </div>
   );
 }
