@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from '../context/Provider';
 
 function Table() {
-  const { headers, data, loading } = useContext(Context);
+  const { headers, planets, loading } = useContext(Context);
   const filteredHeaders = headers.filter((header) => header !== 'residents');
   if (loading) return <p>Loading..</p>;
   return (
@@ -10,7 +10,7 @@ function Table() {
       <tr>
         {filteredHeaders.map((propertie, index) => <th key={ index }>{propertie}</th>)}
       </tr>
-      {data.map((planet) => (
+      {planets.map((planet) => (
         <tr key={ planet.name }>
           <td>{planet.name}</td>
           <td>{planet.rotation_period}</td>

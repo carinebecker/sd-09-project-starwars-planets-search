@@ -5,14 +5,16 @@ const Context = createContext();
 
 const DataProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [planets, setPlanets] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({ filterByName: { name: '' } });
 
   useEffect(() => {
     async function fetchPlanets() {
       const { results } = await fetch('https://swapi-trybe.herokuapp.com/api/planets/').then((response) => response.json());
-      console.log(results);
       setData(results);
+      setPlanets(results);
     }
     fetchPlanets();
   }, []);
@@ -25,7 +27,15 @@ const DataProvider = ({ children }) => {
     }
   }, [data]);
 
-  const context = { data, headers, loading };
+  useEffect(() => {
+    const filteredPlanets = data.filter(
+      (planet) => planet.name.toLowerCase()
+        .includes(filters.filterByName.name.toLowerCase()),
+    );
+    setPlanets(filteredPlanets);
+  }, [filters, data]);
+
+  const context = { data, headers, loading, filters, setFilters, planets };
   return (
     <Context.Provider value={ context }>
       {children}
