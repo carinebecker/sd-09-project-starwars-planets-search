@@ -6,17 +6,12 @@ const FilterButtons = () => {
     changeCustomFilter,
     filterPlanetsByNumericValue,
     customFilter,
+    optionsArray,
+    sendToState,
   } = useContext(StarWarsContext);
 
-  const optionsArray = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
-
   const handleButtonClick = () => {
+    sendToState();
     filterPlanetsByNumericValue(customFilter);
   };
 
@@ -75,7 +70,6 @@ const FilterButtons = () => {
           type="button"
           data-testid="button-filter"
           onClick={ handleButtonClick }
-          // onClick={ filterPlanetsByNumericValue }
         >
           Adicionar filtro
         </button>
