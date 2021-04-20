@@ -33,10 +33,10 @@ const PlanetsList = () => {
       setIsLoading(false);
     });
   }, []);
-  const planets = isLoading ? '' : data.results;
+  const planets = (isLoading) ? '' : data.results;
   return (
     <div>
-      { isLoading
+      { isLoading || !data
         ? <span>Loading...</span>
         : (
           <Table striped bordered hover>
