@@ -8,7 +8,7 @@ const initialState = {
 };
 
 function Filters() {
-  const { filters, setFilters } = useContext(StarWarsContext);
+  const { filters, setFilters, columns, setColumns } = useContext(StarWarsContext);
   const [selectedFilters, setSelectedFilters] = useState(initialState);
 
   const handleNameChange = ({ target: { value } }) => {
@@ -25,30 +25,45 @@ function Filters() {
     });
   };
 
-  const handleClick = () => {
+  const removeFilter = (column) => {
+    const { filterByNumericValues } = filters;
+    setColumns([...columns, column]);
     setFilters({
       ...filters,
-      filterByNumericOptions: selectedFilters,
+      filterByNumericValues: filterByNumericValues.filter((item) => (
+        item.column !== column
+      )),
     });
+  };
+
+  const handleClick = () => {
+    const { filterByNumericValues } = filters;
+    const { column } = selectedFilters;
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues, selectedFilters],
+    });
+    setColumns(columns.filter((item) => item !== column));
+    setSelectedFilters(initialState);
   };
 
   const renderColumnOptions = () => {
     const { column } = selectedFilters;
-    const columns = ['rotation_period', 'orbital_period', 'diameter',
-      'surface_water', 'population'];
     return (
-      <select
-        name="column"
-        data-testid="column-filter"
-        onChange={ handleChange }
-        value={ column }
-      >
-        {
-          columns.map((item) => (
-            <option key={ item }>{ item }</option>
-          ))
-        }
-      </select>
+      <div>
+        <select
+          name="column"
+          data-testid="column-filter"
+          onChange={ handleChange }
+          value={ column }
+        >
+          {
+            columns.map((item) => (
+              <option key={ item }>{ item }</option>
+            ))
+          }
+        </select>
+      </div>
     );
   };
 
@@ -56,34 +71,63 @@ function Filters() {
     const { comparison } = selectedFilters;
     const comparisonOptions = ['maior que', 'menor que', 'igual a'];
     return (
-      <select
-        name="comparison"
-        data-testid="comparison-filter"
-        onChange={ handleChange }
-        value={ comparison }
-      >
-        {
-          comparisonOptions.map((item) => (
-            <option key={ item }>{ item }</option>
-          ))
-        }
-      </select>
+      <div>
+        <select
+          name="comparison"
+          data-testid="comparison-filter"
+          onChange={ handleChange }
+          value={ comparison }
+        >
+          {
+            comparisonOptions.map((item) => (
+              <option key={ item }>{ item }</option>
+            ))
+          }
+        </select>
+      </div>
     );
   };
 
   const renderValueInputOption = () => {
     const { value } = selectedFilters;
     return (
-      <label htmlFor="value-filter">
-        <input
-          type="number"
-          name="value"
-          data-testid="value-filter"
-          id="value-filter"
-          onChange={ handleChange }
-          value={ value }
-        />
-      </label>
+      <div>
+        <label htmlFor="value-filter">
+          <input
+            type="number"
+            name="value"
+            data-testid="value-filter"
+            id="value-filter"
+            onChange={ handleChange }
+            value={ value }
+          />
+        </label>
+      </div>
+    );
+  };
+
+  const renderFiltersOptions = () => {
+    const { filterByNumericValues } = filters;
+    return (
+      <div>
+        {
+          filterByNumericValues.map((item) => {
+            const { column, comparison, value } = item;
+            if (column === '') return;
+            return (
+              <div key={ column } data-testid="filter">
+                <span>{ `${column} ${comparison} ${value}` }</span>
+                <button
+                  type="button"
+                  onClick={ () => removeFilter(column) }
+                >
+                  X
+                </button>
+              </div>
+            );
+          })
+        }
+      </div>
     );
   };
 
@@ -115,6 +159,7 @@ function Filters() {
           Search
         </button>
       </div>
+      { renderFiltersOptions() }
     </section>
   );
 }

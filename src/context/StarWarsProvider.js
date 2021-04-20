@@ -5,16 +5,22 @@ import StarWarsContext from './StarWarsContext';
 function StarWarsProvider({ children }) {
   const options = {
     filterByName: { name: '' },
-    filterByNumericOptions: {
-      column: '',
-      comparison: '',
-      value: '',
-    },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   };
+
+  const initialColumns = ['rotation_period', 'orbital_period', 'diameter',
+    'surface_water', 'population'];
 
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(options);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [columns, setColumns] = useState(initialColumns);
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -23,8 +29,9 @@ function StarWarsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const { filterByName: { name }, filterByNumericOptions } = filters;
-    const { column, comparison, value } = filterByNumericOptions;
+    const { filterByName: { name }, filterByNumericValues } = filters;
+    const { column, comparison,
+      value } = filterByNumericValues[filterByNumericValues.length - 1];
     const planetsFilteredByName = data
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
     if (comparison === 'maior que') {
@@ -52,6 +59,8 @@ function StarWarsProvider({ children }) {
     setFilters,
     filteredPlanets,
     setFilteredPlanets,
+    columns,
+    setColumns,
   };
 
   return (
