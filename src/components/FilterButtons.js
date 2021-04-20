@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import StarWarsContext from '../context/StarWarsContext';
 
 const FilterButtons = () => {
-  const string = 'Esse é o componente FilterButtons';
+  const { filterByName } = useContext(StarWarsContext);
 
   return (
     <div>
-      <p>{ string }</p>
+      <label htmlFor="name-filter">
+        Planeta :
+        <input
+          type="text"
+          id="name-filter"
+          data-testid="name-filter"
+          placeholder="Digite Aqui o nome do planeta"
+          onChange={ filterByName }
+        />
+      </label>
+
     </div>
   );
 };

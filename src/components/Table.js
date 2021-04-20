@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Table = () => {
-  const { data } = useContext(StarWarsContext);
-  console.log(data);
-
+  const { data, filters } = useContext(StarWarsContext);
   if (!data) return (<p>Loading</p>);
   return (
     <table>
@@ -27,6 +25,7 @@ const Table = () => {
       </thead>
       <tbody>
         {data
+          .filter((planet) => planet.name.includes(filters.filterByName.name))
           .map((planet) => (
             <tr key={ planet.name }>
               <td data-testid="planet-name">{ planet.name }</td>
