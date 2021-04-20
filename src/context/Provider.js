@@ -4,7 +4,13 @@ import StarWarsContext from './starWarsContext';
 import planetApiRequest from '../services/starWarsApi';
 
 const Provider = ({ children }) => {
+  const INITIAL_STATE = {
+    filterByName: {
+      name: '',
+    },
+  };
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState(INITIAL_STATE);
 
   const getData = async () => {
     const planets = await planetApiRequest();
@@ -14,7 +20,12 @@ const Provider = ({ children }) => {
     getData();
   }, []);
 
-  const contextValue = { data };
+  const contextValue = {
+    data,
+    filters,
+    setData,
+    setFilters,
+  };
   return (
     <StarWarsContext.Provider value={ contextValue }>
       { children }
@@ -23,7 +34,7 @@ const Provider = ({ children }) => {
 };
 
 Provider.propTypes = {
-  children: PropTypes.objectOf(PropTypes.element),
+  children: PropTypes.node,
 }.isRequired;
 
 export default Provider;
