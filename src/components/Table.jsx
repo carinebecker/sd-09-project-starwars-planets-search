@@ -13,14 +13,14 @@ function renderListItem(planet) {
 }
 
 function Table() {
-  const { data, getPlanets } = useContext(TableContext);
+  const { data, isLoading/* , getPlanets */ } = useContext(TableContext);
 
-  useEffect(() => {
+ /*  useEffect(() => {
     getPlanets();
-  }, [getPlanets]);
+  }, [getPlanets]); */
 
-  if (data.results) {
-    const tableLabel = Object.keys(data.results[0]);
+  if (!isLoading && data.length !== 0) {
+    const tableLabel = Object.keys(data[0]);
     const filteredTabelLabel = tableLabel.filter((label) => (
       label !== 'residents'
     ));
@@ -32,7 +32,7 @@ function Table() {
             <th key={ label }>{label}</th>
           ))}
         </tr>
-        {data.results.map((planet) => (
+        {data.map((planet) => (
           renderListItem(planet)
         ))}
       </table>
