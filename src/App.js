@@ -5,7 +5,8 @@ import { getPlanets } from '../src/services/planetListAPI';
 import './App.css';
 
 function App() {
-  console.log(getPlanets());
+  const data = getPlanets();
+  console.log(data);
   return (
     <h1>Starwars Planet Search</h1>
   );
