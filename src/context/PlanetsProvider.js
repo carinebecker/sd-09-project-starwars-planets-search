@@ -9,6 +9,13 @@ function PlanetsProvider({ children }) {
   const [planetsGeted, setPlanetsGeted] = useState(false);
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '',
+      },
+    ],
   });
 
   useEffect(() => {
@@ -30,11 +37,25 @@ function PlanetsProvider({ children }) {
     setPlanetsState();
   }
 
+  function filterByNumbers(data, column, comparison, value) {
+    switch (comparison) {
+    case 'maior que':
+      return data.filter((planet) => (Number(planet[column]) > Number(value)));
+    case 'menor que':
+      return data.filter((planet) => (Number(planet[column]) < Number(value)));
+    case 'igual a':
+      return data.filter((planet) => (Number(planet[column]) === Number(value)));
+    default: return '';
+    }
+  }
+
   function filter(planetsToFilter, allFilters) {
     const { filterByName: { name } } = allFilters;
-    const data = planetsToFilter.filter((planet) => planet.name.toUpperCase()
+    const { filterByNumericValues: [{ column, comparison, value }] } = allFilters;
+    let data = planetsToFilter.filter((planet) => planet.name.toUpperCase()
       .includes(name.toUpperCase()));
 
+    if (value) data = filterByNumbers(data, column, comparison, value);
     return data;
   }
 
