@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   return (
-    <span>May The Force be with you...</span>
+    <span>A long time ago in a galaxy far far away...</span>
   );
 }
 
