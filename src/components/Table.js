@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import Loading from './Loading';
+import './Table.css';
 
 const Table = () => {
   const { planets, isLoading } = useContext(PlanetsContext);
@@ -11,18 +12,18 @@ const Table = () => {
         <table>
           <thead>
             <tr>
-              <th>name</th>
-              <th>rotation_period</th>
-              <th>orbital_period</th>
-              <th>diameter</th>
-              <th>climate</th>
-              <th>gravity</th>
-              <th>terrain</th>
-              <th>surface_water</th>
-              <th>population</th>
-              <th>films</th>
-              <th>created</th>
-              <th>edited</th>
+              <th>Name</th>
+              <th>Rotation Period</th>
+              <th>Orbital Period</th>
+              <th>Diameter</th>
+              <th>Climate</th>
+              <th>Gravity</th>
+              <th>Terrain</th>
+              <th>Surface_water</th>
+              <th>Population</th>
+              <th>Films</th>
+              <th>Created</th>
+              <th>Edited</th>
               <th>url</th>
             </tr>
           </thead>
