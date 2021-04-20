@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
-import getPlanets from '../services/starWarsAPI';
+import StarWars from '../hooks/context/StarWarsContext';
 import './css/Table.css';
 
 const Table = () => {
   const [planets, setPlanets] = useState([]);
   const [search, setSearch] = useState('');
-  // setPlanets(await getPlanets());
+  const data = useContext(StarWars);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let planetsList = await getPlanets();
-      if (search === '') {
+    let planetsList = data;
+    if (search === '') {
+      setPlanets(planetsList);
+    } else {
+      planetsList = planetsList.filter((planet) => (
+        planet.name.toLowerCase().includes(search.toLowerCase())));
+      if (planetsList.length !== 0) {
         setPlanets(planetsList);
-      } else {
-        planetsList = planetsList.filter((planet) => planet.name.includes(search));
-        if (planetsList.length !== 0) {
-          setPlanets(planetsList);
-        }
       }
-    };
-    fetchData();
-  }, [search]);
+    }
+  }, [data, search]);
 
   const handleChanges = ({ target }) => {
     setSearch(target.value);
