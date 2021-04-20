@@ -1,9 +1,13 @@
 import React from 'react';
+
+import { getPlanets } from '../src/services/planetListAPI';
+
 import './App.css';
 
 function App() {
+  console.log(getPlanets());
   return (
-    <span>Starwars</span>
+    <h1>Starwars Planet Search</h1>
   );
 }
 
