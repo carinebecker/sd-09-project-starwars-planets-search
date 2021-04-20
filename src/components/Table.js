@@ -24,25 +24,23 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((line, index) => {
-          return (
-            <tr key={ index }>
-              <td>{ line.climate }</td>
-              <td>{ line.created }</td>
-              <td>{ line.diameter }</td>
-              <td>{ line.edited }</td>
-              <td>{ line.films }</td>
-              <td>{ line.gravity }</td>
-              <td>{ line.name }</td>
-              <td>{ line.orbital_period }</td>
-              <td>{ line.population }</td>
-              <td>{ line.rotation_period }</td>
-              <td>{ line.surface_water }</td>
-              <td>{ line.terrain }</td>
-              <td>{ line.url }</td>
-            </tr>
-          );
-        })}
+        {data.map((line, index) => (
+          <tr key={ index }>
+            <td>{ line.climate }</td>
+            <td>{ line.created }</td>
+            <td>{ line.diameter }</td>
+            <td>{ line.edited }</td>
+            <td>{ line.films }</td>
+            <td>{ line.gravity }</td>
+            <td>{ line.name }</td>
+            <td>{ line.orbital_period }</td>
+            <td>{ line.population }</td>
+            <td>{ line.rotation_period }</td>
+            <td>{ line.surface_water }</td>
+            <td>{ line.terrain }</td>
+            <td>{ line.url }</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
