@@ -1,28 +1,25 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
-import fetchAPI from '../services/fetchAPI';
-// import { Consumer } from '../context/Provider';
 
 function Table() {
-  const { data, funcao } = useContext(MyContext);
-  useEffect(() => fetchAPI().then(({ results }) => funcao(results)), [funcao]);
+  const { data } = useContext(MyContext);
   return (
     <table>
       <thead>
         <tr>
-          <td>Planet</td>
-          <td>Rotation Period</td>
-          <td>Orbital Period</td>
-          <td>Diameter</td>
-          <td>Climate</td>
-          <td>Gravity</td>
-          <td>Terrain</td>
-          <td>Surface Water</td>
-          <td>Population</td>
-          <td>Residents</td>
-          <td>Films</td>
-          <td>Created</td>
-          <td>Edited</td>
+          <th>Planet</th>
+          <th>Rotation Period</th>
+          <th>Orbital Period</th>
+          <th>Diameter</th>
+          <th>Climate</th>
+          <th>Gravity</th>
+          <th>Terrain</th>
+          <th>Surface Water</th>
+          <th>Population</th>
+          <th>Residents</th>
+          <th>Films</th>
+          <th>Created</th>
+          <th>Edited</th>
         </tr>
       </thead>
       <tbody key="planets">
