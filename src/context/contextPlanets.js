@@ -6,16 +6,25 @@ export const savePlanets = createContext();
 
 function ContextPlanets({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState([]);
+  const [searchByName, setSearchByName] = useState([]);
 
   useEffect(() => {
     async function myPlanets() {
       const planetList = await getPlanets();
       setPlanets(planetList);
+      setFilters(planetList);
     }
     myPlanets();
   }, []);
 
-  const data = { planets };
+  useEffect(() => {
+    let filterName = [];
+    filterName = planets.filter((planet) => planet.name.includes((searchByName)));
+    setFilters(filterName);
+  }, [planets, searchByName]);
+
+  const data = { searchByName, setSearchByName, filters };
   return (
     <savePlanets.Provider value={ data }>
       { children }
