@@ -1,19 +1,19 @@
 import React, { useEffect, useContext } from 'react';
 import MyContext from '../context/MyContext';
+import requestAPI from '../service/request';
 
 function Table() {
-  const { planets, getPlanets } = useContext(MyContext);
-  console.log(planets);
+  const { data, setPlanets } = useContext(MyContext);
   function renderTable() {
     return (
       <table>
         <thead>
           <tr>
-            { Object.keys(planets[0]).map((r) => <th key={ r }>{ r }</th>) }
+            { Object.keys(data[0]).map((r) => <th key={ r }>{ r }</th>) }
           </tr>
         </thead>
         <tbody>
-          { planets.map((r) => (
+          { data.map((r) => (
             <tr key={ r.name }>
               { Object.values(r).map((obj) => <td key={ obj }>{ obj }</td>) }
             </tr>))}
@@ -22,15 +22,11 @@ function Table() {
     );
   }
 
-  function teste() {
-    getPlanets();
-  }
-
   useEffect(() => {
-    teste();
-  }, []);
+    requestAPI().then((r) => setPlanets(r));
+  }, [setPlanets]);
 
-  if (planets.length !== 0) {
+  if (data.length !== 0) {
     return (
       renderTable()
     );

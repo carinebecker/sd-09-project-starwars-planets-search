@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import MyContext from './MyContext';
-import requestAPI from '../service/request';
 
 function MyProvider({ children }) {
-  const [planets, setPlanets] = useState([]);
-
-  async function getPlanets() {
-    const response = await requestAPI();
-    const results = response.results.map((r) => {
-      delete r.residents;
-      return r;
-    });
-    setPlanets(results);
-  }
+  const [data, setPlanets] = useState([]);
 
   return (
     <main>
-      <MyContext.Provider value={ { planets, getPlanets } }>
+      <MyContext.Provider value={ { data, setPlanets } }>
         { children }
       </MyContext.Provider>
     </main>
