@@ -9,14 +9,20 @@ export default function Table() {
       <table>
         <thead>
           <tr>
-            <th scope="col">terrain</th>
-            <th scope="col">surface_water</th>
-            <th scope="col">population</th>
-            <th scope="col">residents</th>
-            <th scope="col">films</th>
-            <th scope="col">created</th>
-            <th scope="col">edited</th>
-            <th scope="col">url</th>
+            <th>name</th>
+            <th>rotation_period</th>
+            <th>orbital_period</th>
+            <th>diameter</th>
+            <th>climate</th>
+            <th>gravity</th>
+            <th>terrain</th>
+            <th>surface_water</th>
+            <th>population</th>
+            <th>residents</th>
+            <th>films</th>
+            <th>created</th>
+            <th>edited</th>
+            <th>url</th>
           </tr>
         </thead>
         <tbody>
