@@ -1,9 +1,13 @@
 import React from 'react';
 import './App.css';
+import SWProvider from './Common/Services/SWProvider';
+import StarWarsDatabase from './Pages/StarWarsDatabase';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <SWProvider>
+      <StarWarsDatabase />
+    </SWProvider>
   );
 }
 
