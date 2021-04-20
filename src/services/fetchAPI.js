@@ -1,8 +1,8 @@
 export const requestPlanets = async () => {
   try {
     const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const currencies = await response.json();
-    return currencies;
+    const planets = await response.json();
+    return planets;
   } catch (error) {
     return Error(error);
   }
