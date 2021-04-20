@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { PlanetSearchContext } from '../context';
 
-const Table = () => (
-  <div>Table</div>
-);
+const Table = () => {
+  const context = useContext(PlanetSearchContext);
+  return (
+    <div>Table</div>
+  );
+};
 
 export default Table;
