@@ -5,6 +5,11 @@ import StarWarsContext from './StarWarsContext';
 function StarWarsProvider({ children }) {
   const options = {
     filterByName: { name: '' },
+    filterByNumericOptions: {
+      column: '',
+      comparison: '',
+      value: '',
+    },
   };
 
   const [data, setData] = useState([]);
@@ -18,10 +23,28 @@ function StarWarsProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const { filterByName: { name } } = filters;
-    const newArray = data
+    const { filterByName: { name }, filterByNumericOptions } = filters;
+    const { column, comparison, value } = filterByNumericOptions;
+    const planetsFilteredByName = data
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
-    setFilteredPlanets(newArray);
+    if (comparison === 'maior que') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+      setFilteredPlanets(result);
+    }
+    if (comparison === 'menor que') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
+      setFilteredPlanets(result);
+    }
+    if (comparison === 'igual a') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
+      setFilteredPlanets(result);
+    }
+    if (comparison === '') {
+      setFilteredPlanets(planetsFilteredByName);
+    }
   }, [data, filters]);
 
   const context = {
