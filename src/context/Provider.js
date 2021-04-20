@@ -12,6 +12,11 @@ function filterResidents(data) {
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     async function fetchStarWarsApi() {
@@ -28,10 +33,21 @@ function Provider({ children }) {
     fetchStarWarsApi();
   }, []);
 
+  function filterByName(filter) {
+    setFilters({
+      ...filters,
+      filterByName: {
+        name: filter,
+      },
+    });
+  }
+
   const contextValue = {
-    isLoading,
     data,
+    isLoading,
     setIsLoading,
+    filters,
+    filterByName,
   };
 
   return (

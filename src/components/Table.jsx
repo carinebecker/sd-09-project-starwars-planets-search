@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import Filters from './Filters';
 
 function getHeaderTitles(data) {
   return Object.keys(data[0]);
@@ -33,16 +34,25 @@ function renderTableBody(data) {
   );
 }
 
+function filterData(data, filters) {
+  const { name } = filters.filterByName;
+  return data.filter((planet) => planet.name.includes(name));
+}
+
 function Table() {
-  const { data, isLoading } = useContext(StarWarsContext);
+  const { data, isLoading, filters } = useContext(StarWarsContext);
   const headerTitles = isLoading ? [] : getHeaderTitles(data);
 
+  const filteredData = filterData(data, filters);
   if (isLoading) return 'Loading';
   return (
-    <table>
-      {renderTableHeader(headerTitles)}
-      {renderTableBody(data)}
-    </table>
+    <div>
+      <Filters />
+      <table>
+        {renderTableHeader(headerTitles)}
+        {renderTableBody(filteredData)}
+      </table>
+    </div>
   );
 }
 
