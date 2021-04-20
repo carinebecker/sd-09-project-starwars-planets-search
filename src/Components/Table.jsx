@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
-import fetchApiPlanetsContext from '../contexts/fetchApiPlanetsContext';
+import fetchApiPlanetsContext from '../contexts/ApiContext/fetchApiPlanetsContext';
 
 export default function Table() {
-  const { isFetching, data } = useContext(fetchApiPlanetsContext);
+  const { isFetching, data, filters } = useContext(fetchApiPlanetsContext);
   const { results } = data;
-
   function tableHeaders() {
     if (results) {
       const header = results.filter((_, index) => index === 0);
@@ -25,9 +24,11 @@ export default function Table() {
 
   function tableBody() {
     if (results) {
+      const newResults = results.filter(({ name }) => name.toLowerCase()
+        .includes(filters.filterByName.name.toLowerCase()));
       return (
         <tbody>
-          {results.map(({
+          {newResults.map(({
             name,
             rotation_period: rotationPeriod,
             orbital_period: orbitalPeriod,
