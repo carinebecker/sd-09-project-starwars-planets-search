@@ -4,6 +4,13 @@ import fetchPlanetsDatabase from '../services';
 function Table() {
   const [data, setData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
+  const [{ filters }, setFilters] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
 
   useEffect(() => { // ComponentDidMount
     async function fetchData() {
@@ -15,23 +22,35 @@ function Table() {
     fetchData();
   }, []);
 
+  const handleChange = ({ target: { value } }) => {
+    setFilters({ filters: { filterByName: { name: value } } });
+  };
+
   return (
-    <table>
-      <thead>
-        <tr>
-          {tableColumns.map((column) => <th key={ column }>{column}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((planet) => (
-          <tr key={ planet.name }>
-            {Object.values(planet).map((content) => (
-              <td key={ content }>{content}</td>
-            ))}
+    <section>
+      <input
+        data-testid="name-filter"
+        type="text"
+        onChange={ handleChange }
+      />
+      <table>
+        <thead>
+          <tr>
+            {tableColumns.map((column) => <th key={ column }>{column}</th>)}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.filter(({ name }) => name.includes(filters.filterByName.name))
+            .map((planet) => (
+              <tr key={ planet.name }>
+                {Object.values(planet).map((content) => (
+                  <td key={ content }>{content}</td>
+                ))}
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </section>
   );
 }
 
