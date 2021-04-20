@@ -5,20 +5,17 @@ import fechStarWarsAPI from '../service/StarWarsApi';
 
 function TableProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [planets, setPlanets] = useState([]);
+  const [data, setData] = useState([]);
 
   const getPlanets = async () => {
-    // isLoading true
-    // fazer a requisição para buscar as perguntas
-    // isLoading false
     setIsLoading(true);
     const planetsApiResult = await fechStarWarsAPI();
-    setPlanets(planetsApiResult);
+    setData(planetsApiResult);
     setIsLoading(false);
   };
 
   return (
-    <TableContext.Provider value={ { isLoading, planets, getPlanets } }>
+    <TableContext.Provider value={ { isLoading, data, getPlanets } }>
       {children}
     </TableContext.Provider>
   );
