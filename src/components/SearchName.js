@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { PlanetSearchContext } from '../context';
 
-const Search = () => {
+const SearchName = () => {
   const {
     filters: { filterByName: { name } },
     updateFilterByName,
@@ -22,4 +22,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchName;

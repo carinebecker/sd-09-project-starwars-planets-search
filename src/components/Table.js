@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { PlanetSearchContext } from '../context';
 import Loading from './Loading';
-import useFilters from '../hooks';
+import { useFilters } from '../hooks';
 
 const renderInnerLines = (lineValue, index) => (
   <p key={ `line-${index}` }>
@@ -31,6 +31,9 @@ const renderRow = (rowData) => {
 };
 
 const renderTableFor = (data) => {
+  const hasNoResults = data.length === 0;
+  if (hasNoResults) return <p>Nenhum resultado encontrado</p>;
+
   const columnsNames = [
     'Name',
     'Rotation period',

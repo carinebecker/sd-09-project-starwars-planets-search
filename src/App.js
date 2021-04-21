@@ -1,13 +1,13 @@
 import React from 'react';
 import { Provider } from './context';
-import Search from './components/Search';
+import SearchBar from './components/SearchBar';
 import Table from './components/Table';
 import './App.css';
 
 function App() {
   return (
     <Provider>
-      <Search />
+      <SearchBar />
       <Table />
     </Provider>
   );

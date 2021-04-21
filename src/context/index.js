@@ -9,6 +9,13 @@ const initialContext = {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      // {
+      //   column: 'population',
+      //   comparison: 'maior que',
+      //   value: '100000',
+      // }
+    ],
   },
 };
 
@@ -18,6 +25,7 @@ const INITIAL_FILTERS = {
   filterByName: {
     name: '',
   },
+  filterByNumericValues: [],
 };
 
 const PlanetSearchContext = createContext(initialContext);
@@ -47,6 +55,21 @@ const PlanetSearchProvider = ({ children }) => {
     }));
   };
 
+  const removeFilterByValue = ({ column: columnToBeDeleted }) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      filterByNumericValues: currentFilters.filterByNumericValues
+        .filter(({ column }) => column !== columnToBeDeleted),
+    }));
+  };
+
+  const addFilterByValue = (newFilter) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      filterByNumericValues: [...currentFilters.filterByNumericValues, newFilter],
+    }));
+  };
+
   const context = {
     isFetchingPlanets,
     apiData,
@@ -54,6 +77,8 @@ const PlanetSearchProvider = ({ children }) => {
     setPlanetsData,
     filters,
     updateFilterByName,
+    addFilterByValue,
+    removeFilterByValue,
   };
 
   return (
