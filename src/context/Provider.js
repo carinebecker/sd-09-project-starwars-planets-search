@@ -7,6 +7,7 @@ export default function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   };
   const [data, setData] = useState({});
   const [filters, setFilter] = useState(INITIAL_FILTER);
