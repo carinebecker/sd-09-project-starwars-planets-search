@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+const COLUMN_FILTERS = [
+  'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
 export default function NumericFilters({ onClick }) {
   const [column, setColumn] = useState('');
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState(0);
+  const [enabledColumnFilters, setEnabledColumnFilters] = useState(COLUMN_FILTERS);
+
+  function handleOnClick() {
+    onClick({ column, comparison, value });
+    setEnabledColumnFilters(enabledColumnFilters.filter((name) => name !== column));
+  }
 
   return (
     <div>
@@ -13,11 +22,9 @@ export default function NumericFilters({ onClick }) {
         value={ column }
         onChange={ ({ target }) => setColumn(target.value) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {enabledColumnFilters.map(
+          (name) => (<option key={ name } value={ name }>{name}</option>),
+        )}
       </select>
       <select
         data-testid="comparison-filter"
@@ -37,7 +44,7 @@ export default function NumericFilters({ onClick }) {
       <button
         data-testid="button-filter"
         type="button"
-        onClick={ () => onClick({ column, comparison, value }) }
+        onClick={ handleOnClick }
       >
         Filtrar
       </button>
