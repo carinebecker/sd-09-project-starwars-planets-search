@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import PlanetContext from '../context/PlanetContext';
+import '../CSS/table.css';
 // import getPlanets from '../services/starwarsApi';
 
 function Table() {
-  const { data, loading } = useContext(PlanetContext);
+  const { dataToFilter, loading } = useContext(PlanetContext);
   const renderTableHead = () => (
     <thead>
       <tr>
@@ -24,7 +25,7 @@ function Table() {
     </thead>
   );
   const renderTableContent = () => {
-    const content = data.map((planet, index) => (
+    const content = dataToFilter.map((planet, index) => (
       <tr key={ index }>
         <td>{planet.name}</td>
         <td>{planet.rotation_period}</td>
