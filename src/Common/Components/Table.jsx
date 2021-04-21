@@ -3,50 +3,6 @@ import SWContext from '../Services/SWContext';
 
 function Table() {
   const { planets } = useContext(SWContext);
-  // const headerInfo = [
-  //   'name',
-  //   'rotation_period',
-  //   'orbital_period',
-  //   'climate',
-  //   'created',
-  //   'diameter',
-  //   'edited',
-  //   'films',
-  //   'gravity',
-  //   'population',
-  //   'surface_water',
-  //   'terrain',
-  //   'url'];
-
-  // const renderTable = () => (
-  //   <table>
-  //     <thead>
-  //       <tr>
-  //         { headerInfo
-  //           .map((header) => <th key={ header }>{ header }</th>)}
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  // {planets.map((planet) => (
-  //   <tr key={ planet.name }>
-  //     <td>{ planet.name }</td>
-  //     <td>{ planet.rotation_period }</td>
-  //     <td>{ planet.orbital_period }</td>
-  //     <td>{ planet.climate }</td>
-  //     <td>{ planet.created }</td>
-  //     <td>{ planet.diameter }</td>
-  //     <td>{ planet.edited }</td>
-  //     <td>{ planet.films.map((film) => <a key={ film } href={ film }>{ film }</a>) }</td>
-  //     <td>{ planet.gravity }</td>
-  //     <td>{ planet.population }</td>
-  //     <td>{ planet.surface_water }</td>
-  //     <td>{ planet.terrain }</td>
-  //     <td>{ planet.url }</td>
-  //   </tr>
-  //       ))}
-  //     </tbody>
-  //   </table>
-  // );
 
   const renderTable = () => {
     // console.log(Object.keys(planets[0]));
