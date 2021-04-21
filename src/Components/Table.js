@@ -43,12 +43,36 @@ function Table() {
     });
   }
 
+  function deleteFilter(i) {
+    if (filters.filterByNumericValue.length === 1) {
+      setFilters((state) => ({
+        ...state,
+        filterByNumericValue: [],
+      }));
+    } else {
+      setFilters((state) => ({
+        ...state,
+        filterByNumericValue: state.filterByNumericValue.splice((i - 1), 1),
+      }));
+    }
+  }
+
+  const numericFilters = filters.filterByNumericValue;
+
   return (
     <div>
       <section>
         <input type="text" onChange={ handleName } data-testid="name-filter" />
         <NumFilter />
       </section>
+      { (numericFilters.length > 0) && numericFilters.map((numFilter, i) => (
+        <div key={ i } data-testid="filter">
+          {`${numFilter.column} ${numFilter.comparission} ${numFilter.value}`}
+          <button type="button" onClick={ () => deleteFilter(i) }>
+            X
+          </button>
+        </div>
+      )) }
       <table>
         <tr>
           <th>Name</th>
