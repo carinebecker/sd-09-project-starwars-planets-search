@@ -1,11 +1,13 @@
 import React from 'react';
-import './App.css';
+
+import Provider from './contexts/Provider';
+import Table from './components/Table';
 
 function App() {
   return (
-    <div>
-      
-    </div>
+    <Provider>
+      <Table />
+    </Provider>
   );
 }
 
