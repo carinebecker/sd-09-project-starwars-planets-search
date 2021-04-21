@@ -1,14 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import starsWContext from '../../context/starsWContext';
 
 export default function Input() {
   const INITIAL_STATE = {
-    colum: '',
-    comparison: '',
-    value: 0,
+    colum: 'population',
+    comparison: 'maior que',
+    value: 8000,
   };
+  const INITIAL_STATE_OPTIONS = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
   const { filters, setFilter } = useContext(starsWContext);
   const [stateInput, setInputValue] = useState(INITIAL_STATE);
+  const [options, setOptionsSelect] = useState(INITIAL_STATE_OPTIONS);
+  const { filterByNumericValues } = filters;
 
   const handleSelect = ({ target }) => {
     const { value, name } = target;
@@ -18,17 +28,18 @@ export default function Input() {
     });
   };
 
-  const submmitFilter = () => (setFilter({
-    ...filters,
-    filterByName: {
-      name: null,
-    },
-    filterByNumericValues: [
-      ...filters.filterByNumericValues,
-      stateInput,
-    ],
-  })
-  );
+  const submmitFilter = () => {
+    setFilter({
+      ...filters,
+      filterByName: {
+        name: null,
+      },
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        stateInput,
+      ],
+    });
+  };
 
   const handleChange = ({ target }) => {
     const { value } = target;
@@ -39,6 +50,18 @@ export default function Input() {
       },
     });
   };
+
+  useEffect(() => {
+    if (filterByNumericValues.length) {
+      filterByNumericValues.forEach(({ colum }) => {
+        options.forEach((option, index) => {
+          if (option === colum) options.splice(index, 1);
+        });
+      });
+      setOptionsSelect(options);
+    }
+    console.log('effect');
+  }, [filterByNumericValues, setOptionsSelect, options]);
 
   return (
     <div>
@@ -61,11 +84,12 @@ export default function Input() {
           name="colum"
           onChange={ handleSelect }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { options
+            .map((option) => (
+              <option key={ option } value={ option }>
+                { option }
+              </option>
+            )) }
         </select>
       </label>
       <label htmlFor="comparison-filter">
