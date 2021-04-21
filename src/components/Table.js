@@ -1,12 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { PlanetsContext } from '../context/PlanetsContext';
 
 function Table() {
+  const [newData, setNewData] = useState([]);
   const {
     data,
-    filters: { filterByName: { name: planetName } },
-    filterPlanetByName,
+    filters: {
+      filterByName: { name: planetName },
+      filterByNumericValues,
+    },
+    columnFilter,
+    comparisonFilter,
+    valueFilter,
+    filterPlanet,
+    createNumericFilter,
   } = useContext(PlanetsContext);
+
+  const filterData = () => {
+    const newArray = data.filter((planet) => {
+      if (filterByNumericValues.length > 0) {
+        const filtered = filterByNumericValues
+          .find(({ column, comparison, value }) => {
+            switch (comparison) {
+            case 'maior que':
+              return parseInt(planet[column], 10) > parseInt(value, 10);
+            case 'menor que':
+              return parseInt(planet[column], 10) < parseInt(value, 10);
+            default:
+              return parseInt(planet[column], 10) === parseInt(value, 10);
+            }
+          });
+        console.log(filtered);
+      }
+      switch (comparisonFilter) {
+      case 'maior que':
+        return parseInt(planet[columnFilter], 10) > parseInt(valueFilter, 10);
+      case 'menor que':
+        return parseInt(planet[columnFilter], 10) < parseInt(valueFilter, 10);
+      default:
+        return parseInt(planet[columnFilter], 10) === parseInt(valueFilter, 10);
+      }
+    });
+    setNewData(newArray);
+  };
+  const array = newData.length > 0 ? newData : data;
+
   if (!data) return <p>Loading...</p>;
   return (
     <>
@@ -14,8 +52,42 @@ function Table() {
         data-testid="name-filter"
         type="text"
         value={ planetName }
-        onChange={ filterPlanetByName }
+        onChange={ (e) => filterPlanet('name', e) }
+        placeholder="Type to filter the planets"
       />
+      <select
+        data-testid="column-filter"
+        value={ columnFilter }
+        onChange={ (e) => filterPlanet('column', e) }
+      >
+        <option value="population">population</option>
+        <option value="orbital_period">orbital_period</option>
+        <option value="diameter">diameter</option>
+        <option value="rotation_period">rotation_period</option>
+        <option value="surface_water">surface_water</option>
+      </select>
+      <select
+        data-testid="comparison-filter"
+        value={ comparisonFilter }
+        onChange={ (e) => filterPlanet('comparison', e) }
+      >
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
+      </select>
+      <input
+        data-testid="value-filter"
+        type="number"
+        value={ valueFilter }
+        onChange={ (e) => filterPlanet('value', e) }
+      />
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ () => { createNumericFilter(); filterData(); } }
+      >
+        Selecione o filtro
+      </button>
       <table>
         <thead>
           <tr>
@@ -35,7 +107,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { data.filter(({ name }) => name.includes(planetName)).map(({
+          { array.filter(({ name }) => name.includes(planetName)).map(({
             climate,
             created,
             diameter,
