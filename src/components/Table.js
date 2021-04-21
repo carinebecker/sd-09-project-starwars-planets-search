@@ -6,7 +6,7 @@ export default function Table() {
   const { filteredPlanets } = useContext(savePlanets);
   return (
     <div className="global-table">
-      <table className="table table-bordered table-dark">
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th scope="col">name</th>

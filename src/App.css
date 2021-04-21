@@ -1,7 +1,6 @@
-.table-dark {
-  background-image: url('https://www.tracystars.com/wp-content/uploads/2017/05/star-wars-bg.jpg');
-  background-size: contain;
-  min-height:1000px;
+.table {
+  color: white;
+  border-color: blue;
 }
 
 .app {
@@ -14,7 +13,9 @@
 }
 
 .global-table {
+  background-image: url('https://www.tracystars.com/wp-content/uploads/2017/05/star-wars-bg.jpg');
   min-height:1000px;
+  background-size: contain;
 }
 
 .filters {
