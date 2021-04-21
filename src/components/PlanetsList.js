@@ -3,6 +3,8 @@ import Table from 'react-bootstrap/Table';
 import YodaContext from '../local_resources/Context';
 import GetPlanets from '../local_resources/services/GetPlanets';
 import KeyGenerator from '../local_resources/KeyGenerator';
+import MainNavBar from './MainNavBar';
+import './PlanetsList.css';
 
 const gen = KeyGenerator();
 
@@ -32,6 +34,7 @@ const PlanetsList = () => {
       setData(results);
       setIsLoading(false);
     });
+    return setIsLoading(true);
   }, [setData, setIsLoading]);
   const planets = (isLoading) ? '' : data.results;
   return (
@@ -39,16 +42,21 @@ const PlanetsList = () => {
       { isLoading || !data
         ? <span>Loading...</span>
         : (
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                { generateHeader(Object.keys(planets[0])) }
-              </tr>
-            </thead>
-            <tbody>
-              { generateRows(planets) }
-            </tbody>
-          </Table>
+          <main>
+            <div className="navbar-search">
+              <MainNavBar />
+            </div>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  { generateHeader(Object.keys(planets[0])) }
+                </tr>
+              </thead>
+              <tbody>
+                { generateRows(planets) }
+              </tbody>
+            </Table>
+          </main>
         ) }
     </div>
   );
