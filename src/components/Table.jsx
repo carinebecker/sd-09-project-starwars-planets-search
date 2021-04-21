@@ -1,27 +1,56 @@
 import React, { useEffect, useContext, useState } from 'react';
 import MyContext from '../context/MyContext';
 import requestAPI from '../service/request';
+import RenderSelect from './renderSelect';
 
 function Table() {
   const {
     data, setData, filters, setFilters, loading, setLoading } = useContext(MyContext);
-  const { filterByName } = filters.filters;
+  const { filterByName, filterByNumericValues } = filters.filters;
   const [dataFilter, setDataFilter] = useState([]);
 
   function handleChange({ target }) {
     setFilters({
+      ...filters,
       filters: {
-        filterByName: {
-          name: target.value,
-        },
+        ...filters.filters, filterByName: { name: target.value },
       },
     });
     const filter = data.filter((r) => (
       r.name.includes(target.value)
     ));
-    console.log(filter);
     setDataFilter(filter);
   }
+
+  function handleClick() {
+    const { value, column, comparison } = filterByNumericValues;
+    let filter = [];
+    switch (comparison) {
+    case 'igual a':
+      filter = data.filter((r) => (
+        (+r[column]) === (+value)
+      ));
+      break;
+    case 'maior que':
+      filter = data.filter((r) => (
+        (+r[column]) > (+value)
+      ));
+      break;
+    case 'menor que':
+      filter = data.filter((r) => (
+        (+r[column]) < (+value)
+      ));
+      break;
+    default:
+      return filters;
+    }
+    // console.log(data);
+    setDataFilter(filter);
+  }
+
+  useEffect(() => {
+    handleClick();
+  }, [filterByNumericValues]);
 
   function renderTable() {
     return (
@@ -36,6 +65,7 @@ function Table() {
             data-testid="name-filter"
           />
         </label>
+        <RenderSelect data={ dataFilter } />
         <table>
           <thead>
             <tr>

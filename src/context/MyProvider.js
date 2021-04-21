@@ -6,11 +6,19 @@ function MyProvider({ children }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    filters: {
-      filterByName: {
-        name: '',
+    filters:
+      {
+        filterByName: {
+          name: '',
+        },
+        filterByNumericValues: [
+          {
+            column: '',
+            comparison: '',
+            value: '',
+          },
+        ],
       },
-    },
   });
 
   return (
@@ -25,7 +33,7 @@ function MyProvider({ children }) {
 }
 
 MyProvider.propTypes = {
-  children: PropTypes.objectOf.isRequired,
+  children: PropTypes.objectOf(PropTypes.symbol).isRequired,
 };
 
 export default MyProvider;
