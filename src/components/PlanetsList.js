@@ -27,35 +27,59 @@ const generateRows = (planets) => {
 };
 
 const PlanetsList = () => {
-  const { isLoading, setIsLoading, data, setData } = useContext(YodaContext);
+  const {
+    isLoading,
+    setIsLoading,
+    data,
+    setData,
+    filters,
+    setPlanets,
+  } = useContext(YodaContext);
+
   useEffect(() => {
-    GetPlanets().then((results) => {
-      results.results.forEach((planet) => (delete planet.residents));
-      setData(results);
-      setIsLoading(false);
-    });
+    if (!filters) {
+      GetPlanets().then((results) => {
+        results.results.forEach((planet) => (delete planet.residents));
+        setData(results);
+        setIsLoading(false);
+      });
+    }
     return setIsLoading(true);
-  }, [setData, setIsLoading]);
-  const planets = (isLoading) ? '' : data.results;
+  }, []);
+
+  let planets = !isLoading ? data.results : '';
+  if (filters && data) {
+    debugger;
+    planets = filters.filterByName.name === ''
+      ? data.results
+      : data.results.filter(
+        (planet) => planet.name.includes(filters.filterByName.name),
+      )
+  }
   return (
     <div>
-      { isLoading || !data
+      { isLoading
         ? <span>Loading...</span>
         : (
           <main>
             <div className="navbar-search">
               <MainNavBar />
             </div>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  { generateHeader(Object.keys(planets[0])) }
-                </tr>
-              </thead>
-              <tbody>
-                { generateRows(planets) }
-              </tbody>
-            </Table>
+            { planets.length === 0
+              ? <span>No results for the search...</span>
+              : (
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    { generateHeader(Object.keys(planets[0])) }
+                  </tr>
+                </thead>
+                <tbody>
+                  { generateRows(planets) }
+                </tbody>
+              </Table>
+              )
+            }
           </main>
         ) }
     </div>
