@@ -18,30 +18,29 @@ import PlanetsContext from '../context/PlanetsContext';
 import './Table.css';
 
 export default function Table() {
-  const { data } = useContext(PlanetsContext);
+  const { data: planets } = useContext(PlanetsContext);
+  const [planet1] = planets;
 
-  const filteredKeys = data.map((planet) => (
-    Object.keys(planet).filter((key) => key !== 'residents')))[0];
-
-  const filteredValues = data.map((planet) => (
-    Object.values(planet).filter((value) => value !== planet.residents)));
+  const columns = Object.keys(planet1);
+  const values = planets.map((planet) => (
+    Object.values(planet)));
 
   return (
     <>
       <h1>Welcome to StarWars planets search</h1>
-      <input type="search" name="search" id="search" placeholder="Filter by Name" />
-      <table className="teste">
+      <input type="search" name="search" placeholder="Filter by Name" />
+      <table>
 
         <thead>
           <tr>
-            {filteredKeys.map((key) => <th key={ key }>{key}</th>)}
+            {columns.map((key) => <th key={ key }>{key}</th>)}
           </tr>
         </thead>
 
         <tbody>
-          {filteredValues.map((values) => (
-            <tr key={ values }>
-              {values.map((value) => <td id="title" key={ value }>{value}</td>)}
+          {values.map((planetValues, index) => (
+            <tr key={ planetValues[index] }>
+              {planetValues.map((value) => <td key={ value }>{value}</td>)}
             </tr>
           ))}
         </tbody>
