@@ -29,15 +29,12 @@ export const StarWarsProvider = ({ children }) => {
 
   useEffect(() => {
     getPlanetsFromApi(setAllPlanets, setLoading);
-  }, [allPlanets]);
+  }, []);
 
   useEffect(() => {
-    if (input === '') {
-      setPlanetsWithFilter([]);
-    } else {
-      const arrayFilters = allPlanets.filter((e) => e.name.toLowerCase().includes(input));
-      setPlanetsWithFilter(arrayFilters);
-    }
+    console.log(allPlanets);
+    const arrayFilters = allPlanets.filter((e) => e.name.toLowerCase().includes(input));
+    setPlanetsWithFilter(arrayFilters);
   }, [input]);
 
   const contextValue = { allPlanets, loading, filters, handleChange, planetsWithFilter };
