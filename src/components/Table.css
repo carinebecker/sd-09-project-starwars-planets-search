@@ -1,0 +1,31 @@
+body {
+  background-color: rgb(136, 136, 136);
+  font-family:sans;
+  margin: auto 0;
+  padding:0;
+}
+
+h1 {
+  font-weight: 500;
+}
+
+input {
+  border: none;
+  font-size: 18px;
+  height: 24px;
+  outline: none;
+  padding:2px;
+  width:15rem;
+}
+
+table {
+  border-collapse: collapse;
+} th {
+  background:rgb(0, 2, 110);
+  border: 2px solid black;
+  color:white;
+} td {
+  border: 0.5px solid black;
+  padding: 0.5rem;
+  text-align: left;
+}
