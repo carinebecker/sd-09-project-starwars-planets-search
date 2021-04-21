@@ -2,7 +2,12 @@ import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Filters() {
-  const { filters, filterByName, filterByNumericValues } = useContext(StarWarsContext);
+  const {
+    filters,
+    filterByName,
+    filterByNumericValues,
+    removeFilter,
+  } = useContext(StarWarsContext);
   const [numericValuesFilter, setNumericValuesFilters] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -24,6 +29,11 @@ function Filters() {
   function handleAddFilter() {
     filterByNumericValues(numericValuesFilter);
     setActiveFilters([...activeFilters, numericValuesFilter.column]);
+  }
+
+  function handleRemoveFilter({ target: { name } }) {
+    removeFilter(name);
+    setActiveFilters([...activeFilters.filter((filter) => filter !== name)]);
   }
 
   function renderFilterByName() {
@@ -113,6 +123,23 @@ function Filters() {
     );
   }
 
+  function renderActiveFilters() {
+    return (
+      <div>
+        { activeFilters.map((filter) => {
+          return (
+            <div data-testid="filter" key={ `${filter}-filter-button` }>
+              { filter }
+              <button type="button" onClick={ handleRemoveFilter } name={ filter }>
+                X
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
   function renderFilterByNumericValues() {
     return (
       <div>
@@ -120,6 +147,7 @@ function Filters() {
         { renderComparisonFilter() }
         { renderValueFilter() }
         { renderAddFilter() }
+        { renderActiveFilters() }
       </div>
     );
   }

@@ -53,6 +53,15 @@ function Provider({ children }) {
     });
   }
 
+  function removeFilter(name) {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues.filter((filter) => filter.column !== name),
+      ],
+    });
+  }
+
   const contextValue = {
     data,
     isLoading,
@@ -60,6 +69,7 @@ function Provider({ children }) {
     filters,
     filterByName,
     filterByNumericValues,
+    removeFilter,
   };
 
   return (
