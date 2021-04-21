@@ -10,6 +10,11 @@ const getPlanetsFromApi = async (setAllPlanets, setLoading) => {
   setLoading(false);
 };
 
+const filterArray = (allPlanets) => {
+  const arrayFilters = allPlanets.filter((e) => e.name.toLowerCase().includes(input));
+  return arrayFilters;
+};
+
 export const StarWarsProvider = ({ children }) => {
   const [allPlanets, setAllPlanets] = useState([]);
   const [planetsWithFilter, setPlanetsWithFilter] = useState([]);
@@ -32,10 +37,9 @@ export const StarWarsProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log(allPlanets);
-    const arrayFilters = allPlanets.filter((e) => e.name.toLowerCase().includes(input));
+    const arrayFilters = filterArray(allPlanets);
     setPlanetsWithFilter(arrayFilters);
-  }, [input]);
+  }, [allPlanets, input]);
 
   const contextValue = { allPlanets, loading, filters, handleChange, planetsWithFilter };
 
