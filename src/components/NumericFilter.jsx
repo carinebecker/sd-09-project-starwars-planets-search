@@ -67,7 +67,7 @@ const NumericFilter = () => {
 
   const renderComparisonFilter = () => (
     <label htmlFor="comparision">
-      Select column:
+      Select method:
       <select
         value={ comparisionSel }
         id="comparision"

@@ -7,7 +7,6 @@ const Table = () => {
     loading,
     filters: {
       filterByName: { name },
-      // filterByNumericValues: [{ column, comparison, value }],
       filterByNumericValues,
     },
   } = useContext(StarWarsContext);
@@ -21,18 +20,15 @@ const Table = () => {
       filterByNumericValues.forEach((filter, index) => {
         const { column, comparison, value } = filterByNumericValues[index];
         if (comparison === 'maior que') {
-          console.log('aqui');
           filteredPlanets = filteredPlanets
-            .filter((planet) => Number(planet[column]) > Number(value));
+            .filter((planet) => +(planet[column]) > +(value));
         } else if (comparison === 'menor que') {
-          console.log('aqui');
           filteredPlanets = filteredPlanets
-            .filter((planet) => Number(planet[column]) < Number(value));
+            .filter((planet) => +(planet[column]) < +(value));
         }
         if (comparison === 'igual a') {
-          console.log('aqui');
           filteredPlanets = filteredPlanets
-            .filter((planet) => Number(planet[column]) === Number(value));
+            .filter((planet) => +(planet[column]) === +(value));
         }
       });
     }

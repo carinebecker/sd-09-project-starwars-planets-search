@@ -6,19 +6,12 @@ import getPlanets from '../service/starWarsAPI';
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const objFilter = {
+  const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      // {
-      //   column: '',
-      //   comparison: '',
-      //   value: '',
-      // },
-    ],
-  };
-  const [filters, setFilters] = useState(objFilter);
+    filterByNumericValues: [],
+  });
 
   const getName = (name) => (
     setFilters({ ...filters, filterByName: { name } })
@@ -28,6 +21,13 @@ const Provider = ({ children }) => {
     setFilters({
       ...filters,
       filterByNumericValues: [...filters.filterByNumericValues, columnFilters],
+    })
+  );
+
+  const deleteNumercFilter = (columnFilters) => (
+    setFilters({
+      ...filters,
+      filterByNumericValues: columnFilters,
     })
   );
 
@@ -41,7 +41,14 @@ const Provider = ({ children }) => {
     getData();
   }, []);
 
-  const contextValue = { data, loading, getName, filters, getNumericFilters };
+  const contextValue = {
+    data,
+    loading,
+    getName,
+    filters,
+    getNumericFilters,
+    deleteNumercFilter,
+  };
   return (
     <StarWarsContext.Provider value={ contextValue }>
       {children}
