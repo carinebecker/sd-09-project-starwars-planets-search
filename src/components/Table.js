@@ -5,29 +5,36 @@ import PlanetsTable from './PlanetsTable';
 const Table = () => {
   const { data, isFetched } = useContext(PlanetsContext);
   const [filteredData, filteredDataSet] = useState(null);
-  const [nameFilter, nameFilterSet] = useState('');
+  const [filters, filtersSet] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     if (isFetched) {
+      const { filterByName: { name } } = filters;
       filteredDataSet(data.filter((planet) => (
-        planet.name.toLowerCase().includes(nameFilter.toLowerCase())
+        planet.name.toLowerCase().includes(name.toLowerCase())
       )));
     }
-  }, [data, isFetched, nameFilter]);
+  }, [data, isFetched, filters, filtersSet]);
   return (
     (isFetched && filteredData)
       ? (
         <>
-          {
-            console.log(filteredData)
-          }
           <form>
             <label htmlFor="name-filter">
               Pesquisar por nome
               <input
                 id="name-filter"
-                value={ nameFilter }
-                onChange={ (event) => nameFilterSet(event.target.value) }
+                value={ filters.filterByName.name }
+                onChange={ (event) => (filtersSet({
+                  ...filters,
+                  filterByName: {
+                    name: event.target.value,
+                  },
+                })) }
                 data-testid="name-filter"
               />
             </label>
