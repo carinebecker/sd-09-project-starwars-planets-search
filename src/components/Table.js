@@ -1,6 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { PlanetsContext } from '../context/PlanetsContext';
 
+const TABLE_HEADER = [
+  'Name', 'Population', 'Climate', 'Diameter', 'Gravity', 'Orbital Period',
+  'Rotation Period', 'Terrain', 'Surface Water', 'Created', 'Edited', 'Url', 'Films',
+];
+
 function Table() {
   const [newData, setNewData] = useState([]);
   const {
@@ -12,15 +17,21 @@ function Table() {
     columnFilter,
     comparisonFilter,
     valueFilter,
+    columnOptions,
+    columnOrder,
+    sortOrder,
     filterPlanet,
     createNumericFilter,
+    handleOrderValue,
+    handleSortOrder,
+    sortPlanets,
   } = useContext(PlanetsContext);
 
   const filterData = () => {
     const newArray = data.filter((planet) => {
       if (filterByNumericValues.length > 0) {
         const filtered = filterByNumericValues
-          .find(({ column, comparison, value }) => {
+          .filter(({ column, comparison, value }) => {
             switch (comparison) {
             case 'maior que':
               return parseInt(planet[column], 10) > parseInt(value, 10);
@@ -60,11 +71,9 @@ function Table() {
         value={ columnFilter }
         onChange={ (e) => filterPlanet('column', e) }
       >
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {columnOptions.map((option) => (
+          <option key={ option } value={ option }>{option}</option>
+        ))}
       </select>
       <select
         data-testid="comparison-filter"
@@ -88,22 +97,68 @@ function Table() {
       >
         Selecione o filtro
       </button>
+      {filterByNumericValues && filterByNumericValues.map((filter, index) => (
+        <button
+          data-testid="filter"
+          type="button"
+          key={ filter.column }
+          onClick={ () => console.log(filter, index) }
+        >
+          {`${filter.column} ${filter.comparison} ${filter.value} X`}
+        </button>
+      ))}
+      <select
+        data-testid="column-sort"
+        value={ columnOrder }
+        onChange={ handleOrderValue }
+      >
+        <option value="name">Name</option>
+        <option value="population">Population</option>
+        <option value="climate">Climate</option>
+        <option value="diameter">Diameter</option>
+        <option value="gravity">Gravity</option>
+        <option value="orbital_period">Orbital Period</option>
+        <option value="rotation_period">Rotation Period</option>
+        <option value="terrain">Terrain</option>
+        <option value="surface_water">Surface Water</option>
+        <option value="created">Created</option>
+        <option value="edited">Edited</option>
+        <option value="url">Url</option>
+        <option value="films">Films</option>
+      </select>
+      <label htmlFor="upward-radio">
+        <input
+          data-testid="column-sort-input-asc"
+          type="radio"
+          value="ASC"
+          onChange={ handleSortOrder }
+          checked={ sortOrder === 'ASC' }
+          id="upward-radio"
+        />
+        Order Ascendente
+      </label>
+      <label htmlFor="downward-radio">
+        <input
+          data-testid="column-sort-input-desc"
+          type="radio"
+          value="DESC"
+          onChange={ handleSortOrder }
+          checked={ sortOrder === 'DESC' }
+          id="downward-radio"
+        />
+        Order Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => sortPlanets(columnOrder) }
+      >
+        Ordene os planetas
+      </button>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Population</th>
-            <th>Climate</th>
-            <th>Diameter</th>
-            <th>Gravity</th>
-            <th>Orbital Period</th>
-            <th>Rotation Period</th>
-            <th>Terrain</th>
-            <th>Surface Water</th>
-            <th>Created</th>
-            <th>Edited</th>
-            <th>Url</th>
-            <th>Films</th>
+            {TABLE_HEADER.map((item) => <th key={ item }>{item}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -123,7 +178,7 @@ function Table() {
             url,
           }) => (
             <tr key={ url }>
-              <td>{ name }</td>
+              <td data-testid="planet-name">{ name }</td>
               <td>{ population }</td>
               <td>{ climate }</td>
               <td>{ diameter }</td>
