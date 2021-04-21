@@ -9,21 +9,22 @@ function Table() {
   return (
     <table>
       <thead>
-        {/* {data[0] && console.log(data[0].map((el) => Object.keys(el)))} */}
         <tr>
-          {!data[0] ? loading() : data[0].map((planet, i) => (
-            <th key={ planet.name }>{Object.keys(planet)[i]}</th>
-          ))}
+          {
+            !data[0] ? loading() : Object.keys(data[0][0])
+              .map((key, index) => <th key={ index }>{key}</th>)
+          }
         </tr>
       </thead>
       <tbody>
-        {data[0] && data[0].map((planet, index) => (
-          <tr key={ index }>
-            {Object.values(planet).map((attr) => (
-              <td key={ attr }>{attr}</td>
-            ))}
-          </tr>
-        ))}
+        {
+          data[0] && data[0].map((planet, index) => (
+            <tr key={ index }>
+              {Object.values(planet).map((value) => (
+                <td key={ value }>{value}</td>))}
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   );
