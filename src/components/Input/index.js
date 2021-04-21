@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import starsWContext from '../../context/starsWContext';
 
 export default function Input() {
@@ -39,6 +39,17 @@ export default function Input() {
         stateInput,
       ],
     });
+    setOptionsSelect(options.filter((option) => option !== stateInput.colum));
+  };
+
+  const handleClearFilters = (index) => {
+    setFilter({
+      ...filters,
+      filterByName: {
+        name: '',
+      },
+      filterByNumericValues: [filterByNumericValues.slice(index, 1)],
+    });
   };
 
   const handleChange = ({ target }) => {
@@ -50,18 +61,6 @@ export default function Input() {
       },
     });
   };
-
-  useEffect(() => {
-    if (filterByNumericValues.length) {
-      filterByNumericValues.forEach(({ colum }) => {
-        options.forEach((option, index) => {
-          if (option === colum) options.splice(index, 1);
-        });
-      });
-      setOptionsSelect(options);
-    }
-    console.log('effect');
-  }, [filterByNumericValues, setOptionsSelect, options]);
 
   return (
     <div>
@@ -124,6 +123,25 @@ export default function Input() {
       >
         Filtrar
       </button>
+      <div>
+        { filterByNumericValues.length
+          ? filterByNumericValues.map(({ colum, comparison, value }, index) => (
+            <div key={ colum }>
+              <span>{colum}</span>
+              <span>{comparison}</span>
+              <span>{value}</span>
+              <div data-testid="filter">
+                <button
+                  type="button"
+                  onClick={ () => handleClearFilters(index) }
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          ))
+          : ''}
+      </div>
     </div>
   );
 }
