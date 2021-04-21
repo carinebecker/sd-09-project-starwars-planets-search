@@ -31,12 +31,10 @@ function Table() {
       if (comparission === 'maior que') {
         filterData = filterData
           .filter((planet) => parseFloat(planet[column]) > parseFloat(value));
-      }
-      if (comparission === 'menor que') {
+      } else if (comparission === 'menor que') {
         filterData = filterData
           .filter((planet) => parseFloat(planet[column]) < parseFloat(value));
-      }
-      if (comparission === 'igual a') {
+      } else if (comparission === 'igual a') {
         filterData = filterData
           .filter((planet) => parseFloat(planet[column]) === parseFloat(value));
       }
