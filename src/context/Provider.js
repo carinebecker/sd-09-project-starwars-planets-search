@@ -10,13 +10,26 @@ const Provider = ({ children }) => {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      // {
+      //   column: '',
+      //   comparison: '',
+      //   value: '',
+      // },
+    ],
   };
   const [filters, setFilters] = useState(objFilter);
 
-  const getName = (name) => {
-    const objToFilter = { ...filters, filterByName: { name } };
-    setFilters(objToFilter);
-  };
+  const getName = (name) => (
+    setFilters({ ...filters, filterByName: { name } })
+  );
+
+  const getNumericFilters = (columnFilters) => (
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, columnFilters],
+    })
+  );
 
   const getData = async () => {
     const planets = await getPlanets();
@@ -28,7 +41,7 @@ const Provider = ({ children }) => {
     getData();
   }, []);
 
-  const contextValue = { data, loading, getName, filters };
+  const contextValue = { data, loading, getName, filters, getNumericFilters };
   return (
     <StarWarsContext.Provider value={ contextValue }>
       {children}

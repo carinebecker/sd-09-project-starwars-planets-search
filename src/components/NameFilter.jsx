@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const NameFilter = () => {
-  const { filters, getName } = useContext(StarWarsContext);
+  const { filters: { filterByName: { name } }, getName } = useContext(StarWarsContext);
 
   const handleChange = ({ target: { value } }) => {
     getName(value);
@@ -12,7 +12,7 @@ const NameFilter = () => {
     <input
       type="text"
       data-testid="name-filter"
-      value={ filters.filterByName.name }
+      value={ name }
       onChange={ handleChange }
     />
   );
