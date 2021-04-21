@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { PlanetSearchContext } from '../context';
 import Loading from './Loading';
+import useFilters from '../hooks';
 
 const renderInnerLines = (lineValue, index) => (
   <p key={ `line-${index}` }>
@@ -60,7 +61,8 @@ const renderTableFor = (data) => {
 };
 
 const Table = () => {
-  const { isFetchingPlanets, data } = useContext(PlanetSearchContext);
+  const { isFetchingPlanets } = useContext(PlanetSearchContext);
+  const [data] = useFilters();
 
   if (isFetchingPlanets) return (<Loading />);
   return (

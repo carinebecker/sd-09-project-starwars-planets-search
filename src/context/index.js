@@ -5,18 +5,34 @@ import fetchPlanetsData from '../services';
 const initialContext = {
   isFetchingPlanets: true,
   data: [],
+  filters: {
+    filterByName: {
+      name: '',
+    },
+  },
+};
+
+const INITIAL_FETCHING = true;
+const INITIAL_DATA = [];
+const INITIAL_FILTERS = {
+  filterByName: {
+    name: '',
+  },
 };
 
 const PlanetSearchContext = createContext(initialContext);
 
 const PlanetSearchProvider = ({ children }) => {
-  const [isFetchingPlanets, setFetchStatus] = useState(true);
-  const [data, setPlanetsData] = useState([]);
+  const [isFetchingPlanets, setFetchStatus] = useState(INITIAL_FETCHING);
+  const [apiData, setApiData] = useState(INITIAL_DATA);
+  const [data, setPlanetsData] = useState(INITIAL_DATA);
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   useEffect(
     () => {
       setFetchStatus(true);
       fetchPlanetsData().then(({ results }) => {
+        setApiData(results);
         setPlanetsData(results);
         setFetchStatus(false);
       });
@@ -24,7 +40,21 @@ const PlanetSearchProvider = ({ children }) => {
     [setFetchStatus, setPlanetsData],
   );
 
-  const context = { isFetchingPlanets, data };
+  const updateFilterByName = ({ target: { value: name } }) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      filterByName: { name },
+    }));
+  };
+
+  const context = {
+    isFetchingPlanets,
+    apiData,
+    data,
+    setPlanetsData,
+    filters,
+    updateFilterByName,
+  };
 
   return (
     <PlanetSearchContext.Provider value={ context }>

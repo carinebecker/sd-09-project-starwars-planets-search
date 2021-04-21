@@ -1,16 +1,25 @@
-import React from 'react';
-// import React, { useContext } from 'react';
-// import { PlanetSearchContext } from '../context';
+import React, { useContext } from 'react';
+import { PlanetSearchContext } from '../context';
 
-const Search = () => (<div>Search bar</div>);
-
-/*
 const Search = () => {
-  const context = useContext(PlanetSearchContext);
+  const {
+    filters: { filterByName: { name } },
+    updateFilterByName,
+  } = useContext(PlanetSearchContext);
   return (
-    <div>Search bar</div>
+    <div>
+      <label htmlFor="filterByName">
+        Name:
+        <input
+          id="filterByName"
+          type="text"
+          data-testid="name-filter"
+          value={ name }
+          onChange={ updateFilterByName }
+        />
+      </label>
+    </div>
   );
 };
-*/
 
 export default Search;
