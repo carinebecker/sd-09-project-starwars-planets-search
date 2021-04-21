@@ -2,21 +2,21 @@ import React, { useContext } from 'react';
 import SWContext from '../Services/SWContext';
 
 function Table() {
-  const { planets } = useContext(SWContext);
+  const { filteredPlanets } = useContext(SWContext);
 
-  const renderTable = () => {
+  const renderTable = (planetsArray) => {
     // console.log(Object.keys(planets[0]));
-    if (planets.length !== 0) {
+    if (planetsArray.length !== 0) {
       return (
         <table>
           <thead>
             <tr>
-              { Object.keys(planets[0])
+              { Object.keys(planetsArray[0])
                 .map((key) => key !== 'residents' && <th key={ key }>{ key }</th>)}
             </tr>
           </thead>
           <tbody>
-            { planets.map((planet) => (
+            { planetsArray.map((planet) => (
               <tr key={ planet.name }>
                 <td>{ planet.name }</td>
                 <td>{ planet.rotation_period }</td>
@@ -47,7 +47,7 @@ function Table() {
 
   return (
     <>
-      { renderTable() }
+      { renderTable(filteredPlanets) }
     </>
   );
 }

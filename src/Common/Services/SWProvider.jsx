@@ -6,6 +6,7 @@ import * as SWApi from './starWarsAPI';
 function SWProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setNameFilter] = useState('');
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
   // const [name, setNameFilter] = useState('');
   // const [name, setNameFilter] = useState('');
 
@@ -13,17 +14,19 @@ function SWProvider({ children }) {
     const APIendpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const fetchResults = async () => {
       const fetchedPlanets = await SWApi.fetchPlanets(APIendpoint);
-      if (name === '') {
-        setPlanets(fetchedPlanets);
-      } else {
-        setPlanets(fetchedPlanets.filter((planet) => planet.name.includes(name)));
-      }
+      setPlanets(fetchedPlanets);
+      setFilteredPlanets(fetchedPlanets);
     };
     fetchResults();
-  }, [name]);
+  }, []);
+
+  useEffect(() => {
+    setFilteredPlanets(planets.filter((planet) => planet.name.includes(name)));
+  }, [name, planets]);
 
   const SWContextObj = {
     planets,
+    filteredPlanets,
     setPlanets,
     setNameFilter,
     filters: {
