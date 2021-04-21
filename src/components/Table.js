@@ -6,22 +6,22 @@ export default function Table() {
   const { filteredPlanets } = useContext(savePlanets);
   return (
     <div>
-      <table>
+      <table className="table table-bordered table-dark">
         <thead>
           <tr>
-            <th>name</th>
-            <th>rotation_period</th>
-            <th>orbital_period</th>
-            <th>diameter</th>
-            <th>climate</th>
-            <th>gravity</th>
-            <th>terrain</th>
-            <th>surface_water</th>
-            <th>population</th>
-            <th>films</th>
-            <th>created</th>
-            <th>edited</th>
-            <th>url</th>
+            <th scope="col">name</th>
+            <th scope="col">rotation_period</th>
+            <th scope="col">orbital_period</th>
+            <th scope="col">diameter</th>
+            <th scope="col">climate</th>
+            <th scope="col">gravity</th>
+            <th scope="col">terrain</th>
+            <th scope="col">surface_water</th>
+            <th scope="col">population</th>
+            <th scope="col">films</th>
+            <th scope="col">created</th>
+            <th scope="col">edited</th>
+            <th scope="col">url</th>
           </tr>
         </thead>
         <tbody>

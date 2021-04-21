@@ -6,6 +6,7 @@ export default function FilterPlanetsByName() {
   return (
     <div>
       <input
+        className="form-control"
         type="text"
         data-testid="name-filter"
         onChange={ (e) => setSearchByName(e.target.value) }
