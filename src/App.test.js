@@ -28,15 +28,13 @@ const mockFetch = () => {
     }));
 }
 
-describe.only('1 - Faça uma requisição para o endpoint `/planets` da API de Star Wars e preencha uma tabela com os dados retornados, com exceção dos da coluna `residents`', () => {
+describe('1 - Faça uma requisição para o endpoint `/planets` da API de Star Wars e preencha uma tabela com os dados retornados, com exceção dos da coluna `residents`', () => {
   beforeAll(mockFetch);
   beforeEach(cleanup);
 
   it('Realize uma requisição para a API', async () => {
     await act(async () => {
-      console.log('oi')
       render(<App />);
-      console.log('tchau')
     });
     expect(global.fetch).toHaveBeenCalled();
   });

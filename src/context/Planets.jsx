@@ -11,16 +11,19 @@ export default function Planets({ children }) {
     setData,
     loading,
   };
+
   useEffect(() => {
     const fetchAPI = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const result = await response.json();
-      const planets = await result.results;
+      const planets = result.results;
+      delete planets.residents;
       setData(planets);
       setLoading(false);
     };
     fetchAPI();
   }, []);
+
   return loading ? <Loading /> : (
     <PlanetsContext.Provider value={ context }>
       {children}

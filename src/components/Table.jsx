@@ -19,20 +19,25 @@ import './Table.css';
 
 export default function Table() {
   const { data } = useContext(PlanetsContext);
+
   const filteredKeys = data.map((planet) => (
     Object.keys(planet).filter((key) => key !== 'residents')))[0];
+
   const filteredValues = data.map((planet) => (
     Object.values(planet).filter((value) => value !== planet.residents)));
-  const table = (
+
+  return (
     <>
       <h1>Welcome to StarWars planets search</h1>
       <input type="search" name="search" id="search" placeholder="Filter by Name" />
       <table className="teste">
+
         <thead>
           <tr>
             {filteredKeys.map((key) => <th key={ key }>{key}</th>)}
           </tr>
         </thead>
+
         <tbody>
           {filteredValues.map((values) => (
             <tr key={ values }>
@@ -40,8 +45,8 @@ export default function Table() {
             </tr>
           ))}
         </tbody>
+
       </table>
     </>
   );
-  return table;
 }
