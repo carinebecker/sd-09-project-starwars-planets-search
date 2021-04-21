@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import FilterByName from '../components/FilterByName';
 import FilterByNumber from '../components/FilterByNumber';
+import SortData from '../components/SortData';
 import TableBody from '../components/TableBody';
 import context from '../context/context';
 
@@ -14,6 +15,7 @@ function Table() {
     <section>
       <FilterByName />
       <FilterByNumber />
+      <SortData />
       <table>
         <thead>
           <tr>

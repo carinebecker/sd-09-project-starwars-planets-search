@@ -80,7 +80,7 @@ function FilterByNumber() {
 
   const getFilters = () => (
     filter.filters.filterByNumericValues.map(({ column, comparison, value }) => (
-      <div key="column" data-testid="filter">
+      <div key={ column } data-testid="filter">
         <h4>Filtro</h4>
         <p>{ column }</p>
         <p>{ comparison }</p>

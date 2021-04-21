@@ -22,6 +22,31 @@ const filterByNumber = (data, filter) => (
   ))
 );
 
+const organize = (column, a, b) => {
+  const NEGATIVE_SORT = -1;
+  if (column !== 'name') {
+    if (+(a[column]) > +(b[column])) return 1;
+    if (+(b[column]) > +(a[column])) return NEGATIVE_SORT;
+    return 0;
+  }
+  if (a[column] > b[column]) return 1;
+  if (b[column] > a[column]) return NEGATIVE_SORT;
+  return 0;
+};
+
+const sortQuery = (data, { sort, column }) => {
+  if (data.length > 0) {
+    switch (sort) {
+    case 'ASC':
+      return data.sort((a, b) => organize(column, a, b));
+    case 'DESC':
+      return data.sort((a, b) => organize(column, b, a));
+    default:
+      return data;
+    }
+  }
+};
+
 const setFilters = (data, filter) => {
   const { filterByName: { name }, filterByNumericValues } = filter;
   let newData = [...data];
@@ -31,6 +56,7 @@ const setFilters = (data, filter) => {
   if (filterByNumericValues.length > 0) {
     newData = filterByNumber(newData, filterByNumericValues);
   }
+  newData = sortQuery(newData, filter.order);
   return newData;
 };
 
@@ -43,6 +69,10 @@ function Provider({ children }) {
         name: '',
       },
       filterByNumericValues: [],
+      order: {
+        column: 'name',
+        sort: 'ASC',
+      },
     },
   });
 
