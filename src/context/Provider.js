@@ -4,6 +4,36 @@ import context from './context';
 import getAPI from '../services/getAPI';
 
 const filterName = (data, filter) => data.filter(({ name }) => name.includes(filter));
+
+const filterByNumber = (data, filter) => (
+  data.filter((planet) => (
+    filter.every(({ column, comparison, value }) => {
+      switch (comparison) {
+      case 'maior que':
+        return +(planet[column]) > value;
+      case 'menor que':
+        return +(planet[column]) < value;
+      case 'igual a':
+        return +(planet[column]) === +(value);
+      default:
+        return true;
+      }
+    })
+  ))
+);
+
+const setFilters = (data, filter) => {
+  const { filterByName: { name }, filterByNumericValues } = filter;
+  let newData = [...data];
+  if (name) {
+    newData = filterName(data, name);
+  }
+  if (filterByNumericValues.length > 0) {
+    newData = filterByNumber(newData, filterByNumericValues);
+  }
+  return newData;
+};
+
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,6 +42,7 @@ function Provider({ children }) {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
     },
   });
 
@@ -24,12 +55,13 @@ function Provider({ children }) {
     getData();
   }, [setPlanets]);
 
-  const data = filterName(planets, filter.filters.filterByName.name);
+  const data = setFilters(planets, filter.filters);
 
   const store = {
     data,
     loading,
     setFilter,
+    filter,
   };
 
   return (

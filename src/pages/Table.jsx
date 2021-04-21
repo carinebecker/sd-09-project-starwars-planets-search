@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import FilterByName from '../components/FilterByName';
+import FilterByNumber from '../components/FilterByNumber';
 import TableBody from '../components/TableBody';
 import context from '../context/context';
 
 function Table() {
   const { loading } = useContext(context);
-  console.log(loading);
   if (loading) {
     return <h2>Loading...</h2>;
   }
@@ -13,6 +13,7 @@ function Table() {
   return (
     <section>
       <FilterByName />
+      <FilterByNumber />
       <table>
         <thead>
           <tr>
