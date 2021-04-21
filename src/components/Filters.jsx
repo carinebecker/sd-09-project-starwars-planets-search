@@ -126,16 +126,14 @@ function Filters() {
   function renderActiveFilters() {
     return (
       <div>
-        { activeFilters.map((filter) => {
-          return (
-            <div data-testid="filter" key={ `${filter}-filter-button` }>
-              { filter }
-              <button type="button" onClick={ handleRemoveFilter } name={ filter }>
-                X
-              </button>
-            </div>
-          );
-        })}
+        { activeFilters.map((filter) => (
+          <div data-testid="filter" key={ `${filter}-filter-button` }>
+            { filter }
+            <button type="button" onClick={ handleRemoveFilter } name={ filter }>
+              X
+            </button>
+          </div>
+        ))}
       </div>
     );
   }
