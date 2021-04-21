@@ -36,15 +36,31 @@ function renderTableBody(data) {
 
 function filterData(data, filters) {
   const { name } = filters.filterByName;
-  return data.filter((planet) => planet.name.includes(name));
+  let filteredData = data.filter((planet) => planet.name.includes(name));
+
+  const { filterByNumericValues } = filters;
+  filterByNumericValues.forEach((filter) => {
+    filteredData = filteredData.filter((planet) => {
+      const columnValue = +(planet[filter.column]);
+      const filterValue = +(filter.value);
+
+      if (filter.comparison === 'maior que') return (columnValue > filterValue);
+      if (filter.comparison === 'menor que') return (columnValue < filterValue);
+      if (filter.comparison === 'igual a') return (columnValue === filterValue);
+
+      return false;
+    });
+  });
+
+  return filteredData;
 }
 
 function Table() {
   const { data, isLoading, filters } = useContext(StarWarsContext);
-  const headerTitles = isLoading ? [] : getHeaderTitles(data);
+  if (isLoading) return 'Loading';
 
   const filteredData = filterData(data, filters);
-  if (isLoading) return 'Loading';
+  const headerTitles = getHeaderTitles(data);
   return (
     <div>
       <Filters />

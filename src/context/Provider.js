@@ -16,6 +16,7 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -33,12 +34,22 @@ function Provider({ children }) {
     fetchStarWarsApi();
   }, []);
 
-  function filterByName(filter) {
+  function filterByName(name) {
     setFilters({
       ...filters,
       filterByName: {
-        name: filter,
+        name,
       },
+    });
+  }
+
+  function filterByNumericValues(filter) {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        filter,
+      ],
     });
   }
 
@@ -48,6 +59,7 @@ function Provider({ children }) {
     setIsLoading,
     filters,
     filterByName,
+    filterByNumericValues,
   };
 
   return (
