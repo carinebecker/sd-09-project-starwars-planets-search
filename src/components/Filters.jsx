@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import SortColumns from './SortColumns';
 
 const initialState = {
   column: 'rotation_period',
@@ -46,6 +47,21 @@ function Filters() {
     setColumns(columns.filter((item) => item !== column));
     setSelectedFilters(initialState);
   };
+
+  const renderSearchBar = () => (
+    <div>
+      <label htmlFor="name-filter">
+        Search by name:
+        <input
+          type="text"
+          name="name"
+          data-testid="name-filter"
+          id="name-filter"
+          onChange={ handleNameChange }
+        />
+      </label>
+    </div>
+  );
 
   const renderColumnOptions = () => {
     const { column } = selectedFilters;
@@ -133,18 +149,7 @@ function Filters() {
 
   return (
     <section>
-      <div>
-        <label htmlFor="name-filter">
-          Search by name:
-          <input
-            type="text"
-            name="name"
-            data-testid="name-filter"
-            id="name-filter"
-            onChange={ handleNameChange }
-          />
-        </label>
-      </div>
+      { renderSearchBar() }
       <div>
         { renderColumnOptions() }
         { renderComparisonOptions() }
@@ -160,6 +165,7 @@ function Filters() {
         </button>
       </div>
       { renderFiltersOptions() }
+      <SortColumns />
     </section>
   );
 }

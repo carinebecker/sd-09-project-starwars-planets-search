@@ -12,6 +12,10 @@ function StarWarsProvider({ children }) {
         value: '',
       },
     ],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   };
 
   const initialColumns = ['rotation_period', 'orbital_period', 'diameter',
@@ -21,6 +25,27 @@ function StarWarsProvider({ children }) {
   const [filters, setFilters] = useState(options);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
   const [columns, setColumns] = useState(initialColumns);
+
+  const compare = (planet1, planet2) => {
+    const { order: { sort } } = filters;
+    const magicNumber = -1;
+    if (sort === 'ASC') {
+      return (planet1 > planet2) ? 1 : magicNumber;
+    }
+    if (sort === 'DESC') {
+      return (planet2 > planet1) ? 1 : magicNumber;
+    }
+    return 0;
+  };
+
+  const sortPlanets = (planets) => {
+    const { order: { column } } = filters;
+    planets.sort((planet1, planet2) => {
+      const a = (column === 'name') ? planet1[column] : parseInt(planet1[column], 10);
+      const b = (column === 'name') ? planet2[column] : parseInt(planet2[column], 10);
+      return compare(a, b);
+    });
+  };
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -38,19 +63,23 @@ function StarWarsProvider({ children }) {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
       setFilteredPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === 'menor que') {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
       setFilteredPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === 'igual a') {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
       setFilteredPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === '') {
       setFilteredPlanets(planetsFilteredByName);
+      sortPlanets(planetsFilteredByName);
     }
   }, [data, filters]);
 
