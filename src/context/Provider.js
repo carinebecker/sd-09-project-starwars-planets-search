@@ -5,11 +5,18 @@ import myContext from './contextAPI';
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
+  const [filtersValues, setFiltersValues] = useState(
+    { column: '', comparison: '', value: '' },
+  );
   const contextValue = {
     data: planets,
     setPlanets,
-    filters: { filterByName: { name } },
+    filters: {
+      filterByName: { name },
+      filterByNumericValues: filtersValues,
+    },
     setName,
+    setFiltersValues,
   };
 
   return (

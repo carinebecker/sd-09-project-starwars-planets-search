@@ -39,3 +39,28 @@
     transform: rotate(360deg);
   }
 }
+
+* {
+  margin: 0;
+}
+
+.container-filters {
+  align-items: center;
+  background-color: black;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 10px;
+}
+
+.setfield-filter {
+  border: solid rgb(189, 189, 2) 1.5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  width: 60%;
+}
+
+label, legend {
+  color: rgb(189, 189, 2);
+}
