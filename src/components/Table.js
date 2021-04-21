@@ -5,7 +5,7 @@ import { savePlanets } from '../context/contextPlanets';
 export default function Table() {
   const { filteredPlanets } = useContext(savePlanets);
   return (
-    <div>
+    <div className="global-table">
       <table className="table table-bordered table-dark">
         <thead>
           <tr>
@@ -39,7 +39,9 @@ export default function Table() {
               <td>{ planet.films }</td>
               <td>{ planet.created }</td>
               <td>{ planet.edited }</td>
-              <td>{ planet.url }</td>
+              <td>
+                <a href={ planet.url } className="btn btn-primary">{' >> '}</a>
+              </td>
             </tr>
           ))}
         </tbody>
