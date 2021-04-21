@@ -10,4 +10,4 @@ const fetchPlanets = async () => {
   }
 };
 
-export { fetchPlanets };
+export default fetchPlanets;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import StarWarsContext from './StarWarsContext';
-import { fetchPlanets } from '../services/starWarsAPI';
 import PropTypes from 'prop-types';
+import StarWarsContext from './StarWarsContext';
+import fetchPlanets from '../services/starWarsAPI';
 
 function Provider({ children }) {
   const [data, setPlanets] = useState([]);
