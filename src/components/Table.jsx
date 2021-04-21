@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TableContext from '../context/TableContext';
 
 function renderListItem(planet) {
   delete planet.residents;
   return (
-    <tr>
+    <tr key={ planet.name }>
       {Object.values(planet).map((values, index) => (
         <td key={ index }>{ values }</td>
       ))}
@@ -13,27 +13,43 @@ function renderListItem(planet) {
 }
 
 function Table() {
-  const { data, isLoading/* , getPlanets */ } = useContext(TableContext);
-  /*  useEffect(() => {
-    getPlanets();
-  }, [getPlanets]); */
+  const {
+    data,
+    isLoading,
+    filters: {
+      filterByName: { name },
+    },
+  } = useContext(TableContext);
+  const [planetFilters, setPlanetFilters] = useState([]);
 
-  if (!isLoading && data.length !== 0) {
+  useEffect(() => {
+    let filteredPlanets = data;
+    if (name !== '') {
+      filteredPlanets = filteredPlanets
+        .filter((planet) => planet.name.includes(name));
+    }
+    setPlanetFilters(filteredPlanets);
+  }, [data, name]);
+
+  if (!isLoading && planetFilters.length !== 0) {
     const tableLabel = Object.keys(data[0]);
     const filteredTabelLabel = tableLabel.filter((label) => (
       label !== 'residents'
     ));
-    console.log('ola');
     return (
       <table>
-        <tr>
-          {filteredTabelLabel.map((label) => (
-            <th key={ label }>{label}</th>
+        <thead>
+          <tr>
+            {filteredTabelLabel.map((label) => (
+              <th key={ label }>{label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {planetFilters.map((planet) => (
+            renderListItem(planet)
           ))}
-        </tr>
-        {data.map((planet) => (
-          renderListItem(planet)
-        ))}
+        </tbody>
       </table>
     );
   }
