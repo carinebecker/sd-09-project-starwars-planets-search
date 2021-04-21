@@ -7,6 +7,7 @@ export default function FilterInput() {
   return (
     <label htmlFor="name-filter">
       <input
+        name="name"
         onChange={ handleChange }
         id="name-filter"
         data-testid="name-filter"

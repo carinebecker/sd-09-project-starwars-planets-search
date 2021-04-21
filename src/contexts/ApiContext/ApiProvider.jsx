@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { shape } from 'prop-types';
+import { arrayOf } from 'prop-types';
 import fetchApiPlanetsContext from './fetchApiPlanetsContext';
 import fetchApiPlanets from '../../services/fetchApiPlanets';
-import useInput from '../../hooks/useInput';
+import useFilter from '../../hooks/useFilter';
 
 export default function ApiProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useInput({ filterByName: { name: '' } });
+  const [filters, handleChange, filterByNumbers] = useFilter();
+  const [configFilters, setConfigFilters] = useState();
 
   async function getPlanetsApiData() {
     setIsFetching(true);
@@ -20,12 +21,25 @@ export default function ApiProvider({ children }) {
     getPlanetsApiData();
   }, []);
 
-  function handleChange({ target }) {
-    const { value } = target;
-    setFilters({
-      filterByName: {
-        name: value.toLowerCase(),
-      } });
+  function handleClickFilterByNumber() {
+    const { results } = data;
+    if (results) {
+      const filteredPlanet = results.filter((planet) => (
+        [filterByNumbers].every(({ column, comparison, value }) => {
+          switch (comparison) {
+          case 'maior que':
+            return +(planet[column]) > value;
+          case 'menor que':
+            return +(planet[column]) < value;
+          case 'igual a':
+            return +(planet[column]) === +value;
+          default:
+            return true;
+          }
+        })
+      ));
+      setConfigFilters(filteredPlanet);
+    }
   }
 
   const requestState = {
@@ -33,6 +47,9 @@ export default function ApiProvider({ children }) {
     data,
     handleChange,
     filters,
+    handleClickFilterByNumber,
+    configFilters,
+    setConfigFilters,
   };
 
   return (
@@ -43,5 +60,5 @@ export default function ApiProvider({ children }) {
 }
 
 ApiProvider.propTypes = {
-  children: shape().isRequired,
+  children: arrayOf(Object).isRequired,
 };
