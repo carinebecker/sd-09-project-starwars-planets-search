@@ -1,32 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
-import getStarWarsData from '../services/starWarsAPI';
+import { getStarWarsData } from '../services/starWarsAPI';
 
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+
+  const getData = async () => {
+    const dataStarWars = await getStarWarsData();
+    setData(dataStarWars);
+  };
 
   useEffect(() => {
-    setIsFetching(true);
-    async function fetchData() {
-      const dataStarWars = await getStarWarsData();
-      setData(dataStarWars);
-      setIsFetching(false);
-    }
-    fetchData();
+    getData();
   }, []);
 
-  const context = {
-    data,
-    isFetching,
-  };
+  const context = { data };
 
   return (
     <StarWarsContext.Provider
       value={ context }
     >
-      { children}
+      { children }
     </StarWarsContext.Provider>
 
   );

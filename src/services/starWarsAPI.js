@@ -1,12 +1,12 @@
 const URL = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
-const getStarWarsData = async () => {
+export const getStarWarsData = async () => {
   try {
     const response = await fetch(URL);
-    const data = await response.json();
-    return data.results;
+    const { results } = await response.json();
+    return results;
   } catch (error) {
-    console.log(error);
+    return Error(error);
   }
 };
 
