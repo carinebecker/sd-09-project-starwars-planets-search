@@ -8,6 +8,7 @@ function Filters() {
     comparison: 'maior que',
     value: '0',
   });
+  const [activeFilters, setActiveFilters] = useState([]);
 
   function handleFilterByName({ target: { value } }) {
     filterByName(value);
@@ -22,6 +23,7 @@ function Filters() {
 
   function handleAddFilter() {
     filterByNumericValues(numericValuesFilter);
+    setActiveFilters([...activeFilters, numericValuesFilter.column]);
   }
 
   function renderFilterByName() {
@@ -39,13 +41,18 @@ function Filters() {
     );
   }
 
-  function renderColumnFilter() {
+  function getAvailableFilters() {
     const columnFilterList = [
       'population',
       'orbital_period',
       'diameter',
       'rotation_period',
       'surface_water'];
+    return columnFilterList.filter((column) => !activeFilters.includes(column));
+  }
+
+  function renderColumnFilter() {
+    const columnFilterList = getAvailableFilters();
     return (
       <label htmlFor="column-filter">
         Select a column:
