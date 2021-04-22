@@ -30,18 +30,20 @@ function SWProvider({ children }) {
   useEffect(() => {
     if (numericFilter) {
       filterByNumericValues.forEach((filter) => {
-        console.log(filter.valueFilter);
         if (filter.comparisonFilter === 'maior que') {
           setFilteredPlanets(filteredPlanets
-            .filter((planet) => parseFloat(planet[columnFilter]) > filter.valueFilter));
+            .filter((planet) => (
+              parseFloat(planet[columnFilter]) > parseFloat(filter.valueFilter))));
         }
         if (filter.comparisonFilter === 'menor que') {
           setFilteredPlanets(filteredPlanets
-            .filter((planet) => planet[columnFilter] <= filter.valueFilter));
+            .filter((planet) => (
+              parseFloat(planet[columnFilter]) < parseFloat(filter.valueFilter))));
         }
         if (filter.comparisonFilter === 'igual a') {
           setFilteredPlanets(filteredPlanets
-            .filter((planet) => planet[columnFilter] === filter.valueFilter));
+            .filter((planet) => (
+              planet[columnFilter] === filter.valueFilter)));
         }
       });
     }
