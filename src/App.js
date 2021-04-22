@@ -1,9 +1,14 @@
 import React from 'react';
 import './App.css';
+import TablePlanets from './components/TablePlanets';
+import SWProvider from './context/SWProvider';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <SWProvider>
+      <h1>StarWars Planets</h1>
+      <TablePlanets />
+    </SWProvider>
   );
 }
 
