@@ -6,9 +6,7 @@ export default function FilterPlanetsGeneral() {
     options,
     height,
     filterOptions,
-    handleClick,
-    storeFilters } = useContext(savePlanets);
-  console.log(storeFilters);
+    handleClick } = useContext(savePlanets);
   return (
     <div>
       <select
