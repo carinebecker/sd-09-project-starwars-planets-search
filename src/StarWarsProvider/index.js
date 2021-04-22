@@ -8,10 +8,12 @@ import utils from '../utils';
 function Provider({ children }) {
   const [data, setData] = useState({});
   const [planetsToFilter, setPlanetsToFilter] = useState([]);
+
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
@@ -30,9 +32,16 @@ function Provider({ children }) {
     setPlanetsToFilter(filteredPlanets);
   }, [filters.filterByName]);
 
+  useEffect(() => {
+    const { filterByNumbers } = utils;
+    const filteredPlanets = filterByNumbers(data.results, filters.filterByNumericValues);
+    setPlanetsToFilter(filteredPlanets);
+  }, [filters.filterByNumericValues]);
+
   const contextValue = {
     data,
     planetsToFilter,
+    filters,
     setFilters,
   };
 
