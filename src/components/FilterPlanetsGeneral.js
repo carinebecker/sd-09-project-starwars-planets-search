@@ -13,7 +13,7 @@ export default function FilterPlanetsGeneral() {
         data-testid="column-filter"
         id="column-filter"
         onChange={ filterOptions }
-        className="form-control"
+        className="form-control search-box"
       >
         {options.map((key) => (
           <option key={ key } value={ key }>
@@ -25,7 +25,7 @@ export default function FilterPlanetsGeneral() {
         data-testid="comparison-filter"
         id="comparison-filter"
         onChange={ filterOptions }
-        className="form-control"
+        className="form-control search-box"
       >
         {height.map((key) => (
           <option value={ key } key={ key }>
@@ -38,14 +38,14 @@ export default function FilterPlanetsGeneral() {
         data-testid="value-filter"
         id="value-filter"
         onChange={ filterOptions }
-        className="form-control"
+        className="form-control search-box"
         placeholder="Digite um valor"
       />
       <button
         type="button"
         data-testid="button-filter"
         onClick={ handleClick }
-        className="btn btn-dark"
+        className="btn btn-dark search-box"
       >
         Filtrar
       </button>

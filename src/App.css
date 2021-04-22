@@ -1,5 +1,4 @@
 .table {
-  border-color: blue;
   color: white;
 }
 
@@ -10,6 +9,21 @@
 .table td {
   line-height: 1rem;
   padding: 3px;
+}
+
+table.table-bordered td, table.table-bordered th{
+  border:1px solid #007bff;
+  margin-top:20px;
+}
+
+table.table-bordered th {
+  background-color: black;
+  color: #007bff;
+}
+
+.table thead th {
+  border: 3px ridge black;
+  text-align: center;
 }
 
 .global-table {
@@ -28,4 +42,8 @@
 
 .btn-filter {
   margin-left: 5px;
+}
+
+.search-box{
+  margin-right: 5px;
 }

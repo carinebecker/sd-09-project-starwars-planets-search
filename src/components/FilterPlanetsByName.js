@@ -4,9 +4,9 @@ import { savePlanets } from '../context/contextPlanets';
 export default function FilterPlanetsByName() {
   const { searchByName, setSearchByName } = useContext(savePlanets);
   return (
-    <div>
+    <div className="search-box">
       <input
-        className="form-control"
+        className="form-control search-box"
         type="text"
         data-testid="name-filter"
         onChange={ (e) => setSearchByName(e.target.value) }

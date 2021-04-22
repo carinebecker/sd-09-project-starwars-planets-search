@@ -14,7 +14,6 @@ function App() {
         <div className="form-inline">
           <div className="form-inline">
             <FilterPlanetsByName />
-            {' => '}
             <FilterPlanetsGeneral />
           </div>
           <div className="nav-item-filter">
