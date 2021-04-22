@@ -2,10 +2,17 @@ import React, { useContext, useState } from 'react';
 import PlanetContext from '../context/PlanetContext';
 
 function Filters() {
-  const { filters, setFilters, setNumericValuesFilter } = useContext(PlanetContext);
+  const { filters,
+    setFilters,
+    setNumericValuesFilter, numericValuesFilterOn } = useContext(PlanetContext);
+
   const [columnFilters, setColumnFilters] = useState({
     column: '', value: '', comparison: '',
   });
+
+  const [columns, setColumns] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
 
   const getSearchInput = ({ target }) => {
     const { value } = target;
@@ -30,20 +37,18 @@ function Filters() {
       />
     </label>
   );
+
   const columnFilter = () => (
     <select
       data-testid="column-filter"
       name="column"
       onChange={ numericValuesFilter }
     >
-      <option value="">Select</option>
-      <option value="population">population</option>
-      <option value="orbital_period">orbital_period</option>
-      <option value="diameter">diameter</option>
-      <option value="rotation_period">rotation_period</option>
-      <option value="surface_water">surface_water</option>
+      {columns.map((column) => (
+        <option key={ column } value={ column }>{column}</option>))}
     </select>
   );
+
   const comparisonFilter = () => (
     <select
       data-testid="comparison-filter"
@@ -65,12 +70,56 @@ function Filters() {
       data-testid="value-filter"
     />
   );
+
   const handleClick = () => {
-    setFilters(
-      { ...filters,
-        filterByNumericValues: [{ ...columnFilters }] },
-    );
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      filterByNumericValues: [...currentFilters.filterByNumericValues, columnFilters],
+    }));
+    //   { ...filters,
+    //     filterByNumericValues: [...filters.filterByNumericValues, columnFilters] },
+    // );
+    const { column } = columnFilters;
+    columns.splice(columns.indexOf(column), 1);
+    setColumns(columns);
     setNumericValuesFilter(true);
+  };
+
+  const removeFilter = (index) => {
+    const columnFiltersBlank = {
+      column: '', value: '', comparison: '',
+    };
+    const { filterByNumericValues } = filters;
+    if (filterByNumericValues.length === 1) {
+      filterByNumericValues.splice(index, 1, columnFiltersBlank);
+      setFilters({ ...filters, filterByNumericValues });
+      setNumericValuesFilter(false);
+    }
+    if (filterByNumericValues.length > 1) {
+      filterByNumericValues.splice(index, 1);
+      setFilters({ ...filters, filterByNumericValues });
+    }
+  };
+
+  const renderRemoveFiltersButton = (completeFilter, index) => {
+    const { column, comparison, value } = completeFilter;
+    return (
+      <div data-testid="filter">
+        <button
+          type="button"
+          onClick={ () => removeFilter(index) }
+          key={ `${column} ${comparison} ${value}` }
+        >
+          {`${column} ${comparison} ${value} X`}
+        </button>
+      </div>
+    );
+  };
+
+  const renderAllRemoveButtons = () => {
+    const { filterByNumericValues } = filters;
+    return filterByNumericValues.map((completeFilter, index) => (
+      renderRemoveFiltersButton(completeFilter, index)));
   };
 
   return (
@@ -86,6 +135,7 @@ function Filters() {
       >
         Filtrar
       </button>
+      {numericValuesFilterOn && renderAllRemoveButtons()}
     </form>
   );
 }

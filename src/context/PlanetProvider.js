@@ -8,9 +8,7 @@ function PlanetProvider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [{
-      column: '', value: '', comparison: '',
-    }],
+    filterByNumericValues: [],
   };
   const [data, setData] = useState([]);
   const [dataToFilter, setDataToFilter] = useState([]);
@@ -25,6 +23,7 @@ function PlanetProvider({ children }) {
     filters,
     setFilters,
     setNumericValuesFilter,
+    numericValuesFilterOn,
   };
 
   const getData = async () => {
@@ -46,25 +45,28 @@ function PlanetProvider({ children }) {
 
   useEffect(() => {
     if (numericValuesFilterOn) {
-      const { filterByNumericValues: [{ column, comparison, value }] } = filters;
+      const { filterByNumericValues } = filters;
       let planetsToBeFiltered = data;
-      const valueNumber = parseInt(value, 10);
-      if (comparison === 'maior que') {
-        planetsToBeFiltered = planetsToBeFiltered.filter(
-          (planet) => planet[column] > valueNumber,
-        );
-      }
-      if (comparison === 'menor que') {
-        planetsToBeFiltered = planetsToBeFiltered.filter(
-          (planet) => planet[column] < valueNumber,
-        );
-      }
-      if (comparison === 'igual a') {
-        planetsToBeFiltered = planetsToBeFiltered.filter(
-          (planet) => planet[column] === value,
-        );
-      }
-      setDataToFilter(planetsToBeFiltered);
+      filterByNumericValues.forEach((completeFilter) => {
+        const { column, value, comparison } = completeFilter;
+        const valueNumber = parseInt(value, 10);
+        if (comparison === 'maior que') {
+          planetsToBeFiltered = planetsToBeFiltered.filter(
+            (planet) => planet[column] > valueNumber,
+          );
+        }
+        if (comparison === 'menor que') {
+          planetsToBeFiltered = planetsToBeFiltered.filter(
+            (planet) => planet[column] < valueNumber,
+          );
+        }
+        if (comparison === 'igual a') {
+          planetsToBeFiltered = planetsToBeFiltered.filter(
+            (planet) => planet[column] === value,
+          );
+        }
+        setDataToFilter(planetsToBeFiltered);
+      });
     }
   }, [data, filters, numericValuesFilterOn]);
 
