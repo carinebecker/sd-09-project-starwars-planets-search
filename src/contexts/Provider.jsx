@@ -5,18 +5,45 @@ import fetchPlanets from '../services/starWarsAPI';
 
 function Provider({ children }) {
   const [data, setPlanets] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    subject: 'population',
+    name: '',
+    operator: 'maior que',
+    number: '',
+  });
 
-  const planetList = async () => {
+  const setData = async () => {
     const planets = await fetchPlanets();
 
     setPlanets(planets);
+    setFilteredPlanets(planets);
+  };
+
+  const changeNameToBeFiltered = ({ target: { value } }) => {
+    setFilters({
+      ...filters,
+      name: value,
+    });
   };
 
   useEffect(() => {
-    planetList();
+    setData();
   }, []);
 
-  const contextValue = { data };
+  // useEffect(() => {
+  //   const filteredData = data.filter(({ name }) => name.includes(filters.name));
+
+  //   setFilteredPlanets(filteredData);
+  // });
+
+  const filterPlanetsByName = ({ target: { value } }) => {
+    const filteredData = data.filter(({ name }) => name.includes(value));
+
+    setFilteredPlanets(filteredData);
+  };
+
+  const contextValue = { changeNameToBeFiltered, filterPlanetsByName, filteredPlanets };
 
   return (
     <StarWarsContext.Provider value={ contextValue }>
@@ -26,7 +53,7 @@ function Provider({ children }) {
 }
 
 Provider.propTypes = {
-  children: PropTypes.shape().isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Provider;
