@@ -3,7 +3,7 @@ import SWContext from '../StarWarsContext';
 
 function TableFilters() {
   const context = useContext(SWContext);
-  const { filters, setFilters } = context;
+  const { setFilters } = context;
 
   const comparisonFilters = [
     'maior que', 'menor que', 'igual a',
@@ -12,9 +12,9 @@ function TableFilters() {
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ]);
   const [numericFilter, setNumericFilter] = useState({
-    column: '',
-    comparison: '',
-    value: '',
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
   });
 
   const handleNameFilter = ({ target }) => {
@@ -40,7 +40,14 @@ function TableFilters() {
         numericFilter,
       ],
     }));
-    // setColumnFilters();
+
+    setColumnFilters(columnFilters.filter((column) => column !== numericFilter.column));
+
+    setNumericFilter({
+      column: columnFilters[0],
+      comparison: 'maior que',
+      value: '0',
+    });
   };
 
   return (
@@ -59,7 +66,6 @@ function TableFilters() {
         data-testid="column-filter"
         onChange={ ({ target }) => handleNumericFilter('column', target.value) }
       >
-        <option>-- Coluna --</option>
         {columnFilters.map((filter) => <option key={ filter }>{filter}</option>)}
       </select>
 
@@ -67,7 +73,6 @@ function TableFilters() {
         data-testid="comparison-filter"
         onChange={ ({ target }) => handleNumericFilter('comparison', target.value) }
       >
-        <option>-- Comparação --</option>
         {comparisonFilters.map((filter) => <option key={ filter }>{filter}</option>)}
       </select>
 
