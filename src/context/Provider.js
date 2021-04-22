@@ -11,6 +11,10 @@ const Provider = ({ children }) => {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   const getName = (name) => (
@@ -31,6 +35,13 @@ const Provider = ({ children }) => {
     })
   );
 
+  const getSortFilter = (sortFilter) => (
+    setFilters({
+      ...filters,
+      order: sortFilter,
+    })
+  );
+
   const getData = async () => {
     const planets = await getPlanets();
     setData(planets);
@@ -48,6 +59,7 @@ const Provider = ({ children }) => {
     filters,
     getNumericFilters,
     deleteNumercFilter,
+    getSortFilter,
   };
   return (
     <StarWarsContext.Provider value={ contextValue }>
