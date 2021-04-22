@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import SWContext from '../context/SWContext';
-import Data from '../testData';
 
-function Planets() {
-  const { planets } = useContext(SWContext);
-  console.log('PlanetsTable', planets);
+const Planets = () => {
+  const { filtered } = useContext(SWContext);
+  console.log('PlanetsTable', filtered);
 
   const tHead = [
     'Climate',
@@ -30,7 +29,7 @@ function Planets() {
         </tr>
       </thead>
       <tbody>
-        {Data.results.map((item) => (
+        {filtered.map((item) => (
           <tr key={ Math.random() }>
             <td>{ item.climate }</td>
             <td>{ item.created }</td>
@@ -50,6 +49,6 @@ function Planets() {
       </tbody>
     </table>
   );
-}
+};
 
 export default Planets;

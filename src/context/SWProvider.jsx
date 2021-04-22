@@ -4,13 +4,32 @@ import SWContext from './SWContext';
 import getSWPlanets from '../services/SWFetch';
 
 const SWProvider = ({ children }) => {
-  const [planets, setPlanets] = useState([]);
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filtered, setFiltered] = useState([]);
 
+  // Valeu Bob Wendell, me salvou! :)
   useEffect(() => {
-    getSWPlanets().then((response) => setPlanets(response));
+    getSWPlanets(setFiltered);
+    getSWPlanets(setData);
   }, []);
 
-  const context = { planets };
+  // Filtrar por texto
+  const filter = ({ target }) => {
+    setFilters({ filterByName: { [target.name]: target.value } });
+    const filtering = data.filter(
+      (item) => item.name.includes(target.value),
+    );
+
+    setFiltered(filtering);
+  };
+
+  const context = {
+    data,
+    filter,
+    filtered,
+    filters,
+  };
 
   return (
     <SWContext.Provider value={ context }>
