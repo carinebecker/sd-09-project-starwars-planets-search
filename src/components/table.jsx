@@ -15,8 +15,8 @@ const Table = () => {
     let planetFilter = data
       .filter((planet) => planet.name.toLowerCase().includes(name));
     if (filters.filterByNumericValues.length > 0) {
-      filters.filterByNumericValues.forEach((element, index) => {
-        const { column, comparsion, value } = filters.filterByNumericValues[index];
+      filters.filterByNumericValues.forEach((element) => {
+        const { column, comparsion, value } = element;
         if (comparsion === 'maior que') {
           planetFilter = planetFilter.filter((planet) => +(planet[column]) > +(value));
         } else if (comparsion === 'menor que') {

@@ -8,9 +8,8 @@ function FilterDelete() {
   function handleClick(column, comparsion, value) {
     const filterRemoved = filterByNumericValues
       .filter((filter) => (filter.column !== column)
-         || (filter.comparsion !== comparsion) || (filter.value !== value));
-    console.log(filterByNumericValues);
-    console.log(filterRemoved);
+         || (filter.comparsion !== comparsion)
+         || (filter.value !== value));
     setFilters({
       ...filters,
       filterByNumericValues: [...filterRemoved],
