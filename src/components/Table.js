@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { PlanetsContext } from '../context/PlanetsContext';
 
 const TABLE_HEADER = [
@@ -7,7 +7,6 @@ const TABLE_HEADER = [
 ];
 
 function Table() {
-  const [newData, setNewData] = useState([]);
   const {
     data,
     filters: {
@@ -25,36 +24,35 @@ function Table() {
     handleOrderValue,
     handleSortOrder,
     sortPlanets,
+    deleteNumericFilter,
   } = useContext(PlanetsContext);
 
   const filterData = () => {
-    const newArray = data.filter((planet) => {
-      if (filterByNumericValues.length > 0) {
-        const filtered = filterByNumericValues
-          .filter(({ column, comparison, value }) => {
-            switch (comparison) {
-            case 'maior que':
-              return parseInt(planet[column], 10) > parseInt(value, 10);
-            case 'menor que':
-              return parseInt(planet[column], 10) < parseInt(value, 10);
-            default:
-              return parseInt(planet[column], 10) === parseInt(value, 10);
-            }
-          });
-        console.log(filtered);
-      }
-      switch (comparisonFilter) {
-      case 'maior que':
-        return parseInt(planet[columnFilter], 10) > parseInt(valueFilter, 10);
-      case 'menor que':
-        return parseInt(planet[columnFilter], 10) < parseInt(valueFilter, 10);
-      default:
-        return parseInt(planet[columnFilter], 10) === parseInt(valueFilter, 10);
-      }
-    });
-    setNewData(newArray);
+    const filter = (array, { column, comparison, value }) => {
+      const newArray = array.filter((planet) => {
+        switch (comparison) {
+        case 'maior que':
+          return parseInt(planet[column], 10) > parseInt(value, 10);
+        case 'menor que':
+          return parseInt(planet[column], 10) < parseInt(value, 10);
+        default:
+          return parseInt(planet[column], 10) === parseInt(value, 10);
+        }
+      });
+      return newArray;
+    };
+
+    return filterByNumericValues.reduce((acc, { column, comparison, value }) => {
+      const newArray = filter(acc, { column, comparison, value });
+      return newArray;
+    }, data);
   };
-  const array = newData.length > 0 ? newData : data;
+
+  const removeFilter = (currentFilter) => {
+    deleteNumericFilter(currentFilter);
+  };
+
+  const array = filterByNumericValues.length ? filterData() : data;
 
   if (!data) return <p>Loading...</p>;
   return (
@@ -97,15 +95,15 @@ function Table() {
       >
         Selecione o filtro
       </button>
-      {filterByNumericValues && filterByNumericValues.map((filter, index) => (
-        <button
-          data-testid="filter"
-          type="button"
-          key={ filter.column }
-          onClick={ () => console.log(filter, index) }
-        >
-          {`${filter.column} ${filter.comparison} ${filter.value} X`}
-        </button>
+      {filterByNumericValues && filterByNumericValues.map((filter) => (
+        <div data-testid="filter" key={ filter.column }>
+          <button
+            type="button"
+            onClick={ () => removeFilter(filter) }
+          >
+            {`${filter.column} ${filter.comparison} ${filter.value} X`}
+          </button>
+        </div>
       ))}
       <select
         data-testid="column-sort"
@@ -121,10 +119,6 @@ function Table() {
         <option value="rotation_period">Rotation Period</option>
         <option value="terrain">Terrain</option>
         <option value="surface_water">Surface Water</option>
-        <option value="created">Created</option>
-        <option value="edited">Edited</option>
-        <option value="url">Url</option>
-        <option value="films">Films</option>
       </select>
       <label htmlFor="upward-radio">
         <input
@@ -151,7 +145,7 @@ function Table() {
       <button
         type="button"
         data-testid="column-sort-button"
-        onClick={ () => sortPlanets(columnOrder) }
+        onClick={ () => sortPlanets(columnOrder, sortOrder) }
       >
         Ordene os planetas
       </button>

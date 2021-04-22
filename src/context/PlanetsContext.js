@@ -44,21 +44,21 @@ export const PlanetsProvider = ({ children }) => {
     }
   };
 
-  const sortPlanets = (column) => {
-    if (sortOrder === 'ASC') {
+  const sortPlanets = (column, order) => {
+    if (order === 'ASC') {
       switch (column) {
-      case 'orbital_period':
-        console.log('ordem alfabetica');
-        setSortedPlanets(planets.sort((a, b) => (a.orbital_period - b.orbital_period)));
+      case 'population': case 'diameter': case 'orbital_period': case 'rotation_period':
+      case 'surface_water':
+        setSortedPlanets(planets.sort((a, b) => (a[column] - b[column])));
         break;
       default:
         return undefined;
       }
-    } else if (sortOrder === 'DESC') {
+    } else if (order === 'DESC') {
       switch (column) {
-      case 'orbital_period':
-        console.log('ordem não alfabetica');
-        setSortedPlanets(planets.sort((a, b) => (b.orbital_period - a.orbital_period)));
+      case 'population': case 'diameter': case 'orbital_period': case 'rotation_period':
+      case 'surface_water':
+        setSortedPlanets(planets.sort((a, b) => (b[column] - a[column])));
         break;
       default:
         return undefined;
@@ -96,6 +96,10 @@ export const PlanetsProvider = ({ children }) => {
     changeColumnOptions();
   };
 
+  const deleteNumericFilter = (currentFilter) => {
+    setNumericFilter(numericFilter.filter((filter) => filter !== currentFilter));
+  };
+
   useEffect(() => {
     fetchPlanets();
   }, []);
@@ -123,6 +127,7 @@ export const PlanetsProvider = ({ children }) => {
     handleOrderValue,
     handleSortOrder,
     sortPlanets,
+    deleteNumericFilter,
   };
 
   return (
