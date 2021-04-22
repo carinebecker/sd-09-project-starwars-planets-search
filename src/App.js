@@ -1,15 +1,15 @@
 import React from 'react';
 import './App.css';
 import FilterForm from './components/FilterForm';
-import Provider from './components/Provider';
+import { PlanetsProvider } from './components/Providers';
 import Table from './components/Table';
 
 function App() {
   return (
-    <Provider>
+    <PlanetsProvider>
       <FilterForm />
       <Table />
-    </Provider>
+    </PlanetsProvider>
   );
 }
 

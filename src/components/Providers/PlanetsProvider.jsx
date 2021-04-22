@@ -3,7 +3,7 @@ import { shape } from 'prop-types';
 import PlanetsContext from '../../context/PlanetsContext';
 import { usePlanets } from '../../hooks';
 
-export default function Provider({ children }) {
+export default function PlanetsProvider({ children }) {
   const [loading, isLoading] = useState(true);
 
   const { planets, getPlanets, error } = usePlanets();
@@ -24,6 +24,6 @@ export default function Provider({ children }) {
   );
 }
 
-Provider.propTypes = {
+PlanetsProvider.propTypes = {
   children: shape(),
 }.isRequired;
