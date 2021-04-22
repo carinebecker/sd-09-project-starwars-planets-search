@@ -8,6 +8,8 @@ function ContextPlanets({ children }) {
   const [planets, setPlanets] = useState([]);
   const [height, setHeight] = useState(['maior que', 'menor que', 'igual a']);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [storeFilters, setStoreFilters] = useState();
+  const [countFilters, setCountFilters] = useState(0);
   const [filters, setFilters] = useState({
     column: 'population',
     compare: 'maior que',
@@ -31,6 +33,13 @@ function ContextPlanets({ children }) {
     filterName = planets.filter((planet) => planet.name.includes((searchByName)));
     setFilteredPlanets(filterName);
   }, [planets, searchByName]);
+
+  useEffect(() => {
+    const selectedCol = filters.column;
+    const selectedComp = filters.compare;
+    const selectedVal = filters.value;
+    setStoreFilters(`${selectedCol} ${selectedComp} ${selectedVal}`);
+  }, [countFilters]);
 
   const filterOptions = (e) => {
     const attribute = e.target.getAttribute('data-testid');
@@ -59,11 +68,12 @@ function ContextPlanets({ children }) {
 
   const handleClick = () => {
     const lastOptions = [...options];
-    const selectedOption = filters.column;
-    const indexOption = lastOptions.indexOf(selectedOption);
+    const selectedColumn = filters.column;
+    const indexOption = lastOptions.indexOf(selectedColumn);
     lastOptions.splice(indexOption, 1);
     setOptions(lastOptions);
     comparisonFilter(filters);
+    setCountFilters(countFilters + 1);
   };
 
   const data = {
@@ -72,6 +82,7 @@ function ContextPlanets({ children }) {
     filteredPlanets,
     options,
     height,
+    storeFilters,
     setHeight,
     filterOptions,
     handleClick,

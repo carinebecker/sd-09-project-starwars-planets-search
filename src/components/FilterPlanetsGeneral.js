@@ -2,11 +2,18 @@ import React, { useContext } from 'react';
 import { savePlanets } from '../context/contextPlanets';
 
 export default function FilterPlanetsGeneral() {
-  const { options, height, filterOptions, handleClick } = useContext(savePlanets);
+  const {
+    options,
+    height,
+    filterOptions,
+    handleClick,
+    storeFilters } = useContext(savePlanets);
+  console.log(storeFilters);
   return (
     <div>
       <select
         data-testid="column-filter"
+        id="column-filter"
         onChange={ filterOptions }
         className="form-control"
       >
@@ -18,6 +25,7 @@ export default function FilterPlanetsGeneral() {
       </select>
       <select
         data-testid="comparison-filter"
+        id="comparison-filter"
         onChange={ filterOptions }
         className="form-control"
       >
@@ -30,6 +38,7 @@ export default function FilterPlanetsGeneral() {
       <input
         type="number"
         data-testid="value-filter"
+        id="value-filter"
         onChange={ filterOptions }
         className="form-control"
         placeholder="Digite um valor"
@@ -43,5 +52,6 @@ export default function FilterPlanetsGeneral() {
         Filtrar
       </button>
     </div>
+
   );
 }
