@@ -49,7 +49,19 @@
   background-color: black;
   display: flex;
   justify-content: space-around;
-  padding: 20px 10px;
+  padding: 0 10px 10px;
+}
+
+.header {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.table-info {
+  background-image: url('background.jpg');
+  background-size: cover;
 }
 
 .setfield-filter {
@@ -67,22 +79,35 @@
 }
 
 .container-list-filters {
+  align-items: center;
   color: rgb(189, 189, 2);
   display: flex;
+  margin: 5px 40px;
 }
 
 label, legend {
   color: rgb(189, 189, 2);
 }
 
-.cell-title {
+th {
   background-color: #282c34;
   color: rgb(189, 189, 2);
-}
-
-.cell-table {
-  border: solid 1.5px;
-  padding: 10px 30px;
+  padding: 5px 20px;
   text-align: center;
 }
 
+td {
+  border-bottom: solid 0.1px rgb(107, 106, 106);
+  font-size: 15px;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.btn-delete-filter {
+  background-color: black;
+  border: none;
+  color: red;
+  font-size: 20px;
+  font-weight: 900;
+  margin-left: 10px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import Filter from '../components/Filter';
+import Header from '../components/Header';
 import Table from '../components/Table';
 import myContext from '../context/contextAPI';
 import requestPlanets from '../serviceAPI';
@@ -13,6 +14,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+        <Header />
         <Filter />
         <Table />
       </div>

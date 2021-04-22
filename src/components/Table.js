@@ -4,7 +4,7 @@ import myContext from '../context/contextAPI';
 function renderTitles(titles) {
   return (
     <tr className="cell-title">
-      { titles.map((title) => <th className="cell-table" key={ title }>{ title }</th>) }
+      { titles.map((title) => <th key={ title }>{ title }</th>) }
     </tr>
   );
 }
@@ -20,7 +20,7 @@ function renderLines(values) {
 function renderTable(planets) {
   if (planets.length > 0) {
     return (
-      <div>
+      <div className="table-info">
         { renderTitles(Object.keys(planets[0])) }
         { planets.map((planet) => renderLines(Object.values(planet))) }
       </div>

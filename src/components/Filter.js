@@ -18,8 +18,9 @@ function renderInputSearch(setName) {
 function renderListFilters(list, setFilters) {
   return list.map((filter) => (
     <div className="container-list-filters" data-testid="filter" key={ filter.column }>
-      <p>{ `${filter.column} ${filter.comparison} ${filter.value}` }</p>
+      <p>{ `- ${filter.column} ${filter.comparison} ${filter.value} ` }</p>
       <button
+        className="btn-delete-filter"
         onClick={ () => setFilters(list.filter((item) => item.column !== filter.column)) }
         type="button"
       >
@@ -42,10 +43,10 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
 
   return (
     <fieldset className="setfield-filter">
-      <legend>Filtros</legend>
+      <legend>Filters</legend>
       <div className="container-inputs">
         <label htmlFor="select-column">
-          { 'Coluna: ' }
+          { 'Column ' }
           <select
             value={ column }
             onChange={ (evt) => setFiltersInputs(
@@ -61,7 +62,7 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
           </select>
         </label>
         <label htmlFor="select-comparison">
-          { 'Comparação: ' }
+          { 'Comparison ' }
           <select
             value={ comparison }
             onChange={ (evt) => setFiltersInputs(
@@ -92,7 +93,12 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
           disabled={ (!column || !comparison || !value) }
           onClick={ () => {
             setFiltersValues([...filterByNumericValues, filtersInputs]);
-            setFiltersInputs({ column: '', comparison: '', value: '' });
+            setFiltersInputs({
+              column: listSelectColumn
+                .filter((item) => !([...filterByNumericValues, filtersInputs]
+                  .some((filter) => filter.column === item)))[0],
+              comparison: 'maior que',
+              value: '' });
           } }
           type="button"
         >
@@ -106,7 +112,7 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
 
 function Filter() {
   const [filtersInputs, setFiltersInputs] = useState(
-    { column: '', comparison: '', value: '' },
+    { column: 'population', comparison: 'maior que', value: '' },
   );
   const { setName, setFiltersValues, filters } = useContext(myContext);
   return (
