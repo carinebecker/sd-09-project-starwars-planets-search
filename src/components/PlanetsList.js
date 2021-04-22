@@ -36,15 +36,13 @@ const PlanetsList = () => {
   } = useContext(YodaContext);
 
   useEffect(() => {
-    if (!filters) {
-      GetPlanets().then((results) => {
-        results.results.forEach((planet) => (delete planet.residents));
-        setData(results);
-        setIsLoading(false);
-      });
-    }
+    GetPlanets().then((results) => {
+      results.results.forEach((planet) => (delete planet.residents));
+      setData(results);
+      setIsLoading(false);
+    });
     return setIsLoading(true);
-  },[]);
+  }, [setData, setIsLoading]);
 
   let planets = !isLoading ? data.results : '';
   if (filters && data) {
