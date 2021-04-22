@@ -7,7 +7,7 @@ class Provider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
       data: undefined,
     };
     this.getData = this.getData.bind(this);
@@ -23,15 +23,20 @@ class Provider extends Component {
   }
 
   renderTable({ results }) {
+    const residentsIndex = 9;
     return (
       <table>
         <thead>
-          {Object.keys(results[0]).map((head) => head !== 'residents' && <th>{head}</th>)}
+          <tr>
+            {Object.keys(results[0]).map((head, headIndex) => (
+              head !== 'residents' && <th key={ headIndex }>{head}</th>))}
+          </tr>
         </thead>
         <tbody>
           {results.map((planet, index) => (
             <tr key={ index }>
-              {Object.values(planet).map((value, i) => <td key={ i }>{value}</td>)}
+              {Object.values(planet).map((value, rowIndex) => (
+                rowIndex !== residentsIndex && <td key={ rowIndex }>{value}</td>))}
             </tr>
           ))}
         </tbody>

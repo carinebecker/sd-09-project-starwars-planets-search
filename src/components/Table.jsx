@@ -1,18 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import SWContext from '../context/SWContext';
+import useData from '../effects/useData';
 
 function Table() {
-  const { loading, getData, planets, renderTable } = useContext(SWContext);
-
-  useEffect(() => {
-    if (!planets) {
-      getData();
-    }
-  });
+  const { loading, getData, data, renderTable } = useContext(SWContext);
+  useData(data, getData);
 
   return (
     <div>
-      {loading && !planets ? 'loading...' : renderTable(planets)}
+      {loading || !data ? 'loading...' : renderTable(data)}
     </div>
   );
 }
