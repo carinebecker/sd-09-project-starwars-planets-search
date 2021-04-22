@@ -1,7 +1,8 @@
-const fetchPlanets = (endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/') => {
+const fetchPlanets = (endpoint) => {
   const planets = fetch(endpoint)
     .then((response) => response.json())
     .then((json) => json.results);
+
   return planets;
 };
 

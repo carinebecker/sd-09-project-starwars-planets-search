@@ -1,51 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import requestApi from '../services/requestApi';
+import React, { useContext, useEffect } from 'react';
+import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const [planets, setPlanets] = useState([{}]);
+  const {
+    fetchingData,
+    planetsData,
+    getPlanetsData,
+  } = useContext(AppContext);
 
   useEffect(() => {
-    async function getPlanets() {
-      const planetsArray = await requestApi();
-      setPlanets(planetsArray);
-    }
+    getPlanetsData();
+  }, [getPlanetsData]);
 
-    getPlanets();
-  }, []);
-
-  const renderTableHeader = (planetsData) => {
-    const [modelSchema] = planetsData;
+  const renderTableHeader = (planetsArray) => {
+    const [modelSchema] = planetsArray;
     const objKeys = Object.keys(modelSchema);
     objKeys.pop();
     const tHeader = objKeys.map((item) => <th key={ item }>{item}</th>);
     return tHeader;
   };
 
-  const renderTableDataRow = (planetData) => {
+  const renderTableDataRow = (planetData, paiIndex) => {
     const values = Object.values(planetData);
     values.pop();
-    const cells = values.map((item) => <td key={ `${item}cell` }>{item}</td>);
+    const cells = values.map((item, index) => (
+      <td key={ `${paiIndex}${item}cell${index}` }>{item}</td>));
     return cells;
   };
 
-  const renderTableRows = (planetsData) => {
-    const tableRow = planetsData.map((planet) => (
+  const renderTableRows = (planetsArray) => {
+    const tableRow = planetsArray.map((planet, index) => (
       <tr key={ `${planet.name}row` }>
-        {renderTableDataRow(planet)}
+        {renderTableDataRow(planet, index)}
       </tr>
     ));
     return tableRow;
   };
 
+  if (fetchingData) {
+    return <span>Loading</span>;
+  }
   return (
     <table>
       <thead>
         <tr>
-          {renderTableHeader(planets)}
+          {renderTableHeader(planetsData)}
         </tr>
       </thead>
       <tbody>
-        {renderTableRows(planets)}
+        {renderTableRows(planetsData)}
       </tbody>
     </table>
   );
