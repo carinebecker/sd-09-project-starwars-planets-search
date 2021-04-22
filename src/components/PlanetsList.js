@@ -26,32 +26,69 @@ const generateRows = (planets) => {
   return rows;
 };
 
-const PlanetsList = () => {
+const getFilteredPlanets = (comparison, column, value, data) => {
+  let planets = [];
+  switch (comparison) {
+  case 'maior que':
+    planets = data.results.filter(
+      (planet) => (parseInt(planet[column], 10) > parseInt(value, 10)),
+    );
+    console.log(planets);
+    return planets;
+  case 'menor que':
+    planets = data.results.filter(
+      (planet) => (parseInt(planet[column], 10) < parseInt(value, 10)),
+    );
+    return planets;
+  default:
+    planets = data.results.filter(
+      (planet) => (parseInt(planet[column], 10) === parseInt(value, 10)),
+    );
+    return planets;
+  }
+};
+
+function PlanetsList() {
   const {
     isLoading,
     setIsLoading,
     data,
     setData,
     filters,
+    filteredPlanets,
+    setFilteredPlanets,
   } = useContext(YodaContext);
 
+  let planets = filteredPlanets;
   useEffect(() => {
     GetPlanets().then((results) => {
       results.results.forEach((planet) => (delete planet.residents));
       setData(results);
+      setFilteredPlanets(results.results);
       setIsLoading(false);
     });
     return setIsLoading(true);
-  }, [setData, setIsLoading]);
+  }, [setData, setIsLoading, setFilteredPlanets]);
 
-  let planets = !isLoading ? data.results : '';
+  const customizedFiltersSearch = () => {
+    const filterByNumericValues = filters.filterByNumericValues
+      ? filters.filterByNumericValues : null;
+    if (filterByNumericValues) {
+      const { column, comparison, value } = filterByNumericValues;
+      planets = getFilteredPlanets(comparison, column, value, data);
+      setFilteredPlanets(planets);
+    }
+  };
+
   if (filters && filters.filterByName && data) {
-    planets = filters.filterByName.name !== ''
+    planets = [];
+    planets = filters.filterByName.name === ''
       ? data.results
       : data.results.filter(
         (planet) => planet.name.includes(filters.filterByName.name),
       );
   }
+  console.log(planets);
   return (
     <div>
       { isLoading
@@ -59,10 +96,19 @@ const PlanetsList = () => {
         : (
           <main>
             <div className="navbar-search">
-              <MainNavBar />
+              <MainNavBar
+                customizedFiltersSearch={ customizedFiltersSearch }
+              />
             </div>
             { planets.length === 0
-              ? <span>No results for the search...</span>
+              ? (
+                <span>
+                  No results for your the search.
+                  Try clicking in
+                  <strong> Star Wars Planets Inventory above </strong>
+                  or redefine your search arguments.
+                </span>
+              )
               : (
                 <Table striped bordered hover>
                   <thead>

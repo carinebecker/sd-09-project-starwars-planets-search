@@ -6,7 +6,8 @@ import FormControl from 'react-bootstrap/FormControl';
 import YodaContext from '../local_resources/Context';
 import Inputs from './Inputs';
 
-const MainNavBar = () => {
+const MainNavBar = (props) => {
+  const { customizedFiltersSearch } = props;
   const { setFilters } = useContext(YodaContext);
   const getSearchData = ({ target }) => (
     setFilters({ filterByName: { name: target.value } }));
@@ -16,7 +17,7 @@ const MainNavBar = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          { Inputs() }
+          { Inputs(customizedFiltersSearch) }
         </Nav>
         <Form inline>
           <FormControl

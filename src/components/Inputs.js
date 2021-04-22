@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import YodaContext from '../local_resources/Context';
 
-const colunmFilter = (setFilterData) => (
+const colunmFilter = (setFilterData, executeSearch) => (
   <Form inline>
     <Form.Control
       as="select"
@@ -53,14 +53,19 @@ const colunmFilter = (setFilterData) => (
       type="submit"
       data-testid="button-filter"
       size="sm"
+      onClick={ (evt) => executeSearch(evt) }
     >
       Search
     </Button>
   </Form>
 );
 
-const Inputs = () => {
+const Inputs = (customizedFiltersSearch) => {
   const { setFilters, filters } = useContext(YodaContext);
+  const executeSearch = (event) => {
+    event.preventDefault();
+    return (customizedFiltersSearch(filters));
+  };
   const setFilterData = ({ target }) => {
     if (target.value === 'Filter by column' || target.value === 'Define a comparator') {
       return setFilters({ ...filters,
@@ -71,7 +76,7 @@ const Inputs = () => {
       { ...filters.filterByNumericValues, [target.name]: target.value } });
   };
   return (
-    colunmFilter(setFilterData)
+    colunmFilter(setFilterData, executeSearch)
   );
 };
 export default Inputs;
