@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 
 const Table = () => {
-  const [loadingStatus, setLoading] = useState(false);
   const {
-    planetsData,
+    fetchingData,
+    filteredPlanets,
     getPlanetsData,
   } = useContext(AppContext);
 
   useEffect(() => {
-    setLoading(true);
     getPlanetsData();
-    setLoading(false);
   }, [getPlanetsData]);
 
   const renderTableHeader = (planetsArray) => {
@@ -39,18 +37,21 @@ const Table = () => {
     return tableRow;
   };
 
-  if (loadingStatus) {
+  if (filteredPlanets.length === 0) {
+    return <span>No results</span>;
+  }
+  if (fetchingData) {
     return <span>Loading</span>;
   }
   return (
     <table>
       <thead>
         <tr>
-          {renderTableHeader(planetsData)}
+          {renderTableHeader(filteredPlanets)}
         </tr>
       </thead>
       <tbody>
-        {renderTableRows(planetsData)}
+        {renderTableRows(filteredPlanets)}
       </tbody>
     </table>
   );
