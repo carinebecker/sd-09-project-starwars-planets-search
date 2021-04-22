@@ -1,20 +1,32 @@
-import React, { createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import StarwarsContext from './StarwarsContext';
+import fetchApiPlanets from '../services/fetchPlanet';
 
-function ContextTable(props) {
-  const ContextAPIData = createContext();
-  const contextValue = { data: 'test' };
+function Provider({ children }) {
+  const [data, setData] = useState([]);
 
-  const { children } = props;
+  async function getPlanets() {
+    const apiResponse = await fetchApiPlanets();
+    setData(apiResponse);
+  }
+
+  useEffect(() => {
+    getPlanets();
+  }, []);
+
+  console.log(data);
+  const contextValue = {
+    data,
+  };
   return (
-    <ContextAPIData.Provider value={ contextValue }>
+    <StarwarsContext.Provider value={ contextValue }>
       {children}
-    </ContextAPIData.Provider>
+    </StarwarsContext.Provider>
   );
 }
-
-export default ContextTable;
-
-ContextTable.propTypes = {
-  children: PropTypes.func.isRequired,
+Provider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
+
+export default Provider;

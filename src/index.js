@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import ContextTable from './context/Provider';
+import Provider from './context/Provider';
 
 ReactDOM.render(
-  <ContextTable>
+  <Provider>
     <App />
-  </ContextTable>,
+  </Provider>,
   document.getElementById('root'),
 );
