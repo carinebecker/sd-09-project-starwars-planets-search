@@ -6,10 +6,19 @@ import PlanetsContext from './PlanetsContext';
 export default function Planets({ children }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filteredData, setFilteredData] = useState([]);
+  const [filters, setFilter] = useState({
+    filteredByName: {
+      name: '',
+    },
+  });
   const context = {
     data,
+    filteredData,
     setData,
     loading,
+    filters,
+    setFilter,
   };
 
   useEffect(() => {
@@ -23,6 +32,15 @@ export default function Planets({ children }) {
     };
     fetchAPI();
   }, []);
+
+  useEffect(() => {
+    const filterName = () => {
+      const filteredPlanetsByName = data.filter((planet) => planet.name.toLowerCase()
+        .includes(filters.filteredByName.name));
+      setFilteredData(filteredPlanetsByName);
+    };
+    filterName();
+  }, [filters, data]);
 
   return loading ? <Loading /> : (
     <PlanetsContext.Provider value={ context }>
