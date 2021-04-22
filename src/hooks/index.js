@@ -1,5 +1,4 @@
 import usePlanets from './usePlanets';
+import useFilters from './useFilters';
 
-const xablau = '';
-
-export { xablau, usePlanets };
+export { usePlanets, useFilters };

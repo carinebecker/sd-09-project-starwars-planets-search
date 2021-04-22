@@ -1,28 +1,12 @@
-import React, { useState, useContext } from 'react';
-import FiltersContext from '../../context/FiltersContext';
+import React from 'react';
+import NameFilter from '../NameFilter';
+import NumericFilter from '../NumericFilter';
 
 export default function FilterForm() {
-  const [name, setName] = useState('');
-  const { setters: { setNameQuery } } = useContext(FiltersContext);
-
-  function handleChange(e) {
-    const { value } = e.target;
-    setName(value);
-    setNameQuery(value);
-  }
-
   return (
     <form>
-      <label htmlFor="name-filter">
-        Filtrar por nome:
-        <input
-          type="text"
-          data-testid="name-filter"
-          id="name-filter"
-          onChange={ handleChange }
-          value={ name }
-        />
-      </label>
+      <NameFilter />
+      <NumericFilter />
     </form>
   );
 }

@@ -1,16 +1,44 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PlanetsContext from '../../context/PlanetsContext';
 import FiltersContext from '../../context/FiltersContext';
 
+const comparisons = {
+  'maior que': (a, b) => Number(a) > Number(b),
+  'menor que': (a, b) => Number(a) < Number(b),
+  'igual a': (a, b) => Number(a) === Number(b),
+};
+
 export default function TableBody() {
   const { planets } = useContext(PlanetsContext);
-  const { filters: { filterByName: nameQuery } } = useContext(FiltersContext);
+  const {
+    filters: {
+      filterByName: nameQuery,
+      filterByNumericValues: numericValues,
+    } } = useContext(FiltersContext);
+  const [filteredPlanets, setFilteredPlanets] = useState(planets);
 
-  const filteredPlanets = planets.filter(({ name: planetName }) => (
-    nameQuery.length
-      ? planetName.match(new RegExp(nameQuery, 'i'))
-      : planetName
-  ));
+  useEffect(() => {
+    setFilteredPlanets(planets);
+  }, [planets]);
+
+  useEffect(() => {
+    const filtered = planets.filter(({ name: planetName }) => (
+      nameQuery.length
+        ? planetName.match(new RegExp(nameQuery, 'i'))
+        : planetName
+    ));
+    setFilteredPlanets(filtered);
+  }, [planets, nameQuery]);
+
+  useEffect(() => {
+    let filtered = planets.slice();
+    numericValues.forEach(({ column, comparison, value }) => {
+      filtered = filtered.filter((planet) => (
+        comparisons[comparison](planet[column], value)
+      ));
+    });
+    setFilteredPlanets(filtered);
+  }, [planets, numericValues]);
 
   return (
     <tbody>
