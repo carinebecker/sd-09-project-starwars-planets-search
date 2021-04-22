@@ -7,9 +7,47 @@ function Provider({ children }) {
   const initialState = {
     data: [],
     loading: true,
+    filters: {
+      filterByName: {
+        name: '',
+      },
+      filterByNumericValues: [
+        {
+          column: '',
+          comparison: '',
+          value: '0',
+        },
+      ],
+    },
   };
 
   const [state, setState] = useState(initialState);
+
+  function handleChange({ name, value }) {
+    setState((prevState) => ({
+      ...prevState,
+      filters: {
+        ...prevState.filters,
+        filterByName: {
+          ...prevState.filterByName,
+          [name]: value,
+        },
+      },
+    }));
+  }
+
+  function handleDropdown({ name, value }) {
+    setState((prevState) => ({
+      ...prevState,
+      filters: {
+        ...prevState.filters,
+        filterByNumericValues: [{
+          ...prevState.filters.filterByNumericValues[0],
+          [name]: value,
+        }],
+      },
+    }));
+  }
 
   useEffect(() => {
     async function planetsFromAPI() {
@@ -25,6 +63,8 @@ function Provider({ children }) {
 
   const context = {
     ...state,
+    handleChange,
+    handleDropdown,
   };
 
   return (
