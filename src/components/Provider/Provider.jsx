@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { shape } from 'prop-types';
 import PlanetsContext from '../../context/PlanetsContext';
-import fetchPlanetsList from '../../services';
+import { usePlanets } from '../../hooks';
 
 export default function Provider({ children }) {
   const [loading, isLoading] = useState(true);
-  const [planets, setPlanets] = useState([]);
-  const [error, setError] = '';
+
+  const { planets, getPlanets, error } = usePlanets();
 
   const value = { loading, planets, error };
 
-  async function getPlanets() {
-    const planetsList = await fetchPlanetsList();
-    setPlanets(planetsList);
-  }
-
   useEffect(() => {
-    if (planets.length) {
+    if (!planets.length) {
+      getPlanets();
       isLoading(false);
-    } else {
-      try {
-        getPlanets();
-      } catch (err) {
-        setError(err.message);
-      }
     }
-  }, [loading, planets.length]);
+  }, [planets, getPlanets]);
 
   return (
     <PlanetsContext.Provider value={ value }>
