@@ -4,13 +4,19 @@ import PlanetContext from './PlanetContext';
 import getPlanets from '../services/starwarsApi';
 
 function PlanetProvider({ children }) {
-  const baseFilter = { filterByName:
-      { name: '' },
+  const baseFilter = {
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [{
+      column: '', value: '', comparison: '',
+    }],
   };
   const [data, setData] = useState([]);
   const [dataToFilter, setDataToFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState(baseFilter);
+  const [numericValuesFilterOn, setNumericValuesFilter] = useState(false);
 
   const context = {
     dataToFilter,
@@ -18,6 +24,7 @@ function PlanetProvider({ children }) {
     loading,
     filters,
     setFilters,
+    setNumericValuesFilter,
   };
 
   const getData = async () => {
@@ -36,6 +43,30 @@ function PlanetProvider({ children }) {
     setDataToFilter(planetsToBeFiltered);
   },
   [data, filters]);
+
+  useEffect(() => {
+    if (numericValuesFilterOn) {
+      const { filterByNumericValues: [{ column, comparison, value }] } = filters;
+      let planetsToBeFiltered = data;
+      const valueNumber = parseInt(value, 10);
+      if (comparison === 'maior que') {
+        planetsToBeFiltered = planetsToBeFiltered.filter(
+          (planet) => planet[column] > valueNumber,
+        );
+      }
+      if (comparison === 'menor que') {
+        planetsToBeFiltered = planetsToBeFiltered.filter(
+          (planet) => planet[column] < valueNumber,
+        );
+      }
+      if (comparison === 'igual a') {
+        planetsToBeFiltered = planetsToBeFiltered.filter(
+          (planet) => planet[column] === value,
+        );
+      }
+      setDataToFilter(planetsToBeFiltered);
+    }
+  }, [data, filters, numericValuesFilterOn]);
 
   useEffect(() => {
     getData();
