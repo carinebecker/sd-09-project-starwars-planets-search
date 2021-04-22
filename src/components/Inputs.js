@@ -7,7 +7,7 @@ const colunmFilter = (setFilterData, executeSearch) => (
   <Form inline>
     <Form.Control
       as="select"
-      data-testid="comparison-filter"
+      data-testid="column-filter"
       custom
       size="sm"
       name="column"
@@ -15,7 +15,6 @@ const colunmFilter = (setFilterData, executeSearch) => (
       defaultValue="Filter by column"
       onChange={ (evt) => setFilterData(evt) }
     >
-      <option>Filter by column</option>
       <option>population</option>
       <option>orbital_period</option>
       <option>diameter</option>
@@ -24,7 +23,7 @@ const colunmFilter = (setFilterData, executeSearch) => (
     </Form.Control>
     <Form.Control
       as="select"
-      data-testid="column-filter"
+      data-testid="comparison-filter"
       custom
       size="sm"
       name="comparison"
@@ -32,7 +31,6 @@ const colunmFilter = (setFilterData, executeSearch) => (
       defaultValue="Define a comparator"
       onChange={ (evt) => setFilterData(evt) }
     >
-      <option>Comparator</option>
       <option>maior que</option>
       <option>menor que</option>
       <option>igual a</option>
