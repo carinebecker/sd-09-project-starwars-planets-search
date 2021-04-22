@@ -6,9 +6,12 @@ import * as SWApi from './starWarsAPI';
 function SWProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setNameFilter] = useState('');
+  const [valueFilter, setValueFilter] = useState(0);
+  const [columnFilter, setColumnFilter] = useState('population');
+  const [comparisonFilter, setComparisonFilter] = useState('maior que');
+  const [numericFilter, setNumericFilter] = useState(false);
+  const [filterByNumericValues, setNewFilter] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
-  // const [name, setNameFilter] = useState('');
-  // const [name, setNameFilter] = useState('');
 
   useEffect(() => {
     const APIendpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -24,15 +27,45 @@ function SWProvider({ children }) {
     setFilteredPlanets(planets.filter((planet) => planet.name.includes(name)));
   }, [name, planets]);
 
+  useEffect(() => {
+    if (numericFilter) {
+      filterByNumericValues.forEach((filter) => {
+        console.log(filter.valueFilter);
+        if (filter.comparisonFilter === 'maior que') {
+          setFilteredPlanets(filteredPlanets
+            .filter((planet) => parseFloat(planet[columnFilter]) > filter.valueFilter));
+        }
+        if (filter.comparisonFilter === 'menor que') {
+          setFilteredPlanets(filteredPlanets
+            .filter((planet) => planet[columnFilter] <= filter.valueFilter));
+        }
+        if (filter.comparisonFilter === 'igual a') {
+          setFilteredPlanets(filteredPlanets
+            .filter((planet) => planet[columnFilter] === filter.valueFilter));
+        }
+      });
+    }
+  }, [numericFilter]);
+
   const SWContextObj = {
     planets,
     filteredPlanets,
     setPlanets,
     setNameFilter,
+    setValueFilter,
+    setColumnFilter,
+    setComparisonFilter,
+    setNumericFilter,
+    setNewFilter,
+    columnFilter,
+    comparisonFilter,
+    valueFilter,
+    numericFilter,
     filters: {
       filterByName: {
         name,
       },
+      filterByNumericValues,
     } };
 
   return (

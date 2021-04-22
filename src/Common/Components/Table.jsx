@@ -3,10 +3,14 @@ import SWContext from '../Services/SWContext';
 
 function Table() {
   const { filteredPlanets } = useContext(SWContext);
-
+  // console.log("teste filteredPlanets", filteredPlanets);
+  // const showFilters = (filtersArray) => {
+  //   if (filtersArray.length === 0) return <span>no filters used</span>
+  // }
   const renderTable = (planetsArray) => {
-    // console.log(Object.keys(planets[0]));
+    console.log(planetsArray);
     if (planetsArray.length !== 0) {
+      console.log('teste');
       return (
         <table>
           <thead>
@@ -48,6 +52,7 @@ function Table() {
   return (
     <>
       { renderTable(filteredPlanets) }
+      {/* { showFilters(filterByNumericValues) } */}
     </>
   );
 }
