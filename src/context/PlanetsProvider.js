@@ -3,26 +3,8 @@ import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 import fetchPlanets from '../services/apiService';
 
-const defaultFilters = {
-  filters:
-  {
-    filterByName: {
-      name: ''
-    },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: 'maior que',
-        value: '',
-      }
-    ]
-  }
-}
-
-
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState(defaultFilters);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   useEffect(() => {
@@ -32,11 +14,11 @@ function PlanetsProvider({ children }) {
       setFilteredPlanets(planetsList);
     };
     if (data.length === 0) {
-      getPlanets();
+      getPlanets(); 
     }
   }, [data]);
 
-  const context = { filteredPlanets, filters, setFilters };
+  const context = { data, filteredPlanets, setFilteredPlanets };
   return (
     <main>
       <PlanetsContext.Provider value={ context }>
