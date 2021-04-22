@@ -10,9 +10,10 @@ export default function ShowFilters() {
     filterEl = filterElement;
   }
   return (
-    <div>
-      <button type="button" className="btn btn-danger">
-        { filterEl }
+    <div data-testid="filter" className="btn btn-danger">
+      { filterEl }
+      <button type="button" className="btn-filter btn-danger">
+        X
       </button>
     </div>
   );
