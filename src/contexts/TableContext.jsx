@@ -20,7 +20,7 @@ const TableContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <TableContext.Provider value={ { data } }>
+    <TableContext.Provider value={ { data, setData } }>
       { children }
     </TableContext.Provider>
   );
