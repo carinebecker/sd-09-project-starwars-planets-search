@@ -4,9 +4,14 @@ import PlanetsContext from './PlanetsContext';
 import fetchPlanets from '../services/Api';
 
 function PlanetsProvider({ children }) {
+  const INITIAL_STATE = {
+    filterByName: { name: '' },
+    filterByNumericValues: [],
+  };
+
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
-  const [filters, setFilter] = useState('');
+  const [filters, setFilters] = useState(INITIAL_STATE);
 
   const getPlanets = async () => {
     const planetsFromApi = await fetchPlanets();
@@ -19,7 +24,7 @@ function PlanetsProvider({ children }) {
   }, []);
 
   const context = {
-    data, setData, loading, filters, setFilter,
+    data, setData, loading, filters, setFilters,
   };
 
   return (

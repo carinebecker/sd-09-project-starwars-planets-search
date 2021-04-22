@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
 import PlanetsProvider from './context/PlanetsProvider';
-import InputFilter from './components/InputFilter';
+import FilterByName from './components/FilterByName';
+import FilterByNumericValue from './components/FilterByNumericValue';
 import StarWarsTable from './components/StarWarsTable';
 
 function App() {
   return (
     <PlanetsProvider>
-      <InputFilter />
+      <FilterByName />
+      <FilterByNumericValue />
       <StarWarsTable />
     </PlanetsProvider>
   );
