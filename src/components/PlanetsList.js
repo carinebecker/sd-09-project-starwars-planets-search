@@ -125,5 +125,5 @@ function PlanetsList() {
         ) }
     </div>
   );
-};
+}
 export default PlanetsList;

@@ -3,6 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
+import PropTypes from 'prop-types';
 import YodaContext from '../local_resources/Context';
 import Inputs from './Inputs';
 
@@ -31,5 +32,8 @@ const MainNavBar = (props) => {
       </Navbar.Collapse>
     </Navbar>
   );
+};
+MainNavBar.propTypes = {
+  customizedFiltersSearch: PropTypes.func.isRequired,
 };
 export default MainNavBar;
