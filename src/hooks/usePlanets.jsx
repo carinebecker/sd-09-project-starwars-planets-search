@@ -3,7 +3,7 @@ import fetchPlanetsList from '../services';
 
 export default function usePlanets() {
   const [planets, setPlanets] = useState([]);
-  const [error, setError] = '';
+  const [error, setError] = useState('');
   async function getPlanets() {
     try {
       const planetsList = await fetchPlanetsList();

@@ -1,13 +1,21 @@
 import React, { useContext } from 'react';
-import planetsContext from '../../context/PlanetsContext';
+import PlanetsContext from '../../context/PlanetsContext';
+import FiltersContext from '../../context/FiltersContext';
 
 export default function TableBody() {
-  const { planets } = useContext(planetsContext);
+  const { planets } = useContext(PlanetsContext);
+  const { filters: { filterByName: nameQuery } } = useContext(FiltersContext);
+
+  const filteredPlanets = planets.filter(({ name: planetName }) => (
+    nameQuery.length
+      ? planetName.match(new RegExp(nameQuery, 'i'))
+      : planetName
+  ));
 
   return (
     <tbody>
       {
-        planets.map((planet, index) => {
+        filteredPlanets.map((planet, index) => {
           const {
             name,
             rotation_period: rotationPeriod,

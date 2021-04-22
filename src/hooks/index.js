@@ -1,3 +1,5 @@
 import usePlanets from './usePlanets';
 
-export { usePlanets };
+const xablau = '';
+
+export { xablau, usePlanets };

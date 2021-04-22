@@ -8,14 +8,14 @@ export default function PlanetsProvider({ children }) {
 
   const { planets, getPlanets, error } = usePlanets();
 
-  const value = { loading, planets, error };
-
   useEffect(() => {
     if (!planets.length) {
       getPlanets();
       isLoading(false);
     }
   }, [planets, getPlanets]);
+
+  const value = { loading, planets, error };
 
   return (
     <PlanetsContext.Provider value={ value }>
