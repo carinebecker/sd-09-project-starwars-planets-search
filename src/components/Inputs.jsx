@@ -12,7 +12,7 @@ function Inputs() {
   } = useContext(StarWarsContext);
 
   const clearFiltersButton = (
-    <button type="button" onClick={ clearFilters }>
+    <button type="button" onClick={ clearFilters } data-testid="filter">
       X
     </button>
   );
