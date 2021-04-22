@@ -1,10 +1,10 @@
 .table {
-border-color: blue;
-color: white;
+  border-color: blue;
+  color: white;
 }
 
 .app {
-  background-color: #007bff!important;
+  background-color: #007bff;
 }
 
 .table td {
@@ -15,7 +15,7 @@ color: white;
 .global-table {
   background-image: url('https://www.tracystars.com/wp-content/uploads/2017/05/star-wars-bg.jpg');
   background-size: contain;
-  min-height:1000px;
+  min-height: 1000px;
 }
 
 .filters {
