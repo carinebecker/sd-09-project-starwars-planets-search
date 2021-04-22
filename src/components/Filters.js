@@ -104,11 +104,10 @@ function Filters() {
   const renderRemoveFiltersButton = (completeFilter, index) => {
     const { column, comparison, value } = completeFilter;
     return (
-      <div data-testid="filter">
+      <div data-testid="filter" key={ `${column} ${comparison} ${value}` }>
         <button
           type="button"
           onClick={ () => removeFilter(index) }
-          key={ `${column} ${comparison} ${value}` }
         >
           {`${column} ${comparison} ${value} X`}
         </button>
