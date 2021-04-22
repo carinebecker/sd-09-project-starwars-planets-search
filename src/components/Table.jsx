@@ -118,32 +118,3 @@ const Table = () => {
 };
 
 export default Table;
-
-// if (comparison === 'maior que') {
-//   filteredPlanets = filteredPlanets
-//     .filter((planet) => +(planet[column]) > +(value));
-// } else if (comparison === 'menor que') {
-//   filteredPlanets = filteredPlanets
-//     .filter((planet) => +(planet[column]) < +(value));
-// } else if (comparison === 'igual a') {
-//   filteredPlanets = filteredPlanets
-//     .filter((planet) => +(planet[column]) === +(value));
-// }
-
-// if (order.sort === 'ASC') {
-//   if (order.column === 'name') {
-//     filteredPlanets = filteredPlanets.sort((planetA, planetB) => (
-//       (planetA[order.column] < planetB[order.column]) ? -1 : 0));
-//   } else {
-//     filteredPlanets = filteredPlanets.sort((planetA, planetB) => (
-//       +(planetA[order.column]) - +(planetB[order.column])));
-//   }
-// } else if (order.sort === 'DESC') {
-//   if (order.column === 'name') {
-//     filteredPlanets = filteredPlanets.sort((planetA, planetB) => (
-//       (planetA[order.column] > planetB[order.column]) ? -1 : 0));
-//   } else {
-//     filteredPlanets = filteredPlanets.sort((planetA, planetB) => (
-//       +(planetB[order.column]) - +(planetA[order.column])));
-//   }
-// }
