@@ -7,7 +7,7 @@ const Table = () => {
     loading,
     planetsWithFilter,
     handleChange,
-    columns,
+    columnsSelect,
     selectColumn,
     handleSelectCollumn,
     selectcomparison,
@@ -39,20 +39,20 @@ const Table = () => {
       </thead>
       <tbody>
         {planets.map((planet) => (
-          <tr key={planet.name}>
-            <td>{planet.name}</td>
-            <td>{planet.rotation_period}</td>
-            <td>{planet.orbital_period}</td>
-            <td>{planet.diameter}</td>
-            <td>{planet.climate}</td>
-            <td>{planet.gravity}</td>
-            <td>{planet.terrain}</td>
-            <td>{planet.surface_water}</td>
-            <td>{planet.population}</td>
-            <td>{planet.films}</td>
-            <td>{planet.created}</td>
-            <td>{planet.edited}</td>
-            <td>{planet.url}</td>
+          <tr key={ planet.name }>
+            <td>{ planet.name }</td>
+            <td>{ planet.rotation_period }</td>
+            <td>{ planet.orbital_period }</td>
+            <td>{ planet.diameter }</td>
+            <td>{ planet.climate }</td>
+            <td>{ planet.gravity }</td>
+            <td>{ planet.terrain }</td>
+            <td>{ planet.surface_water }</td>
+            <td>{ planet.population }</td>
+            <td>{ planet.films }</td>
+            <td>{ planet.created }</td>
+            <td>{ planet.edited }</td>
+            <td>{ planet.url }</td>
           </tr>
         ))}
       </tbody>
@@ -72,26 +72,26 @@ const Table = () => {
       <label htmlFor="column-filter">
         Coluna
         <select
-          value={selectColumn}
-          onChange={handleSelectCollumn}
+          value={ selectColumn }
+          onChange={ handleSelectCollumn }
           id="column-filter"
           data-testid="column-filter"
         >
-          {columns.map((column, i) => (
-            <option key={i} value={column}>{column}</option>
+          {columnsSelect.map((column, i) => (
+            <option key={ i } value={ column }>{ column }</option>
           ))}
         </select>
       </label>
       <label htmlFor="comparison-filter">
         Comparação
         <select
-          value={selectcomparison}
-          onChange={handleComparisonSelect}
+          value={ selectcomparison }
+          onChange={ handleComparisonSelect }
           id="comparison-filter"
           data-testid="comparison-filter"
         >
           {comparison.map((e, i) => (
-            <option key={i} value={e}>{e}</option>
+            <option key={ i } value={ e }>{ e }</option>
           ))}
         </select>
       </label>
@@ -107,7 +107,7 @@ const Table = () => {
       </label>
       <button
         type="button"
-        data-testid='button-filter'
+        data-testid="button-filter"
         onClick={ handleButton }
       >
         Filtrar

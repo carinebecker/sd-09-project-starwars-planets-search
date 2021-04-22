@@ -38,7 +38,6 @@ export const StarWarsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState('');
   const [inputValue, setInputValue] = useState(0);
-  const [selectColumn, setSelectColumn] = useState('population');
   const [selectcomparison, setSelectcomparison] = useState('maior que');
   const [filterButton, setFilterButton] = useState(0);
   const comparison = ['maior que', 'menor que', 'igual a'];
@@ -47,7 +46,8 @@ export const StarWarsProvider = ({ children }) => {
     'diameter',
     'rotation_period',
     'surface_water'];
-
+  const [columnsSelect, setcolumnsSelect] = useState(columns);
+  const [selectColumn, setSelectColumn] = useState(columnsSelect[0]);
   const filters = {
     filterByName: {
       name: input,
@@ -76,14 +76,17 @@ export const StarWarsProvider = ({ children }) => {
   };
 
   const handleButton = () => {
+    const { column } = numericsValuesFilter;
     setFilterButton((currValue) => currValue + 1);
-    console.log(numericsValuesFilter);
     filters.filterByNumericValues.push(numericsValuesFilter);
-    console.log(filters);
+    setSelectcomparison('maior que');
+    setSelectColumn('population');
+    setInputValue(0);
     const arrayFiltered = filterByNumericValues(allPlanets, numericsValuesFilter);
-    console.log(arrayFiltered);
     setPlanetsWithFilter(arrayFiltered);
-
+    const indexActualColumn = columns.findIndex((col) => col === column);
+    columns.splice(indexActualColumn, 1);
+    setcolumnsSelect(columns);
   };
 
   const handleComparisonSelect = ({ target }) => {
@@ -103,8 +106,6 @@ export const StarWarsProvider = ({ children }) => {
   useEffect(() => {
     const arrayFilters = filterArray(allPlanets, input);
     setPlanetsWithFilter(arrayFilters);
-    console.log(allPlanets);
-    console.log(arrayFilters);
   }, [allPlanets, input]);
 
   const contextValue = { allPlanets,
@@ -112,7 +113,7 @@ export const StarWarsProvider = ({ children }) => {
     filters,
     handleChange,
     planetsWithFilter,
-    columns,
+    columnsSelect,
     selectColumn,
     handleSelectCollumn,
     selectcomparison,
@@ -120,6 +121,7 @@ export const StarWarsProvider = ({ children }) => {
     handleComparisonSelect,
     inputValue,
     handleButton,
+    filterButton,
   };
 
   return (
