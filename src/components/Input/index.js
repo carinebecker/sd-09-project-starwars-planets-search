@@ -19,7 +19,7 @@ export default function Input() {
   const [stateInput, setInputValue] = useState(INITIAL_STATE);
   const [options, setOptionsSelect] = useState(INITIAL_STATE_OPTIONS);
   const { filterByNumericValues } = filters;
-
+  console.log(filterByNumericValues.length);
   const handleSelect = ({ target }) => {
     const { value, name } = target;
     setInputValue({
@@ -43,12 +43,13 @@ export default function Input() {
   };
 
   const handleClearFilters = (index) => {
+    filterByNumericValues.splice(index, 1);
     setFilter({
       ...filters,
       filterByName: {
         name: '',
       },
-      filterByNumericValues: [filterByNumericValues.slice(index, 1)],
+      filterByNumericValues,
     });
   };
 

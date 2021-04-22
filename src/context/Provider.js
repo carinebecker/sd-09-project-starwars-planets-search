@@ -8,6 +8,10 @@ export default function Provider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'Name',
+      sort: 'ASC',
+    },
   };
   const [data, setData] = useState({});
   const [filters, setFilter] = useState(INITIAL_FILTER);
@@ -18,6 +22,7 @@ export default function Provider({ children }) {
       try {
         const response = await fetch(url);
         const planets = await response.json();
+        planets.results.map((element) => delete element.residents);
         setData(planets);
       } catch (error) {
         console.log(error);
