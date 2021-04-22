@@ -7,6 +7,15 @@ const Table = () => {
     loading,
     planetsWithFilter,
     handleChange,
+    columns,
+    selectColumn,
+    handleSelectCollumn,
+    selectcomparison,
+    comparison,
+    handleComparisonSelect,
+    inputValue,
+    input,
+    handleButton,
   } = useContext(StarWarsContext);
 
   const renderTable = (planets) => (
@@ -30,20 +39,20 @@ const Table = () => {
       </thead>
       <tbody>
         {planets.map((planet) => (
-          <tr key={ planet.name }>
-            <td>{ planet.name }</td>
-            <td>{ planet.rotation_period }</td>
-            <td>{ planet.orbital_period }</td>
-            <td>{ planet.diameter }</td>
-            <td>{ planet.climate }</td>
-            <td>{ planet.gravity }</td>
-            <td>{ planet.terrain }</td>
-            <td>{ planet.surface_water }</td>
-            <td>{ planet.population }</td>
-            <td>{ planet.films }</td>
-            <td>{ planet.created }</td>
-            <td>{ planet.edited }</td>
-            <td>{ planet.url }</td>
+          <tr key={planet.name}>
+            <td>{planet.name}</td>
+            <td>{planet.rotation_period}</td>
+            <td>{planet.orbital_period}</td>
+            <td>{planet.diameter}</td>
+            <td>{planet.climate}</td>
+            <td>{planet.gravity}</td>
+            <td>{planet.terrain}</td>
+            <td>{planet.surface_water}</td>
+            <td>{planet.population}</td>
+            <td>{planet.films}</td>
+            <td>{planet.created}</td>
+            <td>{planet.edited}</td>
+            <td>{planet.url}</td>
           </tr>
         ))}
       </tbody>
@@ -55,10 +64,54 @@ const Table = () => {
       <label htmlFor="name-filter">
         <input
           id="name-filter"
+          value={ input }
           data-testid="name-filter"
           onChange={ handleChange }
         />
       </label>
+      <label htmlFor="column-filter">
+        Coluna
+        <select
+          value={selectColumn}
+          onChange={handleSelectCollumn}
+          id="column-filter"
+          data-testid="column-filter"
+        >
+          {columns.map((column, i) => (
+            <option key={i} value={column}>{column}</option>
+          ))}
+        </select>
+      </label>
+      <label htmlFor="comparison-filter">
+        Comparação
+        <select
+          value={selectcomparison}
+          onChange={handleComparisonSelect}
+          id="comparison-filter"
+          data-testid="comparison-filter"
+        >
+          {comparison.map((e, i) => (
+            <option key={i} value={e}>{e}</option>
+          ))}
+        </select>
+      </label>
+      <label htmlFor="value-filter">
+        Valor:
+        <input
+          id="value-filter"
+          name="value-filter"
+          value={ inputValue }
+          data-testid="value-filter"
+          onChange={ handleChange }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid='button-filter'
+        onClick={ handleButton }
+      >
+        Filtrar
+      </button>
       {(loading === false && planetsWithFilter.length === 0)
         ? renderTable(allPlanets)
         : renderTable(planetsWithFilter)}
