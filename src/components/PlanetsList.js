@@ -44,17 +44,16 @@ const PlanetsList = () => {
       });
     }
     return setIsLoading(true);
-  });
+  },[]);
 
   let planets = !isLoading ? data.results : '';
   if (filters && data) {
-    debugger;
     planets = filters.filterByName.name === ''
       ? data.results
       : data.results.filter(
         (planet) => planet.name.includes(filters.filterByName.name),
       )
-  }
+  };
   return (
     <div>
       { isLoading
@@ -67,18 +66,17 @@ const PlanetsList = () => {
             { planets.length === 0
               ? <span>No results for the search...</span>
               : (
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    { generateHeader(Object.keys(planets[0])) }
-                  </tr>
-                </thead>
-                <tbody>
-                  { generateRows(planets) }
-                </tbody>
-              </Table>
-              )
-            }
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      { generateHeader(Object.keys(planets[0])) }
+                    </tr>
+                  </thead>
+                  <tbody>
+                    { generateRows(planets) }
+                  </tbody>
+                </Table>
+              )}
           </main>
         ) }
     </div>
