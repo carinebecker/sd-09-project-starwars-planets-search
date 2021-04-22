@@ -108,6 +108,7 @@ function Filters() {
         <button
           type="button"
           onClick={ () => removeFilter(index) }
+          key={ `${column} ${comparison} ${value}` }
         >
           {`${column} ${comparison} ${value} X`}
         </button>
