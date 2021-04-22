@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/Context';
 
 function Table() {
-  const data = useContext(AppContext);
+  const { data } = useContext(AppContext);
 
   return (
     <table>

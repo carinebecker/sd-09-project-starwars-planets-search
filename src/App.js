@@ -1,13 +1,19 @@
 import React from 'react';
 import './App.css';
+import FilterName from './components/FilterName';
 import Table from './components/Table';
 import Provider from './context/Provider';
 
 function App() {
   return (
     <Provider>
-      <span>Hello, App!</span>
-      <Table />
+      <header>
+        <h1>Starwars Planets Search</h1>
+      </header>
+      <main>
+        <FilterName />
+        <Table />
+      </main>
     </Provider>
   );
 }
