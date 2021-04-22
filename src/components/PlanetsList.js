@@ -45,8 +45,8 @@ const PlanetsList = () => {
   }, [setData, setIsLoading]);
 
   let planets = !isLoading ? data.results : '';
-  if (filters && data) {
-    planets = filters.filterByName.name === ''
+  if (filters && filters.filterByName && data) {
+    planets = filters.filterByName.name !== ''
       ? data.results
       : data.results.filter(
         (planet) => planet.name.includes(filters.filterByName.name),

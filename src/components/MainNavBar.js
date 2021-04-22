@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import YodaContext from '../local_resources/Context';
+import Inputs from './Inputs';
 
 const MainNavBar = () => {
   const { setFilters } = useContext(YodaContext);
@@ -16,13 +16,7 @@ const MainNavBar = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/">All Planets</Nav.Link>
-          <Nav.Link href="#link">New Planet</Nav.Link>
-          <NavDropdown title="Filters" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#Size">Size</NavDropdown.Item>
-            <NavDropdown.Item href="#crowd">Population</NavDropdown.Item>
-            <NavDropdown.Item href="#farther">Distance</NavDropdown.Item>
-          </NavDropdown>
+          { Inputs() }
         </Nav>
         <Form inline>
           <FormControl
