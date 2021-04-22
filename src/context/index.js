@@ -65,7 +65,7 @@ export const StarWarsProvider = ({ children }) => {
   const handleChange = ({ target }) => {
     const { value, name } = target;
     if (name === 'value-filter') {
-      if (isNaN(value) === false) {
+      if (Number.isNaN(value) === false) {
         setInputValue(value);
       } else {
         setInputValue(0);
