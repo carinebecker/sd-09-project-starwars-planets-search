@@ -6,12 +6,9 @@ function Provider({ children }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState();
-  const [planets, setPlanets] = useState();
   const r2d2Context = {
     setData,
     data,
-    planets,
-    setPlanets,
     isLoading,
     setIsLoading,
     filters,

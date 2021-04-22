@@ -33,7 +33,6 @@ const PlanetsList = () => {
     data,
     setData,
     filters,
-    setPlanets,
   } = useContext(YodaContext);
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const PlanetsList = () => {
       });
     }
     return setIsLoading(true);
-  }, []);
+  });
 
   let planets = !isLoading ? data.results : '';
   if (filters && data) {
