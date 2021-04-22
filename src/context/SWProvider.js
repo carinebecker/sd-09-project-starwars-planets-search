@@ -10,6 +10,8 @@ function SWProvider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+    ],
   });
 
   async function fetchApi() {

@@ -6,6 +6,29 @@ export default function TablePlanets() {
   const { data, filters } = useContext(SWContext);
   const { filterByName: { name } } = filters;
 
+  function findPlanets() {
+    let findedPlanet = data.filter(
+      (planet) => planet.name.toLowerCase().includes(name),
+    );
+
+    if (filters.filterByNumericValues.length > 0) {
+      filters.filterByNumericValues.forEach((element, index) => {
+        const { column, comparison, value } = filters.filterByNumericValues[index];
+        if (comparison === 'maior que') {
+          findedPlanet = findedPlanet
+            .filter((planet) => Number(planet[column]) > Number(value));
+        } else if (comparison === 'menor que') {
+          findedPlanet = findedPlanet
+            .filter((planet) => Number(planet[column]) < Number(value));
+        } else {
+          findedPlanet = findedPlanet
+            .filter((planet) => Number(planet[column]) === Number(value));
+        }
+      });
+    }
+    return findedPlanet;
+  }
+
   return (
     <table className="table-planets">
       <thead>
@@ -26,24 +49,23 @@ export default function TablePlanets() {
         </tr>
       </thead>
       <tbody>
-        { data.filter((planets) => planets.name.includes(name))
-          .map((planet) => (
-            <tr key={ planet.name }>
-              <td>{ planet.name }</td>
-              <td>{ planet.rotation_period }</td>
-              <td>{ planet.orbital_period }</td>
-              <td>{ planet.diameter }</td>
-              <td>{ planet.climate }</td>
-              <td>{ planet.gravity }</td>
-              <td>{ planet.terrain }</td>
-              <td>{ planet.surface_water }</td>
-              <td>{ planet.population }</td>
-              <td>{ planet.films }</td>
-              <td>{ planet.created }</td>
-              <td>{ planet.edited }</td>
-              <td>{ planet.url }</td>
-            </tr>
-          )) }
+        { findPlanets().map((planet) => (
+          <tr key={ planet.name }>
+            <td>{ planet.name }</td>
+            <td>{ planet.rotation_period }</td>
+            <td>{ planet.orbital_period }</td>
+            <td>{ planet.diameter }</td>
+            <td>{ planet.climate }</td>
+            <td>{ planet.gravity }</td>
+            <td>{ planet.terrain }</td>
+            <td>{ planet.surface_water }</td>
+            <td>{ planet.population }</td>
+            <td>{ planet.films }</td>
+            <td>{ planet.created }</td>
+            <td>{ planet.edited }</td>
+            <td>{ planet.url }</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
