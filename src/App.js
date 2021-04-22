@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 import Table from './components/Table';
-import MyContext from './MyContext';
+import { Provider } from './MyContext';
 
 function App() {
   return (
-    <MyContext.Provider value="Objeto do estado global aqui">
+    <Provider>
       <Table />
-    </MyContext.Provider>
+    </Provider>
   );
 }
 
