@@ -5,6 +5,11 @@ import fetchPlanetsList from '../services/fecthPlanetsList';
 
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     async function getPlanetsfromAPI() {
@@ -15,7 +20,7 @@ function Provider({ children }) {
   }, []);
 
   return (
-    <MyContext.Provider value={ { planets } }>
+    <MyContext.Provider value={ { planets, filters, setFilters } }>
       { children }
     </MyContext.Provider>
   );
