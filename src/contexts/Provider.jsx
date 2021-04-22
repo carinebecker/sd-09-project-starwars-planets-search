@@ -67,12 +67,25 @@ function Provider({ children }) {
     setFilteredPlanets(filteredData);
   };
 
+  const clearFilters = () => {
+    setFilters({
+      name: '',
+      number: 0,
+      column: 'population',
+      comparison: 'maior que',
+    });
+
+    setFilteredPlanets(data);
+  };
+
   const contextValue = {
     changeNameToBeFiltered,
     filterPlanetsByName,
     filteredPlanets,
     changeNumericInfoToBeFiltered,
     handleButtonFilterClick,
+    clearFilters,
+    filters,
   };
 
   return (
