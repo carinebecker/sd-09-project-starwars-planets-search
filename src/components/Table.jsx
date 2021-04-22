@@ -7,15 +7,17 @@ function Table() {
   return (isLoading ? <p>Loading...</p> : (
     <div>
       <table>
-        <tbody>
+        <thead>
           <tr>
             {keysData.filter((element) => element !== 'residents')
               .map((newElement) => (
-                <td key={ newElement }>
+                <th key={ newElement }>
                   <h3>{newElement}</h3>
-                </td>
+                </th>
               ))}
           </tr>
+        </thead>
+        <tbody>
           {data
             .map((item) => (
               <tr key={ Math.random() }>
