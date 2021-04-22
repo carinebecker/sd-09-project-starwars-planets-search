@@ -7,10 +7,10 @@ function Provider({ children }) {
   const [data, setPlanets] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
   const [filters, setFilters] = useState({
-    subject: 'population',
     name: '',
-    operator: 'maior que',
-    number: '',
+    number: 0,
+    column: 'population',
+    comparison: 'maior que',
   });
 
   const setData = async () => {
@@ -25,6 +25,30 @@ function Provider({ children }) {
       ...filters,
       name: value,
     });
+  };
+
+  const changeNumericInfoToBeFiltered = ({ target: { name, value } }) => {
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
+
+  const handleButtonFilterClick = () => {
+    const { number, column, comparison } = filters;
+
+    const filteredData = data.filter((planet) => {
+      if (comparison === 'maior que') {
+        return parseInt(planet[column], 10) > parseInt(number, 10);
+      }
+
+      if (comparison === 'menor que') {
+        return parseInt(planet[column], 10) < parseInt(number, 10);
+      }
+
+      return parseInt(planet[column], 10) === parseInt(number, 10);
+    });
+    setFilteredPlanets(filteredData);
   };
 
   useEffect(() => {
@@ -43,7 +67,13 @@ function Provider({ children }) {
     setFilteredPlanets(filteredData);
   };
 
-  const contextValue = { changeNameToBeFiltered, filterPlanetsByName, filteredPlanets };
+  const contextValue = {
+    changeNameToBeFiltered,
+    filterPlanetsByName,
+    filteredPlanets,
+    changeNumericInfoToBeFiltered,
+    handleButtonFilterClick,
+  };
 
   return (
     <StarWarsContext.Provider value={ contextValue }>
