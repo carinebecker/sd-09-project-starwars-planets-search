@@ -3,26 +3,28 @@ import Loading from './Loading';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { isLoading, data: { results } } = useContext(StarWarsContext);
+  const { isLoading, data: { results }, filters } = useContext(StarWarsContext);
+  const { filterByName: { name } } = filters;
 
   function renderPlanetTable(data) {
-    return data.map((planet) => (
-      <tr key={ planet.name }>
-        <td>{planet.name}</td>
-        <td>{planet.terrain}</td>
-        <td>{planet.population}</td>
-        <td>{planet.climate}</td>
-        <td>{planet.diameter}</td>
-        <td>{planet.gravity}</td>
-        <td>{planet.orbital_period}</td>
-        <td>{planet.rotation_period}</td>
-        <td>{planet.surface_water}</td>
-        <td>{planet.created}</td>
-        <td>{planet.edited}</td>
-        <td>{planet.films}</td>
-        <td>{planet.url}</td>
-      </tr>
-    ));
+    return data.filter((planetName) => planetName.name.includes(name))
+      .map((planet) => (
+        <tr key={ planet.name }>
+          <td>{planet.name}</td>
+          <td>{planet.terrain}</td>
+          <td>{planet.population}</td>
+          <td>{planet.climate}</td>
+          <td>{planet.diameter}</td>
+          <td>{planet.gravity}</td>
+          <td>{planet.orbital_period}</td>
+          <td>{planet.rotation_period}</td>
+          <td>{planet.surface_water}</td>
+          <td>{planet.created}</td>
+          <td>{planet.edited}</td>
+          <td>{planet.films}</td>
+          <td>{planet.url}</td>
+        </tr>
+      ));
   }
 
   if (isLoading) return <Loading />;
