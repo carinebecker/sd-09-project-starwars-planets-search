@@ -9,6 +9,7 @@ export default function ApiProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, handleChange, filterByNumbers] = useFilter();
   const [configFilters, setConfigFilters] = useState();
+  const [checkFilters, serCheckFilters] = useState([]);
 
   async function getPlanetsApiData() {
     setIsFetching(true);
@@ -39,7 +40,12 @@ export default function ApiProvider({ children }) {
         })
       ));
       setConfigFilters(filteredPlanet);
+      serCheckFilters(checkFilters.concat(filterByNumbers));
     }
+  }
+
+  function handleClickResetFilters() {
+    setConfigFilters([]);
   }
 
   const requestState = {
@@ -50,6 +56,8 @@ export default function ApiProvider({ children }) {
     handleClickFilterByNumber,
     configFilters,
     setConfigFilters,
+    checkFilters,
+    handleClickResetFilters,
   };
 
   return (

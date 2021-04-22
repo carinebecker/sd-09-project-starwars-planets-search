@@ -2,10 +2,26 @@ import React, { useContext } from 'react';
 import fetchApiPlanetsContext from '../contexts/ApiContext/fetchApiPlanetsContext';
 
 export default function FilterPopulation() {
-  const { handleChange, handleClickFilterByNumber } = useContext(fetchApiPlanetsContext);
+  const one = 1;
+  const { handleChange, handleClickFilterByNumber, checkFilters, handleClickResetFilters,
+  } = useContext(fetchApiPlanetsContext);
+
+  const options = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
+  const filters = checkFilters.map(({ column }) => column);
+
+  const filteredOptions = options.filter((option) => filters.indexOf(option) === -(one));
 
   return (
     <>
+      <button
+        onClick={ handleClickResetFilters }
+        data-testid="filter"
+        type="button"
+      >
+        x
+      </button>
       <label htmlFor="column-filter">
         <select
           name="column"
@@ -13,13 +29,16 @@ export default function FilterPopulation() {
           id="column-filter"
           data-testid="column-filter"
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          {filteredOptions.map((option) => <option key={ option }>{option}</option>)}
         </select>
       </label>
+      <button
+        onClick={ handleClickResetFilters }
+        data-testid="filter"
+        type="button"
+      >
+        x
+      </button>
       <label htmlFor="comparison-filter">
         <select
           name="comparison"
@@ -32,6 +51,13 @@ export default function FilterPopulation() {
           <option>igual a</option>
         </select>
       </label>
+      <button
+        onClick={ handleClickResetFilters }
+        data-testid="filter"
+        type="button"
+      >
+        x
+      </button>
       <label htmlFor="value-filter">
         <input
           name="value"
@@ -47,7 +73,6 @@ export default function FilterPopulation() {
         type="button"
       >
         Filtrar
-
       </button>
     </>
   );

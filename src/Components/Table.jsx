@@ -68,8 +68,10 @@ export default function Table() {
         .includes(filters.filterByName.name.toLowerCase()));
       if (configFilters === undefined) {
         return tableBody(newResults);
+      } if (configFilters.length > 0) {
+        return tableBody(configFilters);
       }
-      return tableBody(configFilters);
+      return tableBody(newResults);
     }
   }
 

@@ -3,9 +3,9 @@ import { useState } from 'react';
 export default function useFilter() {
   const [filters, setFilters] = useState({ filterByName: { name: '' } });
   const [filterByNumbers, setFilterByNumbers] = useState({
-    column: '',
-    comparison: '',
-    value: '',
+    column: 'population',
+    comparison: 'maior que',
+    value: '100000',
   });
   function handleChange({ target }) {
     const { name, value } = target;
