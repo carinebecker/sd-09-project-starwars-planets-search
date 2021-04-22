@@ -8,7 +8,8 @@ import YodaContext from '../local_resources/Context';
 
 const MainNavBar = () => {
   const { setFilters } = useContext(YodaContext);
-  const getSearchData = ({ target }) => (setFilters({ filterByName: { name: target.value } }));
+  const getSearchData = ({ target }) => (
+    setFilters({ filterByName: { name: target.value } }));
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href="/">Star Wars Planets Inventory</Navbar.Brand>

@@ -50,8 +50,8 @@ const PlanetsList = () => {
       ? data.results
       : data.results.filter(
         (planet) => planet.name.includes(filters.filterByName.name),
-      )
-  };
+      );
+  }
   return (
     <div>
       { isLoading
