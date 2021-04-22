@@ -15,58 +15,64 @@ export default function FilterPopulation() {
 
   return (
     <>
-      <button
-        onClick={ handleClickResetFilters }
-        data-testid="filter"
-        type="button"
-      >
-        x
-      </button>
-      <label htmlFor="column-filter">
-        <select
-          name="column"
-          onChange={ handleChange }
-          id="column-filter"
-          data-testid="column-filter"
+
+      <div data-testid="filter">
+        <button
+          onClick={ handleClickResetFilters }
+          type="button"
         >
-          {filteredOptions.map((option) => <option key={ option }>{option}</option>)}
-        </select>
-      </label>
-      <button
-        onClick={ handleClickResetFilters }
-        data-testid="filter"
-        type="button"
-      >
-        x
-      </button>
-      <label htmlFor="comparison-filter">
-        <select
-          name="comparison"
-          onChange={ handleChange }
-          id="comparison-filter"
-          data-testid="comparison-filter"
+          x
+        </button>
+        <label htmlFor="column-filter">
+          <select
+            name="column"
+            onChange={ handleChange }
+            id="column-filter"
+            data-testid="column-filter"
+          >
+            {filteredOptions.map((option) => <option key={ option }>{option}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <div data-testid="filter">
+        <button
+          onClick={ handleClickResetFilters }
+          type="button"
         >
-          <option>maior que</option>
-          <option>menor que</option>
-          <option>igual a</option>
-        </select>
-      </label>
-      <button
-        onClick={ handleClickResetFilters }
-        data-testid="filter"
-        type="button"
-      >
-        x
-      </button>
-      <label htmlFor="value-filter">
-        <input
-          name="value"
-          onChange={ handleChange }
-          id="value-filter"
-          data-testid="value-filter"
-          type="number"
-        />
-      </label>
+          x
+        </button>
+        <label htmlFor="comparison-filter">
+          <select
+            name="comparison"
+            onChange={ handleChange }
+            id="comparison-filter"
+            data-testid="comparison-filter"
+          >
+            <option>maior que</option>
+            <option>menor que</option>
+            <option>igual a</option>
+          </select>
+        </label>
+      </div>
+
+      <div data-testid="filter">
+        <button
+          onClick={ handleClickResetFilters }
+          type="button"
+        >
+          x
+        </button>
+        <label htmlFor="value-filter">
+          <input
+            name="value"
+            onChange={ handleChange }
+            id="value-filter"
+            data-testid="value-filter"
+            type="number"
+          />
+        </label>
+      </div>
       <button
         onClick={ handleClickFilterByNumber }
         data-testid="button-filter"
