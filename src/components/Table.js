@@ -3,8 +3,8 @@ import myContext from '../context/contextAPI';
 
 function renderTitles(titles) {
   return (
-    <tr>
-      { titles.map((title) => <th key={ title }>{ title }</th>) }
+    <tr className="cell-title">
+      { titles.map((title) => <th className="cell-table" key={ title }>{ title }</th>) }
     </tr>
   );
 }
@@ -12,7 +12,7 @@ function renderTitles(titles) {
 function renderLines(values) {
   return (
     <tr>
-      { values.map((value) => <td key={ value }>{ value }</td>) }
+      { values.map((value) => <td className="cell-table" key={ value }>{ value }</td>) }
     </tr>
   );
 }
@@ -30,19 +30,23 @@ function renderTable(planets) {
 }
 
 function filterByValues(list, filters) {
-  const { column, comparison, value } = filters.filterByNumericValues;
+  const { filterByNumericValues } = filters;
   let result;
-  switch (comparison) {
-  case 'menor que':
-    result = list.filter((planet) => Number(planet[column]) < Number(value));
-    break;
-  case 'maior que':
-    result = list.filter((planet) => Number(planet[column]) > Number(value));
-    break;
-  default:
-    result = list.filter((planet) => Number(planet[column]) === Number(value));
-    break;
-  }
+
+  filterByNumericValues.forEach((filter) => {
+    const { column, comparison, value } = filter;
+    switch (comparison) {
+    case 'menor que':
+      result = list.filter((planet) => Number(planet[column]) < Number(value));
+      break;
+    case 'maior que':
+      result = list.filter((planet) => Number(planet[column]) > Number(value));
+      break;
+    default:
+      result = list.filter((planet) => Number(planet[column]) === Number(value));
+      break;
+    }
+  });
   return result;
 }
 
@@ -56,18 +60,20 @@ function filterByName(list, name) {
 
 function Table() {
   const { data, filters } = useContext(myContext);
-  const { column, comparison, value } = filters.filterByNumericValues;
+  const { filterByNumericValues } = filters;
   const { name } = filters.filterByName;
   if (data.length > 0) {
     data.forEach((planet) => delete planet.residents);
     if (name) {
       const filteredByName = filterByName(data, name);
-      if (column && comparison && value) {
+      if (filterByNumericValues.length > 0) {
         return renderTable(filterByValues(filteredByName, filters));
       }
       return renderTable(filteredByName);
     }
-    if (column && comparison && value) return renderTable(filterByValues(data, filters));
+    if (filterByNumericValues.length > 0) {
+      return renderTable(filterByValues(data, filters));
+    }
     return renderTable(data);
   }
   return <span>Loading Planets...</span>;

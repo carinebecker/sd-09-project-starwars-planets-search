@@ -5,9 +5,7 @@ import myContext from './contextAPI';
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
-  const [filtersValues, setFiltersValues] = useState(
-    { column: '', comparison: '', value: '' },
-  );
+  const [filtersValues, setFiltersValues] = useState([]);
   const contextValue = {
     data: planets,
     setPlanets,

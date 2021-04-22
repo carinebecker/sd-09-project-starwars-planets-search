@@ -56,11 +56,33 @@
   border: solid rgb(189, 189, 2) 1.5px;
   border-radius: 5px;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   text-align: center;
   width: 60%;
+}
+
+.container-inputs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.container-list-filters {
+  color: rgb(189, 189, 2);
+  display: flex;
 }
 
 label, legend {
   color: rgb(189, 189, 2);
 }
+
+.cell-title {
+  background-color: #282c34;
+  color: rgb(189, 189, 2);
+}
+
+.cell-table {
+  border: solid 1.5px;
+  padding: 10px 30px;
+  text-align: center;
+}
+
