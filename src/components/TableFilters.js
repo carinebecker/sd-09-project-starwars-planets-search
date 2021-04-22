@@ -3,7 +3,7 @@ import SWContext from '../StarWarsContext';
 
 function TableFilters() {
   const context = useContext(SWContext);
-  const { setFilters } = context;
+  const { filters, setFilters } = context;
 
   const comparisonFilters = [
     'maior que', 'menor que', 'igual a',
@@ -50,50 +50,91 @@ function TableFilters() {
     });
   };
 
+  const removeFilter = (column) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      filterByNumericValues: prevFilters.filterByNumericValues
+        .filter((filter) => filter.column !== column),
+    }));
+    setColumnFilters((prevColumns) => ([
+      ...prevColumns,
+      column,
+    ]));
+  };
+
+  const renderFilters = () => {
+    const { filterByNumericValues } = filters;
+    return (
+      <div>
+        {
+          filterByNumericValues.map((filter) => {
+            const { column, comparison, value } = filter;
+            return (
+              <div data-testid="filter" key={ column }>
+                <span>{column}</span>
+                <span>{comparison}</span>
+                <span>{value}</span>
+                <button
+                  type="button"
+                  onClick={ () => removeFilter(column) }
+                >
+                  X
+                </button>
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  };
+
   return (
-    <form>
-      <label htmlFor="text-search">
-        Pesquise por texto
-        <input
-          name="text-search"
-          type="text"
-          data-testid="name-filter"
-          onChange={ (event) => handleNameFilter(event) }
-        />
-      </label>
+    <>
+      <form>
+        <label htmlFor="text-search">
+          Pesquise por texto
+          <input
+            name="text-search"
+            type="text"
+            data-testid="name-filter"
+            onChange={ (event) => handleNameFilter(event) }
+          />
+        </label>
 
-      <select
-        data-testid="column-filter"
-        onChange={ ({ target }) => handleNumericFilter('column', target.value) }
-      >
-        {columnFilters.map((filter) => <option key={ filter }>{filter}</option>)}
-      </select>
+        <select
+          data-testid="column-filter"
+          onChange={ ({ target }) => handleNumericFilter('column', target.value) }
+        >
+          {columnFilters.map((filter) => <option key={ filter }>{filter}</option>)}
+        </select>
 
-      <select
-        data-testid="comparison-filter"
-        onChange={ ({ target }) => handleNumericFilter('comparison', target.value) }
-      >
-        {comparisonFilters.map((filter) => <option key={ filter }>{filter}</option>)}
-      </select>
+        <select
+          data-testid="comparison-filter"
+          onChange={ ({ target }) => handleNumericFilter('comparison', target.value) }
+        >
+          {comparisonFilters.map((filter) => <option key={ filter }>{filter}</option>)}
+        </select>
 
-      <label htmlFor="number-search">
-        Digite um valor
-        <input
-          name="number-search"
-          type="number"
-          data-testid="value-filter"
-          onChange={ ({ target }) => handleNumericFilter('value', target.value) }
-        />
-      </label>
+        <label htmlFor="number-search">
+          Digite um valor
+          <input
+            name="number-search"
+            type="number"
+            data-testid="value-filter"
+            onChange={ ({ target }) => handleNumericFilter('value', target.value) }
+          />
+        </label>
 
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ () => handleSetNumFilter() }
-      >
-        Aplicar filtro
-      </button>
-    </form>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ () => handleSetNumFilter() }
+        >
+          Aplicar filtro
+        </button>
+      </form>
+      {renderFilters()}
+    </>
   );
 }
 

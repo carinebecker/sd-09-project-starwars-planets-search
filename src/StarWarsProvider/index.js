@@ -34,8 +34,14 @@ function Provider({ children }) {
 
   useEffect(() => {
     const { filterByNumbers } = utils;
-    const filteredPlanets = filterByNumbers(data.results, filters.filterByNumericValues);
-    setPlanetsToFilter(filteredPlanets);
+    if (filters.filterByNumericValues.length === 0) {
+      setPlanetsToFilter(data.results);
+    } else {
+      const filteredPlanets = filterByNumbers(
+        data.results, filters.filterByNumericValues,
+      );
+      setPlanetsToFilter(filteredPlanets);
+    }
   }, [filters.filterByNumericValues]);
 
   const contextValue = {
