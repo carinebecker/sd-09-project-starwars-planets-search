@@ -5,16 +5,22 @@ import getPlanets from '../services/api';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [text, editText] = useState('');
 
   useEffect(() => {
     getPlanets().then((results) => {
       const filterResults = results.filter((result) => delete result.residents);
-      setData([filterResults]);
+      setData(filterResults);
     });
   }, []);
 
   const context = {
     data,
+    filters,
+    setFilters,
+    text,
+    editText,
   };
 
   return (
@@ -25,7 +31,7 @@ function PlanetsProvider({ children }) {
 }
 
 PlanetsProvider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default PlanetsProvider;
