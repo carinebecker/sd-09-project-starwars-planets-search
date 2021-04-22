@@ -15,18 +15,16 @@ class Provider extends Component {
   }
 
   async getPlanetsData() {
-    this.setState({ fetchingData: true });
     const planetsArray = [
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=1'),
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=2'),
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=3'),
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=4'),
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=5'),
-      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=6'),
+      ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/'),
+      // ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=2'),
+      // ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=3'),
+      // ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=4'),
+      // ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=5'),
+      // ...await requestApi('https://swapi-trybe.herokuapp.com/api/planets/?page=6'),
     ];
 
     this.setState({ planetsData: planetsArray });
-    this.setState({ fetchingData: false });
   }
 
   render() {
