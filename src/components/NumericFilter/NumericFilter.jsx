@@ -5,15 +5,20 @@ import InputGroup from '../InputGroup/InputGroup';
 export default function NumericFilter() {
   const {
     filters: { filterByNumericValues: numericFilters },
+    setters: { removeNumericFilter },
   } = useContext(FiltersContext);
 
   return (
     <>
       {
         numericFilters.map(({ column, comparison, value }) => (
-          <p key={ column + comparison + value }>
-            {`${column} ${comparison} ${value}`}
-          </p>))
+          <div key={ column + comparison + value } data-testid="filter">
+            <p>
+              {`${column} ${comparison} ${value}`}
+            </p>
+            <button type="button" onClick={ () => removeNumericFilter(column) }>X</button>
+          </div>
+        ))
       }
       <InputGroup />
     </>

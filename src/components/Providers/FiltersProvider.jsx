@@ -16,6 +16,11 @@ export default function FiltersProvider({ children }) {
       addNewNumericFilter(info) {
         setNumericValue([...numericValues, info]);
       },
+      removeNumericFilter(column) {
+        const updatedFilters = numericValues
+          .filter(({ column: filterColumn }) => column !== filterColumn);
+        setNumericValue(updatedFilters);
+      },
     },
   };
 
