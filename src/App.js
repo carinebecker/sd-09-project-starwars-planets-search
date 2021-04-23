@@ -1,11 +1,13 @@
 import React from 'react';
+import Table from './Table';
+import Provider from './context/Provider';
 import './App.css';
-import fetchApi from './helpers/FetchApi';
 
 function App() {
-  fetchApi();
   return (
-    <span>Bora fazer esse trem!!!</span>
+    <Provider>
+      <Table />
+    </Provider>
   );
 }
 
