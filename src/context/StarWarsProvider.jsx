@@ -4,7 +4,21 @@ import Context from './Context';
 import fetchApi from '../services/fetchApi';
 
 function StarWarsProvider({ children }) {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
+
+  const searchPlanetByName = ({ target: { value } }) => {
+    setFilters({
+      ...filters,
+      filterByName: {
+        name: value,
+      },
+    });
+  };
 
   const handleFetchApi = async () => {
     const result = await fetchApi();
@@ -17,6 +31,8 @@ function StarWarsProvider({ children }) {
 
   const contextValue = {
     data,
+    filters,
+    searchPlanetByName,
   };
 
   return (
