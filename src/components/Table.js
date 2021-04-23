@@ -3,11 +3,23 @@ import StarwarsContext from '../context/StarwarsContext';
 
 const Table = () => {
   const { data } = useContext(StarwarsContext);
+  console.log(data)
   return (
-    <div>
-      heloo worls
-      { console.log(data[0]) }
-    </div>
+    <table>
+      {/* <thead>
+        <tr>
+          { !data.results ? <tr />
+            : Object.keys(data.results[0]).map((value) => <th key={ value }>{value}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        { !data.results ? <tr />
+          : data.results.map((planet) => (
+            <tr key={ planet.name }>
+              {Object.values(planet).map((value) => (<td key={ value }>{value}</td>))}
+            </tr>))}
+      </tbody> */}
+    </table>
   );
 };
 

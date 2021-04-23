@@ -4,7 +4,7 @@ import StarwarsContext from './StarwarsContext';
 import fetchApiPlanets from '../services/fetchPlanet';
 
 function Provider({ children }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
 
   async function getPlanets() {
     const apiResponse = await fetchApiPlanets();
@@ -15,7 +15,6 @@ function Provider({ children }) {
     getPlanets();
   }, []);
 
-  console.log(data);
   const contextValue = {
     data,
   };
