@@ -11,17 +11,22 @@ function Provider({ children }) {
       filterByName: {
         name: '',
       },
-      filterByNumericValues: [
-        {
-          column: '',
-          comparison: '',
-          value: '0',
-        },
-      ],
+      filterByNumericValues: [{
+        column: '',
+        comparison: '',
+        value: '0',
+      }],
     },
   };
 
   const [state, setState] = useState(initialState);
+  const [columnOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     async function getPlanetsFromAPI() {
@@ -44,22 +49,9 @@ function Provider({ children }) {
     }));
   }
 
-  // function handleDropdownInput({ name, value }) {
-  //   setState((lastState) => ({
-  //     ...lastState,
-  //     filters: {
-  //       ...lastState.filters,
-  //       filterByNumericValues: [
-  //         {
-  //           ...lastState.filters.filterByNumericValues[0],
-  //           [name]: value,
-  //         },
-  //       ],
-  //     },
-  //   }));
-  // }
-
   function handleFilteredInputs(object) {
+    // setColumnOptions(columnOptions
+    //   .filter((option) => option !== state.filters.filterByNumericValues[0].column));
     setState((lastState) => ({
       ...lastState,
       filters: {
@@ -67,12 +59,13 @@ function Provider({ children }) {
         filterByNumericValues: [object],
       },
     }));
+    // console.log(state.filters.filterByNumericValues);
   }
 
   const context = {
     ...state,
+    columnOptions,
     handleInput,
-    // handleDropdownInput,
     handleFilteredInputs,
   };
 

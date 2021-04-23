@@ -8,19 +8,18 @@ function FilterInput() {
     value: '0',
   };
 
+  const { handleInput,
+    handleFilteredInputs, columnOptions } = useContext(StarWarsContext);
+
   const [state, setState] = useState(componentState);
 
-  function handleComponentState({ name, value }) {
+  function handleComponentState({ target }) {
+    const { name, value } = target;
     setState((lastState) => ({
       ...lastState,
       [name]: value,
     }));
   }
-
-  const { handleInput,
-    handleDropdownInput,
-    filters,
-    handleFilteredInputs } = useContext(StarWarsContext);
 
   function createNameFilterInput() {
     return (
@@ -46,13 +45,13 @@ function FilterInput() {
           data-testid="column-filter"
           name="column"
           id="filter-column"
-          onChange={ ({ target }) => handleComponentState(target) }
+          // value={ column }
+          onChange={ handleComponentState }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {
+            columnOptions
+              .map((col) => <option key={ col } value={ col }>{col}</option>)
+          }
         </select>
       </label>
     );
@@ -65,7 +64,7 @@ function FilterInput() {
           data-testid="comparison-filter"
           name="comparison"
           id="comparison-column"
-          onChange={ ({ target }) => handleComponentState(target) }
+          onChange={ handleComponentState }
         >
           <option value="">--</option>
           <option value="maior que">maior que</option>
@@ -84,7 +83,7 @@ function FilterInput() {
         name="value"
         id="number-input"
         min="0"
-        onChange={ ({ target }) => handleComponentState(target) }
+        onChange={ handleComponentState }
       />
     );
   }
