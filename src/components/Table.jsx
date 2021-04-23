@@ -18,6 +18,7 @@ function Table() {
     isLoading,
     filters: {
       filterByName: { name },
+      filterByNumericValues,
     },
   } = useContext(TableContext);
   const [planetFilters, setPlanetFilters] = useState([]);
@@ -28,8 +29,23 @@ function Table() {
       filteredPlanets = filteredPlanets
         .filter((planet) => planet.name.includes(name));
     }
+    if (filterByNumericValues.length > 0) {
+      filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+        filteredPlanets = filteredPlanets.filter((planet) => {
+          switch (comparison) {
+          case 'maior que':
+            return +(planet[column]) > +(value);
+          case 'menor que':
+            return +(planet[column]) < +(value);
+          default:
+            return +(planet[column]) === +(value);
+          }
+        });
+      });
+    }
     setPlanetFilters(filteredPlanets);
-  }, [data, name]);
+  }, [data, name, filterByNumericValues]);
 
   if (!isLoading && planetFilters.length !== 0) {
     const tableLabel = Object.keys(data[0]);

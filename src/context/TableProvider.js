@@ -11,6 +11,7 @@ function TableProvider({ children }) {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
     },
   );
   useEffect(() => {
