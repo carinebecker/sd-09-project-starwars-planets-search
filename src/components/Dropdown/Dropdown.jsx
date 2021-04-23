@@ -13,10 +13,10 @@ export default function Dropdown({ options, dataTestID, onHandleChange, value, n
     >
       <option value="">Selecione uma opção</option>
       {
-        options.map((field) => (
+        options.map((field, index) => (
           <option
             value={ field }
-            key={ field }
+            key={ field + index }
           >
             { field }
           </option>
