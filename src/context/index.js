@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import fetchPlanetsData from '../services';
+import { fetchPlanetsData } from '../services';
 
 const initialContext = {
   isFetchingPlanets: true,
@@ -9,13 +9,7 @@ const initialContext = {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      // {
-      //   column: 'population',
-      //   comparison: 'maior que',
-      //   value: '100000',
-      // }
-    ],
+    filterByNumericValues: [],
   },
 };
 
@@ -26,6 +20,10 @@ const INITIAL_FILTERS = {
     name: '',
   },
   filterByNumericValues: [],
+  order: {
+    column: 'Name',
+    sort: 'ASC',
+  },
 };
 
 const PlanetSearchContext = createContext(initialContext);
@@ -70,6 +68,13 @@ const PlanetSearchProvider = ({ children }) => {
     }));
   };
 
+  const updateSortFilter = (newFilter) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      order: newFilter,
+    }));
+  };
+
   const context = {
     isFetchingPlanets,
     apiData,
@@ -79,6 +84,7 @@ const PlanetSearchProvider = ({ children }) => {
     updateFilterByName,
     addFilterByValue,
     removeFilterByValue,
+    updateSortFilter,
   };
 
   return (

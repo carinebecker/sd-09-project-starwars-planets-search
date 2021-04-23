@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { PlanetSearchContext } from '../context';
 import Loading from './Loading';
 import { useFilters } from '../hooks';
+import { COLUMNS_NAMES } from '../services';
 
 const renderInnerLines = (lineValue, index) => (
   <p key={ `line-${index}` }>
@@ -16,8 +17,9 @@ const renderRow = (rowData) => {
     <tr key={ rowData.name }>
       { rowEntries.map(([cellName, cellValue]) => {
         const haveMultipleLines = cellName === 'films';
+        const isNameColumn = cellName === 'name';
         return (
-          <td key={ cellName }>
+          <td key={ cellName } { ...isNameColumn && { 'data-testid': 'planet-name' } }>
             {
               haveMultipleLines
                 ? cellValue.map(renderInnerLines)
@@ -34,26 +36,11 @@ const renderTableFor = (data) => {
   const hasNoResults = data.length === 0;
   if (hasNoResults) return <p>Nenhum resultado encontrado</p>;
 
-  const columnsNames = [
-    'Name',
-    'Rotation period',
-    'Orbital period',
-    'Diameter',
-    'Climate',
-    'Gravity',
-    'Terrain',
-    'Water on surface',
-    'Population',
-    'Films',
-    'Created',
-    'Edited',
-    'Url',
-  ];
   return (
     <table>
       <thead>
         <tr>
-          { columnsNames.map((name) => <th key={ name }>{ name }</th>) }
+          { COLUMNS_NAMES.map((name) => <th key={ name }>{ name }</th>) }
         </tr>
       </thead>
       <tbody>

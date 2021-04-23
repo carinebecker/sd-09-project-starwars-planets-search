@@ -2,60 +2,17 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { PlanetSearchContext } from '../context';
 import { useValuesFilterFields } from '../hooks';
+import { makeOptionsObjectFrom, makePropObjectWith } from '../services';
+import SelectInput from './SelectInput';
+import GenericInput from './GenericInput';
+
+const TEST_ID_KEY = 'data-testid';
 
 const comparisons = [
   'maior que',
   'menor que',
   'igual a',
 ];
-
-const renderColumnsSelection = (
-  { newEntry, availableColumns, values, handleFilterChanges, disabled },
-) => {
-  const columns = values ? [values.column] : availableColumns;
-  return (
-    <select
-      { ...newEntry && { 'data-testid': 'column-filter' } }
-      name="column"
-      { ...values && { value: values.column } }
-      onChange={ handleFilterChanges }
-      disabled={ disabled }
-    >
-      { columns.map((value) => (
-        <option value={ value } key={ value }>{ value }</option>
-      )) }
-    </select>
-  );
-};
-
-const renderComparisonsSelection = (
-  { newEntry, values, handleFilterChanges, disabled },
-) => (
-  <select
-    { ...newEntry && { 'data-testid': 'comparison-filter' } }
-    name="comparison"
-    { ...values && { value: values.comparison } }
-    onChange={ handleFilterChanges }
-    disabled={ disabled }
-  >
-    { comparisons.map((value) => (
-      <option value={ value } key={ value }>{ value }</option>
-    )) }
-  </select>
-);
-
-const renderValueInput = (
-  { newEntry, values, handleFilterChanges, disabled },
-) => (
-  <input
-    type="number"
-    { ...newEntry && { 'data-testid': 'value-filter' } }
-    name="value"
-    { ...values && { value: values.value } }
-    onChange={ handleFilterChanges }
-    disabled={ disabled }
-  />
-);
 
 const renderButton = ({ newEntry, buttonCallback, param }) => (
   <button
@@ -70,23 +27,50 @@ const renderButton = ({ newEntry, buttonCallback, param }) => (
 const SearchValuesEntry = (
   { newEntry = false, filter = {}, availableColumns = [''] },
 ) => {
-  const newFieldsValues = false;
-  const values = newEntry ? newFieldsValues : filter;
   const { addFilterByValue, removeFilterByValue } = useContext(PlanetSearchContext);
-  const buttonCallback = newEntry ? addFilterByValue : removeFilterByValue;
   const [valuesFilter, handleFilterChanges] = useValuesFilterFields();
-  const params = {
-    newEntry,
-    availableColumns,
-    values,
-    handleFilterChanges,
-    disabled: !newEntry,
-  };
+
+  const buttonCallback = newEntry ? addFilterByValue : removeFilterByValue;
+  const inputProperties = ['name', 'value', 'onChange', 'disabled'];
+  const commonValues = [handleFilterChanges, !newEntry];
+  const columnsProps = makePropObjectWith(
+    inputProperties,
+    ['column', filter.column, ...commonValues],
+  );
+  const comparisonsProps = makePropObjectWith(
+    inputProperties,
+    ['comparison', filter.comparison, ...commonValues],
+  );
+  const valueProps = makePropObjectWith(
+    ['type', ...inputProperties],
+    ['number', 'value', filter.value, ...commonValues],
+  );
+
+  if (newEntry) {
+    columnsProps[TEST_ID_KEY] = 'column-filter';
+    comparisonsProps[TEST_ID_KEY] = 'comparison-filter';
+    valueProps[TEST_ID_KEY] = 'value-filter';
+  }
+
   return (
-    <div { ...!newEntry && { 'data-testid': 'filter' } }>
-      { renderColumnsSelection(params) }
-      { renderComparisonsSelection(params) }
-      { renderValueInput(params) }
+    <div { ...!newEntry && { [TEST_ID_KEY]: 'filter' } }>
+      <SelectInput
+        selectProps={ columnsProps }
+        newEntry={ newEntry }
+        options={ newEntry
+          ? makeOptionsObjectFrom(availableColumns)
+          : makeOptionsObjectFrom([filter.column]) }
+      />
+      <SelectInput
+        selectProps={ comparisonsProps }
+        newEntry={ newEntry }
+        options={ makeOptionsObjectFrom(comparisons) }
+      />
+      <GenericInput
+        inputProps={ valueProps }
+        newEntry={ newEntry }
+      />
+
       { renderButton(
         { newEntry, buttonCallback, param: newEntry ? valuesFilter : filter },
       ) }
