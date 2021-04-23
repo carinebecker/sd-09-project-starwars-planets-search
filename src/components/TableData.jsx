@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Context from '../context/Context';
+import useLogic from '../hooks/useLogic';
 
 export default function TableData() {
-  const { data, filters } = useContext(Context);
-  const [tableContent, setTableContent] = useState([]);
+  const { data, tableContent } = useContext(Context);
+  const { filteredPlanets } = useLogic();
 
   function renderTableHeader() {
     const columns = Object.keys(data[0]);
@@ -13,54 +14,6 @@ export default function TableData() {
       </th>
     ));
   }
-
-  const filteredPlanets = useCallback(() => {
-    const planetsAfterNameFilter = (planetData) => {
-      const {
-        filterByName: { name },
-      } = filters;
-      const nameFilter = planetData
-        .filter((item) => item.name.toLowerCase()
-          .includes(name.toLowerCase()));
-      return nameFilter;
-    };
-    const planetsAfterNumericFilter = () => {
-      const { filterByNumericValues } = filters;
-      if (filterByNumericValues.length) {
-        const numericFilteredPlanets = filterByNumericValues.map((item) => {
-          if (item.comparison === 'maior que') {
-            return planetsAfterNameFilter(data).filter(
-              (planet) => planet[item.column] > parseInt(item.value, 10),
-            );
-          }
-          if (item.comparison === 'menor que') {
-            return planetsAfterNameFilter(data).filter(
-              (planet) => planet[item.column] < parseInt(item.value, 10),
-            );
-          }
-          if (item.comparison === 'igual a') {
-            return planetsAfterNameFilter(data).filter(
-              (planet) => planet[item.column] === item.value,
-            );
-          }
-          return planetsAfterNameFilter(data);
-        });
-        return numericFilteredPlanets[0];
-      }
-      return planetsAfterNameFilter(data);
-    };
-
-    const planetsAfterOrderFilter = () => {
-      if (filters.order.sort === 'ASC') {
-        return planetsAfterNumericFilter()
-          .sort((a, b) => a[filters.order.column].localeCompare(b[filters.order.column]));
-      }
-      return planetsAfterNumericFilter()
-        .sort((a, b) => b[filters.order.column].localeCompare(a[filters.order.column]));
-    };
-
-    setTableContent(planetsAfterOrderFilter());
-  }, [data, filters]);
 
   function isLoading() {
     return <td>Carregando...</td>;

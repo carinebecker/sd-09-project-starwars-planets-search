@@ -22,6 +22,8 @@ function Provider({ children }) {
     'surface_water',
   ]);
 
+  const [tableContent, setTableContent] = useState([]);
+
   useEffect(() => {
     (async () => {
       const returnAPI = await fetch(
@@ -40,6 +42,8 @@ function Provider({ children }) {
     data,
     selectOptions,
     setSelectOptions,
+    tableContent,
+    setTableContent,
   };
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
