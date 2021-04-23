@@ -1,13 +1,15 @@
 import React from 'react';
-import './App.css';
+import PlanetsProvider from './contexts/PlanetsProvider';
 import Table from './components/Table';
+import Filters from './components/Filters';
 
 function App() {
   return (
-    <main>
-      <span>STAR WARS DATATABLE</span>
+    <PlanetsProvider>
+      <h1>STAR WARS DATATABLE</h1>
+      <Filters />
       <Table />
-    </main>
+    </PlanetsProvider>
   );
 }
 
