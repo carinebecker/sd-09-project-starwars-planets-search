@@ -6,18 +6,19 @@ import KeyGenerator from '../local_resources/KeyGenerator';
 const keygen = KeyGenerator();
 
 const ShowFilters = () => {
-  debugger;
   const {
     showToast,
     setShowToast,
     filters,
     setFilters } = useContext(YodaContext);
-  const toggleShowToast = ({ target }) => {
-    const index = parseInt(target.parentElement.parentElement.attributes.name.value, 10);
+  const toggleShowToast = () => {
+    const index = parseInt(
+      document.querySelector('button.close').previousElementSibling.id, 10,
+    );
 
     setShowToast(
-      [...showToast.slice(0, index),
-        ...showToast.slice(index + 1, showToast.length)],
+      [...showToast.slice(0, 0),
+        ...showToast.slice(1, showToast.length)],
     );
 
     setFilters(
@@ -41,7 +42,7 @@ const ShowFilters = () => {
             show={ showToast[index] }
           >
             <Toast.Header data-testid="filter" name={ index }>
-              <strong className="mr-auto">
+              <strong className="mr-auto" id={ index }>
                 { `Filter: ${filter.column} ${filter.comparison} ${filter.value}` }
               </strong>
             </Toast.Header>

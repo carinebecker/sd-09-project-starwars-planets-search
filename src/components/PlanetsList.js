@@ -21,7 +21,12 @@ const generateRowData = (values) => {
 };
 const generateRows = (planets) => {
   const rows = planets.map((planet) => (
-    <tr key={ gen.next().value }>{ generateRowData(Object.values(planet)) }</tr>
+    <tr
+      role="row"
+      key={ gen.next().value }
+    >
+      { generateRowData(Object.values(planet)) }
+    </tr>
   ));
   return rows;
 };
@@ -54,20 +59,17 @@ function PlanetsList() {
     data,
     setData,
     filters,
-    filteredPlanets,
-    setFilteredPlanets,
   } = useContext(YodaContext);
+  let planets = [];
 
-  let planets = filteredPlanets;
   useEffect(() => {
     GetPlanets().then((results) => {
       results.results.forEach((planet) => (delete planet.residents));
       setData(results);
-      setFilteredPlanets(results.results);
       setIsLoading(false);
     });
     return setIsLoading(true);
-  }, [setData, setIsLoading, setFilteredPlanets]);
+  }, [setData, setIsLoading]);
 
   const { filterByNumericValues } = filters.filterByNumericValues !== null
     ? filters : null;
@@ -80,7 +82,9 @@ function PlanetsList() {
     });
   }
 
-  if (planets.length !== filteredPlanets.length) { setFilteredPlanets(planets); }
+  if (data && filterByNumericValues.length === 0) { planets = data.results; }
+
+  // if (planets.length !== filteredPlanets.length) { setFilteredPlanets(planets); }
 
   if (filters && filters.filterByName && data) {
     planets = [];
