@@ -12,6 +12,8 @@ function PlanetsProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [filters, setFilters] = useState(INITIAL_STATE);
+  const [columnSelect, setColumnSelect] = useState(['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
 
   const getPlanets = async () => {
     const planetsFromApi = await fetchPlanets();
@@ -24,7 +26,7 @@ function PlanetsProvider({ children }) {
   }, []);
 
   const context = {
-    data, setData, loading, filters, setFilters,
+    data, setData, loading, filters, setFilters, columnSelect, setColumnSelect,
   };
 
   return (

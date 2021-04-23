@@ -3,12 +3,15 @@ import PlanetsContext from '../context/PlanetsContext';
 
 export default function FilterByNumericValues() {
   const [filter, setFilter] = useState({});
-  const { filters, setFilters } = useContext(PlanetsContext);
+  const { filters, setFilters,
+    columnSelect, setColumnSelect } = useContext(PlanetsContext);
 
   const handleClick = () => {
     setFilters({ ...filters,
       filterByNumericValues: [...filters.filterByNumericValues,
         { ...filter }] });
+    setColumnSelect(columnSelect
+      .filter((item) => item !== filter.column));
   };
   const handleChange = ({ target: { name, value } }) => {
     setFilter({ ...filter, [name]: value });
@@ -17,11 +20,7 @@ export default function FilterByNumericValues() {
   return (
     <div>
       <select data-testid="column-filter" name="column" onChange={ handleChange }>
-        <option value="population">population</option>
-        <option value="orbital_period">orbital_period</option>
-        <option value="diameter">diameter</option>
-        <option value="rotation_period">rotation_period</option>
-        <option value="surface_water">surface_water</option>
+        {columnSelect.map((opt) => (<option key={ opt } value={ opt }>{opt}</option>))}
       </select>
       <select data-testid="comparison-filter" name="comparison" onChange={ handleChange }>
         <option value="maior que">maior que</option>

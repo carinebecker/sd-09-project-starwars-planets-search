@@ -29,7 +29,6 @@ function StarWarsTable() {
           return true;
         }
       }));
-    console.log(filteredValue);
     return filteredValue;
   };
 
