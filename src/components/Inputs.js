@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import YodaContext from '../local_resources/Context';
+import KeyGenerator from '../local_resources/KeyGenerator';
 
+const keygen = KeyGenerator();
 const MAX_FILTERS_NUMBER = 2;
-const colunmFilter = (setFilterData, executeSearch) => (
+const colunmFilter = (setFilterData, executeSearch, columns) => (
   <Form inline>
     <Form.Control
       as="select"
@@ -13,14 +15,10 @@ const colunmFilter = (setFilterData, executeSearch) => (
       size="sm"
       name="column"
       required
-      defaultValue="population"
       onChange={ (evt) => setFilterData(evt) }
     >
-      <option>population</option>
-      <option>orbital_period</option>
-      <option>diameter</option>
-      <option>rotation_period</option>
-      <option>surface_water</option>
+      { columns.map((column) => (
+        <option key={ keygen.next().value }>{ column }</option>)) }
     </Form.Control>
     <Form.Control
       as="select"
@@ -59,6 +57,18 @@ const colunmFilter = (setFilterData, executeSearch) => (
   </Form>
 );
 
+const reorderColumns = (columns, column) => {
+  const index = columns.indexOf(column);
+  if (columns[0] === columns[index]) { return columns; }
+  const firstColumn = columns[0];
+  columns = [
+    ...columns.slice(0, 0),
+    column,
+    ...columns.slice(1, index), firstColumn,
+    ...columns.slice(index + 1, columns.length)];
+  return columns;
+};
+
 const Inputs = () => {
   const {
     setFilters,
@@ -67,10 +77,15 @@ const Inputs = () => {
     showToast,
     customizedFilter,
     setCustomizedFilter,
-    setFilterReady } = useContext(YodaContext);
-
+    setFilterReady,
+    columns,
+    setColumns } = useContext(YodaContext);
   const executeSearch = (event) => {
     event.preventDefault();
+    setColumns([
+      ...columns.slice(0, 0),
+      ...columns.slice(1, columns.length),
+    ]);
     setFilterReady(true);
     if (filters.filterByNumericValues.length >= MAX_FILTERS_NUMBER) {
       setShowToast([...showToast.slice(0, 1), true]);
@@ -95,9 +110,14 @@ const Inputs = () => {
     }
   };
 
-  const setFilterData = ({ target }) => setCustomizedFilter(
-    { ...customizedFilter, [target.name]: target.value },
-  );
-  return (colunmFilter(setFilterData, executeSearch));
+  const setFilterData = ({ target }) => {
+    let { value } = target;
+    value = target.value === '' ? '0' : target.value;
+    setCustomizedFilter(
+      { ...customizedFilter, [target.name]: value },
+    );
+    if (target.name === 'column') { setColumns(reorderColumns(columns, value)); }
+  };
+  return (colunmFilter(setFilterData, executeSearch, columns));
 };
 export default Inputs;

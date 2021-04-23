@@ -6,10 +6,20 @@ function Provider({ children }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({ filterByNumericValues: [] });
-  const [customizedFilter, setCustomizedFilter] = useState([]);
+  const [customizedFilter, setCustomizedFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
   const [filteredPlanets, setFilteredPlanets] = useState([]);
   const [showToast, setShowToast] = useState([]);
   const [filterReady, setFilterReady] = useState(false);
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
   const r2d2Context = {
     setData,
     data,
@@ -25,6 +35,8 @@ function Provider({ children }) {
     setCustomizedFilter,
     filterReady,
     setFilterReady,
+    columns,
+    setColumns,
   };
   return (
     <YodaContext.Provider value={ r2d2Context }>

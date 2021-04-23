@@ -4,13 +4,20 @@ import YodaContext from '../local_resources/Context';
 import KeyGenerator from '../local_resources/KeyGenerator';
 
 const keygen = KeyGenerator();
+const DEFAULT_COLUMNS = ['population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water'];
 
 const ShowFilters = () => {
   const {
     showToast,
     setShowToast,
     filters,
-    setFilters } = useContext(YodaContext);
+    setFilters,
+    columns,
+    setColumns } = useContext(YodaContext);
   const toggleShowToast = () => {
     const index = parseInt(
       document.querySelector('button.close').previousElementSibling.id, 10,
@@ -30,6 +37,10 @@ const ShowFilters = () => {
           ),
         ] },
     );
+
+    if (filters.filterByNumericValues === 0) {
+      setColumns([...columns.slice(0, 0), ...DEFAULT_COLUMNS]);
+    }
   };
 
   return (
