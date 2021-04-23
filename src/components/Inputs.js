@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import YodaContext from '../local_resources/Context';
 
+const MAX_FILTERS_NUMBER = 2;
 const colunmFilter = (setFilterData, executeSearch) => (
   <Form inline>
     <Form.Control
@@ -12,7 +13,7 @@ const colunmFilter = (setFilterData, executeSearch) => (
       size="sm"
       name="column"
       required
-      defaultValue="Filter by column"
+      defaultValue="population"
       onChange={ (evt) => setFilterData(evt) }
     >
       <option>population</option>
@@ -28,7 +29,7 @@ const colunmFilter = (setFilterData, executeSearch) => (
       size="sm"
       name="comparison"
       required
-      defaultValue="Define a comparator"
+      defaultValue="maior que"
       onChange={ (evt) => setFilterData(evt) }
     >
       <option>maior que</option>
@@ -58,23 +59,45 @@ const colunmFilter = (setFilterData, executeSearch) => (
   </Form>
 );
 
-const Inputs = (customizedFiltersSearch) => {
-  const { setFilters, filters } = useContext(YodaContext);
+const Inputs = () => {
+  const {
+    setFilters,
+    filters,
+    setShowToast,
+    showToast,
+    customizedFilter,
+    setCustomizedFilter,
+    setFilterReady } = useContext(YodaContext);
+
   const executeSearch = (event) => {
     event.preventDefault();
-    return (customizedFiltersSearch(filters));
-  };
-  const setFilterData = ({ target }) => {
-    if (target.value === 'Filter by column' || target.value === 'Define a comparator') {
-      return setFilters({ ...filters,
-        filterByNumericValues: { ...filters.filterByNumericValues, [target.name]: '' } });
+    setFilterReady(true);
+    if (filters.filterByNumericValues.length >= MAX_FILTERS_NUMBER) {
+      setShowToast([...showToast.slice(0, 1), true]);
+
+      setFilters(
+        { ...filters,
+          filterByNumericValues: [
+            ...filters.filterByNumericValues.slice(0, 1),
+            customizedFilter,
+          ] },
+      );
     }
-    return setFilters({ ...filters,
-      filterByNumericValues:
-      { ...filters.filterByNumericValues, [target.name]: target.value } });
+    if (filters.filterByNumericValues.length < MAX_FILTERS_NUMBER) {
+      setShowToast([...showToast.slice(0, filters.filterByNumericValues.length), true]);
+      setFilters(
+        { ...filters,
+          filterByNumericValues: [
+            ...filters.filterByNumericValues,
+            customizedFilter,
+          ] },
+      );
+    }
   };
-  return (
-    colunmFilter(setFilterData, executeSearch)
+
+  const setFilterData = ({ target }) => setCustomizedFilter(
+    { ...customizedFilter, [target.name]: target.value },
   );
+  return (colunmFilter(setFilterData, executeSearch));
 };
 export default Inputs;

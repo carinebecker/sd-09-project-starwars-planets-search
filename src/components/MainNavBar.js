@@ -3,22 +3,25 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import PropTypes from 'prop-types';
 import YodaContext from '../local_resources/Context';
 import Inputs from './Inputs';
+import ShowFilters from './ShowFilters';
 
-const MainNavBar = (props) => {
-  const { customizedFiltersSearch } = props;
-  const { setFilters } = useContext(YodaContext);
-  const getSearchData = ({ target }) => (
-    setFilters({ filterByName: { name: target.value } }));
+const MainNavBar = () => {
+  const { setFilters, filters } = useContext(YodaContext);
+  const getSearchData = ({ target }) => setFilters(
+    { ...filters, filterByName: { name: target.value } },
+  );
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href="/">Star Wars Planets Inventory</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          { Inputs(customizedFiltersSearch) }
+          { Inputs() }
+        </Nav>
+        <Nav>
+          <ShowFilters />
         </Nav>
         <Form inline>
           <FormControl
@@ -32,8 +35,5 @@ const MainNavBar = (props) => {
       </Navbar.Collapse>
     </Navbar>
   );
-};
-MainNavBar.propTypes = {
-  customizedFiltersSearch: PropTypes.func.isRequired,
 };
 export default MainNavBar;

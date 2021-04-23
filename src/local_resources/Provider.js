@@ -5,8 +5,11 @@ import YodaContext from './Context';
 function Provider({ children }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ filterByNumericValues: [] });
+  const [customizedFilter, setCustomizedFilter] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [showToast, setShowToast] = useState([]);
+  const [filterReady, setFilterReady] = useState(false);
   const r2d2Context = {
     setData,
     data,
@@ -16,6 +19,12 @@ function Provider({ children }) {
     setIsLoading,
     filters,
     setFilters,
+    showToast,
+    setShowToast,
+    customizedFilter,
+    setCustomizedFilter,
+    filterReady,
+    setFilterReady,
   };
   return (
     <YodaContext.Provider value={ r2d2Context }>

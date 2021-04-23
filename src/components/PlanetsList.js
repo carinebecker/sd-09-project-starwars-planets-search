@@ -26,22 +26,21 @@ const generateRows = (planets) => {
   return rows;
 };
 
-const getFilteredPlanets = (comparison, column, value, data) => {
+const getFilteredPlanets = (comparison, column, value, allPlanets) => {
   let planets = [];
   switch (comparison) {
   case 'maior que':
-    planets = data.results.filter(
+    planets = allPlanets.filter(
       (planet) => (parseInt(planet[column], 10) > parseInt(value, 10)),
     );
-    console.log(planets);
     return planets;
   case 'menor que':
-    planets = data.results.filter(
+    planets = allPlanets.filter(
       (planet) => (parseInt(planet[column], 10) < parseInt(value, 10)),
     );
     return planets;
   default:
-    planets = data.results.filter(
+    planets = allPlanets.filter(
       (planet) => (parseInt(planet[column], 10) === parseInt(value, 10)),
     );
     return planets;
@@ -70,25 +69,28 @@ function PlanetsList() {
     return setIsLoading(true);
   }, [setData, setIsLoading, setFilteredPlanets]);
 
-  const customizedFiltersSearch = () => {
-    const filterByNumericValues = filters.filterByNumericValues
-      ? filters.filterByNumericValues : null;
-    if (filterByNumericValues) {
-      const { column, comparison, value } = filterByNumericValues;
-      planets = getFilteredPlanets(comparison, column, value, data);
-      setFilteredPlanets(planets);
-    }
-  };
+  const { filterByNumericValues } = filters.filterByNumericValues !== null
+    ? filters : null;
+  if (filterByNumericValues && filterByNumericValues.length > 0) {
+    filterByNumericValues.forEach((filter, index) => {
+      const { column, comparison, value } = filter;
+      planets = index === 0
+        ? getFilteredPlanets(comparison, column, value, data.results)
+        : getFilteredPlanets(comparison, column, value, planets);
+    });
+  }
+
+  if (planets.length !== filteredPlanets.length) { setFilteredPlanets(planets); }
 
   if (filters && filters.filterByName && data) {
     planets = [];
     planets = filters.filterByName.name === ''
       ? data.results
       : data.results.filter(
-        (planet) => planet.name.includes(filters.filterByName.name),
+        (planet) => (
+          planet.name).toUpperCase().includes(filters.filterByName.name.toUpperCase()),
       );
   }
-  console.log(planets);
   return (
     <div>
       { isLoading
@@ -96,9 +98,7 @@ function PlanetsList() {
         : (
           <main>
             <div className="navbar-search">
-              <MainNavBar
-                customizedFiltersSearch={ customizedFiltersSearch }
-              />
+              <MainNavBar />
             </div>
             { planets.length === 0
               ? (
