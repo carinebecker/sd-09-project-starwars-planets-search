@@ -1,16 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data, filters: { filterByName: { name } } } = useContext(PlanetsContext);
-  const [searchResults, setSearchResults] = useState([]);
+  const { data, filters, setPlanetsResults, planetsResults } = useContext(PlanetsContext);
 
   const loading = () => <span>Carregando...</span>;
 
   useEffect(() => {
-    setSearchResults(Object.values(data).filter((value) => (
-      value.name.includes(name))));
-  }, [data, name]);
+    const { filterByName: { name }, filterByNumericValues } = filters;
+    const { column, comparison, value } = filterByNumericValues[0];
+
+    const planetsByName = data.filter((planet) => (
+      planet.name.toLowerCase().includes(name)));
+
+    if (comparison === 'maior que') {
+      setPlanetsResults(planetsByName.filter((planet) => (
+        Number(value) < Number(planet[column])
+      )));
+    }
+    if (comparison === 'menor que') {
+      setPlanetsResults(planetsByName.filter((planet) => (
+        Number(value) > Number(planet[column])
+      )));
+    }
+    if (comparison === 'igual a') {
+      setPlanetsResults(planetsByName.filter((planet) => (
+        Number(value) === Number(planet[column])
+      )));
+    }
+    if (comparison === '') {
+      setPlanetsResults(planetsByName);
+    }
+  }, [data, filters, setPlanetsResults]);
 
   return (
     <section>
@@ -22,10 +43,10 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { searchResults && searchResults.map((planet, index) => (
-            <tr key={ index }>
-              { Object.values(planet).map((value) => (
-                <td key={ value }>{value}</td>)) }
+          { planetsResults && planetsResults.map((planet) => (
+            <tr key={ planet.name }>
+              { Object.values(planet).map((attribute) => (
+                <td key={ attribute }>{attribute}</td>)) }
             </tr>
           )) }
         </tbody>

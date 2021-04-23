@@ -3,15 +3,27 @@ import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 import getPlanets from '../services/api';
 
+const initialState = {
+  filterByName: {
+    name: '',
+  },
+  filterByNumericValues: [
+    {
+      column: '',
+      comparison: '',
+      value: '',
+    },
+  ],
+};
+
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
-  const [text, editText] = useState('');
+  const [filters, setFilters] = useState(initialState);
+  const [planetsResults, setPlanetsResults] = useState([]);
 
   useEffect(() => {
     getPlanets().then((results) => {
-      const filterResults = results.filter((result) => delete result.residents);
-      setData(filterResults);
+      setData(results.filter((result) => delete result.residents));
     });
   }, []);
 
@@ -19,8 +31,8 @@ function PlanetsProvider({ children }) {
     data,
     filters,
     setFilters,
-    text,
-    editText,
+    planetsResults,
+    setPlanetsResults,
   };
 
   return (
