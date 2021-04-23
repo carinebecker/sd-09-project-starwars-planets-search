@@ -43,6 +43,7 @@ export default function Planets({ children }) {
 
   useEffect(() => {
     const filterName = () => {
+      console.log(filters);
       const {
         filterByNumericValues: [{ column, comparison, value }],
       } = filters;

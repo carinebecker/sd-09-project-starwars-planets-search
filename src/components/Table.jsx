@@ -9,7 +9,7 @@ export default function Table() {
     setFilter, filters, filteredData: planets,
   } = useContext(PlanetsContext);
 
-  const [options, setOptions] = useState([
+  const [filterColumns, setFilterColumns] = useState([
     'population',
     'orbital_period',
     'diameter',
@@ -17,17 +17,23 @@ export default function Table() {
     'surface_water',
   ]);
 
-  const [copyFilters, setCopyFilters] = useState(filters);
+  const [comparisons, setComparisons] = useState([
+    'menor que',
+    'igual a',
+    'maior que',
+  ]);
+
+  const [copyFilters, setCopyFilters] = useState({
+    column: '',
+    comparison: '',
+    value: 0,
+  });
 
   const handleChange = ({ target: { name, value } }) => {
     if (name !== 'name') {
       setCopyFilters({
         ...copyFilters,
-        filterByNumericValues: [
-          { ...copyFilters.filterByNumericValues[0],
-            [name]: value,
-          },
-        ],
+        [name]: value,
       });
     } else {
       setFilter({
@@ -38,6 +44,22 @@ export default function Table() {
         },
       });
     }
+  };
+
+  const handleClick = () => {
+    // setColumns(filterColumns.filter((column) => column !== value));
+    const { column, comparison } = copyFilters;
+    setFilter({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        copyFilters,
+      ].filter((obj) => obj.column.length > 0),
+    });
+
+    setFilterColumns(filterColumns.filter((col) => column !== col));
+
+    setComparisons(comparisons.filter((comp) => comparison !== comp));
   };
 
   const table = () => {
@@ -57,11 +79,11 @@ export default function Table() {
             onChange={ handleChange }
           >
 
-            <option value="">Filtrar por coluna</option>
+            {/* <option value="">Filtrar por coluna</option> */}
 
-            {options.map((option) => (
-              <option key={ option } value={ option }>
-                {option}
+            {filterColumns.map((column) => (
+              <option key={ column } value={ column }>
+                {column}
               </option>
             ))}
 
@@ -75,9 +97,12 @@ export default function Table() {
             name="comparison"
           >
             <option value="">Tipo de filtro</option>
-            <option value="maior que">maior que</option>
-            <option value="menor que">menor que</option>
-            <option value="igual a">igual a</option>
+
+            {comparisons.map((comparison) => (
+              <option key={ comparison } value={ comparison }>
+                {comparison}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -94,7 +119,7 @@ export default function Table() {
             <button
               type="button"
               data-testid="button-filter"
-              onClick={ () => setFilter(copyFilters) }
+              onClick={ handleClick }
             >
               Pesquisar
             </button>
