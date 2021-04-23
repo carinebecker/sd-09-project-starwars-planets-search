@@ -13,7 +13,9 @@ export default function FiltersProvider({ children }) {
     },
     setters: {
       setNameQuery,
-      setNumericValue,
+      addNewNumericFilter(info) {
+        setNumericValue([...numericValues, info]);
+      },
     },
   };
 

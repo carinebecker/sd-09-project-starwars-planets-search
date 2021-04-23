@@ -11,7 +11,7 @@ export default function Dropdown({ options, dataTestID, onHandleChange, value, n
       onChange={ onHandleChange }
       data-testid={ dataTestID }
     >
-      <option value="">Selecione uma opção</option>
+      {/* <option value="">Selecione uma opção</option> */}
       {
         options.map((field, index) => (
           <option
