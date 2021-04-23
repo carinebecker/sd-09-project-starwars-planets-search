@@ -1,0 +1,86 @@
+* {
+  font-size: 8px;
+}
+
+.title {
+  font-size: 15px;
+  text-align: center;
+}
+
+.name {
+  display: inline-block;
+  margin-left: 1px;
+  width: 50px;
+}
+
+.rotation {
+  display: inline-block;
+  margin-left: 1px;
+  width: 50px;
+}
+
+.orbital {
+  display: inline-block;
+  margin-left: 1px;
+  width: 70px;
+}
+
+.diameter {
+  display: inline-block;
+  margin-left: 5px;
+  width: 30px;
+}
+
+.climate {
+  display: inline-block;
+  margin-left: 5px;
+  width: 60px;
+}
+
+.gravity {
+  display: inline-block;
+  margin-left: 40px;
+  width: 30px;
+}
+
+.terrain {
+  display: inline-block;
+  margin-left: 115px;
+  width: 30px;
+}
+
+.surface {
+  display: inline-block;
+  margin-left: 100px;
+  width: 50px;
+}
+
+.population {
+  display: inline-block;
+  margin-left: 5px;
+  width: 50px;
+}
+
+.films {
+  display: inline-block;
+  margin-left: 60px;
+  width: 50px;
+}
+
+.created {
+  display: inline-block;
+  margin-left: 130px;
+  width: 50px;
+}
+
+.edited {
+  display: inline-block;
+  margin-left: 70px;
+  width: 50px;
+}
+
+.url {
+  display: inline-block;
+  margin-left: 5px;
+  width: 300px;
+}

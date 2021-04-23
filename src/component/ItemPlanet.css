@@ -1,0 +1,79 @@
+.field-name {
+  display: inline-block;
+  margin-left: 10px;
+  width: 50px;
+}
+
+.field-rotation {
+  display: inline-block;
+  margin-left: 10px;
+  width: 50px;
+}
+
+.field-orbital {
+  display: inline-block;
+  margin-left: 7px;
+  width: 50px;
+}
+
+.field-diameter {
+  display: inline-block;
+  margin-left: 10px;
+  width: 50px;
+}
+
+.field-climate {
+  display: inline-block;
+  margin-left: 1px;
+  width: 75px;
+}
+
+.field-gravity {
+  display: inline-block;
+  margin-left: 1px;
+  width: 150px;
+}
+
+.field-terrain {
+  display: inline-block;
+  margin-left: 1px;
+  text-align: left;
+  width: 130px;
+}
+
+.field-surface {
+  display: inline-block;
+  margin-left: 20px;
+  text-align: left;
+  width: 20px;
+}
+
+.field-population {
+  display: inline-block;
+  margin-left: 18px;
+  width: 50px;
+}
+
+.field-films {
+  display: inline-block;
+  margin-left: 10px;
+  width: 180px;
+}
+
+.field-created {
+  display: inline-block;
+  margin-left: 10px;
+  width: 120px;
+}
+
+.field-edited {
+  display: inline-block;
+  margin-left: 10px;
+  width: 150px;
+}
+
+.field-url {
+  display: inline-block;
+  margin-left: 10px;
+  width: 200px;
+}
