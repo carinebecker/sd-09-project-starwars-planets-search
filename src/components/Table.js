@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Table = () => {
-  const { dataFilter } = useContext(StarWarsContext);
+  const { dataFilterByName } = useContext(StarWarsContext);
   return (
     <table>
       <thead>
@@ -23,7 +23,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {dataFilter.map((planet, index) => {
+        {dataFilterByName.map((planet, index) => {
           const { climate, created, diameter, edited, films, gravity, name,
             orbital_period: orbitalPeriod, population, rotation_period: rotationPeriod,
             surface_water: surfaceWater, terrain, url } = planet;

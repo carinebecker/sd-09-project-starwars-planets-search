@@ -5,37 +5,74 @@ import { getStarWarsData } from '../services/starWarsAPI';
 
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
-  const [dataFilter, setDataFilter] = useState([]);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
-
+  const [dataFilterByName, setDataFilterByName] = useState([]);
+  const [filters, setFilters] = useState(
+    { filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: 0,
+      },
+    ] },
+  );
   const getData = async () => {
     const dataStarWars = await getStarWarsData();
     setData(dataStarWars);
-    setDataFilter(dataStarWars);
+    setDataFilterByName(dataStarWars);
   };
 
-  function saveFilters({ target }) {
-    const { value } = target;
-    setFilters({
-      filterByName: {
-        name: value.toLowerCase(),
-      } });
+  function saveFilter({ target }) {
+    const { value, name } = target;
+    if (name === 'name') {
+      setFilters(
+        { ...filters,
+          filterByName: { [name]: value } },
+      );
+    } else {
+      setFilters(
+        { ...filters,
+          filterByNumericValues: [
+            {
+              ...filters.filterByNumericValues[0],
+              [name]: value,
+            },
+          ],
+        },
+      );
+    }
   }
-
-  useEffect(() => {
-    const newData = data.filter(({ name }) => name.toLowerCase()
-      .includes(filters.filterByName.name.toLowerCase()));
-    setDataFilter(newData);
-  }, [data, filters]);
+  const handleChangeFilter = () => {
+    const { column, comparison, value } = filters.filterByNumericValues[0];
+    const newData = dataFilterByName.filter((planet) => {
+      if (comparison === 'maior que') {
+        return Number(planet[column]) > Number(value);
+      }
+      if (comparison === 'menor que') {
+        return Number(planet[column]) < Number(value);
+      }
+      return Number(planet[column]) === Number(value);
+    });
+    setDataFilterByName(newData);
+  };
 
   useEffect(() => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const newData = data.filter((planet) => planet.name.toLowerCase()
+      .includes(filters.filterByName.name));
+    setDataFilterByName(newData);
+  }, [data, filters.filterByName.name]);
+
   const context = {
-    dataFilter,
+    dataFilterByName,
     filters,
-    saveFilters,
+    saveFilter,
+    handleChangeFilter,
   };
 
   return (
