@@ -1,17 +1,16 @@
 import React, { useContext, useState } from 'react';
 import myContext from '../context/contextAPI';
+import RadioSort from './RadioSort';
 
 function renderInputSearch(setName) {
   return (
-    <label htmlFor="inputSearch">
-      { 'Search: ' }
-      <input
-        data-testid="name-filter"
-        id="inputSearch"
-        onChange={ (evt) => setName(evt.target.value) }
-        placeholder="Insert Planet"
-      />
-    </label>
+    <input
+      className="input-planet"
+      data-testid="name-filter"
+      id="inputSearch"
+      onChange={ (evt) => setName(evt.target.value) }
+      placeholder="Insert Planet &#128269;"
+    />
   );
 }
 
@@ -42,7 +41,7 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
   ];
 
   return (
-    <fieldset className="setfield-filter">
+    <fieldset className="fieldset-filter">
       <legend>Filters</legend>
       <div className="container-inputs">
         <label htmlFor="select-column">
@@ -77,7 +76,7 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
           </select>
         </label>
         <label htmlFor="input-filter">
-          { 'Value: '}
+          { 'Value '}
           <input
             value={ value }
             onChange={ (evt) => setFiltersInputs(
@@ -102,7 +101,7 @@ function renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInput
           } }
           type="button"
         >
-          Filtrar
+          Filter
         </button>
       </div>
       { renderListFilters(filterByNumericValues, setFiltersValues) }
@@ -114,11 +113,14 @@ function Filter() {
   const [filtersInputs, setFiltersInputs] = useState(
     { column: 'population', comparison: 'maior que', value: '' },
   );
-  const { setName, setFiltersValues, filters } = useContext(myContext);
+  const { setName, setFiltersValues, filters, data } = useContext(myContext);
   return (
-    <div className="container-filters">
+    <div className="container-filters-main">
       { renderInputSearch(setName) }
-      { renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInputs) }
+      <div className="container-filters">
+        { (data.length > 0) && <RadioSort /> }
+        { renderFilters(setFiltersValues, filters, filtersInputs, setFiltersInputs) }
+      </div>
     </div>
   );
 }

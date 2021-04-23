@@ -44,12 +44,30 @@
   margin: 0;
 }
 
-.container-filters {
+.input-filter, .select-filter {
+  background-color: white;
+  border-radius: 5px;
+  padding: 1px 5px;
+  width: 120px;
+}
+
+.input-planet {
+  padding: 5px 10px;
+  width: 150px;
+}
+
+.container-filters-main {
   align-items: center;
   background-color: black;
   display: flex;
+  flex-direction: column;
+}
+
+.container-filters {
+  display: flex;
   justify-content: space-around;
-  padding: 0 10px 10px;
+  margin: 10px 0;
+  width: 100%;
 }
 
 .header {
@@ -64,13 +82,14 @@
   background-size: cover;
 }
 
-.setfield-filter {
+.fieldset-filter {
   border: solid rgb(189, 189, 2) 1.5px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   text-align: center;
-  width: 60%;
+  width: 50%;
 }
 
 .container-inputs {
@@ -110,4 +129,27 @@ td {
   font-size: 20px;
   font-weight: 900;
   margin-left: 10px;
+}
+
+.fieldset-sort {
+  align-items: center;
+  border: solid rgb(189, 189, 2) 1.5px;
+  border-radius: 5px;
+  display: flex;
+  height: 55px;
+  justify-content: space-around;
+  text-align: center;
+  width: 25%;
+}
+
+.container-radio {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-around;
+}
+
+.select-column-sort, .btn-sort {
+  height: 20px;
 }
