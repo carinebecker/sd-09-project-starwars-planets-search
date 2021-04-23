@@ -17,15 +17,16 @@ class Provider extends Component {
         },
         filterByNumericValues: [
           {
-            column: 'population',
-            comparison: 'maior que',
-            value: '100000',
+            column: '',
+            comparison: '',
+            value: 0,
           },
         ],
       },
     };
     this.getPlanetsData = this.getPlanetsData.bind(this);
     this.setNameFilter = this.setNameFilter.bind(this);
+    this.setNumberFilter = this.setNumberFilter.bind(this);
     this.filterPlanets = this.filterPlanets.bind(this);
   }
 
@@ -43,26 +44,70 @@ class Provider extends Component {
     this.setState({
       planetsData: planetsArray,
       filteredPlanets: planetsArray,
+      filteredPlanetsNumber: planetsArray,
       fetchingData: false,
     });
   }
 
-  setNameFilter(nameFilter) {
+  setNameFilter(name) {
     const { filters } = this.state;
+    const typeOfFilter = 'filterByName';
     this.setState({
       filters: {
         ...filters,
-        filterByName: { name: nameFilter },
-      } }, () => this.filterPlanets());
+        filterByName: { name },
+      } }, () => { this.filterPlanets(typeOfFilter); });
   }
 
-  filterPlanets() {
-    const { planetsData, filters } = this.state;
-    const { filterByName } = filters;
+  setNumberFilter(column, comparison, value) {
+    const { filters } = this.state;
+    const typeOfFilter = 'filterByNumericValues';
+    this.setState({
+      filters: {
+        ...filters,
+        filterByNumericValues: [{
+          column, comparison, value,
+        }, ...filters.filterByNumericValues],
+      } }, () => { this.filterPlanets(typeOfFilter); });
+  }
 
-    const filteredArray = planetsData
-      .filter(({ name }) => name.includes(filterByName.name));
-    this.setState({ filteredPlanets: filteredArray });
+  filterPlanets(typeOfFilter) {
+    const { planetsData, filters } = this.state;
+    const { filterByName, filterByNumericValues } = filters;
+    const [{ column, comparison, value }] = filterByNumericValues;
+
+    switch (typeOfFilter) {
+    case 'filterByNumericValues': {
+      switch (comparison) {
+      case 'menor que': {
+        const filteredArray = planetsData
+          .filter((item) => (parseInt(item[column], 10) < parseInt(value, 10)));
+        this.setState({ filteredPlanets: filteredArray });
+        break;
+      }
+      case 'maior que': {
+        const filteredArray = planetsData
+          .filter((item) => (parseInt(item[column], 10) > parseInt(value, 10)));
+        this.setState({ filteredPlanets: filteredArray });
+        break;
+      }
+      case 'igual a': {
+        const filteredArray = planetsData
+          .filter((item) => (parseInt(item[column], 10) === parseInt(value, 10)));
+        this.setState({ filteredPlanets: filteredArray });
+        break;
+      }
+      default:
+        break;
+      }
+      break;
+    }
+    default: {
+      const filteredArray = planetsData
+        .filter(({ name }) => name.includes(filterByName.name));
+      this.setState({ filteredPlanets: filteredArray });
+    }
+    }
   }
 
   render() {
@@ -70,6 +115,7 @@ class Provider extends Component {
       ...this.state,
       getPlanetsData: this.getPlanetsData,
       setFilterByName: this.setNameFilter,
+      setNumberFilters: this.setNumberFilter,
       filterTable: this.filterPlanets,
     };
     const { children } = this.props;
