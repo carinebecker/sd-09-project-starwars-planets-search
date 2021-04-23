@@ -19,14 +19,19 @@ class Provider extends Component {
           {
             column: '',
             comparison: '',
-            value: 0,
+            value: '',
           },
         ],
+        order: {
+          column: '',
+          sort: '',
+        },
       },
     };
     this.getPlanetsData = this.getPlanetsData.bind(this);
     this.setNameFilter = this.setNameFilter.bind(this);
     this.setNumberFilter = this.setNumberFilter.bind(this);
+    this.clearNumberFilters = this.clearNumberFilters.bind(this);
     this.filterPlanets = this.filterPlanets.bind(this);
   }
 
@@ -71,8 +76,22 @@ class Provider extends Component {
       } }, () => { this.filterPlanets(typeOfFilter); });
   }
 
+  clearNumberFilters(columnSelected) {
+    const { filters, planetsData } = this.state;
+    const { filterByNumericValues } = filters;
+    this.setState({
+      filters: {
+        ...filters,
+        filterByNumericValues: [
+          ...filterByNumericValues.filter(({ column }) => column !== columnSelected),
+        ],
+      },
+      filteredPlanets: planetsData,
+    });
+  }
+
   filterPlanets(typeOfFilter) {
-    const { planetsData, filters } = this.state;
+    const { planetsData, filteredPlanets, filters } = this.state;
     const { filterByName, filterByNumericValues } = filters;
     const [{ column, comparison, value }] = filterByNumericValues;
 
@@ -80,19 +99,19 @@ class Provider extends Component {
     case 'filterByNumericValues': {
       switch (comparison) {
       case 'menor que': {
-        const filteredArray = planetsData
+        const filteredArray = filteredPlanets
           .filter((item) => (parseInt(item[column], 10) < parseInt(value, 10)));
         this.setState({ filteredPlanets: filteredArray });
         break;
       }
       case 'maior que': {
-        const filteredArray = planetsData
+        const filteredArray = filteredPlanets
           .filter((item) => (parseInt(item[column], 10) > parseInt(value, 10)));
         this.setState({ filteredPlanets: filteredArray });
         break;
       }
       case 'igual a': {
-        const filteredArray = planetsData
+        const filteredArray = filteredPlanets
           .filter((item) => (parseInt(item[column], 10) === parseInt(value, 10)));
         this.setState({ filteredPlanets: filteredArray });
         break;
@@ -116,6 +135,7 @@ class Provider extends Component {
       getPlanetsData: this.getPlanetsData,
       setFilterByName: this.setNameFilter,
       setNumberFilters: this.setNumberFilter,
+      resetNumberFilters: this.clearNumberFilters,
       filterTable: this.filterPlanets,
     };
     const { children } = this.props;
