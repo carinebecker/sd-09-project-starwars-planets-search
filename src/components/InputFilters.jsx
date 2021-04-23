@@ -18,8 +18,16 @@ function InputFilters() {
   const { data, filteredPlanets, setFilteredPlanets } = useContext(PlanetsContext);
   const dataBaseCopy = [...data];
   const [filters, setFilters] = useState(defaultFilters);
-  const handleChange = ({ target }) => {
+  const handleChangeByName = ({ target }) => {
     setFilters({ ...filters, filterByName: { name: target.value } });
+  };
+
+  console.log(filters);
+
+  const handleChangeByNumeric = ({ target }) => {
+    const obj = { ...filters };
+    obj.filterByNumericValues[0][target.name] = target.value;
+    setFilters(obj);
   };
 
   useEffect(() => {
@@ -31,9 +39,9 @@ function InputFilters() {
       return true;
     };
     const applyFilter = () => {
+      // filter by name
       const newPlanetsArrayFiltered = dataBaseCopy
         .filter((planet) => planet.name.includes((filters.filterByName.name)));
-      // filter by name
       if (!verifyEqualityOfArrays(filteredPlanets, newPlanetsArrayFiltered)) {
         setFilteredPlanets(newPlanetsArrayFiltered);
       }
@@ -43,12 +51,42 @@ function InputFilters() {
   }, [dataBaseCopy, filters, filteredPlanets, setFilteredPlanets]);
 
   return (
-    <input
-      type="text"
-      data-testid="name-filter"
-      value={ filters.filterByName.name }
-      onChange={ handleChange }
-    />
+    <section>
+      <input
+        type="text"
+        data-testid="name-filter"
+        value={ filters.filterByName.name }
+        onChange={ handleChangeByName }
+      />
+      <label htmlFor="column-filter">
+        Column-filter
+        <select
+          name="column"
+          id="column-filter"
+          data-testid="column-filter"
+          onChange={ handleChangeByNumeric }
+        >
+          <option value="">select</option>
+          <option value="orbital_period">orbital period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+      </label>
+      <label htmlFor="comparison-filter">
+        Comparison-filter
+        <select
+          name="comparison"
+          id="comparison-filter"
+          data-testid="comparison-filter"
+          onChange={ handleChangeByNumeric }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+      </label>
+    </section>
   );
 }
 
