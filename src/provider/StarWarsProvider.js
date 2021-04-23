@@ -141,9 +141,7 @@ const Provider = ({ children }) => {
       .then(fetchSuccess);
   };
 
-  useEffect(() => {
-    fetchPlanets();
-  }, []);
+  useEffect(fetchPlanets, []);
 
   const context = {
     planets,
