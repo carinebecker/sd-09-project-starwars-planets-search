@@ -14,7 +14,7 @@ function PlanetsProvider({ children }) {
       setFilteredPlanets(planetsList);
     };
     if (data.length === 0) {
-      getPlanets(); 
+      getPlanets();
     }
   }, [data]);
 

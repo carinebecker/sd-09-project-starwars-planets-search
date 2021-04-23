@@ -1,43 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import PlanetsContext from '../context/PlanetsContext';
 
 const defaultFilters = {
-  filters:
-  {
-    filterByName: {
-      name: '',
-    },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: 'maior que',
-        value: '',
-      },
-    ],
+  filterByName: {
+    name: '',
   },
+  filterByNumericValues: [
+    {
+      column: '',
+      comparison: 'maior que',
+      value: '',
+    },
+  ],
 };
 
 function InputFilters() {
-  const [inputValue, setInputValue] = useState('');
+  const { data, filteredPlanets, setFilteredPlanets } = useContext(PlanetsContext);
+  const dataBaseCopy = [...data];
   const [filters, setFilters] = useState(defaultFilters);
   const handleChange = ({ target }) => {
-    setInputValue(target.value);
+    setFilters({ ...filters, filterByName: { name: target.value } });
   };
 
   useEffect(() => {
-    const filterByName = () => {
-      const filter = { ...filters, filterByName: { name: inputValue },
-      };
-      setFilters(filter);
+    const verifyEqualityOfArrays = (array1, array2) => {
+      if (array1.length !== array2.length) return false;
+      for (let index = 0; index < array1.length; index += 1) {
+        if (array1[index].name !== array2[index].name) return false;
+      }
+      return true;
+    };
+    const applyFilter = () => {
+      const newPlanetsArrayFiltered = dataBaseCopy
+        .filter((planet) => planet.name.includes((filters.filterByName.name)));
+      // filter by name
+      if (!verifyEqualityOfArrays(filteredPlanets, newPlanetsArrayFiltered)) {
+        setFilteredPlanets(newPlanetsArrayFiltered);
+      }
     };
 
-    filterByName();
-  });
+    applyFilter();
+  }, [dataBaseCopy, filters, filteredPlanets, setFilteredPlanets]);
 
   return (
     <input
       type="text"
       data-testid="name-filter"
-      value={ inputValue }
+      value={ filters.filterByName.name }
       onChange={ handleChange }
     />
   );
