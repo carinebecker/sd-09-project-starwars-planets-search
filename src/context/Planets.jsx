@@ -8,13 +8,21 @@ export default function Planets({ children }) {
   const [loading, setLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [filters, setFilter] = useState({
-    filteredByName: {
+    filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   });
   const context = {
     data,
     filteredData,
+    setFilteredData,
     setData,
     loading,
     filters,
@@ -35,9 +43,29 @@ export default function Planets({ children }) {
 
   useEffect(() => {
     const filterName = () => {
+      const {
+        filterByNumericValues: [{ column, comparison, value }],
+      } = filters;
       const filteredPlanetsByName = data.filter((planet) => planet.name.toLowerCase()
-        .includes(filters.filteredByName.name));
+        .includes(filters.filterByName.name));
       setFilteredData(filteredPlanetsByName);
+      switch (comparison) {
+      case 'menor que':
+        setFilteredData(filteredPlanetsByName
+          .filter((planet) => +(planet[column]) < +value));
+        break;
+      case 'maior que':
+        setFilteredData(filteredPlanetsByName
+          .filter((planet) => +(planet[column]) > +value));
+        break;
+      case 'igual a':
+        setFilteredData(filteredPlanetsByName
+          .filter((planet) => +(planet[column]) === +value));
+        break;
+      default:
+        setFilteredData(filteredPlanetsByName);
+        break;
+      }
     };
     filterName();
   }, [filters, data]);

@@ -9,13 +9,33 @@ h1 {
   font-weight: 500;
 }
 
-input {
+.nameFilter {
   border: none;
   font-size: 18px;
   height: 24px;
   outline: none;
   padding:2px;
   width:15rem;
+}
+
+.valueFilter {
+  border: none;
+  font-size: 18px;
+  height: 22px;
+  outline: none;
+  width:14.75rem;
+  margin: 0.55rem 0;
+}
+
+select {
+  outline: none;
+  height: 1.5rem;
+  width: 15rem;
+  margin-top: 0.55rem;
+}
+
+button {
+  margin-bottom: 0.55rem;
 }
 
 table {
