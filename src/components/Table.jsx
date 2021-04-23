@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Table() {
   return (
-    <table>
-      <th>pranetaaa</th>
-      <tr>rowww</tr>
-    </table>
+    <p></p>
   );
 }
 
