@@ -18,7 +18,8 @@ function PlanetsProvider({ children }) {
     }
   }, [data]);
 
-  const context = { data, filteredPlanets, setFilteredPlanets };
+  const context = {
+    data, filteredPlanets, setFilteredPlanets };
   return (
     <main>
       <PlanetsContext.Provider value={ context }>

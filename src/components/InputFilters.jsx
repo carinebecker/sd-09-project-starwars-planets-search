@@ -5,30 +5,38 @@ const defaultFilters = {
   filterByName: {
     name: '',
   },
-  filterByNumericValues: [
-    {
-      column: '',
-      comparison: 'maior que',
-      value: '',
-    },
-  ],
+  filterByNumericValues: [],
+};
+
+const defaultNumericFilters = {
+  column: 'population',
+  comparison: 'maior que',
+  value: '',
 };
 
 function InputFilters() {
   const { data, filteredPlanets, setFilteredPlanets } = useContext(PlanetsContext);
   const dataBaseCopy = [...data];
-  const [filters, setFilters] = useState(defaultFilters);
-  const handleChangeByName = ({ target }) => {
-    setFilters({ ...filters, filterByName: { name: target.value } });
-  };
+  const [allFilters, setAllFilters] = useState(defaultFilters);
+  const [numericFilters, setNumericFilters] = useState(defaultNumericFilters);
 
-  console.log(filters);
+  const handleChangeByName = ({ target }) => {
+    setAllFilters({ ...allFilters, filterByName: { name: target.value } });
+  };
 
   const handleChangeByNumeric = ({ target }) => {
-    const obj = { ...filters };
-    obj.filterByNumericValues[0][target.name] = target.value;
-    setFilters(obj);
+    const obj = { ...numericFilters };
+    obj[target.name] = target.value;
+    setNumericFilters(obj);
   };
+
+  const handleClickSubmitFilter = () => {
+    const arrayOfFilters = [...allFilters.filterByNumericValues];
+    arrayOfFilters.push(numericFilters);
+    setAllFilters({ ...allFilters, filterByNumericValues: arrayOfFilters });
+  };
+
+  console.log(allFilters);
 
   useEffect(() => {
     const verifyEqualityOfArrays = (array1, array2) => {
@@ -38,24 +46,25 @@ function InputFilters() {
       }
       return true;
     };
-    const applyFilter = () => {
+
+    const applyFilterByName = () => {
       // filter by name
       const newPlanetsArrayFiltered = dataBaseCopy
-        .filter((planet) => planet.name.includes((filters.filterByName.name)));
+        .filter((planet) => planet.name.includes((allFilters.filterByName.name)));
       if (!verifyEqualityOfArrays(filteredPlanets, newPlanetsArrayFiltered)) {
         setFilteredPlanets(newPlanetsArrayFiltered);
       }
     };
 
-    applyFilter();
-  }, [dataBaseCopy, filters, filteredPlanets, setFilteredPlanets]);
+    applyFilterByName();
+  }, [dataBaseCopy, allFilters, filteredPlanets, setFilteredPlanets]);
 
   return (
     <section>
       <input
         type="text"
         data-testid="name-filter"
-        value={ filters.filterByName.name }
+        value={ allFilters.filterByName.name }
         onChange={ handleChangeByName }
       />
       <label htmlFor="column-filter">
@@ -65,9 +74,10 @@ function InputFilters() {
           id="column-filter"
           data-testid="column-filter"
           onChange={ handleChangeByNumeric }
+          value={ numericFilters.column }
         >
-          <option value="">select</option>
-          <option value="orbital_period">orbital period</option>
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
           <option value="surface_water">surface_water</option>
@@ -80,12 +90,27 @@ function InputFilters() {
           id="comparison-filter"
           data-testid="comparison-filter"
           onChange={ handleChangeByNumeric }
+          value={ numericFilters.comparison }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
           <option value="igual a">igual a</option>
         </select>
       </label>
+      <input
+        name="value"
+        type="number"
+        data-testid="value-filter"
+        onChange={ handleChangeByNumeric }
+        value={ numericFilters.value }
+      />
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ handleClickSubmitFilter }
+      >
+        apply filter
+      </button>
     </section>
   );
 }
