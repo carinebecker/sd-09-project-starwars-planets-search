@@ -16,9 +16,15 @@ const generateHeader = (keys) => {
 };
 
 const generateRowData = (values) => {
-  const rowData = values.map((value) => (<td key={ gen.next().value }>{ value }</td>));
+  const rowData = values.map((value) => {
+    if (values[0] === value) {
+      return (<td data-testid="planet-name" key={ gen.next().value }>{ value }</td>);
+    }
+    return (<td key={ gen.next().value }>{ value }</td>);
+  });
   return rowData;
 };
+
 const generateRows = (planets) => {
   const rows = planets.map((planet) => (
     <tr
@@ -55,8 +61,24 @@ const getFilteredPlanets = (comparison, column, value, allPlanets) => {
 const sortPlanets = (planets, order) => {
   const BIGGER = 1;
   const MINOR = -1;
+  const numberFields = [
+    'population',
+    'rotation_period',
+    'orbital_period',
+    'diameter',
+    'surface_water',
+    'population'];
+
   if (order.sort === 'ASC') {
+    if (numberFields.some((field) => order.column === field)) {
+      return planets.sort(
+        (a, b) => (parseInt(a[order.column], 10) - parseInt(b[order.column], 10)));
+    }
     return planets.sort((a, b) => (a[order.column] > b[order.column] ? BIGGER : MINOR));
+  }
+  if (numberFields.some((field) => order.column === field)) {
+    return planets.sort(
+      (a, b) => (parseInt(b[order.column], 10) - parseInt(a[order.column], 10)));
   }
   return planets.sort((a, b) => (a[order.column] < b[order.column] ? BIGGER : MINOR));
 };
@@ -105,7 +127,9 @@ function PlanetsList() {
   }
 
   planets = sortPlanets(planets, order);
-
+  const imageStyle = { 'background-image': `url('https://cdn.gamer-network.net/2019/usgamer/Fallen-Order-Planet-Header.jpg/EG11/thumbnail/1920x1080/format/jpg/quality/65/how-to-unlock-all-planets-in-star-wars-jedi-fallen-order.jpg')`,
+    height: '100vh',
+  };
   return (
     <div>
       { isLoading
