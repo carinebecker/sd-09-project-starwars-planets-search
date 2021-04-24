@@ -1,9 +1,12 @@
 import React from 'react';
-import './App.css';
+import Tables from './components/Tables';
+import Provider from './provider/context';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <Provider>
+      <Tables />
+    </Provider>
   );
 }
 
