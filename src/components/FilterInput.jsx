@@ -1,17 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function FilterInput() {
+  const { handleInput,
+    sortBy,
+    setSortBy,
+    handleFilteredInputs,
+    columnOptions,
+  } = useContext(StarWarsContext);
+
   const componentState = {
-    column: '',
+    column: 'population',
     comparison: '',
     value: '0',
   };
 
-  const { handleInput,
-    handleFilteredInputs, columnOptions } = useContext(StarWarsContext);
-
   const [state, setState] = useState(componentState);
+
+  useEffect(() => {
+    setState((last) => ({ ...last, column: columnOptions[0] }));
+  }, [columnOptions]);
 
   function handleComponentState({ target }) {
     const { name, value } = target;
@@ -19,6 +27,11 @@ function FilterInput() {
       ...lastState,
       [name]: value,
     }));
+  }
+
+  function setSortColumn({ target }) {
+    const { value } = target;
+    setSortBy({ ...sortBy, sortByColumn: value });
   }
 
   function createNameFilterInput() {
@@ -100,6 +113,23 @@ function FilterInput() {
     );
   }
 
+  function createSortByFilter() {
+    return (
+      <label htmlFor="order-column">
+        Ordernar por:
+        <select
+          data-testid="column-sort"
+          id="order-column"
+          name="sort-by"
+          onChange={ setSortColumn }
+        >
+          <option value="name">Planet Name</option>
+          <option value="population">Population</option>
+        </select>
+      </label>
+    );
+  }
+
   return (
     <div>
       {createNameFilterInput()}
@@ -107,6 +137,7 @@ function FilterInput() {
       {createComparisonSelect()}
       {createInputFilterValue()}
       {createFilteredButton()}
+      {createSortByFilter()}
     </div>
   );
 }

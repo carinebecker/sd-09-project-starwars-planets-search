@@ -1,17 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import FilterInput from './FilterInput';
 import Loading from './Loading';
 import StarWarsContext from '../context/StarWarsContext';
+import fetchPlanets from '../services/fetchPlanets';
+
 
 function Table() {
   const {
-    isLoading,
-    data: { results },
+    // isLoading,
+    // data: { results },
     filters: { filterByName: { name } },
     filters: { filterByNumericValues: [{ value, column, comparison }] },
+    sortBy: { sortByColumn, sortType },
+    setSortBySelection,
   } = useContext(StarWarsContext);
 
+  const [results, setPlanets] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function waitForPlanets() {
+      const { results: response } = await fetchPlanets();
+      setPlanets(setSortBySelection(response, sortByColumn));
+      setIsLoading(false);
+    }
+    waitForPlanets();
+
+    // if(!isLoading) waitForPlanets();
+    // if (!isLoading) {
+    //   setPlanets(setSortBySelection(results, sortByColumn));
+    // }
+  }, []);
+
   function planetsTable() {
+    // console.log(planets);
     let filteredResults = results;
     if (comparison === 'maior que') {
       filteredResults = results
@@ -29,7 +51,7 @@ function Table() {
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
       .map((planet) => (
         <tr key={ planet.name }>
-          <td>{planet.name}</td>
+          <td data-testid="planet-name">{planet.name}</td>
           <td>{planet.terrain}</td>
           <td>{planet.population}</td>
           <td>{planet.climate}</td>
