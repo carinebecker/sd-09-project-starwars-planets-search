@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import TableContext from '../context/TableContext';
+import DeleteFilterBtn from './DeleteFilterBtn';
 
 function Inputs() {
   const [columns, setColumns] = useState([
@@ -42,6 +43,30 @@ function Inputs() {
     setColumns(columns.filter((element) => element !== column));
   }
 
+  function deleteFilter(filterToDelete) {
+    setFilters(
+      {
+        ...filters,
+        filterByNumericValues:
+          filters.filterByNumericValues.filter((filter) => filter !== filterToDelete),
+      },
+    );
+  }
+
+  function createDeleteFilterBtn() {
+    return (
+      <>
+        {filters.filterByNumericValues.map((filter) => (
+          <DeleteFilterBtn
+            key={ filter.column }
+            DeleteFunction={ deleteFilter }
+            Filter={ filter }
+          />
+        ))}
+      </>
+    );
+  }
+
   function handleClick() {
     setFilters(
       {
@@ -52,7 +77,6 @@ function Inputs() {
         ],
       },
     );
-    console.log(filtersObject.column);
     removeColumnItem(filtersObject.column);
   }
 
@@ -109,6 +133,7 @@ function Inputs() {
       >
         Aplicar filtro
       </button>
+      {createDeleteFilterBtn()}
     </form>
   );
 }
