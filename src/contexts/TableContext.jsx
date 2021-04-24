@@ -6,6 +6,8 @@ const TableContext = createContext();
 
 const TableContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [name, setName] = useState('');
+  const [filterChoiceReturn, setFilterChoiceReturn] = useState([]);
 
   async function getPlanets() {
     const planets = await fetchApiStarwars();
@@ -19,8 +21,17 @@ const TableContextProvider = ({ children }) => {
     getPlanets();
   }, []);
 
+  const context = {
+    data,
+    name,
+    setName,
+    filterChoiceReturn,
+    setFilterChoiceReturn,
+  };
+
   return (
-    <TableContext.Provider value={ { data } }>
+    // <TableContext.Provider value={ { data } }>
+    <TableContext.Provider value={ context }>
       { children }
     </TableContext.Provider>
   );

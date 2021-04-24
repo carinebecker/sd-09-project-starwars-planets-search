@@ -3,48 +3,46 @@ import { TableContext } from '../contexts/TableContext';
 import useFilterName from './useFilterName';
 
 const useFilterChoice = () => {
-  const { data } = useContext(TableContext);
-  const [nameSearch, setNameSearch, filterNameReturn] = useFilterName();
+  const {
+    data, name, filterChoiceReturn, setFilterChoiceReturn,
+  } = useContext(TableContext);
+  const [filterNameReturn] = useFilterName();
   const [listChoices, setListChoices] = useState([]);
-  const [filterChoiceReturn, setFilterChoiceReturn] = useState();
-  console.log(setNameSearch);
-  // console.log(listChoices);
-  // console.log(listChoices.length);
-  // recebe os filterChoice do table
-  // depois add ele no list choices
-  // depois filtra tudo
-  // depois retorna
 
   useEffect(() => {
-    let showPlanets = filterNameReturn;
-    // console.log(showPlanets)
-
-    if (nameSearch.length === 0) {
+    let showPlanets = [];
+    if (name.length === 0) {
       showPlanets = data;
+    } else {
+      showPlanets = filterNameReturn;
+    }
+    if (listChoices.length > 1) {
+      console.log('entro');
+      filterChoiceReturn.forEach((lisPlanets) => {
+        showPlanets = lisPlanets;
+      });
     }
 
-    // console.log('inicial', showPlanets)
-    // setListChoices([filterChoice]);
     let finalPlanets = [];
     finalPlanets = listChoices.map((choice) => {
-      switch (choice.filterComparison) {
+      switch (choice.comp) {
       case 'menor que':
-        return showPlanets.filter((planet) => parseInt(planet[choice.filterColum], 10)
-         < parseInt(choice.filterValue, 10));
+        return showPlanets.filter((planet) => parseInt(planet[choice.col], 10)
+        < parseInt(choice.val, 10));
       case 'maior que':
-        return showPlanets.filter((planet) => parseInt(planet[choice.filterColum], 10)
-         > parseInt(choice.filterValue, 10));
+        return showPlanets.filter((planet) => parseInt(planet[choice.col], 10)
+         > parseInt(choice.val, 10));
       case 'igual a':
-        return showPlanets.filter((planet) => parseInt(planet[choice.filterColum], 10)
-         === parseInt(choice.filterValue, 10));
+        return showPlanets.filter((planet) => parseInt(planet[choice.col], 10)
+         === parseInt(choice.val, 10));
       default:
         break;
       }
       return showPlanets;
     });
     setFilterChoiceReturn(finalPlanets);
-  }, [data, filterNameReturn, listChoices, nameSearch.length]);
-  return [listChoices, setListChoices, filterChoiceReturn];
+  }, [data, filterNameReturn, listChoices, name.length]);
+  return [listChoices, setListChoices];
 };
 
 export default useFilterChoice;

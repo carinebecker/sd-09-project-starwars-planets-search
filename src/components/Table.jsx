@@ -4,20 +4,18 @@ import useFilterName from '../hooks/useFilterName';
 import useFilterChoice from '../hooks/useFilterChoice';
 
 function Table() {
-  const { data } = useContext(TableContext);
-  const [NameSearch, setNameSearch, filterNameReturn] = useFilterName();
-  const [listChoices, setListChoices, filterChoiceReturn] = useFilterChoice();
+  const { data, setName, filterChoiceReturn } = useContext(TableContext);
+  const [filterNameReturn] = useFilterName();
+  const [listChoices, setListChoices] = useFilterChoice();
   const firstPlanet = data[0] || [];
   const namesKeys = Object.keys(firstPlanet);
-  const [filterCol, setfilterCol] = useState('rotation_period');
-  const [filterComp, setFilterComp] = useState('maior que');
-  const [filterVal, setFilterVal] = useState(0);
+  const [column, setColumn] = useState('rotation_period');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState(0);
   const [addFiltersActive, setAddFiltersActive] = useState(false);
 
   const receiveFilters = () => {
-    // se eu removo o [] e deicho sem tipagem ele nao reclama
     let filter = [];
-    console.log(NameSearch);
     if (addFiltersActive === true) {
       if (listChoices.length > 0) {
         filterChoiceReturn.forEach((lisPlanets) => {
@@ -36,16 +34,16 @@ function Table() {
   };
 
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value: valuex } = target;
     switch (name) {
     case 'textInput':
-      return setNameSearch(value);
-    case 'filterColum':
-      return setfilterCol(value);
-    case 'filterComparison':
-      return setFilterComp(value);
-    case 'filterValue':
-      return setFilterVal(value);
+      return setName(valuex);
+    case 'column':
+      return setColumn(valuex);
+    case 'comparison':
+      return setComparison(valuex);
+    case 'value':
+      return setValue(valuex);
     default:
       break;
     }
@@ -53,17 +51,23 @@ function Table() {
 
   function addFilterElement() {
     const newChoice = {
-      filterColum: filterCol,
-      filterComparison: filterComp,
-      filterValue: filterVal,
+      col: column,
+      comp: comparison,
+      val: value,
     };
-    // ativa filtros
-    // setFilterFinal(filterChoiceReturn.length - 1);
     setAddFiltersActive(true);
-
-    // listChoices foi trocado por listOptions apenas aquic
     setListChoices((listOptions) => [...listOptions, newChoice]);
   }
+
+  const dropFilterElement = (itemFilter) => {
+    if (listChoices.length > 0) {
+      const dropOption = listChoices.filter((option) => (option.col !== itemFilter));
+      setListChoices(dropOption);
+      if (dropOption.length === 0) {
+        setAddFiltersActive(false);
+      }
+    }
+  };
 
   const handleClick = ({ target }) => {
     const { name } = target;
@@ -71,12 +75,9 @@ function Table() {
       addFilterElement();
     } else {
       console.log('clicou no drop', name);
+      dropFilterElement(name);
     }
   };
-
-  // const dropFilterElement = () => {
-  // função a declarar
-  // }
 
   function createTextInput() {
     return (
@@ -87,8 +88,27 @@ function Table() {
   const createDropdonwTags = () => {
     const maxLenght = 8;
     const namesSelect = namesKeys.filter((nameItem) => (nameItem.length >= maxLenght));
+
+    if (listChoices.length > 0) {
+      // let activeNames = []
+
+      listChoices.forEach((choiceItem) => {
+        const indexDodrop = namesSelect.indexOf(choiceItem.col);
+        delete namesSelect[indexDodrop];
+        // namesSelect.slice
+        // activeNames = namesSelect.filter((nameSelec) => (nameSelec !== choiceItem.col))
+      });
+
+      // activeNames = listChoices.map((choiceItem) => (
+      //   namesSelect.filter((nameSelec) => (nameSelec !== choiceItem.col))
+      // ))
+    //   console.log(activeNames)
+      // console.log(namesSelect)
+      // namesSelect = activeNames
+    }
+
     return (
-      <select data-testid="column-filter" name="filterColum" onChange={ handleChange }>
+      <select data-testid="column-filter" name="column" onChange={ handleChange }>
         { namesSelect.map((dropdownName, indexDropdown) => (
           <option key={ indexDropdown }>{ dropdownName }</option>
         )) }
@@ -101,11 +121,11 @@ function Table() {
     return (
       <select
         data-testid="comparison-filter"
-        name="filterComparison"
+        name="comparison"
         onChange={ handleChange }
       >
-        { intervalCondition.map((comparison, indexcomparison) => (
-          <option key={ indexcomparison }>{ comparison }</option>
+        { intervalCondition.map((compar, indexcomparison) => (
+          <option key={ indexcomparison }>{ compar }</option>
         )) }
       </select>
     );
@@ -116,7 +136,7 @@ function Table() {
       <input
         data-testid="value-filter"
         type="number"
-        name="filterValue"
+        name="value"
         onChange={ handleChange }
       />
     );
@@ -135,11 +155,6 @@ function Table() {
     );
   }
 
-  // const createButtonDropFilter = () => {
-  //   return (
-  //   );
-  // };
-
   function createInputListFilter() {
     return (
       <>
@@ -153,26 +168,20 @@ function Table() {
 
   function createFilterElements() {
     let showfilters = [];
-    // nao sei pq o .length do listChoices vindo do useFilterChoice da indefinido
-    // acho que era a ordem no hook
     if (listChoices.length !== 0) {
       showfilters = listChoices;
     }
-    return showfilters.map((element, indexFilter) => (
-      <tr data-testid="filter" key={ indexFilter }>
-        <td>{ element.filterColum }</td>
-        <td>{ element.filterComparison }</td>
-        <td>{ element.filterValue }</td>
-        <td>
-          <button
-            name={ element.filterColum }
-            type="button"
-            onClick={ handleClick }
-          >
-            x
-          </button>
-        </td>
-      </tr>
+    return showfilters.map((element) => (
+      <p data-testid="filter" key={ element.col }>
+        { `Filter by ${element.col} ${element.comp} ${element.val} ` }
+        <button
+          name={ element.col }
+          type="button"
+          onClick={ handleClick }
+        >
+          x
+        </button>
+      </p>
     ));
   }
 
@@ -203,11 +212,9 @@ function Table() {
       <div>
         { createInputListFilter() }
       </div>
-      <table>
-        <tbody>
-          { createFilterElements() }
-        </tbody>
-      </table>
+      <div>
+        { createFilterElements() }
+      </div>
       <div>
         <table>
           <thead>
