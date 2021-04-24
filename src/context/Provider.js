@@ -31,7 +31,8 @@ const Provider = ({ children }) => {
     const { planetsList } = data;
     const { filterByName } = filter;
 
-    const filteredPlanets = planetsList.filter(({ name }) => name.includes(filterByName));
+    const filteredPlanets = planetsList.filter(({ name }) => name.toLowerCase()
+      .includes(filterByName.toLowerCase()));
 
     if (filterByName.length !== 0) {
       setFilteredData({
