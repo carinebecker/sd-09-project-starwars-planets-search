@@ -92,6 +92,13 @@ function Filters() {
           onChange={ handleChangeValueFilter }
         />
       </label>
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick=""
+      >
+        Filter
+      </button>
     </section>
   );
 }
