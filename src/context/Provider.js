@@ -7,6 +7,15 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
+    filterByColumn: {
+      select: '',
+    },
+    filterComparison: {
+      select: '',
+    },
+    filterValue: {
+      select: '',
+    },
   };
 
   const [planets, setPlanets] = useState([]);
