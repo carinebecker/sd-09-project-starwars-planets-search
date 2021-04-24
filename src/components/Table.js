@@ -4,9 +4,9 @@ import Loading from './Loading';
 import './Table.css';
 
 const Table = () => {
-  const { planets, isLoading, filters } = useContext(PlanetsContext);
-
-  const { filterByName: { name } } = filters;
+  const { isLoading, filters, selectedFilters } = useContext(PlanetsContext);
+  const { name } = filters.filterByName;
+  const filtersChanges = selectedFilters();
 
   return (
     <main>
@@ -21,7 +21,7 @@ const Table = () => {
               <th>Climate</th>
               <th>Gravity</th>
               <th>Terrain</th>
-              <th>Surface_water</th>
+              <th>Surface Water</th>
               <th>Population</th>
               <th>Films</th>
               <th>Created</th>
@@ -30,7 +30,8 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
-            { planets.filter((planet) => planet.name.includes(name))
+            { filtersChanges.filter((planet) => planet.name.toLowerCase()
+              .includes(name.toLowerCase()))
               .map((planet) => (
                 <tr key={ planet.name }>
                   <td>{ planet.name }</td>

@@ -10,7 +10,17 @@ const PlanetsProvider = ({ children }) => {
     filterByName: {
       name: '',
     },
+    filterByValue: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '100000',
+      },
+    ],
   });
+  const [initialFilters, setinitialFilters] = useState({});
+
+  const { filterByValue } = filters;
 
   const getPlanets = async () => {
     const data = await fetchPlanets();
@@ -25,10 +35,59 @@ const PlanetsProvider = ({ children }) => {
   const filterChangeHandler = ({ target: { value } }) => {
     setFilters({
       ...filters,
-      filterByName: {
-        name: value,
-      },
+      filterByName: { name: value },
+      ...filterByValue,
     });
+  };
+
+  const handlefilterByValue = (column, value) => {
+    setFilters({
+      ...filters,
+      filterByValue: [
+        {
+          ...filterByValue[0],
+          [column]: value,
+        },
+      ],
+    });
+  };
+
+  const handleInputfilterByValue = ({ target: { value } }) => {
+    setFilters({
+      ...filters,
+      filterByValue: [
+        {
+          ...filterByValue[0],
+          value,
+        },
+      ],
+    });
+  };
+
+  const clickHandler = () => {
+    setinitialFilters({
+      ...initialFilters,
+      ...filters.filterByValue[0],
+    });
+  };
+
+  const selectedFilters = () => {
+    const { column, comparison, value } = initialFilters;
+    let filteredPlanets = planets;
+    if (comparison === 'maior que') {
+      filteredPlanets = filteredPlanets.filter(
+        (planet) => parseFloat(planet[column]) > parseFloat(value),
+      );
+    } else if (comparison === 'menor que') {
+      filteredPlanets = filteredPlanets.filter(
+        (planet) => parseFloat(planet[column]) < parseFloat(value),
+      );
+    } else if (comparison === 'igual a') {
+      filteredPlanets = filteredPlanets.filter(
+        (planet) => parseFloat(planet[column]) === parseFloat(value),
+      );
+    }
+    return filteredPlanets;
   };
 
   const context = {
@@ -36,6 +95,10 @@ const PlanetsProvider = ({ children }) => {
     isLoading: loading,
     filters,
     filterChangeHandler,
+    handlefilterByValue,
+    handleInputfilterByValue,
+    clickHandler,
+    selectedFilters,
   };
 
   return (

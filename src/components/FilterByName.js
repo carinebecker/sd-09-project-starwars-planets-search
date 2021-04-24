@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
-import './Filter.css';
+import './FilterByName.css';
 
-const Filter = () => {
+const FilterByName = () => {
   const { filterChangeHandler } = useContext(PlanetsContext);
 
   return (
@@ -18,4 +18,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default FilterByName;
