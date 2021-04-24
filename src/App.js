@@ -1,11 +1,11 @@
 import React from 'react';
-import './App.css';
+import Provider from './Context/Provider';
+import Table from './Table';
 
-function App() {
-  return (
-    <span>Hello, App!</span>
-    //Bora lá
-  );
-}
+const App = () => (
+  <Provider>
+    <Table />
+  </Provider>
+);
 
 export default App;
