@@ -127,9 +127,7 @@ function PlanetsList() {
   }
 
   planets = sortPlanets(planets, order);
-  const imageStyle = { 'background-image': `url('https://cdn.gamer-network.net/2019/usgamer/Fallen-Order-Planet-Header.jpg/EG11/thumbnail/1920x1080/format/jpg/quality/65/how-to-unlock-all-planets-in-star-wars-jedi-fallen-order.jpg')`,
-    height: '100vh',
-  };
+
   return (
     <div>
       { isLoading
