@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { MyContext } from '../MyContext';
 
 function Table() {
-  const { data, isLoading, keysData } = useContext(MyContext);
+  const { isLoading, keysData, dataToChange } = useContext(MyContext);
 
   return (isLoading ? <p>Loading...</p> : (
     <div>
@@ -18,7 +18,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data
+          {dataToChange
             .map((item) => (
               <tr key={ Math.random() }>
                 <td>

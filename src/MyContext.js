@@ -6,22 +6,41 @@ const MyContext = createContext();
 
 const MyContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
+  const [dataToChange, setDataToChange] = useState([]);
   const [keysData, setKeysData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     requestAPI()
       .then((results) => {
         setData(results.results);
+        setDataToChange(results.results);
         setIsLoading(false);
         setKeysData(Object.keys(results.results[0]));
       });
   }, []);
 
+  const serchInput = ({ target }) => {
+    const { value } = target;
+    setName(value);
+    const num = -1;
+    const nameFiltered = data
+      .filter((element) => element.name.indexOf(value) !== num);
+    setDataToChange(nameFiltered);
+
+    if (value === '') setDataToChange(data);
+  };
+
+  const filters = { filtersByName: { name } };
+
   const context = {
     data,
+    dataToChange,
     isLoading,
     keysData,
+    serchInput,
+    filters,
   };
 
   return (
