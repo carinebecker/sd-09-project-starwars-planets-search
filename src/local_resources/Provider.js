@@ -20,6 +20,7 @@ function Provider({ children }) {
     'diameter',
     'rotation_period',
     'surface_water']);
+  const [order, setOrder] = useState({ column: 'name', sort: 'ASC' });
   const r2d2Context = {
     setData,
     data,
@@ -37,6 +38,8 @@ function Provider({ children }) {
     setFilterReady,
     columns,
     setColumns,
+    order,
+    setOrder,
   };
   return (
     <YodaContext.Provider value={ r2d2Context }>

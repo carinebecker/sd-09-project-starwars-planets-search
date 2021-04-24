@@ -3,58 +3,62 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import YodaContext from '../local_resources/Context';
 import KeyGenerator from '../local_resources/KeyGenerator';
+import SortOptions from './SortOptions';
 
 const keygen = KeyGenerator();
 const MAX_FILTERS_NUMBER = 2;
 const colunmFilter = (setFilterData, executeSearch, columns) => (
-  <Form inline>
-    <Form.Control
-      as="select"
-      data-testid="column-filter"
-      custom
-      size="sm"
-      name="column"
-      required
-      onChange={ (evt) => setFilterData(evt) }
-    >
-      { columns.map((column) => (
-        <option key={ keygen.next().value }>{ column }</option>)) }
-    </Form.Control>
-    <Form.Control
-      as="select"
-      data-testid="comparison-filter"
-      custom
-      size="sm"
-      name="comparison"
-      required
-      defaultValue="maior que"
-      onChange={ (evt) => setFilterData(evt) }
-    >
-      <option>maior que</option>
-      <option>menor que</option>
-      <option>igual a</option>
-    </Form.Control>
-    <Form.Control
-      type="number"
-      min="0"
-      data-testid="value-filter"
-      placeholder="A value to compare"
-      className="mr-sm-2"
-      size="sm"
-      name="value"
-      required
-      onChange={ (evt) => setFilterData(evt) }
-    />
-    <Button
-      variant="primary"
-      type="submit"
-      data-testid="button-filter"
-      size="sm"
-      onClick={ (evt) => executeSearch(evt) }
-    >
-      Search
-    </Button>
-  </Form>
+  <div className="inputs container-fluid">
+    <Form inline>
+      <Form.Control
+        as="select"
+        data-testid="column-filter"
+        custom
+        size="md"
+        name="column"
+        required
+        onChange={ (evt) => setFilterData(evt) }
+      >
+        { columns.map((column) => (
+          <option key={ keygen.next().value }>{ column }</option>)) }
+      </Form.Control>
+      <Form.Control
+        as="select"
+        data-testid="comparison-filter"
+        custom
+        size="md"
+        name="comparison"
+        required
+        defaultValue="maior que"
+        onChange={ (evt) => setFilterData(evt) }
+      >
+        <option>maior que</option>
+        <option>menor que</option>
+        <option>igual a</option>
+      </Form.Control>
+      <Form.Control
+        type="number"
+        min="0"
+        data-testid="value-filter"
+        placeholder="A value to compare"
+        className="mr-sm-2"
+        size="md"
+        name="value"
+        required
+        onChange={ (evt) => setFilterData(evt) }
+      />
+      <Button
+        variant="primary"
+        type="submit"
+        data-testid="button-filter"
+        size="md"
+        onClick={ (evt) => executeSearch(evt) }
+      >
+        Filter
+      </Button>
+    </Form>
+    <SortOptions />
+  </div>
 );
 
 const reorderColumns = (columns, column) => {

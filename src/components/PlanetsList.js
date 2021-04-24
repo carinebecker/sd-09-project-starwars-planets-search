@@ -52,6 +52,15 @@ const getFilteredPlanets = (comparison, column, value, allPlanets) => {
   }
 };
 
+const sortPlanets = (planets, order) => {
+  const BIGGER = 1;
+  const MINOR = -1;
+  if (order.sort === 'ASC') {
+    return planets.sort((a, b) => (a[order.column] > b[order.column] ? BIGGER : MINOR));
+  }
+  return planets.sort((a, b) => (a[order.column] < b[order.column] ? BIGGER : MINOR));
+};
+
 function PlanetsList() {
   const {
     isLoading,
@@ -59,6 +68,7 @@ function PlanetsList() {
     data,
     setData,
     filters,
+    order,
   } = useContext(YodaContext);
   let planets = [];
 
@@ -84,8 +94,6 @@ function PlanetsList() {
 
   if (data && filterByNumericValues.length === 0) { planets = data.results; }
 
-  // if (planets.length !== filteredPlanets.length) { setFilteredPlanets(planets); }
-
   if (filters && filters.filterByName && data) {
     planets = [];
     planets = filters.filterByName.name === ''
@@ -95,6 +103,9 @@ function PlanetsList() {
           planet.name).toUpperCase().includes(filters.filterByName.name.toUpperCase()),
       );
   }
+
+  planets = sortPlanets(planets, order);
+
   return (
     <div>
       { isLoading
