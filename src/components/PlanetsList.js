@@ -72,13 +72,15 @@ const sortPlanets = (planets, order) => {
   if (order.sort === 'ASC') {
     if (numberFields.some((field) => order.column === field)) {
       return planets.sort(
-        (a, b) => (parseInt(a[order.column], 10) - parseInt(b[order.column], 10)));
+        (a, b) => (parseInt(a[order.column], 10) - parseInt(b[order.column], 10)),
+      );
     }
     return planets.sort((a, b) => (a[order.column] > b[order.column] ? BIGGER : MINOR));
   }
   if (numberFields.some((field) => order.column === field)) {
     return planets.sort(
-      (a, b) => (parseInt(b[order.column], 10) - parseInt(a[order.column], 10)));
+      (a, b) => (parseInt(b[order.column], 10) - parseInt(a[order.column], 10)),
+    );
   }
   return planets.sort((a, b) => (a[order.column] < b[order.column] ? BIGGER : MINOR));
 };
