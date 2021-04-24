@@ -9,7 +9,8 @@ function Table() {
       <table>
         <thead>
           <tr>
-            {keysData.filter((element) => element !== 'residents')
+            {keysData
+              .filter((element) => element !== 'residents')
               .map((newElement) => (
                 <th key={ newElement }>
                   <h3>{newElement}</h3>

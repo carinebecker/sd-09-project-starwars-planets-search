@@ -8,8 +8,13 @@ const MyContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [dataToChange, setDataToChange] = useState([]);
   const [keysData, setKeysData] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true);
+
   const [name, setName] = useState('');
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     requestAPI()
@@ -22,25 +27,76 @@ const MyContextProvider = ({ children }) => {
   }, []);
 
   const serchInput = ({ target }) => {
-    const { value } = target;
-    setName(value);
+    setName(target.value);
     const num = -1;
     const nameFiltered = data
-      .filter((element) => element.name.indexOf(value) !== num);
+      .filter((element) => element.name.indexOf(target.value) !== num);
     setDataToChange(nameFiltered);
 
-    if (value === '') setDataToChange(data);
+    if (target.value === '') setDataToChange(data);
   };
 
-  const filters = { filtersByName: { name } };
+  const setOptionsFilter = ({ target }) => {
+    switch (target.name) {
+    case 'comparisonFilter':
+      setComparison(target.value);
+      break;
+    case 'valueFilter':
+      setValue(target.value);
+      break;
+    case 'columnFilter':
+      setColumn(target.value);
+      break;
+    default:
+      console.log(target);
+      break;
+    }
+  };
+
+  const filterByNumber = () => {
+    switch (comparison) {
+    case 'maior que': {
+      const result = data
+        .filter((element) => element[column] > parseInt(value, 10));
+      setDataToChange(result);
+    }
+      break;
+    case 'menor que': {
+      const result = data
+        .filter((element) => element[column] < value || element[column] === 'unknown');
+      setDataToChange(result);
+    }
+      break;
+    case 'igual a': {
+      const result = data.filter((element) => element[column] === value);
+      setDataToChange(result);
+    }
+      break;
+    default:
+      break;
+    }
+  };
+
+  const filters = {
+    filtersByName: { name },
+    filterByNumericValues: [
+      {
+        column,
+        comparison,
+        value,
+      },
+    ],
+  };
 
   const context = {
     data,
     dataToChange,
     isLoading,
     keysData,
-    serchInput,
     filters,
+    serchInput,
+    setOptionsFilter,
+    filterByNumber,
   };
 
   return (
