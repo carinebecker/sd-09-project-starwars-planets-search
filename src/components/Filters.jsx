@@ -6,12 +6,12 @@ function Filters() {
   const initialState = {
     column: '',
     comparison: '',
-    value: '0',
+    value: '',
   };
 
   const [state, setState] = useState(initialState);
+  const [unavailableFilters, setUnavailableFilters] = useState([]);
   const [geoOptions] = useState([
-    '',
     'population',
     'orbital_period',
     'diameter',
@@ -37,11 +37,23 @@ function Filters() {
   }
 
   function handleFilteredInputs(object) {
-    setFilters({
-      ...filters,
-      // ...filters.filterByNumericValues,
-      filterByNumericValues: [object],
-    });
+    if (filters.filterByNumericValues[0].comparison === '') {
+      return (
+        setFilters({
+          ...filters,
+          filterByNumericValues: [object],
+        })
+      );
+    }
+    return (
+      setFilters({
+        ...filters,
+        filterByNumericValues: [
+          ...filters.filterByNumericValues,
+          object,
+        ],
+      })
+    );
   }
 
   return (
@@ -63,9 +75,10 @@ function Filters() {
           name="column"
           onChange={ handleDropDown }
         >
-          { geoOptions.map((option) => (
-            <option key={ option } value={ option }>{ option }</option>
-          )) }
+          { geoOptions.filter((option) => !unavailableFilters.includes(option))
+            .map((option) => (
+              <option key={ option } value={ option }>{ option }</option>
+            ))}
         </select>
         <select
           name="comparison"
@@ -87,7 +100,11 @@ function Filters() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => handleFilteredInputs(state) }
+        onClick={ () => {
+          handleFilteredInputs(state);
+          unavailableFilters.push(state.column);
+          setUnavailableFilters([...unavailableFilters]);
+        } }
       >
         Filtrar
       </button>

@@ -18,15 +18,6 @@ function Provider({ children }) {
     ],
   });
 
-  // function handleFilteredInputs(object) {
-  //   const teste = [{}];
-  //   setFilters({
-  //     ...filters,
-  //     ...filters.filterByName,
-  //     filterByNumericValues: teste.push(object),
-  //   });
-  // }
-
   useEffect(() => {
     async function getPlanetsfromAPI() {
       const response = await fetchPlanetsList();
