@@ -1,5 +1,5 @@
 import React from 'react';
-import useFilter from '../hooks/useFilter';
+import useFilter from '../hooks/useFilterName';
 
 function InputName() {
   const { nameFilter, handleNameFilter: setFilterName } = useFilter();

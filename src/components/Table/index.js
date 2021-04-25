@@ -3,7 +3,7 @@ import React from 'react';
 import TableFields from './TableFields';
 import TableBody from './TableBody';
 import useAPI from '../../hooks/useAPI';
-import useFilter from '../../hooks/useFilter';
+import useFilter from '../../hooks/useFilterName';
 
 function Table() {
   const data = useAPI();
@@ -12,10 +12,8 @@ function Table() {
   const getFiltered = () => {
     if (filter) {
       const {
-        filterByName: { name: nameFilter, results },
+        results,
       } = filter;
-      console.log(nameFilter);
-      console.log(results);
       return [...results];
     }
     const {

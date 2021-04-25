@@ -6,6 +6,7 @@ import Table from './components/Table';
 import InputName from './components/InputName';
 
 import './App.css';
+import NumericFilters from './components/NumericFilters';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <UserProvider>
         <span>Hello, App!</span>
         <InputName />
+        <NumericFilters />
         <Table />
       </UserProvider>
     </DataProvider>

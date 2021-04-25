@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { DataContext } from '../context/DataContext';
 import { UserContext } from '../context/UserContext';
 
-function useFilter() {
+function useFilterName() {
   const { filter, setFilter } = useContext(UserContext);
   const { data: planets } = useContext(DataContext);
 
@@ -14,11 +14,11 @@ function useFilter() {
         ? {
           ...prevState,
           isSearching,
+          results: planets.data.results.filter(
+            (planet) => searchTerm.test(planet.name),
+          ),
           filterByName: {
             name,
-            results: planets.data.results.filter(
-              (planet) => searchTerm.test(planet.name),
-            ),
           },
         }
         : prevState;
@@ -29,4 +29,4 @@ function useFilter() {
   return { filter, handleNameFilter };
 }
 
-export default useFilter;
+export default useFilterName;
