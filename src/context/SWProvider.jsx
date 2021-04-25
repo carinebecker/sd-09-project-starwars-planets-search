@@ -5,7 +5,7 @@ import getSWPlanets from '../services/SWFetch';
 
 const SWProvider = ({ children }) => {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filterByName, setFilterByName] = useState({});
   const [filtered, setFiltered] = useState([]);
 
   // Valeu Bob Wendell, me salvou! :)
@@ -14,21 +14,31 @@ const SWProvider = ({ children }) => {
     getSWPlanets(setData);
   }, []);
 
-  // Filtrar por texto
-  const filter = ({ target }) => {
-    setFilters({ filterByName: { [target.name]: target.value } });
-    const filtering = data.filter(
+  const filterName = ({ target }) => {
+    setFilterByName({ filterByName: { [target.name]: target.value } });
+    const filteringName = data.filter(
       (item) => item.name.includes(target.value),
     );
 
-    setFiltered(filtering);
+    setFiltered(filteringName);
+  };
+
+  const filterNumber = ({ comparison, column, value }) => {
+    const filteringNumber = data.filter((item) => {
+      if (comparison === 'maior que') return item[column] > value;
+      if (comparison === 'menor que') return item[column] <= value;
+      return item[column] === value;
+    });
+
+    setFiltered(filteringNumber);
   };
 
   const context = {
     data,
-    filter,
+    filterName,
+    filterNumber,
     filtered,
-    filters,
+    filterByName,
   };
 
   return (

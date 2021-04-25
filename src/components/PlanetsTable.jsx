@@ -3,6 +3,7 @@ import SWContext from '../context/SWContext';
 
 const Planets = () => {
   const { filtered } = useContext(SWContext);
+  console.clear();
   console.log('PlanetsTable', filtered);
 
   const tHead = [
