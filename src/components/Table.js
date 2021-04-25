@@ -6,21 +6,24 @@ export default function Table() {
   const { planets, setPlanets } = usePlanet();
   const [loading, setLoading] = useState(true);
 
-  async function getPlanets() {
-    const response = await api();
-    return response;
-  }
-
   useEffect(() => {
-    getPlanets().then((response) => {
+    api().then((response) => {
       setPlanets(response.results);
       setLoading(false);
     });
   }, [setPlanets]);
 
+  async function handleSearch({ target }) {
+    const response = await api();
+    const filter = response.results
+      .filter((planet) => planet.name.includes(target.value));
+    setPlanets(filter);
+  }
+
   if (loading) return <h2>Loading</h2>;
   return (
     <div>
+      <input type="text" onChange={ handleSearch } data-testid="name-filter" />
       <table>
         <thead>
           <tr>
