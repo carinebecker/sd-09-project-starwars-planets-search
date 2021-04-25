@@ -41,7 +41,9 @@ const useFilterChoice = () => {
       return showPlanets;
     });
     setFilterChoiceReturn(finalPlanets);
-  }, [data, filterNameReturn, listChoices, name.length]);
+  }, [
+    data, filterNameReturn, listChoices, name.length,
+  ]);
   return [listChoices, setListChoices];
 };
 
