@@ -1,0 +1,23 @@
+import React, { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
+
+export const UserContext = createContext();
+const { Provider } = UserContext;
+
+function UserProvider({ children }) {
+  const [filter, setFilter] = useState(null);
+  const [filterByNum, setFilterByNum] = useState(null);
+  const context = {
+    filter,
+    setFilter,
+    filterByNum,
+    setFilterByNum,
+  };
+  return <Provider value={ { ...context } }>{children}</Provider>;
+}
+
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default UserProvider;
