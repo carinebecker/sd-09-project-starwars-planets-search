@@ -10,16 +10,9 @@ export default function SortingTool() {
 
   const [sortingDescription, setSortingDescription] = useState(order);
 
-  function changeColumn(e) {
+  function updateSortingInfo(e) {
     const { value, name } = e.target;
     setSortingDescription({ ...sortingDescription, [name]: value });
-    setOrder({ ...sortingDescription, [name]: value });
-  }
-
-  function switchSortingOrder(e) {
-    const { value } = e.target;
-    setSortingDescription({ ...sortingDescription, sort: value });
-    setOrder({ ...sortingDescription, sort: value });
   }
 
   return (
@@ -29,32 +22,39 @@ export default function SortingTool() {
         dataTestID="column-sort"
         value={ sortingDescription.column }
         name="column"
-        onHandleChange={ changeColumn }
+        onHandleChange={ updateSortingInfo }
       />
       <label htmlFor="asc-radio">
         Ascendente
         <input
           type="radio"
-          name="column-sorting"
+          name="sort"
           id="asc-radio"
           value="ASC"
           data-testid="column-sort-input-asc"
           checked={ sortingDescription.sort === 'ASC' }
-          onChange={ switchSortingOrder }
+          onChange={ updateSortingInfo }
         />
       </label>
       <label htmlFor="desc-radio">
         Descendente
         <input
           type="radio"
-          name="column-sorting"
+          name="sort"
           id="desc-radio"
           value="DESC"
           data-testid="column-sort-input-desc"
           checked={ sortingDescription.sort === 'DESC' }
-          onChange={ switchSortingOrder }
+          onChange={ updateSortingInfo }
         />
       </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => setOrder(sortingDescription) }
+      >
+        Ordenar
+      </button>
     </div>
   );
 }

@@ -8,12 +8,23 @@ const comparisons = {
   'igual a': (a, b) => Number(a) === Number(b),
 };
 
+function sortValues(a, b) {
+  let SORTING_PARAM = 0;
+  if (a > b) {
+    SORTING_PARAM += 1;
+  } else if (a < b) {
+    SORTING_PARAM -= 1;
+  }
+  return SORTING_PARAM;
+}
+
 export default function TableBody() {
   const { planets } = useContext(PlanetsContext);
   const {
     filters: {
       filterByName: nameQuery,
       filterByNumericValues: numericValues,
+      order: { column: columnSorted, sort },
     } } = useContext(FiltersContext);
   const [filteredPlanets, setFilteredPlanets] = useState(planets);
 
@@ -21,6 +32,7 @@ export default function TableBody() {
     setFilteredPlanets(planets);
   }, [planets]);
 
+  // Filter by name
   useEffect(() => {
     const filtered = planets.filter(({ name: planetName }) => (
       nameQuery.length
@@ -30,6 +42,7 @@ export default function TableBody() {
     setFilteredPlanets(filtered);
   }, [planets, nameQuery]);
 
+  // Filter by numeric value
   useEffect(() => {
     let filtered = planets.slice();
     numericValues.forEach(({ column, comparison, value }) => {
@@ -39,6 +52,23 @@ export default function TableBody() {
     });
     setFilteredPlanets(filtered);
   }, [planets, numericValues]);
+
+  // Sorting
+  useEffect(() => {
+    const planetsCopy = planets.slice();
+
+    const sorted = planetsCopy.sort((planet1, planet2) => {
+      if (!Number.isNaN(Number(planetsCopy[0][columnSorted]))) {
+        return sortValues(Number(planet1[columnSorted]), Number(planet2[columnSorted]));
+      }
+      return sortValues(planet1[columnSorted], planet2[columnSorted]);
+    });
+    if (sort === 'ASC') {
+      setFilteredPlanets(sorted);
+    } else {
+      setFilteredPlanets(sorted.reverse());
+    }
+  }, [planets, sort, columnSorted]);
 
   return (
     <tbody>
