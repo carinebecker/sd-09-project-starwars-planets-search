@@ -6,59 +6,76 @@ import '../styles/Table.css';
 
 function Table() {
   const {
+    planets,
+    tableHeaders,
     loading,
-    data: { results },
-    filters: { filterByName: { name } },
+    filterByName: { name },
+    filterByNumericValues: { column, comparison, value },
   } = useContext(PlanetsContext);
 
-  function planetsTable(data) {
-    return data
-      .filter((planet) => planet.name.includes(name))
-      .map((planet) => (
-        <tr key={ planet.name }>
+  if (loading) return <Loading />;
+
+  function tableHead() {
+    return (
+      <tr>
+        { Object.keys(tableHeaders[0]).map((header) => (
+          <th key={ header }>{header}</th>
+        ))}
+      </tr>
+    );
+  }
+
+  function tableRows() {
+    let filteredPlanets = planets;
+    if (comparison === 'menor que') {
+      filteredPlanets = filteredPlanets
+        .filter((planet) => +(planet[column]) < +(value));
+    }
+
+    if (comparison === 'maior que') {
+      filteredPlanets = filteredPlanets
+        .filter((planet) => +(planet[column]) > +(value));
+    }
+
+    if (comparison === 'igual a') {
+      filteredPlanets = filteredPlanets
+        .filter((planet) => +(planet[column]) === +(value));
+    }
+
+    return filteredPlanets
+      .filter((planet) => planet.name.toUpperCase().includes(name.toUpperCase()))
+      .map((planet, index) => (
+        <tr key={ index }>
           <td id="planetsName">{planet.name}</td>
-          <td>{planet.terrain}</td>
-          <td>{planet.population}</td>
-          <td>{planet.climate}</td>
-          <td>{planet.diameter}</td>
-          <td>{planet.gravity}</td>
-          <td>{planet.orbital_period}</td>
           <td>{planet.rotation_period}</td>
+          <td>{planet.orbital_period}</td>
+          <td>{planet.diameter}</td>
+          <td>{planet.climate}</td>
+          <td>{planet.gravity}</td>
+          <td>{planet.terrain}</td>
           <td>{planet.surface_water}</td>
+          <td>{planet.population}</td>
+          <td>{planet.films}</td>
           <td>{planet.created}</td>
           <td>{planet.edited}</td>
-          <td>{planet.films}</td>
           <td>{planet.url}</td>
         </tr>
       ));
   }
 
-  if (loading) return <Loading />;
-
   return (
     <div>
       <h1>Star Wars Planet Search</h1>
+
       <Filters />
+
       <table id="planetsTable">
         <thead>
-          <tr className="header">
-            <th>Name</th>
-            <th>Terrain</th>
-            <th>Population</th>
-            <th>Climate</th>
-            <th>Diameter</th>
-            <th>Gravity</th>
-            <th>Orbital period</th>
-            <th>Rotation period</th>
-            <th>Surface water</th>
-            <th>Created</th>
-            <th>Edited</th>
-            <th>Films</th>
-            <th>URL</th>
-          </tr>
+          {tableHead()}
         </thead>
+
         <tbody>
-          { planetsTable(results) }
+          {tableRows()}
         </tbody>
       </table>
     </div>

@@ -4,67 +4,39 @@ import PlanetsContext from './PlanetsContext';
 import fetchPlanets from '../services/fetchPlanets';
 
 function Provider({ children }) {
-  const initialState = {
-    data: [],
-    loading: true,
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [
-        {
-          column: '',
-          comparison: '',
-          value: '0',
-        },
-      ],
-    },
-  };
-
-  const [state, setState] = useState(initialState);
-
-  function handleChange({ name, value }) {
-    setState((prevState) => ({
-      ...prevState,
-      filters: {
-        ...prevState.filters,
-        filterByName: {
-          ...prevState.filterByName,
-          [name]: value,
-        },
-      },
-    }));
-  }
-
-  function handleDropdown({ name, value }) {
-    setState((prevState) => ({
-      ...prevState,
-      filters: {
-        ...prevState.filters,
-        filterByNumericValues: [{
-          ...prevState.filters.filterByNumericValues[0],
-          [name]: value,
-        }],
-      },
-    }));
-  }
+  const [planets, setPlanets] = useState();
+  const [tableHeaders, setTableHeaders] = useState();
+  const [loading, setLoading] = useState(true);
+  const [filterByName, setFilterByName] = useState({ name: '' });
+  const [columns, setColumns] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: '',
+    comparison: '',
+    value: '0',
+  });
 
   useEffect(() => {
     async function planetsFromAPI() {
-      const response = await fetchPlanets();
-      setState((prevState) => ({
-        ...prevState,
-        data: response,
-        loading: false,
-      }));
+      const results = await fetchPlanets();
+      setPlanets(results);
+      setTableHeaders(results);
+      setLoading(false);
     }
     planetsFromAPI();
   }, []);
 
   const context = {
-    ...state,
-    handleChange,
-    handleDropdown,
+    planets,
+    tableHeaders,
+    loading,
+    filterByName,
+    setFilterByName,
+    columns,
+    setColumns,
+    filterByNumericValues,
+    setFilterByNumericValues,
   };
 
   return (

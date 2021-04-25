@@ -1,9 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 import '../styles/Filters.css';
 
 function Filters() {
-  const { handleChange, handleDropdown } = useContext(PlanetsContext);
+  const {
+    setFilterByName,
+    columns,
+    setColumns,
+    setFilterByNumericValues,
+  } = useContext(PlanetsContext);
+
+  const [filterByValues, setFilterByValues] = useState({
+    column: 'population',
+    comparison: 'menor que',
+    value: '0',
+  });
+
+  function handleFilterByName({ target: { value } }) {
+    setFilterByName({ name: value });
+  }
+
+  function handleFilterByValues({ target: { name, value } }) {
+    setFilterByValues({
+      ...filterByValues,
+      [name]: value,
+    });
+  }
+
+  function handleClick() {
+    setFilterByNumericValues(filterByValues);
+    const initialColumns = [
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+    ];
+    setColumns(initialColumns.filter((option) => option !== filterByValues.column));
+  }
 
   return (
     <div>
@@ -13,8 +43,8 @@ function Filters() {
           data-testid="name-filter"
           name="name"
           id="nameInput"
-          onChange={ ({ target }) => handleChange(target) }
           placeholder="Search for text..."
+          onChange={ handleFilterByName }
         />
       </label>
 
@@ -23,13 +53,11 @@ function Filters() {
           data-testid="column-filter"
           name="column"
           id="filter-column"
-          onClick={ ({ target }) => handleDropdown(target) }
+          onChange={ handleFilterByValues }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { columns.map((option) => (
+            <option key={ option } value={ option }>{option}</option>
+          ))}
         </select>
       </label>
 
@@ -38,7 +66,7 @@ function Filters() {
           data-testid="comparison-filter"
           name="comparison"
           id="filter-comparison"
-          onClick={ ({ target }) => handleDropdown(target) }
+          onChange={ handleFilterByValues }
         >
           <option value="menor que">menor que</option>
           <option value="maior que">maior que</option>
@@ -53,7 +81,7 @@ function Filters() {
           name="value"
           id="filter-value"
           min="0"
-          onChange={ ({ target }) => handleChange(target) }
+          onChange={ handleFilterByValues }
         />
       </label>
 
@@ -61,6 +89,7 @@ function Filters() {
         type="button"
         data-testid="button-filter"
         id="filter-button"
+        onClick={ handleClick }
       >
         Filter
       </button>

@@ -13,13 +13,13 @@
   text-align: left;
 }
 
-/* #planetsTable tr {
+#planetsTable tr {
   border-bottom: 1px solid #ddd;
-} */
+}
 
-/* #planetsTable tr.header, #planetsTable tr:hover {
+#planetsTable tr.header, #planetsTable tr:hover {
   background-color: #f1f1f1;
-} */
+}
 
 #planetsName {
   font-style: italic;
