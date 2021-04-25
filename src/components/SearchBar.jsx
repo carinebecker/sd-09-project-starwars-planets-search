@@ -11,7 +11,6 @@ const SearchBar = () => {
 
   const handleFilter = ({ target: { name, value } }) => {
     setFilterByNumber({ ...filterByNumber, [name]: value });
-    // filterNumber(filterByNumber);
   };
 
   return (

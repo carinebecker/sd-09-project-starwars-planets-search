@@ -23,14 +23,16 @@ const SWProvider = ({ children }) => {
     setFiltered(filteringName);
   };
 
-  const filterNumber = ({ comparison, column, value }) => {
-    const filteringNumber = data.filter((item) => {
-      if (comparison === 'maior que') return item[column] > value;
-      if (comparison === 'menor que') return item[column] <= value;
-      return item[column] === value;
+  const filterNumber = ({ column, comparison, value }) => {
+    const filter = data.filter((item) => {
+      const columnName = Number(item[column]);
+      if (comparison === 'menor que') return columnName < Number(value);
+      if (comparison === 'maior que') return item[column] > Number(value);
+      if (comparison === 'igual a') return item[column] === value;
+      return null;
     });
 
-    setFiltered(filteringNumber);
+    setFiltered(filter);
   };
 
   const context = {
