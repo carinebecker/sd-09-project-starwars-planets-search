@@ -6,10 +6,18 @@ function Filters() {
   const initialState = {
     column: '',
     comparison: '',
-    value: '',
+    value: '0',
   };
 
   const [state, setState] = useState(initialState);
+  const [geoOptions] = useState([
+    '',
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   function handleInput({ target }) {
     setFilters({
@@ -31,6 +39,7 @@ function Filters() {
   function handleFilteredInputs(object) {
     setFilters({
       ...filters,
+      // ...filters.filterByNumericValues,
       filterByNumericValues: [object],
     });
   }
@@ -52,19 +61,18 @@ function Filters() {
         <select
           data-testid="column-filter"
           name="column"
-          onClick={ handleDropDown }
+          onChange={ handleDropDown }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { geoOptions.map((option) => (
+            <option key={ option } value={ option }>{ option }</option>
+          )) }
         </select>
         <select
           name="comparison"
           data-testid="comparison-filter"
-          onClick={ handleDropDown }
+          onChange={ handleDropDown }
         >
+          <option value="">Select an option</option>
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
           <option value="igual a">igual a</option>
