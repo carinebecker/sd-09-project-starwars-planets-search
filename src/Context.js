@@ -7,7 +7,7 @@ const Context = createContext();
 const INITIAL_FILTERS = {
   filterByName: { name: '' },
   filterByNumericValues: [],
-  order: { column: '', sort: 'ASC' },
+  order: { column: 'name', sort: 'ASC' },
 };
 
 const Provider = ({ children }) => {
@@ -36,10 +36,14 @@ const Provider = ({ children }) => {
     });
   };
 
+  const changeOrder = (value) => {
+    setFilters({ ...filters, order: value });
+  };
+
   useEffect(() => { getData(); }, []);
 
   const contextValue = {
-    data, filters, nameFilter, changeFilters, removeFilter,
+    data, filters, nameFilter, changeFilters, removeFilter, changeOrder,
   };
 
   return (
