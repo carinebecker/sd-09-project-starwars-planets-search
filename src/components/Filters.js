@@ -6,9 +6,9 @@ function Filters() {
   const { filterByNumericValues } = filters;
 
   return (
-    <section>
+    <section className="filters">
       {filterByNumericValues.map((filter, index) => (
-        <p data-testid="filter" key={ `${filter}-${index}` }>
+        <p data-testid="filter" className="filter" key={ `${filter}-${index}` }>
           <span>{ filter.column }</span>
           <span>{ filter.comparison }</span>
           <span>{ filter.value }</span>
