@@ -10,7 +10,7 @@ input, select, button {
   border-radius: 8px;
   color: #111;
   margin: 2px;
-  opacity: 0.8;
+  opacity: 0.9;
   padding: 3px 6px;
   transition: 0.3s;
 }
@@ -56,6 +56,7 @@ td {
 }
 
 th {
+  background-color: #3336;
   border-top: 1px solid #fffa;
   padding: 10px 4px;
   text-shadow: 1px 1px 5px lightgrey;
@@ -64,7 +65,7 @@ th {
 
 .filter {
   align-items: center;
-  background-color: #fffa;
+  background-color: #fffb;
   border-radius: 20px;
   color: #111;
   display: flex;
@@ -74,6 +75,7 @@ th {
 
 .filter:hover {
   background-color: #fffd;
+  box-shadow: 0 1px 3px whitesmoke;
 }
 
 .filter span {
@@ -83,7 +85,7 @@ th {
 .filter button {
   background-color: darkred;
   border-radius: 50%;
-  color: white;
+  color: whitesmoke;
   opacity: 1;
   padding: 4px 8px;
 }
@@ -97,6 +99,14 @@ th {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
+}
+
+.loading {
+  font-size: 2em;
+  left: 50%;
+  position: absolute;
+  text-shadow: 1px 1px 3px lightgrey;
+  top: 50%;
 }
 
 .App {
