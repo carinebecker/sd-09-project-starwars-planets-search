@@ -24,10 +24,15 @@ input:hover, select:hover, button:hover {
   opacity: 1;
 }
 
+option {
+  background-color: whitesmoke;
+}
+
 section {
   align-items: center;
   display: flex;
   justify-content: center;
+  margin: 2px;
 }
 
 table {
@@ -37,17 +42,24 @@ table {
   width: 100%;
 }
 
-tbody tr:nth-child( odd ) {
-  background-color: #555a;
-}
-
 tbody tr:nth-child( even ) {
   background-color: #333a;
+}
+
+tbody tr:nth-child( odd ) {
+  background-color: #555a;
 }
 
 td {
   border: 1px solid #111;
   text-align: center;
+}
+
+th {
+  border-top: 1px solid #fffa;
+  padding: 10px 4px;
+  text-shadow: 1px 1px 5px lightgrey;
+  text-transform: uppercase;
 }
 
 .App {
