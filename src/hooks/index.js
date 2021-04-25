@@ -61,10 +61,9 @@ class SortData {
   inOrder(order) {
     const isDescending = order === 'DESC';
     const type = columnsProperties[this.column];
-    const column = this.column.toLowerCase().split(' ').join('_');
-    const unknownData = this.data.filter(({ [column]: data }) => data === 'unknown');
+    const unknownData = this.data.filter(({ [this.column]: data }) => data === 'unknown');
     const knownData = this.data.filter((data) => !unknownData.includes(data));
-    const sortedData = knownData.sort(handleSorting({ column, type }));
+    const sortedData = knownData.sort(handleSorting({ column: this.column, type }));
     const output = isDescending ? sortedData.reverse() : sortedData;
     return [...output, ...unknownData];
   }
