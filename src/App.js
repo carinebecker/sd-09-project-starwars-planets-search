@@ -1,4 +1,3 @@
-// Primeiro commit
 import React from 'react';
 import ProviderContext from './context/PorviderContext';
 import './App.css';
