@@ -1,24 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { StarWarsContext } from '../context/StarWarsContext';
 import loadPlanets from '../services/ApiPlanets';
 import ItemPlanet from './ItemPlanet';
 import './Table.css';
 
 function Table() {
-  const [data, setData] = useState([]);
+  const { data, addData } = useContext(StarWarsContext);
+  const { filters, addFilterName } = useContext(StarWarsContext);
+  const { dataFilter, addDataFilter } = useContext(StarWarsContext);
+  const { filterByName } = filters;
+  const { name } = filterByName;
 
   const fetchApi = async () => {
     const planets = await loadPlanets();
-    setData(planets);
+    addData(planets);
+    addDataFilter(planets);
   };
 
   useEffect(() => {
     fetchApi();
   }, []);
 
+  useEffect(() => {
+    const noContain = -1;
+    addDataFilter(data.filter((planet) => planet.name.toLowerCase()
+      .indexOf(name.toLowerCase()) !== noContain));
+  }, [filters]);
+  const handleChange = ({ target }) => {
+    addFilterName(target.value);
+  };
+
   return (
     <div>
       <h3 className="title">Pesquisa de planetas do Star Wars</h3>
       <p> </p>
+      <label htmlFor="Label-name-filter">
+        Planetas que incluam
+        <input
+          data-testid="name-filter"
+          id="Label-name-filter"
+          type="text"
+          value={ name }
+          onChange={ handleChange }
+        />
+
+      </label>
       <table border="0">
         <thead>
           <tr>
@@ -39,7 +65,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            data.map((planet) => (
+            dataFilter.map((planet) => (
               <ItemPlanet
                 name={ planet.name }
                 rotation={ planet.rotation_period }
@@ -65,3 +91,16 @@ function Table() {
 }
 
 export default Table;
+
+// const planetFiltersInit = {
+//   filterByName: {
+//     name: '',
+//   },
+//   filterByNumericValues: [
+//     {
+//       column: 'population',
+//       camparison: 'maior que',
+//       value: '100000',
+//     },
+//   ],
+// };

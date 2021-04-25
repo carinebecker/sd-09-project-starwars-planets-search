@@ -1,14 +1,14 @@
 import React from 'react';
-import PlanetProvider from './context/PlanetProvider';
+import { Provider } from './context/StarWarsContext';
 import Table from './component/Table';
 import './App.css';
 
 function App() {
   return (
     <main>
-      <PlanetProvider>
+      <Provider>
         <Table />
-      </PlanetProvider>
+      </Provider>
     </main>
   );
 }
