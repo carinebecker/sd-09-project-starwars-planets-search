@@ -33,9 +33,11 @@ function Table() {
       <tbody>
         { filterPlanets(planets, filterByNumericValues)
           .filter(({ name }) => name.toLowerCase().includes(filterByName.name))
-          .map((element) => (
-            <tr key={ element.name }>
-              { Object.values(element).map((value) => <td key={ value }>{ value }</td>) }
+          .map((planet, index) => (
+            <tr key={ index }>
+              { Object.values(planet).map((value) => (value === planet.name
+                ? <td data-testid="planet-name" key={ value }>{ value }</td>
+                : <td key={ value }>{ value }</td>)) }
             </tr>
           )) }
       </tbody>

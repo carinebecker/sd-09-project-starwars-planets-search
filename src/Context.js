@@ -3,6 +3,7 @@ import { node } from 'prop-types';
 import fetchAPI from './services/api';
 
 const Context = createContext();
+
 const INITIAL_FILTERS = {
   filterByName: { name: '' },
   filterByNumericValues: [],
@@ -28,10 +29,17 @@ const Provider = ({ children }) => {
     );
   };
 
+  const removeFilter = (filter) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: filters.filterByNumericValues.filter((el) => el !== filter),
+    });
+  };
+
   useEffect(() => { getData(); }, []);
 
   const contextValue = {
-    data, filters, nameFilter, changeFilters,
+    data, filters, nameFilter, changeFilters, removeFilter,
   };
 
   return (

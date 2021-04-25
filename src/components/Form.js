@@ -25,40 +25,41 @@ export default function Form() {
     setColumns(columns.filter((el) => el !== state.column));
   };
 
-  const createDropDown = (testid, id, option) => (
-    <select data-testid={ testid } id={ id } onChange={ handleChange }>
+  const createInput = (testid, id, type, onChange) => (
+    <input data-testid={ testid } id={ id } type={ type } onChange={ onChange } />
+  );
+
+  const createDropDown = (testid, id, option, onChange) => (
+    <select data-testid={ testid } id={ id } onChange={ onChange }>
       { option.map((el) => (
         <option key={ el } value={ el }>{ el }</option>))}
     </select>
   );
 
-  const createSortInput = (testid, name) => (
-    <label htmlFor={ name }>
-      { name }
-      <input data-testid={ testid } name="SORT" value={ name } type="radio" />
+  const createRadioInput = (testid, name, value) => (
+    <label htmlFor={ value }>
+      { value }
+      <input data-testid={ testid } name={ name } value={ value } type="radio" />
     </label>
+  );
+
+  const createButton = (testid, name, onClick) => (
+    <button data-testid={ testid } type="button" onClick={ onClick }>
+      { name }
+    </button>
   );
 
   return (
     <form>
-      <input data-testid="name-filter" type="text" onChange={ nameFilter } />
-      { createDropDown('column-filter', 'column', columns) }
-      { createDropDown('comparison-filter', 'comparison', comparisons) }
-      <input
-        data-testid="value-filter"
-        type="number"
-        id="value"
-        onChange={ handleChange }
-      />
-      <button data-testid="button-filter" type="button" onClick={ handleClick }>
-        Filter
-      </button>
-      <label htmlFor="column-sort">
-        SORT
-        { createDropDown('column-sort', 'column-sort', columns) }
-      </label>
-      { createSortInput('column-sort-input-asc', 'ASC') }
-      { createSortInput('column-sort-input-desc', 'DESC') }
+      { createInput('name-filter', 'name', 'text', nameFilter) }
+      { createDropDown('column-filter', 'column', columns, handleChange) }
+      { createDropDown('comparison-filter', 'comparison', comparisons, handleChange) }
+      { createInput('value-filter', 'value', 'number', handleChange) }
+      { createButton('button-filter', 'Filter', handleClick) }
+      { createDropDown('column-sort', 'column-sort', columns) }
+      { createRadioInput('column-sort-input-asc', 'SORT', 'ASC') }
+      { createRadioInput('column-sort-input-desc', 'SORT', 'DESC') }
+      { createButton('column-sort-button', 'SORT') }
     </form>
   );
 }
