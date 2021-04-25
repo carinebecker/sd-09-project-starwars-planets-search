@@ -112,7 +112,7 @@ const useValuesFilterFields = () => {
 };
 
 const useSortFilterFields = () => {
-  const INITIAL_STATE = { column: 'Name', sort: 'ASC' };
+  const INITIAL_STATE = { column: 'name', sort: 'ASC' };
   const [sortFilter, setSortFilter] = useState(INITIAL_STATE);
 
   const handleFilterChanges = ({ target: { name, value } }) => {

@@ -17,7 +17,7 @@ const Sort = () => {
           onChange: handleFilterChanges,
           value: sortFilter.column,
         } }
-        options={ makeOptionsObjectFrom(COLUMNS_NAMES) }
+        options={ makeOptionsObjectFrom(COLUMNS_NAMES, true) }
       />
       <label htmlFor="ASC">
         <input

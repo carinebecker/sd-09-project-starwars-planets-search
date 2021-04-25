@@ -21,7 +21,7 @@ const INITIAL_FILTERS = {
   },
   filterByNumericValues: [],
   order: {
-    column: 'Name',
+    column: 'name',
     sort: 'ASC',
   },
 };
