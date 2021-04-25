@@ -1,10 +1,14 @@
 // Primeiro commit
 import React from 'react';
+import ProviderContext from './context/PorviderContext';
 import './App.css';
+import DataTablePlanets from './component/DataTablePlanets';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <ProviderContext>
+      <DataTablePlanets />
+    </ProviderContext>
   );
 }
 
