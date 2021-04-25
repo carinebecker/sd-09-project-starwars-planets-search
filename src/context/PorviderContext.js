@@ -5,6 +5,7 @@ import Context from './Context';
 
 export default function ProviderContext({ children }) {
   const [response, setResponse] = useState([]);
+  const [name, setName] = useState('');
 
   useEffect(() => {
     async function res() {
@@ -16,6 +17,13 @@ export default function ProviderContext({ children }) {
 
   const currentState = {
     response,
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
+    setName,
+    setResponse,
   };
   return (
     <Context.Provider value={ currentState }>
