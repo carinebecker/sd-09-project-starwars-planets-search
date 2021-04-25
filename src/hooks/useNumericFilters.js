@@ -2,31 +2,46 @@ import { useContext } from 'react';
 import { DataContext } from '../context/DataContext';
 import { UserContext } from '../context/UserContext';
 
-function useFilterName() {
+function useNumericFilter() {
   const { filter, setFilter } = useContext(UserContext);
   const { data: planets } = useContext(DataContext);
 
-  const handleNumericFilter = ({ target: { value: name } }) => {
-    const isSearching = name.length > 0;
+  const filterByNumericValues = (lastResults, newFilter) => {
+    console.log(newFilter);
+    // const filteredResults = lastResults.map((planet) => {
+    //   console.log(planet);
+    // });
+    return lastResults;
+  };
+
+  const setNumericFilter = (newFilter) => {
     setFilter((prevState) => {
-      const searchTerm = new RegExp(name, 'i');
-      const newState = planets
+      const resultsForFilter = prevState.isSearching
+        ? prevState.results
+        : planets.data.results;
+      const newState = newFilter
         ? {
           ...prevState,
-          isSearching,
-          filterByNumericValues: {
-            name,
-            results: planets.data.results.filter(
-              (planet) => searchTerm.test(planet.name),
-            ),
-          },
+          results: filterByNumericValues(resultsForFilter, newFilter),
+          isSearching: true,
+          filterByNumericValues: [
+            ...prevState.filterByNumericValues,
+            { ...newFilter },
+          ],
         }
-        : prevState;
+        : {
+          ...prevState,
+          results: filterByNumericValues(resultsForFilter),
+          isSearching:
+              prevState.filterByNumericValues.length > 0
+              || prevState.filterByName.name !== '',
+        };
+
       return newState;
     });
   };
 
-  return { filter, handleNumericFilter };
+  return { filter, setNumericFilter };
 }
 
-export default useFilterName;
+export default useNumericFilter;

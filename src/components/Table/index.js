@@ -9,17 +9,22 @@ function Table() {
   const data = useAPI();
   const { filter } = useFilter();
 
+  const showAll = () => {
+    const {
+      data: { results: planets },
+    } = data;
+    return [...planets];
+  };
+
   const getFiltered = () => {
-    if (filter) {
+    if (filter.isSearching) {
       const {
         results,
       } = filter;
       return [...results];
     }
-    const {
-      data: { results: planets },
-    } = data;
-    return [...planets];
+
+    return showAll();
   };
 
   const drawTable = () => {

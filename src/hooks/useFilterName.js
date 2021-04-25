@@ -6,14 +6,13 @@ function useFilterName() {
   const { filter, setFilter } = useContext(UserContext);
   const { data: planets } = useContext(DataContext);
 
-  const handleNameFilter = ({ target: { value: name } }) => {
-    const isSearching = name.length > 0;
+  const handleNameFilter = (name) => {
     setFilter((prevState) => {
       const searchTerm = new RegExp(name, 'i');
-      const newState = planets
+      const newState = name
         ? {
           ...prevState,
-          isSearching,
+          isSearching: true,
           results: planets.data.results.filter(
             (planet) => searchTerm.test(planet.name),
           ),
@@ -21,7 +20,15 @@ function useFilterName() {
             name,
           },
         }
-        : prevState;
+        : {
+          ...prevState,
+          filterByName: {
+            name,
+          },
+          isSearching:
+          prevState.filterByNumericValues.length > 0
+          || prevState.filterByName.name !== '',
+        };
       return newState;
     });
   };

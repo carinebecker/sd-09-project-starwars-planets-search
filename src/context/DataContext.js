@@ -6,9 +6,17 @@ const { Provider } = DataContext;
 
 function DataProvider({ children }) {
   const [data, setData] = useState(null);
+
+  const handleData = (newData) => {
+    setData((prevState) => ({
+      ...prevState,
+      data: newData,
+    }));
+  };
+
   const context = {
     data,
-    setData,
+    setData: handleData,
   };
   return <Provider value={ { ...context } }>{children}</Provider>;
 }

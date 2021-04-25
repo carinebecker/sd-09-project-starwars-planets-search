@@ -5,7 +5,14 @@ export const UserContext = createContext();
 const { Provider } = UserContext;
 
 function UserProvider({ children }) {
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState({
+    results: [],
+    isSearching: false,
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+  });
   const context = {
     filter,
     setFilter,

@@ -8,7 +8,7 @@ function useAPI(endpoint = '') {
 
   useEffect(() => {
     fetchStars().then((response) => {
-      setData({ data: response });
+      setData(response);
     });
     return () => abortController.abort();
   }, [endpoint]);
