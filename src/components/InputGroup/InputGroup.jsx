@@ -1,15 +1,15 @@
 import React, { useState, useContext } from 'react';
 import FiltersContext from '../../context/FiltersContext';
-import { useNumericFilters } from '../../hooks';
+import { useFilters } from '../../hooks';
 import Dropdown from '../Dropdown';
 
 export default function InputGroup() {
   const comparisons = ['maior que', 'igual a', 'menor que'];
 
-  const availableNumericColumns = useNumericFilters();
+  const { availableFilters } = useFilters();
 
   const [filterDescription, setFilterDescription] = useState({
-    column: availableNumericColumns[0],
+    column: availableFilters[0],
     comparison: comparisons[0],
     value: 0,
   });
@@ -29,7 +29,7 @@ export default function InputGroup() {
     return (
       <>
         <Dropdown
-          options={ availableNumericColumns }
+          options={ availableFilters }
           name="column"
           dataTestID="column-filter"
           value={ filterDescription.column }
@@ -61,7 +61,7 @@ export default function InputGroup() {
   }
 
   return (
-    availableNumericColumns.length > 0
+    availableFilters.length > 0
       && renderInputGroup()
 
   );

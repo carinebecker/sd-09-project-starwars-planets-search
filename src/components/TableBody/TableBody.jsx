@@ -61,7 +61,7 @@ export default function TableBody() {
           } = planet;
           return (
             <tr key={ `${name}${index}` }>
-              <td>{ name }</td>
+              <td data-testid="planet-name">{ name }</td>
               <td>{ rotationPeriod }</td>
               <td>{ orbitaPeriod }</td>
               <td>{ diameter }</td>

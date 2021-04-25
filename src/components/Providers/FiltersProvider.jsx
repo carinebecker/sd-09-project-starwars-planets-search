@@ -5,11 +5,16 @@ import FiltersContext from '../../context/FiltersContext';
 export default function FiltersProvider({ children }) {
   const [nameQuery, setNameQuery] = useState('');
   const [numericValues, setNumericValue] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   const value = {
     filters: {
       filterByName: nameQuery,
       filterByNumericValues: numericValues,
+      order,
     },
     setters: {
       setNameQuery,
@@ -21,6 +26,7 @@ export default function FiltersProvider({ children }) {
           .filter(({ column: filterColumn }) => column !== filterColumn);
         setNumericValue(updatedFilters);
       },
+      setOrder,
     },
   };
 
