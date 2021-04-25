@@ -1,24 +1,34 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import getPlanets from '../services/Api';
 
-const PlanetsContext = createContext();
+const MyContext = createContext();
 
-export default function PlanetsProvider({ children }) {
+const MyContextProvider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
+  async function fetchApi() {
+    const dataAPI = await getPlanets();
+    setPlanets(dataAPI);
+  }
+
+  useEffect(() => {
+    fetchApi();
+  }, []);
 
   return (
-    <PlanetsContext.Provider value={ { planets, setPlanets } }>
+    <MyContext.Provider value={ { planets, filters, fetchApi, setFilters } }>
       {children}
-    </PlanetsContext.Provider>
+    </MyContext.Provider>
   );
-}
+};
 
-export function usePlanets() {
-  const context = useContext(PlanetsContext);
-  const { planets, setPlanets } = context;
-  return { planets, setPlanets };
-}
+MyContextProvider.propTypes = {
+  children: PropTypes.arrayOf(Object).isRequired,
+};
 
-PlanetsProvider.propTypes = {
-  children: PropTypes.ReactComponentLike,
-}.isRequired;
+export { MyContext, MyContextProvider as Provider };

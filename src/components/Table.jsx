@@ -1,64 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import api from '../Api/Api';
-import { usePlanets } from '../context/Planets';
+import React, { useContext } from 'react';
+import { MyContext } from '../context/Planets';
 
-export default function Table() {
-  const { planets, setPlanets } = usePlanets();
-  const [loading, setLoading] = useState(true);
+function Table() {
+  const { planets, filters } = useContext(MyContext);
+  const { filterByName: { name } } = filters;
 
-  async function getPlanets() {
-    const response = await api();
-    return response;
-  }
-
-  useEffect(() => {
-    getPlanets().then((response) => {
-      setPlanets(response.results);
-      setLoading(false);
-    });
-  }, [setPlanets]);
-
-  if (loading) return <h2>LOADING...</h2>;
   return (
     <div>
       <table>
         <thead>
           <tr>
             <th>Name</th>
-            <th>Periodo de Rotação</th>
-            <th>Periodo de orbita</th>
-            <th>Diâmetro</th>
-            <th>Clima</th>
-            <th>Gravidade</th>
-            <th>Terreno</th>
-            <th>Área de superfície</th>
-            <th>População</th>
-            <th>Residents</th>
+            <th>Rotation Period</th>
+            <th>Orbital Period</th>
+            <th>Diameter</th>
+            <th>Climate</th>
+            <th>Gravity</th>
+            <th>Terrain</th>
+            <th>Surface Water</th>
+            <th>Population</th>
             <th>Films</th>
             <th>Created</th>
             <th>Edited</th>
+            <th>Url</th>
           </tr>
         </thead>
         <tbody>
-          {planets.map((element) => (
-            <tr key={ element.name }>
-              <td>{element.name}</td>
-              <td>{element.rotation_period}</td>
-              <td>{element.orbital_period}</td>
-              <td>{element.diameter}</td>
-              <td>{element.climate}</td>
-              <td>{element.gravity}</td>
-              <td>{element.terrain}</td>
-              <td>{element.surface_water}</td>
-              <td>{element.population}</td>
-              <td>{element.residents.length}</td>
-              <td>{element.films.length}</td>
-              <td>{element.created}</td>
-              <td>{element.edited}</td>
-            </tr>
-          ))}
+          { planets.filter((planet) => planet.name.includes(name))
+            .map((data) => (
+              <tr key={ data.name }>
+                <td>{ data.name }</td>
+                <td>{ data.rotation_period }</td>
+                <td>{ data.orbital_period }</td>
+                <td>{ data.diameter }</td>
+                <td>{ data.climate }</td>
+                <td>{ data.gravity }</td>
+                <td>{ data.terrain }</td>
+                <td>{ data.surface_water }</td>
+                <td>{ data.population }</td>
+                <td>{ data.films }</td>
+                <td>{ data.created }</td>
+                <td>{ data.edited }</td>
+                <td>{ data.url }</td>
+              </tr>
+            )) }
         </tbody>
       </table>
     </div>
   );
 }
+export default Table;
