@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function TableFields({ planets }) {
+function TableBody({ planets }) {
   return (
     <tbody>
-      {planets.map((planet) => (
+      {planets && planets.map((planet) => (
         <tr key={ planet.name }>
           {Object.values(planet).map((value, index) => (
             <td key={ index }>{value}</td>
@@ -15,8 +15,8 @@ function TableFields({ planets }) {
   );
 }
 
-TableFields.propTypes = {
+TableBody.propTypes = {
   planets: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default TableFields;
+export default TableBody;

@@ -5,7 +5,7 @@ function TableFields({ planets }) {
   return (
     <thead>
       <tr>
-        {Object.keys(planets[0]).map((field) => (
+        {planets[0] && Object.keys(planets[0]).map((field) => (
           <th key={ field }>{field}</th>
         ))}
       </tr>

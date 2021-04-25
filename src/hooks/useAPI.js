@@ -10,7 +10,7 @@ function useAPI(endpoint = '') {
     fetchStars().then((response) => {
       setData({ data: response });
     });
-    return () => abortController.abort;
+    return () => abortController.abort();
   }, [endpoint]);
 
   return data;
