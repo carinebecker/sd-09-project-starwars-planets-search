@@ -5,16 +5,33 @@ import ItemPlanet from './ItemPlanet';
 import './Table.css';
 
 function Table() {
-  const { data, addData } = useContext(StarWarsContext);
-  const { filters, addFilterName } = useContext(StarWarsContext);
-  const { dataFilter, addDataFilter } = useContext(StarWarsContext);
-  const { filterByName } = filters;
+  const { data, addData, filters, addFilterName, dataFilter, addDataFilter,
+    fieldsFilter, addFieldsFilter, arrayColumn, addArrayColumn, addFilterNumeric,
+  } = useContext(StarWarsContext);
+  const { filterByName, filterByNumericValues } = filters;
   const { name } = filterByName;
+  const { column, comparison, value } = fieldsFilter;
 
   const fetchApi = async () => {
     const planets = await loadPlanets();
     addData(planets);
     addDataFilter(planets);
+  };
+
+  const compareValues = (filterColumn, filterComparison, filterValue) => {
+    switch (filterComparison) {
+    case 'maior que':
+      return filterColumn > filterValue;
+
+    case 'igual a':
+      return filterColumn === filterValue;
+
+    case 'menor que':
+      return filterColumn < filterValue;
+
+    default:
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -25,26 +42,100 @@ function Table() {
     const noContain = -1;
     addDataFilter(data.filter((planet) => planet.name.toLowerCase()
       .indexOf(name.toLowerCase()) !== noContain));
+    filterByNumericValues.forEach((filter) => {
+      addDataFilter(dataFilter.filter((planet) => compareValues(
+        parseInt(planet[filter.column], 10),
+        filter.comparison, parseInt(filter.value, 10))
+      ));
+    });
   }, [filters]);
-  const handleChange = ({ target }) => {
+
+  const handleChangeName = ({ target }) => {
     addFilterName(target.value);
+  };
+
+  const handleChangeColumn = ({ target }) => {
+    addFieldsFilter(target.value, comparison, value);
+  };
+
+  const handleChangeComparison = ({ target }) => {
+    addFieldsFilter(column, target.value, value);
+  };
+
+  const handleChangeValue = ({ target }) => {
+    addFieldsFilter(column, comparison, target.value.toString());
+  };
+
+  const addFilterButton = () => {
+    addFilterNumeric(column, comparison, value);
+    addArrayColumn(arrayColumn.filter((col) => col !== column));
   };
 
   return (
     <div>
       <h3 className="title">Pesquisa de planetas do Star Wars</h3>
       <p> </p>
-      <label htmlFor="Label-name-filter">
+      <label htmlFor="Label-name-filter" className="form-plant">
         Planetas que incluam
         <input
           data-testid="name-filter"
           id="Label-name-filter"
           type="text"
           value={ name }
-          onChange={ handleChange }
+          onChange={ handleChangeName }
         />
 
       </label>
+      <label htmlFor="label-column" className="form-column">
+        Coluna
+        <select
+          data-testid="column-filter"
+          id="label-column"
+          name="column"
+          type="text"
+          value={ column }
+          defaultValue={ arrayColumn[0] }
+          onChange={ handleChangeColumn }
+        >
+          {arrayColumn.map((col) => (
+            <option key={ col } value={ col }>{ col }</option>)) }
+        </select>
+      </label>
+      <label htmlFor="label-comparison" className="form-comparison">
+        Coluna
+        <select
+          data-testid="comparison-filter"
+          id="label-comparison"
+          name="comparison"
+          type="text"
+          value={ comparison }
+          defaultValue="maior que"
+          onChange={ handleChangeComparison }
+        >
+          <option value="maior que">maior que</option>
+          <option value="igual a">igual a</option>
+          <option value="menor que">menor que</option>
+        </select>
+      </label>
+      <label htmlFor="label-value" className="form-value">
+        Coluna
+        <input
+          data-testid="value-filter"
+          id="label-value"
+          name="value"
+          type="number"
+          value={ value }
+          onChange={ handleChangeValue }
+        />
+      </label>
+      <button
+        data-testid="button-filter"
+        className="add-button"
+        type="button"
+        onClick={ addFilterButton }
+      >
+        Adicionar
+      </button>
       <table border="0">
         <thead>
           <tr>
@@ -91,16 +182,3 @@ function Table() {
 }
 
 export default Table;
-
-// const planetFiltersInit = {
-//   filterByName: {
-//     name: '',
-//   },
-//   filterByNumericValues: [
-//     {
-//       column: 'population',
-//       camparison: 'maior que',
-//       value: '100000',
-//     },
-//   ],
-// };
