@@ -6,7 +6,13 @@ import planetsData from '../services';
 function Provider({ children }) {
   const [allPlanets, setAllPlanets] = useState([]);
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({ filters: {} });
+  const [filters, setFilters] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
   const providerValues = {
     allPlanets,
     data,
