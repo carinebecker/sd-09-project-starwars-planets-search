@@ -20,12 +20,15 @@ export default function Form() {
   };
 
   return (
-    <form>
-      { createInput('name-filter', 'name', 'text', nameFilter) }
+    <section>
+      <label htmlFor="name">
+        SEARCH
+        { createInput('name-filter', 'name', 'text', nameFilter) }
+      </label>
       { createDropDown('column-filter', 'column', columns, handleChange) }
       { createDropDown('comparison-filter', 'comparison', comparisons, handleChange) }
       { createInput('value-filter', 'value', 'number', handleChange) }
       { createButton('button-filter', 'FILTER', handleFilterButton) }
-    </form>
+    </section>
   );
 }

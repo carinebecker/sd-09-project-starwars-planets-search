@@ -1,3 +1,55 @@
+body {
+  background-image: url('img/background.jpg');
+  background-size: cover;
+  color: whitesmoke;
+}
+
+input, select, button {
+  background-color: whitesmoke;
+  border: none;
+  border-radius: 8px;
+  color: #111;
+  margin: 2px;
+  opacity: 0.8;
+  padding: 3px 6px;
+  transition: 0.3s;
+}
+
+button {
+  padding: 4px 10px;
+}
+
+input:hover, select:hover, button:hover {
+  box-shadow: 0 1px 3px whitesmoke;
+  opacity: 1;
+}
+
+section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  backdrop-filter: blur(8px);
+  border-spacing: 0;
+  margin-top: 20px;
+  width: 100%;
+}
+
+tbody tr:nth-child( odd ) {
+  background-color: #555a;
+}
+
+tbody tr:nth-child( even ) {
+  background-color: #333a;
+}
+
+td {
+  border: 1px solid #111;
+  text-align: center;
+}
+
 .App {
   text-align: center;
 }

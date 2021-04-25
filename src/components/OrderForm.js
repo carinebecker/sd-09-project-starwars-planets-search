@@ -19,12 +19,12 @@ function OrderForm() {
   };
 
   return (
-    <form>
+    <section>
       { createDropDown('column-sort', 'column', columns, handleChange) }
       { createRadioInput('column-sort-input-asc', 'sort', 'ASC', handleChange) }
       { createRadioInput('column-sort-input-desc', 'sort', 'DESC', handleChange) }
       { createButton('column-sort-button', 'SORT', handleColumnSortButton) }
-    </form>
+    </section>
   );
 }
 
