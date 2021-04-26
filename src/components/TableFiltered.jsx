@@ -6,17 +6,11 @@ const TableFiltered = () => {
     serchInput,
     setOptionsFilter,
     filterByNumber,
-  //  column,
-  //  comparison,
-  //  value,
+    column,
+    comparison,
+    columnFilter,
   } = useContext(MyContext);
-  const columnFilter = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
+
   const valueFilter = ['maior que', 'menor que', 'igual a'];
   return (
     <div>
@@ -27,6 +21,7 @@ const TableFiltered = () => {
         placeholder="Search planet"
       />
       <select
+        value={ column }
         data-testid="column-filter"
         name="columnFilter"
         onChange={ setOptionsFilter }
@@ -36,6 +31,7 @@ const TableFiltered = () => {
         ))}
       </select>
       <select
+        value={ comparison }
         name="comparisonFilter"
         data-testid="comparison-filter"
         onChange={ setOptionsFilter }

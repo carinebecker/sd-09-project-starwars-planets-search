@@ -12,9 +12,20 @@ const MyContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [name, setName] = useState('');
-  const [column, setColumn] = useState('');
-  const [comparison, setComparison] = useState('');
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('');
+
+  const [filters, setFilter] = useState({ filtersByName: { name: '' },
+    filterByNumericValues: [] });
+
+  const [columnFilter, setColumnFilter] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     requestAPI()
@@ -53,7 +64,24 @@ const MyContextProvider = ({ children }) => {
     }
   };
 
+  const removeCloumn = () => {
+    const newColumnsArray = columnFilter
+      .filter((columnToFilter) => columnToFilter !== column);
+    setColumnFilter(newColumnsArray);
+    setColumn(newColumnsArray[0]);
+    setFilter((prevState) => (
+      { filtersByName: { name },
+        filterByNumericValues: [...prevState.filterByNumericValues,
+          {
+            column,
+            comparison,
+            value,
+          },
+        ] }));
+  };
+
   const filterByNumber = () => {
+    removeCloumn();
     switch (comparison) {
     case 'maior que': {
       const result = data
@@ -77,22 +105,12 @@ const MyContextProvider = ({ children }) => {
     }
   };
 
-  const filters = {
-    filtersByName: { name },
-    filterByNumericValues: [
-      {
-        column,
-        comparison,
-        value,
-      },
-    ],
-  };
-
   const context = {
     data,
     dataToChange,
     isLoading,
     keysData,
+    columnFilter,
     filters,
     serchInput,
     setOptionsFilter,
