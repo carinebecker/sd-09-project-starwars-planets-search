@@ -69,13 +69,7 @@
     transform: translateY(4px);
   }
 
-  25%,
-
-  55%,
-
-  75%,
-
-  87% {
+  25%, 55%, 75%, 87% {
     animation-timing-function: ease-out;
     transform: translateY(0);
   }

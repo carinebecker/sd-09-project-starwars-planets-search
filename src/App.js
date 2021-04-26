@@ -1,6 +1,6 @@
 import React from 'react';
 import './Pages/CSS/index';
-import { Header } from './Pages';
+import { Header } from './Pages/index';
 
 function App() {
   return (
