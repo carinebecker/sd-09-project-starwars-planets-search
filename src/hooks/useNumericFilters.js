@@ -6,12 +6,31 @@ function useNumericFilter() {
   const { filter, setFilter } = useContext(UserContext);
   const { data: planets } = useContext(DataContext);
 
-  const filterByNumericValues = (lastResults, newFilter) => {
-    console.log(newFilter);
-    // const filteredResults = lastResults.map((planet) => {
-    //   console.log(planet);
-    // });
-    return lastResults;
+  const whatsIsMyOperator = (operator) => {
+    const comparisonOperator = {
+      'maior que': 'greater',
+      'igual a': 'equals',
+      'menor que': 'less',
+    };
+    return comparisonOperator[operator];
+  };
+
+  const filterByNumericValues = (
+    lastResults,
+    { column, comparison, numericSearchTerm },
+  ) => {
+    const comparisonOperator = {
+      greater: (n, planetData) => parseInt(planetData, 10) > parseInt(n, 10),
+      equals: (n, planetData) => parseInt(planetData, 10) === parseInt(n, 10),
+      less: (n, planetData) => parseInt(planetData, 10) < parseInt(n, 10),
+    };
+    const filteredResults = lastResults.filter(
+      (planet) => comparisonOperator[whatsIsMyOperator(comparison)](
+        numericSearchTerm,
+        planet[column],
+      ),
+    );
+    return filteredResults;
   };
 
   const setNumericFilter = (newFilter) => {

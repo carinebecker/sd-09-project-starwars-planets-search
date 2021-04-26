@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import useNumericFilter from '../../hooks/useNumericFilters';
 
+const columnOptions = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
 function NumericFilters() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('larger');
@@ -16,6 +24,12 @@ function NumericFilters() {
     setNumericFilter(newFilter);
   };
 
+  const drawSelect = (options) => options.map((option) => (
+    <option key={ option } value={ option }>
+      {option}
+    </option>
+  ));
+
   return (
     <>
       <select
@@ -25,11 +39,7 @@ function NumericFilters() {
         id="column"
         value={ column }
       >
-        <option value="population">População</option>
-        <option value="orbital_period">Período Orbital</option>
-        <option value="diameter">Diametro</option>
-        <option value="rotation_period">Período de Rotação</option>
-        <option value="surface_water">Água na Superfície</option>
+        {drawSelect(columnOptions)}
       </select>
       <select
         onChange={ (e) => setComparison(e.target.value) }
@@ -38,9 +48,9 @@ function NumericFilters() {
         id="comparison"
         value={ comparison }
       >
-        <option value="larger">Maior que</option>
-        <option value="equals">Igual a</option>
-        <option value="less">Menor que</option>
+        <option value="maior que">maior que</option>
+        <option value="igual a">igual a</option>
+        <option value="menor que">menor que</option>
       </select>
       <input
         type="text"
