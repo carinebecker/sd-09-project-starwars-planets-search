@@ -3,7 +3,6 @@ import StarWarsContext from '../Context/StarWarsContext';
 
 export default function Table() {
   const { data } = useContext(StarWarsContext);
-  console.log(data);
   const rowHead = () => (
     <tr>
       {Object.keys(data.results[0]).map((title) => <th key={ title }>{title}</th>)}
