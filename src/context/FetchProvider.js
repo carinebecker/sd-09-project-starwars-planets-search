@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import FetchContext from './FetchContext';
 
-// eslint-disable-next-line react/prop-types
 function FetchProvider({ children }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,9 +22,7 @@ function FetchProvider({ children }) {
     setLoading(false);
   }
 
-  useEffect(() => {
-    getPlanets();
-  }, []);
+  useEffect(getPlanets, []);
 
   return (
     <div>
@@ -34,5 +32,9 @@ function FetchProvider({ children }) {
     </div>
   );
 }
+
+FetchProvider.propTypes = {
+  children: PropTypes.node,
+}.isRequired;
 
 export default FetchProvider;
