@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useContext } from 'react';
 import Context from '../context/Context';
 
@@ -29,22 +30,22 @@ const Table = () => {
           { data.map(({ climate, created, diameter, edited, films, gravity, name,
             orbital_period: orbital, population, rotation_period: rotation,
             surface_water: water, terrain, url }, index) => (
-            // eslint-disable-next-line react/jsx-indent
-            <tr key={ index }>
-              <td>{ name }</td>
-              <td>{ rotation }</td>
-              <td>{ orbital }</td>
-              <td>{ diameter }</td>
-              <td>{ climate }</td>
-              <td>{ gravity }</td>
-              <td>{ terrain }</td>
-              <td>{ water }</td>
-              <td>{ population }</td>
-              <td>{ created }</td>
-              <td>{ edited }</td>
-              <td>{ films }</td>
-              <td>{ url }</td>
-            </tr>
+            // eslint-disable-next-line indent
+              <tr key={ index }>
+                <td>{ name }</td>
+                <td>{ rotation }</td>
+                <td>{ orbital }</td>
+                <td>{ diameter }</td>
+                <td>{ climate }</td>
+                <td>{ gravity }</td>
+                <td>{ terrain }</td>
+                <td>{ water }</td>
+                <td>{ population }</td>
+                <td>{ created }</td>
+                <td>{ edited }</td>
+                <td>{ films }</td>
+                <td>{ url }</td>
+              </tr>
           ))}
         </tbody>
       </table>
