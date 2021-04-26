@@ -3,16 +3,14 @@ import { SwPlanetsContext } from '../context/SWPlanetsContext';
 
 function Form() {
   const {
-    filters: { filterByName: { name }, filterByNumericValues: { value } },
+    filters: { filterByName: { name } },
+    filter: { value },
+    columns,
+    comparisons,
     handleNameChange,
     handleClick,
     handleValueChange,
   } = useContext(SwPlanetsContext);
-
-  const columnFilter = ['-', 'population', 'orbital_period', 'diameter',
-    'rotation_period', 'surface_water'];
-
-  const comparisonFilter = ['-', 'maior que', 'menor que', 'igual a'];
 
   return (
     <form>
@@ -28,31 +26,19 @@ function Form() {
         name="column"
         data-testid="column-filter"
         onChange={ handleValueChange }
-        defaultValue="-"
       >
-        { columnFilter.map((option, index) => ((index === 0) ? (
-          <option value={ option } key="default-column-value" disabled>{option}</option>
-        ) : (
+        { columns.map((option) => (
           <option value={ option } key={ option }>{option}</option>
-        ))) }
+        )) }
       </select>
       <select
         name="comparison"
         data-testid="comparison-filter"
         onChange={ handleValueChange }
-        defaultValue="-"
       >
-        { comparisonFilter.map((option, index) => ((index === 0) ? (
-          <option
-            value={ option }
-            key="default-comparison-value"
-            disabled
-          >
-            {option}
-          </option>
-        ) : (
+        { comparisons.map((option) => (
           <option value={ option } key={ option }>{option}</option>
-        ))) }
+        )) }
       </select>
       <input
         type="number"
