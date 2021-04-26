@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Header(props) {
   const { data } = props;
@@ -13,5 +14,9 @@ function Header(props) {
     </tr>
   );
 }
+
+Header.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.Object).isRequired,
+};
 
 export default Header;
