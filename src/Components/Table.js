@@ -2,7 +2,10 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../Context/StarWarsContext';
 
 export default function Table() {
-  const { data } = useContext(StarWarsContext);
+  const {
+    data,
+    filters,
+  } = useContext(StarWarsContext);
   const rowHead = () => (
     <tr>
       {Object.keys(data.results[0]).map((title) => <th key={ title }>{title}</th>)}
@@ -10,6 +13,7 @@ export default function Table() {
   );
   const rowBody = () => (
     data.results
+      .filter((planet) => planet.name.includes(filters.filterByName.name))
       .map((element) => (
         <tr key={ element.name }>
           { Object.values(element).map((value) => <td key={ value }>{ value }</td>) }
