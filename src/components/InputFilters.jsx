@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import FiltersCreated from './FiltersCreated';
 
 const defaultFilters = {
   filterByName: {
@@ -135,6 +136,7 @@ function InputFilters() {
       >
         apply filter
       </button>
+      <FiltersCreated />
     </section>
   );
 }
