@@ -25,9 +25,11 @@ function InputFilters() {
   const dataBaseCopy = [...data];
   const [filterByName, setFilterByName] = useState(defaultFilters);
   const [numericFilters, setNumericFilters] = useState(defaultNumericFilters);
+  const [reloadPage, setReloadPage] = useState(false);
 
   const handleChangeByName = ({ target }) => {
     setFilterByName({ ...filterByName, filterByName: { name: target.value } });
+    setReloadPage(true);
   };
 
   const handleChangeByNumeric = ({ target }) => {
@@ -44,34 +46,45 @@ function InputFilters() {
     setFilters(filtersCopy);
     const { comparison, value } = numericFilters;
     setNumericFilters({ column: filtersCopy.types[0], comparison, value });
+    setReloadPage(true);
   };
 
-  console.log('previne loophero');
+  console.log('LOOPEI??? :D');
 
   // filter by name
   useEffect(() => {
-    const verifyEqualityOfArrays = (array1, array2) => {
-      if (array1.length !== array2.length) return false;
-      for (let index = 0; index < array1.length; index += 1) {
-        if (array1[index].name !== array2[index].name) return false;
-      }
-      return true;
-    };
-
     const applyFilterByName = () => {
       const newPlanetsArrayFiltered = dataBaseCopy
         .filter((planet) => planet.name.includes((filterByName.filterByName.name)));
-      if (!verifyEqualityOfArrays(filteredPlanets, newPlanetsArrayFiltered)) {
+      if (reloadPage) {
         setFilteredPlanets(newPlanetsArrayFiltered);
+        setReloadPage(false);
       }
     };
 
     applyFilterByName();
-  }, [dataBaseCopy, filterByName, filteredPlanets, setFilteredPlanets]);
+  }, [dataBaseCopy, filterByName, setFilteredPlanets, reloadPage, setReloadPage]);
 
   useEffect(() => {
-
-  }, [filters, setFilters]);
+    const applyFilterByNumeric = () => {
+      if (reloadPage) {
+        filters.allFilters.forEach((customFilter) => {
+          const newPlanetsArrayFiltered = filteredPlanets.filter((planet) => {
+            if (customFilter.comparison === 'maior que') {
+              return (Number(planet[customFilter.column]) > Number(customFilter.value));
+            }
+            if (customFilter.comparison === 'menor que') {
+              return (Number(planet[customFilter.column]) < Number(customFilter.value));
+            }
+            return (Number(planet[customFilter.column]) === Number(customFilter.value));
+          });
+          setFilteredPlanets(newPlanetsArrayFiltered);
+          setReloadPage(false);
+        });
+      }
+    };
+    applyFilterByNumeric();
+  }, [filteredPlanets, filters, setFilteredPlanets, reloadPage, setReloadPage]);
 
   return (
     <section>
