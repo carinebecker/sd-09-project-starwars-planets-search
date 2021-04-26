@@ -23,9 +23,8 @@ body {
   color: white;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  font-size: 13px;
   justify-content: center;
-  min-height: 100vh;
 }
 
 .App-link {

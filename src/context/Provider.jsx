@@ -4,20 +4,51 @@ import SWContext from './SWContext';
 import { fetchPlanets } from '../services/SWAPI';
 
 function Provider({ children }) {
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(undefined);
-  const [filters, setFilters] = useState({ filters: { filterByName: { name: '' } } });
+  const [filters, setFilters] = useState({
+    filters:
+      {
+        filterByName: {
+          name: '',
+        },
+        filterByNumericValues: [
+          {
+            column: 'rotation_period',
+            comparison: 'maior que',
+            value: '',
+          },
+        ],
+      },
+  });
+
+  const { filters: {
+    filterByName,
+    filterByNumericValues,
+    filterByName: { name },
+    filterByNumericValues: [{ column, comparison, value }],
+  },
+  } = filters;
 
   const getData = async () => {
     if (data) return;
-    setLoading(true);
     const dataFetched = await fetchPlanets();
     setData(dataFetched);
-    setLoading(false);
   };
 
   return (
-    <SWContext.Provider value={ { loading, data, getData, filters, setFilters } }>
+    <SWContext.Provider
+      value={ {
+        data,
+        getData,
+        filters,
+        setFilters,
+        filterByName,
+        filterByNumericValues,
+        name,
+        column,
+        comparison,
+        value } }
+    >
       {children}
     </SWContext.Provider>
   );
