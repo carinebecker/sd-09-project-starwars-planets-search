@@ -15,10 +15,10 @@ function Provider({ children }) {
           (response) => setData(response.results),
           (error) => console.log(error.message),
         );
+      setIsFetching(false);
     };
     fetchPlanetsFromApi();
-    setIsFetching(false);
-  }, [data]);
+  }, []);
 
   const contextStarWars = {
     isFetching,
