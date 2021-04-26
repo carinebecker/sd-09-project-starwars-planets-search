@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { node } from 'prop-types';
 import FetchContext from './FetchContext';
 
 function FetchProvider({ children }) {
@@ -14,15 +14,16 @@ function FetchProvider({ children }) {
     return newData;
   }
 
-  async function getPlanets() {
-    const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const responseJSON = await response.json();
-    const newData = deleteResidents(responseJSON.results);
-    setData(newData);
-    setLoading(false);
-  }
-
-  useEffect(getPlanets, []);
+  useEffect(() => {
+    async function getPlanets() {
+      const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
+      const responseJSON = await response.json();
+      const newData = deleteResidents(responseJSON.results);
+      setData(newData);
+      setLoading(false);
+    }
+    getPlanets();
+  }, []);
 
   return (
     <div>
@@ -34,7 +35,7 @@ function FetchProvider({ children }) {
 }
 
 FetchProvider.propTypes = {
-  children: PropTypes.node,
+  children: node,
 }.isRequired;
 
 export default FetchProvider;
