@@ -10,11 +10,6 @@ const Table = () => {
       name: '',
     },
     filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '100000',
-      },
     ],
   });
 
@@ -30,12 +25,36 @@ const Table = () => {
     'surface_water',
   ];
 
+  const filterAll = (dataToFilter, nameFilter, numericFilters) => {
+    const stepOne = dataToFilter.filter((planet) => (
+      planet.name.toLowerCase().includes(nameFilter.toLowerCase())
+    ));
+    const compare = (a, b, op) => {
+      if (op === 'menor que') {
+        return (!Number.isNaN(parseInt(a, 10)) && parseInt(a, 10) < parseInt(b, 10)) || false;
+      }
+      if (op === 'igual a') {
+        return (parseInt(a, 10) && parseInt(a, 10) === parseInt(b, 10)) || false;
+      }
+      if (op === 'maior que') {
+        return (parseInt(a, 10) && parseInt(a, 10) > parseInt(b, 10)) || false;
+      }
+    };
+    return numericFilters.reduce((acc, numericFilter) => {
+      console.log(acc);
+      return acc.filter((element) => (
+        compare(
+          element[numericFilter.column], numericFilter.value, numericFilter.comparison,
+        )
+      ));
+    }, stepOne);
+  };
+
   useEffect(() => {
     if (isFetched) {
-      const { filterByName: { name } } = filters;
-      filteredDataSet(data.filter((planet) => (
-        planet.name.toLowerCase().includes(name.toLowerCase())
-      )));
+      filteredDataSet(
+        filterAll(data, filters.filterByName.name, filters.filterByNumericValues),
+      );
     }
   }, [data, isFetched, filters, filtersSet]);
   return (
@@ -80,9 +99,9 @@ const Table = () => {
               data-testid="comparison-filter"
               ref={ comparisonRef }
             >
-              <option>maior que</option>
-              <option>menor que</option>
-              <option>igual a</option>
+              <option value="maior que">maior que</option>
+              <option value="menor que">menor que</option>
+              <option value="igual a">igual a</option>
             </select>
             <input
               type="number"
