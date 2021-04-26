@@ -19,7 +19,7 @@
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
-  
+
   .logo-img {
     animation: bounce-bottom 2s both;
   }
@@ -31,8 +31,8 @@
  * See http://animista.net/license for more info.
  * w: http://animista.net, t: @cssanimista
  * ---------------------------------------------- */
-/**
- * ----------------------------------------
+
+/* ----------------------------------------
  * animation bounce-bottom
  * ----------------------------------------
  */
@@ -69,20 +69,18 @@
     transform: translateY(4px);
   }
 
-  25%,
-
-  55%,
-
-  75%,
+  25%, 
+  55%, 
+  75%, 
 
   87% {
     animation-timing-function: ease-out;
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 
   100% {
     animation-timing-function: ease-out;
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
