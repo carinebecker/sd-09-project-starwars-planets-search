@@ -1,9 +1,15 @@
 import React from 'react';
+import Table from './components/Table';
+import FetchProvider from './context/FetchProvider';
 import './App.css';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <main>
+      <FetchProvider>
+        <Table />
+      </FetchProvider>
+    </main>
   );
 }
 
