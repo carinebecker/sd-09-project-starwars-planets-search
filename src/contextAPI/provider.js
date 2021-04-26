@@ -4,6 +4,8 @@ import AppContext from './context';
 
 const Provider = ({ children }) => {
   const [data, changeData] = useState([]);
+  const [name, changeFilterName] = useState('');
+  const [filteredPlanets, changeFilteredPlanets] = useState([]);
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => {
@@ -14,8 +16,23 @@ const Provider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => {
+    const filtered = data.filter((planet) => planet.name.includes(name));
+    changeFilteredPlanets(filtered);
+  }, [name, data]);
+
+  const value = {
+    data: filteredPlanets,
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
+    changeFilterName,
+  };
+
   return (
-    <AppContext.Provider value={ { data } }>
+    <AppContext.Provider value={ value }>
       { children }
     </AppContext.Provider>
   );
