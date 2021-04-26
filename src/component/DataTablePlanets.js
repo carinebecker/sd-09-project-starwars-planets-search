@@ -3,16 +3,8 @@ import Context from '../context/Context';
 import FilterPlanets from './FilterPlanets';
 
 function DataTablePlanets() {
-  const { response } = useContext(Context);
-  const { filters: { filterByName: { name } } } = useContext(Context);
-  let arrayPlanet = response;
-  if (name !== '') {
-    arrayPlanet = response.filter(({ name: planetName }) => (
-      planetName.includes(name)
-    ));
-  }
-  const value = 0;
-  if (response.length > value) {
+  const { response, arrayPlanet } = useContext(Context);
+  if (arrayPlanet.length > 0) {
     const planets = Object.keys(response[0]);
     const filtered = planets.filter((item) => (
       item !== 'residents'
@@ -21,11 +13,13 @@ function DataTablePlanets() {
       <div>
         <FilterPlanets />
         <table>
-          <tr>
-            {filtered.map((planetKey) => (
-              <th key={ planetKey }>{planetKey}</th>
-            ))}
-          </tr>
+          <tbody>
+            <tr>
+              {filtered.map((planetKey) => (
+                <th key={ planetKey.name }>{planetKey}</th>
+              ))}
+            </tr>
+          </tbody>
           {arrayPlanet.map((planetItem) => (
             <tr key={ planetItem }>
               <td>{planetItem.name}</td>
@@ -47,7 +41,11 @@ function DataTablePlanets() {
       </div>
     );
   }
-  return <div>Loading...</div>;
+  return (
+    <div>
+      <FilterPlanets />
+    </div>
+  );
 }
 
 export default DataTablePlanets;
