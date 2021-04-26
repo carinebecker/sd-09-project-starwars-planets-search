@@ -11,7 +11,7 @@ const columnOptions = [
 
 function NumericFilters() {
   const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('larger');
+  const [comparison, setComparison] = useState('maior que');
   const [numericSearchTerm, setNumericSearchTerm] = useState('0');
   const { setNumericFilter } = useNumericFilter();
 

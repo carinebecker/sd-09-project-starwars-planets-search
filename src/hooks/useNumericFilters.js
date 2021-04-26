@@ -8,11 +8,11 @@ function useNumericFilter() {
 
   const whatsIsMyOperator = (operator) => {
     const comparisonOperator = {
-      'maior que': 'greater',
+      'maior que': 'larger',
       'igual a': 'equals',
       'menor que': 'less',
     };
-    return comparisonOperator[operator];
+    return comparisonOperator[operator].toString();
   };
 
   const filterByNumericValues = (
@@ -20,16 +20,15 @@ function useNumericFilter() {
     { column, comparison, numericSearchTerm },
   ) => {
     const comparisonOperator = {
-      greater: (n, planetData) => parseInt(planetData, 10) > parseInt(n, 10),
+      larger: (n, planetData) => parseInt(planetData, 10) > parseInt(n, 10),
       equals: (n, planetData) => parseInt(planetData, 10) === parseInt(n, 10),
       less: (n, planetData) => parseInt(planetData, 10) < parseInt(n, 10),
     };
-    const filteredResults = lastResults.filter(
-      (planet) => comparisonOperator[whatsIsMyOperator(comparison)](
+    const filteredResults = numericSearchTerm
+      && lastResults.filter((planet) => comparisonOperator[whatsIsMyOperator(comparison)](
         numericSearchTerm,
         planet[column],
-      ),
-    );
+      ));
     return filteredResults;
   };
 
