@@ -43,10 +43,9 @@ function Table() {
     addDataFilter(data.filter((planet) => planet.name.toLowerCase()
       .indexOf(name.toLowerCase()) !== noContain));
     filterByNumericValues.forEach((filter) => {
-      addDataFilter(dataFilter.filter((planet) => compareValues(
-        parseInt(planet[filter.column], 10),
-        filter.comparison, parseInt(filter.value, 10),
-      )));
+      addDataFilter(dataFilter.filter((planet) => (
+        compareValues(parseInt(planet[filter.column], 10), filter.comparison,
+          parseInt(filter.value, 10)))));
     });
   }, [filters]);
 
