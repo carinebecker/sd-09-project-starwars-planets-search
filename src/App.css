@@ -39,3 +39,25 @@
     transform: rotate(360deg);
   }
 }
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table td , .table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table tr:hover {
+  background-color: #ddd;
+}
+
+.table th {
+  background-color: #4649ff;
+  color: white;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  text-align: left;
+}

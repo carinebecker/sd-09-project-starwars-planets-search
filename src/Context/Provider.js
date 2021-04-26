@@ -1,69 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 import requestApiStarWars from '../services/requestApi';
 
-class Provider extends React.Component {
-  constructor() {
-    super();
+function Provider({ children }) {
+  const [data, setData] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
 
-    this.state = {
-      data: [],
-      isFetching: true,
-    };
-
-    this.fetchPlanetsFromApi = this.fetchPlanetsFromApi.bind(this);
-    this.handleFetchSuccess = this.handleFetchSuccess.bind(this);
-    this.handleFetchError = this.handleFetchError.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchPlanetsFromApi();
-  }
-
-  handleFetchSuccess(result) {
-    this.setState({
-      data: result.results,
-      isFetching: false,
-    });
-    console.log('sucesso');
-  }
-
-  handleFetchError(error) {
-    this.setState({
-      isFetching: false,
-    });
-    console.log(error.message);
-  }
-
-  fetchPlanetsFromApi() {
-    this.setState({ isFetching: true }, () => {
+  useEffect(() => {
+    const fetchPlanetsFromApi = () => {
+      setIsFetching(true);
       requestApiStarWars()
         .then(
-          this.handleFetchSuccess,
-          this.handleFetchError,
+          (response) => setData(response.results),
+          (error) => console.log(error.message),
         );
-      console.log('chamada api');
-    });
-  }
+    };
+    fetchPlanetsFromApi();
+    setIsFetching(false);
+  }, [data]);
 
-  render() {
-    const { children } = this.props;
-    return (
-      <StarWarsContext.Provider
-        value={ {
-          ...this.state,
-          getPlanetsFromApi: this.fetchPlanetsFromApi,
-        } }
-      >
-        { children }
-      </StarWarsContext.Provider>
-    );
-  }
+  const contextStarWars = {
+    isFetching,
+    data,
+  };
+
+  return (
+    <StarWarsContext.Provider
+      value={ contextStarWars }
+    >
+      { children }
+    </StarWarsContext.Provider>
+  );
 }
 
 Provider.propTypes = {
-  children: PropTypes.objectOf().isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Provider;
