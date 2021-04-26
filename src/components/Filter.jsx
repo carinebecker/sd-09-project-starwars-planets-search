@@ -11,13 +11,18 @@ const columns = ['population',
 const comparisons = ['maior que', 'menor que', 'igual a'];
 
 const Filter = () => {
-  const { filters, setName, setFiltersByNumericValues } = useContext(StarWarsContext);
+  const {
+    filters,
+    unavailableFilters,
+    setName,
+    setFiltersByNumericValues,
+    setUnavailableFilters,
+  } = useContext(StarWarsContext);
   const { filterByNumericValues } = filters;
 
   const [column, setColumn] = useState(columns[0]);
   const [comparison, setComparison] = useState(comparisons[0]);
   const [value, setValue] = useState('');
-  const [unavailableFilters, setUnavailableFilters] = useState([]);
 
   return (
     <>
