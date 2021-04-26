@@ -9,7 +9,11 @@ const Provider = ({ children }) => {
     filteredPlanetsList: [],
     isFiltering: false,
   });
-  const [filter, setFilter] = useState({ filterByName: '' });
+  const [numericFilter, setNumericFilter] = useState({});
+  const [filter, setFilter] = useState({
+    filterByName: '',
+    filterByNumericValues: [],
+  });
 
   const fetchPlanets = async () => {
     try {
@@ -21,7 +25,24 @@ const Provider = ({ children }) => {
     }
   };
 
-  const handleFilter = ({ value }) => {
+  const createNumericFilter = ({ name, value }) => {
+    setNumericFilter({
+      ...numericFilter,
+      [name]: value,
+    });
+  };
+
+  const addNumericFilter = () => {
+    const minEntries = 3;
+    if (Object.entries(numericFilter).length === minEntries) {
+      setFilter({
+        ...filter,
+        filterByNumericValues: [...filter.filterByNumericValues, numericFilter],
+      });
+    }
+  };
+
+  const handleNameFilter = ({ value }) => {
     if (typeof value === 'string') {
       setFilter({ ...filter, filterByName: value });
     }
@@ -31,8 +52,9 @@ const Provider = ({ children }) => {
     const { planetsList } = data;
     const { filterByName } = filter;
 
-    const filteredPlanets = planetsList.filter(({ name }) => name.toLowerCase()
-      .includes(filterByName.toLowerCase()));
+    const filteredPlanets = planetsList
+      .filter(({ name }) => name.toLowerCase()
+        .includes(filterByName.toLowerCase()));
 
     if (filterByName.length !== 0) {
       setFilteredData({
@@ -44,6 +66,32 @@ const Provider = ({ children }) => {
     }
   };
 
+  const filterPlanetListByNumeric = () => {
+    const { planetsList } = data;
+    const { filterByNumericValues } = filter;
+    let filteredPlanets = planetsList;
+
+    filterByNumericValues.forEach((filterObj) => {
+      filteredPlanets = filteredPlanets.filter((planet) => {
+        switch (filterObj.comparison) {
+        case 'menor que':
+          return parseInt(planet[filterObj.column], 10) < filterObj.value;
+        case 'maior que':
+          return parseInt(planet[filterObj.column], 10) > filterObj.value;
+        default:
+          return planet[filterObj.column] === filterObj.value;
+        }
+      });
+    });
+
+    if (filterByNumericValues.length !== 0) {
+      setFilteredData({
+        filteredPlanetsList: filteredPlanets,
+        isFiltering: true,
+      });
+    }
+  };
+
   useEffect(() => {
     fetchPlanets();
   }, []);
@@ -52,10 +100,16 @@ const Provider = ({ children }) => {
     filterPlanetListByName();
   }, [filter]);
 
+  useEffect(() => {
+    filterPlanetListByNumeric();
+  }, [filter]);
+
   const contextValue = {
     data,
     filteredData,
-    handleFilter,
+    handleNameFilter,
+    createNumericFilter,
+    addNumericFilter,
   };
 
   return (
