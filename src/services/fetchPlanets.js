@@ -1,9 +1,9 @@
 async function fetchPlanets() {
-  const END_POINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const dataAPI = await fetch(END_POINT)
-    .then((response) => response.json())
-    .catch((error) => console.error(error));
-  return dataAPI;
-}
-
-export default fetchPlanets;
+  const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets';
+  const response = await fetch(endpoint);
+  const { results } = await response.json();
+  results.forEach((result) => delete result.residents);
+  return results;
+  }
+  
+  export default fetchPlanets; 
