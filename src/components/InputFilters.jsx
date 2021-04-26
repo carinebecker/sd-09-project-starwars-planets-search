@@ -15,13 +15,19 @@ const defaultNumericFilters = {
 };
 
 function InputFilters() {
-  const { data, filteredPlanets, setFilteredPlanets } = useContext(PlanetsContext);
+  const {
+    data,
+    filteredPlanets,
+    setFilteredPlanets,
+    filters,
+    setFilters,
+  } = useContext(PlanetsContext);
   const dataBaseCopy = [...data];
-  const [allFilters, setAllFilters] = useState(defaultFilters);
+  const [filterByName, setFilterByName] = useState(defaultFilters);
   const [numericFilters, setNumericFilters] = useState(defaultNumericFilters);
 
   const handleChangeByName = ({ target }) => {
-    setAllFilters({ ...allFilters, filterByName: { name: target.value } });
+    setFilterByName({ ...filterByName, filterByName: { name: target.value } });
   };
 
   const handleChangeByNumeric = ({ target }) => {
@@ -31,13 +37,18 @@ function InputFilters() {
   };
 
   const handleClickSubmitFilter = () => {
-    const arrayOfFilters = [...allFilters.filterByNumericValues];
-    arrayOfFilters.push(numericFilters);
-    setAllFilters({ ...allFilters, filterByNumericValues: arrayOfFilters });
+    const filtersCopy = { ...filters };
+    const newTypes = filtersCopy.types.filter((type) => type !== numericFilters.column);
+    filtersCopy.types = newTypes;
+    filtersCopy.allFilters.push(numericFilters);
+    setFilters(filtersCopy);
+    const { comparison, value } = numericFilters;
+    setNumericFilters({ column: filtersCopy.types[0], comparison, value });
   };
 
-  console.log(allFilters);
+  console.log('previne loophero');
 
+  // filter by name
   useEffect(() => {
     const verifyEqualityOfArrays = (array1, array2) => {
       if (array1.length !== array2.length) return false;
@@ -48,23 +59,26 @@ function InputFilters() {
     };
 
     const applyFilterByName = () => {
-      // filter by name
       const newPlanetsArrayFiltered = dataBaseCopy
-        .filter((planet) => planet.name.includes((allFilters.filterByName.name)));
+        .filter((planet) => planet.name.includes((filterByName.filterByName.name)));
       if (!verifyEqualityOfArrays(filteredPlanets, newPlanetsArrayFiltered)) {
         setFilteredPlanets(newPlanetsArrayFiltered);
       }
     };
 
     applyFilterByName();
-  }, [dataBaseCopy, allFilters, filteredPlanets, setFilteredPlanets]);
+  }, [dataBaseCopy, filterByName, filteredPlanets, setFilteredPlanets]);
+
+  useEffect(() => {
+
+  }, [filters, setFilters]);
 
   return (
     <section>
       <input
         type="text"
         data-testid="name-filter"
-        value={ allFilters.filterByName.name }
+        value={ filterByName.filterByName.name }
         onChange={ handleChangeByName }
       />
       <label htmlFor="column-filter">
@@ -76,11 +90,8 @@ function InputFilters() {
           onChange={ handleChangeByNumeric }
           value={ numericFilters.column }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {filters.types.map((type) => (
+            <option key={ type } value={ type }>{type}</option>))}
         </select>
       </label>
       <label htmlFor="comparison-filter">

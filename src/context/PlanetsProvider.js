@@ -6,6 +6,16 @@ import fetchPlanets from '../services/apiService';
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filters, setFilters] = useState({
+    types: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+    allFilters: [],
+  });
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -19,7 +29,7 @@ function PlanetsProvider({ children }) {
   }, [data]);
 
   const context = {
-    data, filteredPlanets, setFilteredPlanets };
+    data, filteredPlanets, setFilteredPlanets, filters, setFilters };
   return (
     <main>
       <PlanetsContext.Provider value={ context }>
