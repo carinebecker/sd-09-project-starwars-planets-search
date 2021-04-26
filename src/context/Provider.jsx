@@ -4,45 +4,39 @@ import StarWarsContext from './StarWarsContext';
 import fetchPlanets from '../services/fetchPlanets';
 
 function Provider({ children }) {
-  const initialState = {
-    data: [],
-    isLoading: true,
-    filters: {
-      filterByName: {
-        name: '',
-      },
-    },
-  };
-
-  const [state, setState] = useState(initialState);
-
-  function handleChange({ name, value }) {
-    setState((prevState) => ({
-      ...prevState,
-      filters: {
-        filterByName: {
-          ...prevState.filterByName,
-          [name]: value,
-        },
-      },
-    }));
-  }
+  const [planets, setPlanets] = useState();
+  const [header, setHeader] = useState();
+  const [isLoading, setLoading] = useState(true);
+  const [filterName, setFilterName] = useState({ name: '' });
+  const [columns, setColumns] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: '',
+    comparison: '',
+    value: '0',
+  });
 
   useEffect(() => {
-    async function getPlanetsFromAPI() {
-      const response = await fetchPlanets();
-      setState((lastState) => ({
-        ...lastState,
-        data: response,
-        isLoading: false,
-      }));
-    }
-    getPlanetsFromAPI();
+    const getPlanets = async () => {
+      const result = await fetchPlanets();
+      setPlanets(result);
+      setHeader(result);
+      setLoading(false);
+    };
+    getPlanets();
   }, []);
 
   const context = {
-    ...state,
-    handleChange,
+    planets,
+    isLoading,
+    header,
+    filterName,
+    setFilterName,
+    columns,
+    setColumns,
+    filterByNumericValues,
+    setFilterByNumericValues,
   };
 
   return (
