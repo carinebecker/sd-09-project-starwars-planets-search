@@ -10,6 +10,8 @@ const MyContextProvider = ({ children }) => {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+    ],
   });
   async function fetchApi() {
     const dataAPI = await getPlanets();
