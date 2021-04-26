@@ -2,9 +2,8 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Table() {
-  const { data, filters } = useContext(Context);
-  const planets = data.results;
-
+  const { filters, handleComparison } = useContext(Context);
+  const planets = handleComparison();
   const { filterByName: { name } } = filters;
 
   if (!planets) return <div>Loading...</div>;
