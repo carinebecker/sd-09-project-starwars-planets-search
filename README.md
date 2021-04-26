@@ -119,7 +119,6 @@ Este repositório já contém um _template_ de uma aplicação React criado e co
   5. `git push` _(para enviar o commit para o repositório remoto após o passo anterior)_
 
 ---
-
 ## Depois de terminar o desenvolvimento (opcional)
 
 Para **"entregar"** seu projeto, siga os passos a seguir:
