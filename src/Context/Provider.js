@@ -1,0 +1,29 @@
+import React, { useState, useEffect } from 'react';
+import { node } from 'prop-types';
+import StarWarsContext from './StarWarsContext';
+import fetchPlanets from '../services/fetchStarWarsAPI';
+
+export default function Provider({ children }) {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const result = await fetchPlanets();
+      setData(result);
+    })();
+  }, []);
+
+  const context = {
+    data,
+  };
+
+  return (
+    <StarWarsContext.Provider value={ context }>
+      {children}
+    </StarWarsContext.Provider>
+  );
+}
+
+Provider.propTypes = {
+  children: node.isRequired,
+};
