@@ -4,6 +4,12 @@ import StarWarsContext from './StarWarsContext';
 import fetchPlanets from '../services/fetchStarWarsAPI';
 
 export default function Provider({ children }) {
+  const INITIAL_FILTER = {
+    filterByName: {
+      name: '',
+    },
+  };
+  const [filters, setFilter] = useState(INITIAL_FILTER);
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -15,6 +21,8 @@ export default function Provider({ children }) {
 
   const context = {
     data,
+    filters,
+    setFilter,
   };
 
   return (
