@@ -1,9 +1,12 @@
 import React from 'react';
-import './App.css';
+import './Pages/CSS/index';
+import { Header } from './Pages';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <div className="align-text">
+      <Header />
+    </div>
   );
 }
 
