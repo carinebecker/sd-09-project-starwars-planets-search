@@ -1,0 +1,15 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.title {
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100px;
+  justify-content: center;
+  margin: 0;
+  text-align: center;
+}
