@@ -16,22 +16,25 @@ export default function Table() {
   );
 
   const filterColumn = () => {
-    const [{ column, comparison, value }] = filterByNumericValues;
     let newData = '';
-    switch (comparison) {
-    case 'maior que':
-      newData = data.results.filter((element) => Number(element[column]) > Number(value));
-      break;
-    case 'menor que':
-      newData = data.results.filter((element) => Number(element[column]) < Number(value));
-      break;
-    case 'igual a':
-      newData = data.results
-        .filter((element) => Number(element[column]) === Number(value));
-      break;
-    default:
-      newData = data.results;
-    }
+    filterByNumericValues.forEach(({ column, comparison, value }) => {
+      switch (comparison) {
+      case 'maior que':
+        newData = data.results
+          .filter((element) => Number(element[column]) > Number(value));
+        break;
+      case 'menor que':
+        newData = data.results
+          .filter((element) => Number(element[column]) < Number(value));
+        break;
+      case 'igual a':
+        newData = data.results
+          .filter((element) => Number(element[column]) === Number(value));
+        break;
+      default:
+        newData = data.results;
+      }
+    });
     return newData
       .filter((planet) => planet.name.includes(filterByName.name))
       .map((element) => (

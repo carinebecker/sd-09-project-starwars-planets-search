@@ -39,6 +39,7 @@ export default function Input() {
         name: filters.filterByName.name,
       },
       filterByNumericValues: [
+        ...filters.filterByNumericValues,
         inputState,
       ],
     });
