@@ -4,9 +4,25 @@ import PlanetsContext from '../context/PlanetsContext';
 const FilterInput = () => {
   const {
     handleNameFilter,
-    createNumericFilter,
     addNumericFilter,
+    activeFilters,
+    selectedFilter,
+    handleChange,
   } = useContext(PlanetsContext);
+
+  let columnFilterList = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
+  if (activeFilters.length > 0) {
+    columnFilterList = columnFilterList.filter(
+      (columnFilter) => !activeFilters.includes(columnFilter),
+    );
+  }
 
   return (
     <div>
@@ -24,26 +40,24 @@ const FilterInput = () => {
         <select
           data-testid="column-filter"
           name="column"
-          onChange={ ({ target }) => createNumericFilter(target) }
-          defaultValue="coluna"
+          onChange={ ({ target }) => handleChange(target) }
+          defaultValue={ selectedFilter.column }
         >
-          <option disabled hidden>coluna</option>
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { columnFilterList.map((columnFilter) => (
+            <option key={ columnFilter } value={ columnFilter }>
+              { columnFilter }
+            </option>
+          )) }
         </select>
         <select
           data-testid="comparison-filter"
           name="comparison"
-          onChange={ ({ target }) => createNumericFilter(target) }
-          defaultValue="comparação"
+          onChange={ ({ target }) => handleChange(target) }
+          value={ selectedFilter.comparison }
         >
-          <option disabled hidden>comparação</option>
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
-          <option value="igual">igual a</option>
+          <option value="igual a">igual a</option>
         </select>
         <input
           type="number"
@@ -51,7 +65,7 @@ const FilterInput = () => {
           name="value"
           placeholder="0"
           min="0"
-          onChange={ ({ target }) => createNumericFilter(target) }
+          onChange={ ({ target }) => handleChange(target) }
         />
         <button
           type="button"

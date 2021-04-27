@@ -9,7 +9,12 @@ const Provider = ({ children }) => {
     filteredPlanetsList: [],
     isFiltering: false,
   });
-  const [numericFilter, setNumericFilter] = useState({});
+  const [activeFilters, setActiveFilters] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
   const [filter, setFilter] = useState({
     filterByName: '',
     filterByNumericValues: [],
@@ -25,20 +30,21 @@ const Provider = ({ children }) => {
     }
   };
 
-  const createNumericFilter = ({ name, value }) => {
-    setNumericFilter({
-      ...numericFilter,
+  const handleChange = ({ name, value }) => {
+    setSelectedFilter({
+      ...selectedFilter,
       [name]: value,
     });
   };
 
   const addNumericFilter = () => {
-    const minEntries = 3;
-    if (Object.entries(numericFilter).length === minEntries) {
-      setFilter({
-        ...filter,
-        filterByNumericValues: [...filter.filterByNumericValues, numericFilter],
-      });
+    setFilter({
+      ...filter,
+      filterByNumericValues: [...filter.filterByNumericValues, selectedFilter],
+    });
+
+    if (!activeFilters.includes(selectedFilter.column)) {
+      setActiveFilters([...activeFilters, selectedFilter.column]);
     }
   };
 
@@ -107,8 +113,10 @@ const Provider = ({ children }) => {
   const contextValue = {
     data,
     filteredData,
+    activeFilters,
+    selectedFilter,
     handleNameFilter,
-    createNumericFilter,
+    handleChange,
     addNumericFilter,
   };
 
