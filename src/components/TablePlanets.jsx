@@ -2,16 +2,28 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../contextAPI/context';
 
 const TablePlanets = () => {
-  const { data, changeFilterName, changeNumericFilters } = useContext(AppContext);
-  const [columnFilter, changeColumnFilter] = useState('');
-  const [comparisonFilter, changeComparisonFilter] = useState('');
+  const { data, changeFilterName, addNumericFilter } = useContext(AppContext);
+  const [columnFilter, changeColumnFilter] = useState('population');
+  const [comparisonFilter, changeComparisonFilter] = useState('maior que');
   const [valueFilter, changeValueFilter] = useState(0);
+  const [filters, changeFilters] = useState([
+    'population', 'orbital_period',
+    'diameter', 'rotation_period',
+    'surface_water',
+  ]);
 
   const submitFilter = () => {
-    changeNumericFilters({
+    addNumericFilter({
       column: columnFilter,
       comparison: comparisonFilter,
       value: parseFloat(valueFilter),
+    });
+    filters.forEach((filter, index) => {
+      if (filter === columnFilter) {
+        const list = filters;
+        list.splice(index, 1);
+        changeFilters(list);
+      }
     });
   };
 
@@ -25,14 +37,18 @@ const TablePlanets = () => {
           onChange={ ({ target: { value } }) => changeFilterName(value) }
         />
         <select
+          defaultValue={ filters[0] }
           data-testid="column-filter"
           onChange={ ({ target: { value } }) => changeColumnFilter(value) }
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          { filters.map((filter) => (
+            <option
+              key={ filter }
+              value={ filter }
+            >
+              {filter}
+            </option>
+          )) }
         </select>
         <select
           data-testid="comparison-filter"
@@ -52,7 +68,7 @@ const TablePlanets = () => {
           data-testid="button-filter"
           onClick={ submitFilter }
         >
-          Filter!
+          Filter
         </button>
       </form>
       <table>

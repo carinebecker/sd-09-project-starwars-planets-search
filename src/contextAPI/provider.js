@@ -5,13 +5,7 @@ import AppContext from './context';
 const Provider = ({ children }) => {
   const [data, changeData] = useState([]);
   const [name, changeFilterName] = useState('');
-  const [numericFilters, changeNumericFilters] = useState(
-    {
-      column: '',
-      comparison: '',
-      value: 0,
-    },
-  );
+  const [numericFilters, changeNumericFilters] = useState([]);
   const [filteredPlanets, changeFilteredPlanets] = useState([]);
 
   useEffect(() => {
@@ -25,25 +19,33 @@ const Provider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const { column, comparison, value } = numericFilters;
     let filtered = data.filter((planet) => planet.name.includes(name));
-    if (column && comparison) {
-      switch (comparison) {
-      case 'maior que':
-        filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
-        break;
-      case 'menor que':
-        filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
-        break;
-      case 'igual a':
-        filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
-        break;
-      default:
-        break;
+    numericFilters.forEach(({ column, comparison, value }) => {
+      if (column && comparison) {
+        switch (comparison) {
+        case 'maior que':
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
+          break;
+        case 'menor que':
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
+          break;
+        case 'igual a':
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
+          break;
+        default:
+          break;
+        }
       }
-    }
+    });
     changeFilteredPlanets(filtered);
   }, [name, data, numericFilters]);
+
+  const addNumericFilter = ({ column, comparison, value }) => {
+    changeNumericFilters([
+      ...numericFilters,
+      { column, comparison, value },
+    ]);
+  };
 
   const value = {
     data: filteredPlanets,
@@ -51,12 +53,12 @@ const Provider = ({ children }) => {
       filterByName: {
         name,
       },
-      filterByNumericValues: [{
+      filterByNumericValues: [
         ...numericFilters,
-      }],
+      ],
     },
     changeFilterName,
-    changeNumericFilters,
+    addNumericFilter,
   };
 
   return (
