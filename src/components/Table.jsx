@@ -7,7 +7,6 @@ function Table() {
 
   const results = data.results.map((res) => Object.keys(res));
   const values = data.results.map((res) => Object.values(res));
-  console.log(values)
 
   // console.log(`results: ${results}`);
   // const planet = results.map(each => each)
@@ -28,8 +27,8 @@ function Table() {
           values.map((value, i) => (
             <tr key={ i }>
               {
-                value.map((currValue, i) => (
-                  <td key={ i }>{currValue}</td>
+                value.map((currValue, index) => (
+                  <td key={ index }>{currValue}</td>
                 ))
               }
             </tr>
