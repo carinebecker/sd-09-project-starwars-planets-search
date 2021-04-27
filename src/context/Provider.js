@@ -8,12 +8,17 @@ function Provider({ children }) {
   const [dataFilter, setDataFilter] = useState([]);
   const [loading, setLoading] = useState(true);
   const [planetFilteredByName, setPlanetFilteredByName] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
+    filterByName: {
+      name: '',
     },
   });
+  const [fieldFiltering, setFieldFiltering] = useState(
+    {
+      column: 'diameter',
+      comparison: 'maior que',
+      value: '100000',
+    },
+  );
 
   const handleFetchApi = async () => {
     const { results } = await fetchApiPlanetList();
@@ -25,7 +30,7 @@ function Provider({ children }) {
   useEffect(() => {
     const filteredPlanets = data;
     setDataFilter(filteredPlanets.filter((planet) => (
-      planet.name.includes(planetFilteredByName.filters.filterByName.name)
+      planet.name.includes(planetFilteredByName.filterByName.name)
     )));
   }, [data, planetFilteredByName]);
 
@@ -34,9 +39,14 @@ function Provider({ children }) {
   }, []);
 
   const context = {
+    data,
     loading,
+    planetFilteredByName,
     setPlanetFilteredByName,
     dataFilter,
+    setDataFilter,
+    fieldFiltering,
+    setFieldFiltering,
   };
 
   return (
