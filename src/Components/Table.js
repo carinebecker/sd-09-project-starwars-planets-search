@@ -26,7 +26,8 @@ export default function Table() {
       newData = data.results.filter((element) => Number(element[column]) < Number(value));
       break;
     case 'igual a':
-      newData = data.results.filter((element) => Number(element[column]) === Number(value));
+      newData = data.results
+        .filter((element) => Number(element[column]) === Number(value));
       break;
     default:
       newData = data.results;
