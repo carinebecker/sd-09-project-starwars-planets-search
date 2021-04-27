@@ -3,6 +3,7 @@ import MyContext from '../context/MyContext';
 
 function Filters() {
   const { search, setSearch } = useContext(MyContext);
+  const { filterByName, filterByNumericValues } = search;
 
   const handleChangeSearch = ({ target }) => {
     const { value } = target;
@@ -18,9 +19,12 @@ function Filters() {
     const { value } = target;
     setSearch({
       ...search,
-      filterByColumn: {
-        select: value,
-      },
+      filterByNumericValues: [
+        {
+          ...filterByNumericValues[0],
+          column: value,
+        },
+      ],
     });
   };
 
@@ -28,9 +32,12 @@ function Filters() {
     const { value } = target;
     setSearch({
       ...search,
-      filterComparison: {
-        select: value,
-      },
+      filterByNumericValues: [
+        {
+          ...filterByNumericValues[0],
+          comparison: value,
+        },
+      ],
     });
   };
 
@@ -38,9 +45,12 @@ function Filters() {
     const { value } = target;
     setSearch({
       ...search,
-      filterValue: {
-        name: value,
-      },
+      filterByNumericValues: [
+        {
+          ...filterByNumericValues[0],
+          value,
+        },
+      ],
     });
   };
 

@@ -3,10 +3,19 @@ import MyContext from '../context/MyContext';
 
 function Table() {
   const { planets, search } = useContext(MyContext);
-  const { filterByName: { name } } = search;
-  const filteredPlanets = (planets.length > 0)
+  const { filterByName, filterByNumericValues } = search;
+  const { name } = filterByName;
+  // const { column, comparison, value } = filterByNumericValues;
+  // // const conditions = {
+  // //   maior: planet[column] > value,
+  // //   menor: planet[column] < value,
+  // //   igual: planet[column] = value,
+  // // };
+  const filteredBySearch = (planets.length > 0)
     ? planets.filter((planet) => planet.name.includes(name))
     : '';
+
+  const filteredPlanets = filteredBySearch;
 
   return (
     <table>
