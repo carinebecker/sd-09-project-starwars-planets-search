@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import api from '../services/api';
-import { usePlanet } from '../context/Planets';
+import React, { useContext } from 'react';
+import PlanetContext from '../context/planetContext';
 
 export default function Table() {
-  const { planets, setPlanets } = usePlanet();
-  const [loading, setLoading] = useState(true);
+  const { filterPlanetsByName, filterPlanets } = useContext(PlanetContext);
 
-  useEffect(() => {
-    api().then((response) => {
-      setPlanets(response.results);
-      setLoading(false);
-    });
-  }, [setPlanets]);
-
-  async function handleSearch({ target }) {
-    const response = await api();
-    const filter = response.results
-      .filter((planet) => planet.name.includes(target.value));
-    setPlanets(filter);
-  }
-
-  if (loading) return <h2>Loading</h2>;
   return (
     <div>
-      <input type="text" onChange={ handleSearch } data-testid="name-filter" />
+      <input type="text" data-testid="name-filter" onChange={ filterPlanetsByName } />
       <table>
         <thead>
           <tr>
@@ -43,7 +26,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {planets.map((element) => (
+          { filterPlanets.map((element) => (
             <tr key={ element.name }>
               <td>{element.name}</td>
               <td>{element.rotation_period}</td>
