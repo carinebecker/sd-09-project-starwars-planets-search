@@ -22,7 +22,7 @@ function renderTableRows(data) {
         { Object.values(planet).map((value) => <td key={ value }>{value}</td>)}
       </tr>
     ))
-  )
+  );
 }
 
 function Table() {
