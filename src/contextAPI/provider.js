@@ -47,6 +47,16 @@ const Provider = ({ children }) => {
     ]);
   };
 
+  const deleteNumericFilter = (column) => {
+    const filters = [];
+    numericFilters.forEach((filter) => {
+      if (filter.column !== column) {
+        filters.push(filter);
+      }
+    });
+    changeNumericFilters(filters);
+  };
+
   const value = {
     data: filteredPlanets,
     filters: {
@@ -59,6 +69,7 @@ const Provider = ({ children }) => {
     },
     changeFilterName,
     addNumericFilter,
+    deleteNumericFilter,
   };
 
   return (

@@ -2,11 +2,18 @@ import React, { useContext, useState } from 'react';
 import AppContext from '../contextAPI/context';
 
 const TablePlanets = () => {
-  const { data, changeFilterName, addNumericFilter } = useContext(AppContext);
+  const {
+    data,
+    changeFilterName,
+    addNumericFilter,
+    deleteNumericFilter,
+    filters,
+  } = useContext(AppContext);
+
   const [columnFilter, changeColumnFilter] = useState('population');
   const [comparisonFilter, changeComparisonFilter] = useState('maior que');
   const [valueFilter, changeValueFilter] = useState(0);
-  const [filters, changeFilters] = useState([
+  const [availableFilters, changeAvailableFilters] = useState([
     'population', 'orbital_period',
     'diameter', 'rotation_period',
     'surface_water',
@@ -18,13 +25,22 @@ const TablePlanets = () => {
       comparison: comparisonFilter,
       value: parseFloat(valueFilter),
     });
-    filters.forEach((filter, index) => {
+    availableFilters.forEach((filter, index) => {
       if (filter === columnFilter) {
-        const list = filters;
+        const list = availableFilters;
         list.splice(index, 1);
-        changeFilters(list);
+        changeAvailableFilters(list);
       }
     });
+    changeColumnFilter(availableFilters[0]);
+  };
+
+  const deleteAPliedFilter = (column) => {
+    changeAvailableFilters([
+      ...availableFilters,
+      column,
+    ]);
+    deleteNumericFilter(column);
   };
 
   return (
@@ -37,11 +53,11 @@ const TablePlanets = () => {
           onChange={ ({ target: { value } }) => changeFilterName(value) }
         />
         <select
-          defaultValue={ filters[0] }
+          value={ availableFilters[0] }
           data-testid="column-filter"
           onChange={ ({ target: { value } }) => changeColumnFilter(value) }
         >
-          { filters.map((filter) => (
+          { availableFilters.map((filter) => (
             <option
               key={ filter }
               value={ filter }
@@ -71,6 +87,26 @@ const TablePlanets = () => {
           Filter
         </button>
       </form>
+      { filters.filterByNumericValues.length > 0
+        && (
+          <div>
+            {filters.filterByNumericValues.map((filter) => (
+              <div
+                key={ filter.column }
+                data-testid="filter"
+              >
+                <button
+                  type="button"
+                  onClick={ () => deleteAPliedFilter(filter.column) }
+                >
+                  X
+                </button>
+                <spam>
+                  { filter.column }
+                </spam>
+              </div>))}
+          </div>
+        )}
       <table>
         <thead>
           <tr>
