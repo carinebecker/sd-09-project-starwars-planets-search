@@ -1,18 +1,12 @@
-import React, { useContext } from 'react';
-import StarWarsContext from './Context/StarWarsContext';
+import React from 'react';
 import './App.css';
 import Table from './components/Table/Table';
 
 function App() {
-  const { isFetching, data } = useContext(StarWarsContext);
-  console.log(isFetching);
-  if (!isFetching && data) {
-    console.log(data)
-  }
   return (
     <main>
       <h1>Star Wars Planets Search</h1>
-      {/* <Table /> */}
+      <Table />
       {}
     </main>
   );

@@ -1,18 +1,18 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../../Context/StarWarsContext';
+import Body from './Body';
 import Header from './Header';
-/* import Body from './Body'; */
 
 const Table = () => {
-  const { isFetching, data } = useContext(StarWarsContext);
-  return !isFetching ? (
-    <table>
+  const { data } = useContext(StarWarsContext);
+  return data.length !== 0 ? (
+    <table className="table">
       <thead>
         <Header data={ data } />
       </thead>
-      {/*       <tbody>
+      <tbody>
         <Body data={ data } />
-      </tbody> */}
+      </tbody>
     </table>
 
   ) : <span>Carregando ...</span>;
