@@ -25,11 +25,11 @@ function Table() {
       </thead>
       <tbody>
         {
-          values.map((res, i) => (
+          values.map((value, i) => (
             <tr key={ i }>
               {
-                res.map((ech, i) => (
-                  <td key={ i }>{ech}</td>
+                value.map((currValue, i) => (
+                  <td key={ i }>{currValue}</td>
                 ))
               }
             </tr>
