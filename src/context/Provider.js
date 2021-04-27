@@ -5,6 +5,7 @@ import context from './contextApi';
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [name, setName] = useState('');
+  const [numericValues, setNumericValues] = useState([]);
 
   const contextValue = {
     data: planets,
@@ -12,9 +13,11 @@ function Provider({ children }) {
       filterByName: {
         name,
       },
+      filterByNumericValues: numericValues,
     },
     setPlanets,
     setName,
+    setNumericValues,
   };
 
   return (
