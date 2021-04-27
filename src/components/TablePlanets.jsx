@@ -1,16 +1,60 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../contextAPI/context';
 
 const TablePlanets = () => {
-  const { data, changeFilterName } = useContext(AppContext);
+  const { data, changeFilterName, changeNumericFilters } = useContext(AppContext);
+  const [columnFilter, changeColumnFilter] = useState('');
+  const [comparisonFilter, changeComparisonFilter] = useState('');
+  const [valueFilter, changeValueFilter] = useState(0);
+
+  const submitFilter = () => {
+    changeNumericFilters({
+      column: columnFilter,
+      comparison: comparisonFilter,
+      value: parseFloat(valueFilter),
+    });
+  };
 
   return (
     <div>
-      <input
-        type="text"
-        data-testid="name-filter"
-        onChange={ ({ target: { value } }) => changeFilterName(value) }
-      />
+      <form>
+        <h2>Filters</h2>
+        <input
+          type="text"
+          data-testid="name-filter"
+          onChange={ ({ target: { value } }) => changeFilterName(value) }
+        />
+        <select
+          data-testid="column-filter"
+          onChange={ ({ target: { value } }) => changeColumnFilter(value) }
+        >
+          <option>population</option>
+          <option>orbital_period</option>
+          <option>diameter</option>
+          <option>rotation_period</option>
+          <option>surface_water</option>
+        </select>
+        <select
+          data-testid="comparison-filter"
+          onChange={ ({ target: { value } }) => changeComparisonFilter(value) }
+        >
+          <option>maior que</option>
+          <option>menor que</option>
+          <option>igual a</option>
+        </select>
+        <input
+          type="number"
+          data-testid="value-filter"
+          onChange={ ({ target: { value } }) => changeValueFilter(value) }
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ submitFilter }
+        >
+          Filter!
+        </button>
+      </form>
       <table>
         <thead>
           <tr>
