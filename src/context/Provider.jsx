@@ -20,6 +20,7 @@ function Provider({ children }) {
     comparison: '',
     value: '0',
   });
+  const [activeFilters, setActiveFilters] = useState([]);
 
   useEffect(() => {
     async function getPlanets() {
@@ -38,8 +39,10 @@ function Provider({ children }) {
     filterByName,
     filterByValues,
     columnOptions,
+    activeFilters,
     setFilterByName,
     setFilterByValues,
+    setActiveFilters,
     setColumnOptions,
   };
 

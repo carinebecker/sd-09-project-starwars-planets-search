@@ -4,6 +4,6 @@ async function fetchPlanets() {
   const { results } = await response.json();
   results.forEach((result) => delete result.residents);
   return results;
-  }
-  
-  export default fetchPlanets; 
+}
+
+export default fetchPlanets;

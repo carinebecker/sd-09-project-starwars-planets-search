@@ -5,6 +5,8 @@ function FiltersInput() {
   const {
     setFilterByName,
     setFilterByValues,
+    activeFilters,
+    setActiveFilters,
     columnOptions,
     setColumnOptions } = useContext(StarWarsContext);
   const [filterByNumericValues, setFilterByNumericValues] = useState({
@@ -39,6 +41,7 @@ function FiltersInput() {
       ...filterByNumericValues,
       column: columnOptions[0],
     });
+    setActiveFilters([...activeFilters, filterByNumericValues]);
   };
 
   return (
