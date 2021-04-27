@@ -5,25 +5,33 @@ import AppContext from '../context';
 import '../styles/tablePlanet.css';
 
 const TablePlanet = () => {
-  const { data: { results }, loading } = useContext(AppContext);
+  const {
+    data: { results },
+    loading,
+    filters: {
+      filterByName: { name },
+    },
+  } = useContext(AppContext);
 
-  const table = (data) => data.map((planet) => (
-    <tr key={ planet.name }>
-      <td>{planet.name}</td>
-      <td>{planet.terrain}</td>
-      <td>{planet.population}</td>
-      <td>{planet.climate}</td>
-      <td>{planet.diameter}</td>
-      <td>{planet.gravity}</td>
-      <td>{planet.orbital_period}</td>
-      <td>{planet.rotation_period}</td>
-      <td>{planet.surface_water}</td>
-      <td>{planet.created}</td>
-      <td>{planet.edited}</td>
-      <td>{planet.films}</td>
-      <td>{planet.url}</td>
-    </tr>
-  ));
+  const table = (data) => data
+    .filter((planet) => planet.name.includes(name))
+    .map((planet) => (
+      <tr key={ planet.name }>
+        <td>{planet.name}</td>
+        <td>{planet.terrain}</td>
+        <td>{planet.population}</td>
+        <td>{planet.climate}</td>
+        <td>{planet.diameter}</td>
+        <td>{planet.gravity}</td>
+        <td>{planet.orbital_period}</td>
+        <td>{planet.rotation_period}</td>
+        <td>{planet.surface_water}</td>
+        <td>{planet.created}</td>
+        <td>{planet.edited}</td>
+        <td>{planet.films}</td>
+        <td>{planet.url}</td>
+      </tr>
+    ));
 
   if (loading) return <Loading />;
 

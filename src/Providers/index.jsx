@@ -7,9 +7,27 @@ function Provider({ children }) {
   const initialState = {
     data: [],
     loading: true,
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
   };
 
   const [state, setState] = useState(initialState);
+
+  function handleChange({ name, value }) {
+    setState((prevState) => ({
+      ...prevState,
+      filters: {
+        ...prevState.filters,
+        filterByName: {
+          ...prevState.filterByName,
+          [name]: value,
+        },
+      },
+    }));
+  }
 
   useEffect(() => {
     async function planetAPI() {
@@ -25,6 +43,7 @@ function Provider({ children }) {
 
   const contextValue = {
     ...state,
+    handleChange,
   };
 
   return (
