@@ -35,7 +35,7 @@ export function Provider({ children }) {
     setFilter({ ...filter, [name]: value });
   }
 
-  function handleClick() {
+  function handleFilterClick() {
     const { filterByNumericValues } = filters;
     setFilters({
       ...filters,
@@ -43,6 +43,10 @@ export function Provider({ children }) {
     });
     setColumns(columns.filter((column) => column !== filter.column));
     setComparisons(comparisons.filter((comparison) => comparison !== filter.comparison));
+  }
+
+  function handleRemoveClick() {
+    setPlanets(planetsBkp);
   }
 
   const filterPlanets = useCallback(() => {
@@ -95,7 +99,8 @@ export function Provider({ children }) {
         comparisons,
         handleNameChange,
         handleValueChange,
-        handleClick,
+        handleFilterClick,
+        handleRemoveClick,
       } }
     >
       { children }
