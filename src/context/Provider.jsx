@@ -17,7 +17,7 @@ function Provider({ children }) {
   const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByValues, setFilterByValues] = useState([]);
-  const [activeFilters, setActiveFilters] = useState([...filterByValues]);
+  const [sortBy, setSortBy] = useState({ sortByColumn: 'name', sortType: 'ASC' });
 
   useEffect(() => {
     async function getPlanets() {
@@ -28,6 +28,23 @@ function Provider({ children }) {
     }
     getPlanets();
   }, []);
+
+  const setSortBySelection = (results, sortSelector) => {
+    const noMagicNumber = -1;
+    let sortedResults = results;
+    if (sortSelector === 'name') {
+      sortedResults = results.sort((a, b) => {
+        if (a[sortSelector] > b[sortSelector]) {
+          return 1;
+        }
+        return noMagicNumber;
+      });
+    } else {
+      sortedResults = results
+        .sort((a, b) => +(a[sortSelector]) - +(b[sortSelector]));
+    }
+    return sortedResults;
+  };
 
   const context = {
     planets,
@@ -40,8 +57,9 @@ function Provider({ children }) {
     initialColumnOptions,
     columnOptions,
     setColumnOptions,
-    activeFilters,
-    setActiveFilters,
+    sortBy,
+    setSortBy,
+    setSortBySelection,
   };
 
   return (

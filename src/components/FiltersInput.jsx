@@ -6,16 +6,21 @@ function FiltersInput() {
     filterByValues,
     setFilterByName,
     setFilterByValues,
-    activeFilters,
-    setActiveFilters,
     initialColumnOptions,
     columnOptions,
-    setColumnOptions } = useContext(StarWarsContext);
+    setColumnOptions,
+    setSortBy } = useContext(StarWarsContext);
+
+  const [sortState, setSortState] = useState({ sortByColumn: 'name', sortType: 'ASC' });
   const [filterByNumericValues, setFilterByNumericValues] = useState({
     column: 'population',
     comparison: '',
     value: '0',
   });
+
+  const handleComponentState = ({ target: { name, value } }) => {
+    setSortState((state) => ({ ...state, [name]: value }));
+  };
 
   const handleInputName = ({ target: { value } }) => {
     setFilterByName({ name: value });
@@ -36,7 +41,6 @@ function FiltersInput() {
       ...filterByNumericValues,
       column: columnOptions[0],
     });
-    setActiveFilters([...activeFilters, filterByNumericValues]);
   };
 
   return (
@@ -98,6 +102,51 @@ function FiltersInput() {
       >
         Filter
       </button>
+
+      <label htmlFor="order-column">
+        Ordernar por:
+        <select
+          data-testid="column-sort"
+          id="order-column"
+          name="sortByColumn"
+          onChange={ handleComponentState }
+        >
+          <option value="name">Planet Name</option>
+          <option value="orbital_period">Período Orbital</option>
+        </select>
+      </label>
+      <label htmlFor="radio-asc">
+        <input
+          id="radio-asc"
+          type="radio"
+          name="sortType"
+          value="ASC"
+          data-testid="column-sort-input-asc"
+          onClick={ handleComponentState }
+        />
+        Ascendente:
+      </label>
+
+      <label htmlFor="radio-desc">
+        <input
+          id="radio-desc"
+          type="radio"
+          name="sortType"
+          value="DESC"
+          data-testid="column-sort-input-desc"
+          onClick={ handleComponentState }
+        />
+        Descendente:
+      </label>
+
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ () => setSortBy(sortState) }
+      >
+        Ordenar
+      </button>
+
     </div>
   );
 }

@@ -10,6 +10,8 @@ function Table() {
     tableHeaders,
     isLoading,
     filterByValues,
+    sortBy: { sortType, sortByColumn },
+    setSortBySelection,
     filterByName: { name } } = useContext(StarWarsContext);
 
   const createTableHeaders = () => (
@@ -41,10 +43,15 @@ function Table() {
         }
       });
     }
+    if (sortType === 'ASC') {
+      filteredPlanets = setSortBySelection(filteredPlanets, sortByColumn);
+    } else {
+      filteredPlanets = setSortBySelection(filteredPlanets, sortByColumn).reverse();
+    }
     return filteredPlanets
       .map((planet, index) => (
         <tr key={ index }>
-          <td id="planetsName">{planet.name}</td>
+          <td data-testid="planet-name">{planet.name}</td>
           <td>{planet.rotation_period}</td>
           <td>{planet.orbital_period}</td>
           <td>{planet.diameter}</td>

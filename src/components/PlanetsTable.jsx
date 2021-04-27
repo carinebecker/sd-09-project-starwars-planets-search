@@ -1,52 +1,28 @@
-// import React, { useContext } from 'react';
-// import StarWarsContext from '../context/StarWarsContext';
+// import React from 'react';
 
-// function PlanetsTable() {
-//   // const { data: { results } } = useContext(StarWarsContext);
-
-//   // function planetsTable(dataResults) {
-//   //   return dataResults.map((planet) => (
-//   //     <tr key={ planet.name }>
-//   //       <td>{planet.name}</td>
-//   //       <td>{planet.terrain}</td>
-//   //       <td>{planet.population}</td>
-//   //       <td>{planet.climate}</td>
-//   //       <td>{planet.diameter}</td>
-//   //       <td>{planet.gravity}</td>
-//   //       <td>{planet.orbital_period}</td>
-//   //       <td>{planet.rotation_period}</td>
-//   //       <td>{planet.surface_water}</td>
-//   //       <td>{planet.created}</td>
-//   //       <td>{planet.edited}</td>
-//   //       <td>{planet.films}</td>
-//   //       <td>{planet.url}</td>
-//   //     </tr>
-//   //   ));
-//   // }
+// function PlanetsTable({planets}) {
 //   return (
-//     <table>
-//       <thead>
-//         <tr>
-//           <th>Name</th>
-//           <th>Terrain</th>
-//           <th>Population</th>
-//           <th>Climate</th>
-//           <th>Diameter</th>
-//           <th>Gravity</th>
-//           <th>Orbital period</th>
-//           <th>Rotation period</th>
-//           <th>Surface water</th>
-//           <th>Created</th>
-//           <th>Edited</th>
-//           <th>Films</th>
-//           <th>URL</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {/* { planetsTable(results) } */}
-//       </tbody>
-//     </table>
+//     <tr>
+//       {planets
+//         .map((planet) => (
+//           <>
+//             <td data-testid="planet-name">{planet.name}</td>
+//             <td>{planet.rotation_period}</td>
+//             <td>{planet.orbital_period}</td>
+//             <td>{planet.diameter}</td>
+//             <td>{planet.climate}</td>
+//             <td>{planet.gravity}</td>
+//             <td>{planet.terrain}</td>
+//             <td>{planet.surface_water}</td>
+//             <td>{planet.population}</td>
+//             <td>{planet.films}</td>
+//             <td>{planet.created}</td>
+//             <td>{planet.edited}</td>
+//             <td>{planet.url}</td>
+//           </>
+//         ))}
+//     </tr>
 //   );
 // }
 
-// export default PlanetsTable();
+// export default PlanetsTable;
