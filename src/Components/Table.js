@@ -20,13 +20,13 @@ export default function Table() {
     let newData = '';
     switch (comparison) {
     case 'maior que':
-      newData = data.results.filter((element) => element[column] > value);
+      newData = data.results.filter((element) => Number(element[column]) > Number(value));
       break;
     case 'menor que':
-      newData = data.results.filter((element) => element[column] < value);
+      newData = data.results.filter((element) => Number(element[column]) < Number(value));
       break;
     case 'igual a':
-      newData = data.results.filter((element) => element[column] === value);
+      newData = data.results.filter((element) => Number(element[column]) === Number(value));
       break;
     default:
       newData = data.results;
