@@ -8,6 +8,7 @@ const FilterInput = () => {
     activeFilters,
     selectedFilter,
     handleChange,
+    cleanFilter,
   } = useContext(PlanetsContext);
 
   let columnFilterList = [
@@ -75,6 +76,14 @@ const FilterInput = () => {
           Filtrar
         </button>
       </label>
+      { activeFilters.map((filter) => (
+        <span data-testid="filter" key={ filter }>
+          { filter }
+          <button type="button" onClick={ () => cleanFilter(filter) }>
+            X
+          </button>
+        </span>
+      )) }
     </div>
   );
 };

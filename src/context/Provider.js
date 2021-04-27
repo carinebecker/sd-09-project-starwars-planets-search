@@ -37,6 +37,22 @@ const Provider = ({ children }) => {
     });
   };
 
+  const cleanFilter = (filterName) => {
+    const { filterByNumericValues } = filter;
+
+    const newFilterByNumericValues = filterByNumericValues
+      .filter(({ column }) => column !== filterName);
+    const newActiveFilters = activeFilters
+      .filter(({ activeFilterName }) => activeFilterName !== filterName);
+
+    setFilter({
+      ...filter,
+      filterByNumericValues: [newFilterByNumericValues],
+    });
+
+    setActiveFilters([newActiveFilters]);
+  };
+
   const addNumericFilter = () => {
     setFilter({
       ...filter,
@@ -118,6 +134,7 @@ const Provider = ({ children }) => {
     handleNameFilter,
     handleChange,
     addNumericFilter,
+    cleanFilter,
   };
 
   return (
