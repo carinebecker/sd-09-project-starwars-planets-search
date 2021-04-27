@@ -1,25 +1,29 @@
-import React, {} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TableContext from './TableContext';
 
 function TableProvider({ children }) {
-  const [planets, setPlanets] = useState([]);
+  const [data, setData] = useState([]);
+  const [isFetching, setFetching] = useState(true);
   useEffect(() => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
-    (async () => {
+    const getData = async () => {
       const results = await fetch(endpoint)
-        .then((response) => response.json());
-      setPlanets(results);
-    })();
-    // console.log(planets);
+        .then((response) => response.json()).catch((error) => console.log(error));
+      setData(results);
+      setFetching(false);
+    };
+    getData();
   }, []);
 
   return (
-    <table>
-      <TableContext.Provider value={ planets }>
-        { children }
-      </TableContext.Provider>
-    </table>
+    <TableContext.Provider value={ { data, setData } }>
+      {
+        !isFetching
+          ? [children]
+          : <p>Loading</p>
+      }
+    </TableContext.Provider>
   );
 }
 
