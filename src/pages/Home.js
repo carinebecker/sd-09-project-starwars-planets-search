@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Filter from '../Components/Filter';
 import Table from '../Components/Table';
 import context from '../context/contextApi';
 import requestPlanets from '../services/servicesApi';
@@ -13,6 +14,7 @@ class Home extends Component {
   render() {
     return (
       <div>
+        <Filter />
         <Table />
       </div>
     );

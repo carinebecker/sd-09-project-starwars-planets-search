@@ -3,6 +3,7 @@ import context from '../context/contextApi';
 
 function createTitle(data) {
   if (data.length === 0) { return; }
+
   return (
     <tr>
       {Object.keys(data[0])
@@ -13,6 +14,7 @@ function createTitle(data) {
 
 function createRows(data) {
   if (data.length === 0) { return; }
+
   return (
     data.map((planet) => (
       <tr key={ planet }>
@@ -24,13 +26,14 @@ function createRows(data) {
 }
 
 function Table() {
-  const { data } = useContext(context);
-  data.forEach((planet) => delete planet.residents);
+  const { data, filters: { filterByName: { name } } } = useContext(context);
+  const newData = [...data].filter((planet) => planet.name.includes(name));
+  newData.forEach((planet) => delete planet.residents);
 
   return (
     <table>
-      {createTitle(data)}
-      {createRows(data)}
+      {createTitle(newData)}
+      {createRows(newData)}
     </table>
   );
 }
