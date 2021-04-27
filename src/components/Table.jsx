@@ -4,6 +4,7 @@ import { SwPlanetsContext } from '../context/SWPlanetsContext';
 function Table() {
   const { planets, headers } = useContext(SwPlanetsContext);
   const RESIDENTS_INDEX = 9;
+  const PLANET_NAME_INDEX = 0;
   return (
     <table>
       <thead>
@@ -18,7 +19,13 @@ function Table() {
         { planets.map((planet) => (
           <tr key={ planet.name }>
             { Object.values(planet).map((data, index) => (index !== RESIDENTS_INDEX) && (
-              <td key={ `${planet.name}-${index}` }>{ data }</td>
+              (index === PLANET_NAME_INDEX) ? (
+                <td key={ `${planet.name}-${index}` } data-testid="planet-name">
+                  { data }
+                </td>
+              ) : (
+                <td key={ `${planet.name}-${index}` }>{ data }</td>
+              )
             )) }
           </tr>
         )) }

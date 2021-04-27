@@ -4,6 +4,10 @@ import fecthApi from '../services/Api';
 
 export const SwPlanetsContext = createContext();
 
+const ONE_NEGATIVE = -1;
+const ONE = 1;
+const ZERO = 0;
+
 export function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [headers, setHeaders] = useState([]);
@@ -19,20 +23,71 @@ export function Provider({ children }) {
   const [filters, setFilters] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
+
+  function sortAsc(itemA, itemB) {
+    const { order: { column } } = filters;
+    if (/^[0-9]*$/.test(itemA[column])) {
+      if (parseInt(itemA[column], 10) < parseInt(itemB[column], 10)) return ONE_NEGATIVE;
+      if (parseInt(itemA[column], 10) > parseInt(itemB[column], 10)) return ONE;
+    } else {
+      if (itemA[column] < itemB[column]) return ONE_NEGATIVE;
+      if (itemA[column] > itemB[column]) return ONE;
+    }
+    return ZERO;
+  }
+
+  function sortDesc(itemA, itemB) {
+    const { order: { column } } = filters;
+    if (/^[0-9]*$/.test(itemA[column])) {
+      if (parseInt(itemA[column], 10) > parseInt(itemB[column], 10)) return ONE_NEGATIVE;
+      if (parseInt(itemA[column], 10) < parseInt(itemB[column], 10)) return ONE;
+    } else {
+      if (itemA[column] > itemB[column]) return ONE_NEGATIVE;
+      if (itemA[column] < itemB[column]) return ONE;
+    }
+    return ZERO;
+  }
 
   async function getPlanets() {
     const apiResult = await fecthApi();
+    apiResult.sort((itemA, itemB) => {
+      if (itemA.name < itemB.name) return ONE_NEGATIVE;
+      if (itemA.name > itemB.name) return ONE;
+      return ZERO;
+    });
     setPlanets(apiResult);
     setPlanetsBkp(apiResult);
     setHeaders(Object.keys(apiResult[0]));
   }
+
   function handleNameChange({ target: { value } }) {
     setFilters({ ...filters, filterByName: { name: value } });
   }
 
   function handleValueChange({ target: { value, name } }) {
     setFilter({ ...filter, [name]: value });
+  }
+
+  function handleSortChange({ target: { value, name } }) {
+    const { order } = filters;
+    setFilters({ ...filters, order: { ...order, [name]: value } });
+  }
+
+  function handleSortClick() {
+    const { order: { sort } } = filters;
+    if (sort === 'DESC') {
+      setPlanets(planets.sort(sortDesc));
+      setPlanetsBkp(planets.sort(sortDesc));
+    }
+    if (sort === 'ASC') {
+      setPlanets(planets.sort(sortAsc));
+      setPlanetsBkp(planets.sort(sortAsc));
+    }
   }
 
   function handleFilterClick() {
@@ -84,6 +139,7 @@ export function Provider({ children }) {
     setPlanets(planetsBkp
       .filter(({ name: planetName }) => (planetName.includes(name))));
   }, [filters, planetsBkp]);
+
   useEffect(() => {
     filterPlanets();
   }, [filters.filterByNumericValues, filterPlanets]);
@@ -101,6 +157,8 @@ export function Provider({ children }) {
         handleValueChange,
         handleFilterClick,
         handleRemoveClick,
+        handleSortChange,
+        handleSortClick,
       } }
     >
       { children }

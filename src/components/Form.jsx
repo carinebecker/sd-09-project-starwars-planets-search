@@ -7,10 +7,13 @@ function Form() {
     filter: { value },
     columns,
     comparisons,
+    headers,
     handleNameChange,
     handleFilterClick,
     handleValueChange,
     handleRemoveClick,
+    handleSortChange,
+    handleSortClick,
   } = useContext(SwPlanetsContext);
 
   return (
@@ -56,6 +59,44 @@ function Form() {
           onClick={ handleFilterClick }
         >
           Filter
+        </button>
+        <select
+          name="column"
+          data-testid="column-sort"
+          onChange={ handleSortChange }
+        >
+          { headers.map((option) => (
+            <option value={ option } key={ option }>{option}</option>
+          )) }
+        </select>
+        <label htmlFor="ASC">
+          ASC
+          <input
+            type="radio"
+            id="ASC"
+            name="sort"
+            value="ASC"
+            data-testid="column-sort-input-asc"
+            onChange={ handleSortChange }
+          />
+        </label>
+        <label htmlFor="DESC">
+          DESC
+          <input
+            type="radio"
+            id="DESC"
+            name="sort"
+            value="DESC"
+            data-testid="column-sort-input-desc"
+            onChange={ handleSortChange }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ handleSortClick }
+        >
+          Sort
         </button>
       </form>
       <div data-testid="filter">
