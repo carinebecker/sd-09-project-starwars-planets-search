@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import AppContext from '../context/Context';
+import React from 'react';
+import useFilterTable from '../hooks/useFilterTable';
 
 function Table() {
-  const { data } = useContext(AppContext);
+  const [planetsFilter] = useFilterTable();
 
   return (
     <table>
@@ -24,7 +24,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((planet) => (
+        {planetsFilter.map((planet) => (
           <tr key={ `planet${planet.name}` }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>

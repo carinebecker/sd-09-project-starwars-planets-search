@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import FilterName from './components/Filters';
+import Filters from './components/Filters';
+import FiltersCreated from './components/FiltersCreated';
 import Table from './components/Table';
 import Provider from './context/Provider';
 
@@ -11,7 +12,8 @@ function App() {
         <h1>Starwars Planets Search</h1>
       </header>
       <main>
-        <FilterName />
+        <Filters />
+        <FiltersCreated />
         <Table />
       </main>
     </Provider>

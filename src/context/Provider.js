@@ -4,13 +4,13 @@ import AppContext from './Context';
 import planetsData from '../services';
 
 function Provider({ children }) {
-  const [allPlanets, setAllPlanets] = useState([]);
   const [data, setData] = useState([]);
-  const [objectFilters, setObjectFilters] = useState({
+  const [allFilters, setAllFilters] = useState({
     filters: {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [],
     },
   });
 
@@ -23,11 +23,10 @@ function Provider({ children }) {
   ]);
 
   const providerValues = {
-    allPlanets,
     data,
     setData,
-    objectFilters,
-    setObjectFilters,
+    allFilters,
+    setAllFilters,
     selectColumn,
     setSelectColumn,
   };
@@ -36,7 +35,6 @@ function Provider({ children }) {
     const fetchPlanets = async () => {
       const { results } = await planetsData();
       setData(results);
-      setAllPlanets(results);
     };
     fetchPlanets();
   }, []);

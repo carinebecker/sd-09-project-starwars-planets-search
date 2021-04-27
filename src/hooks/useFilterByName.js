@@ -2,23 +2,19 @@ import { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/Context';
 
 const useFilterByName = (initialName) => {
-  const { allPlanets, setData, objectFilters, setObjectFilters } = useContext(AppContext);
+  const { allFilters, setAllFilters } = useContext(AppContext);
   const [name, setName] = useState(initialName);
 
   useEffect(() => {
-    setData(allPlanets.filter((planet) => planet.name.includes(name)));
-  }, [allPlanets, name, setData]);
-
-  useEffect(() => {
-    const byName = objectFilters.filters.filterByName.name;
+    const byName = allFilters.filters.filterByName.name;
 
     if (byName !== name) {
-      setObjectFilters({
-        ...objectFilters,
-        filters: { ...objectFilters.filters, filterByName: { name } },
+      setAllFilters({
+        ...allFilters,
+        filters: { ...allFilters.filters, filterByName: { name } },
       });
     }
-  }, [name, objectFilters, setObjectFilters]);
+  }, [allFilters, name, setAllFilters]);
 
   return [name, setName];
 };
