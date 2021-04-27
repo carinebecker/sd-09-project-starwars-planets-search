@@ -1,14 +1,18 @@
 import React from 'react';
 import './App.css';
+/* import SearchBar from './components/SearchBar'; */
 import Table from './components/Table/Table';
+import Provider from './Context/Provider';
 
 function App() {
   return (
-    <main>
-      <h1>Star Wars Planets Search</h1>
-      <Table />
-      {}
-    </main>
+    <Provider>
+      <main>
+        <h1>Star Wars Planets Search</h1>
+        {/* <SearchBar /> */}
+        <Table />
+      </main>
+    </Provider>
   );
 }
 

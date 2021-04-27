@@ -4,8 +4,8 @@ import Body from './Body';
 import Header from './Header';
 
 const Table = () => {
-  const { data } = useContext(StarWarsContext);
-  return data.length !== 0 ? (
+  const { data, isFetching } = useContext(StarWarsContext);
+  return !isFetching ? (
     <table className="table">
       <thead>
         <Header data={ data } />

@@ -6,6 +6,8 @@ import requestApiStarWars from '../services/requestApi';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [filters, setFilters] = useState({});
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
 
   useEffect(() => {
     const fetchPlanetsFromApi = () => {
@@ -14,8 +16,8 @@ function Provider({ children }) {
         .then(
           (response) => setData(response.results),
           (error) => console.log(error.message),
-        );
-      setIsFetching(false);
+        )
+        .finally(() => setIsFetching(false));
     };
     fetchPlanetsFromApi();
   }, []);
@@ -23,6 +25,8 @@ function Provider({ children }) {
   const contextStarWars = {
     isFetching,
     data,
+    filters,
+    setFilters,
   };
 
   return (
