@@ -4,9 +4,16 @@ import context from './contextApi';
 
 function Provider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [name, setName] = useState('');
   const contextValue = {
     data: planets,
+    filters: {
+      filterByName: {
+        name,
+      },
+    },
     setPlanets,
+    setName,
   };
   return (
     <context.Provider value={ contextValue }>

@@ -26,13 +26,14 @@ function renderTableRows(data) {
 }
 
 function Table() {
-  const { data } = useContext(context);
+  const { data, filters: { filterByName: { name } } } = useContext(context);
+  const newData = [...data].filter((planet) => planet.name.includes(name));
   data.forEach((planet) => delete planet.residents);
   return (
     <table>
       <thead>
-        {renderTableCollumns(data)}
-        {renderTableRows(data)}
+        {renderTableCollumns(newData)}
+        {renderTableRows(newData)}
       </thead>
     </table>
   );
