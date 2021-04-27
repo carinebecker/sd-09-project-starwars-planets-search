@@ -32,7 +32,7 @@ describe('1 - Faça uma requisição para o endpoint `/planets` da API de Star W
   beforeAll(mockFetch);
   beforeEach(cleanup);
 
-  it.skip('Realize uma requisição para a API', async () => {
+  it('Realize uma requisição para a API', async () => {
     await act(async () => {
       render(<App />);
     });
@@ -209,7 +209,7 @@ describe('3 - Crie um filtro para valores numéricos', () => {
     expect(await screen.findByTestId(BUTTON_FILTER_SELECTOR)).toHaveProperty('nodeName', 'BUTTON');
   });
 
-  it.skip('Filtre utilizando a comparação "menor que"', async () => {
+  it('Filtre utilizando a comparação "menor que"', async () => {
     await act(async () => {
       render(<App />);
     });
@@ -222,7 +222,7 @@ describe('3 - Crie um filtro para valores numéricos', () => {
     expect(await screen.findAllByRole(ROW_ROLE_SELECTOR)).toHaveLength(7);
   });
 
-  it.skip('Filtre utilizando a comparação "maior que"', async () => {
+  it('Filtre utilizando a comparação "maior que"', async () => {
     await act(async () => {
       render(<App />);
     });
@@ -235,7 +235,7 @@ describe('3 - Crie um filtro para valores numéricos', () => {
     expect(await screen.findAllByRole(ROW_ROLE_SELECTOR)).toHaveLength(8);
   });
 
-  it.skip('Filtre utilizando a comparação "igual a"', async () => {
+  it('Filtre utilizando a comparação "igual a"', async () => {
     await act(async () => {
       render(<App />);
     });
@@ -253,7 +253,7 @@ describe('4 - Não utilize filtros repetidos', () => {
   beforeAll(mockFetch);
   beforeEach(cleanup);
 
-  it.skip('Filtre por população e o remove das opções', async () => {
+  it('Filtre por população e o remove das opções', async () => {
     await act(async () => {
       render(<App />);
     });

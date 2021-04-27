@@ -50,8 +50,6 @@ function InputFilters() {
     setReloadPage(true);
   };
 
-  console.log('LOOPEI??? :D');
-
   // filter by name
   useEffect(() => {
     const applyFilterByName = () => {
