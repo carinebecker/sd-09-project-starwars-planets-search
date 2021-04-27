@@ -9,9 +9,3 @@ async function fetchPlanets() {
 }
 
 export default fetchPlanets;
-
-// import data from './DATABASE';
-
-// export default function fetchPlanets() {
-//   return data;
-// }

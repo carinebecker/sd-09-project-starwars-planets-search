@@ -3,17 +3,8 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function FiltersCreated() {
   const {
-    // data,
-    // filteredPlanets,
-    // setFilteredPlanets,
     filters,
-    // setFilters,
   } = useContext(PlanetsContext);
-
-  // const handleClickRemoveFilter = ({ target }) => {
-  //   target.parentElement.innerText = '';
-  //   console.log('implementar logica!!', target.parentElement.innerText);
-  // };
 
   return (
     <div>
