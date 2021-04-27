@@ -1,9 +1,17 @@
 import React from 'react';
 import './App.css';
+import Table from './table/Table';
+import Provider from './context/Provider';
+import Form from './search/Form';
+import SelectCategories from './components/SelectCategories';
 
 function App() {
   return (
-    <span>Bora começar!</span>
+    <Provider>
+      <Form />
+      <SelectCategories />
+      <Table />
+    </Provider>
   );
 }
 
