@@ -1,44 +1,42 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import StarWars from '../hooks/context/StarWarsContext';
+import StarWars from '../context/StarWarsContext';
 import './css/Table.css';
 
 const Table = () => {
   const [planets, setPlanets] = useState([]);
-  const [search, setSearch] = useState('');
-  const data = useContext(StarWars);
+  const { data, filters } = useContext(StarWars);
 
   useEffect(() => {
-    let planetsList = data;
-    if (search === '') {
-      setPlanets(planetsList);
-    } else {
-      planetsList = planetsList.filter((planet) => (
-        planet.name.toLowerCase().includes(search.toLowerCase())));
-      if (planetsList.length !== 0) {
-        setPlanets(planetsList);
-      }
-    }
-  }, [data, search]);
+    let planetsList = [];
+    const { filters: { filterByName: { name } } } = filters;
 
-  const handleChanges = ({ target }) => {
-    setSearch(target.value);
-  };
+    const { column } = filters.filters.filterByNumericValues[0];
+    const { comparison } = filters.filters.filterByNumericValues[0];
+    const { value } = filters.filters.filterByNumericValues[0];
+
+    switch (comparison) {
+    case 'maior que':
+      planetsList = data.filter((planet) => (planet[column] > parseInt(value, 10)));
+      break;
+    case 'menor que':
+      planetsList = data.filter((planet) => (planet[column] < parseInt(value, 10)));
+      break;
+    case 'igual a':
+      planetsList = data.filter((planet) => (planet[column] === value));
+      break;
+    default:
+      planetsList = data.filter((planet) => (
+        planet.name.toLowerCase().includes(name.toLowerCase())));
+      break;
+    }
+    setPlanets(planetsList);
+  }, [data, filters]);
 
   if (!planets.length) return <h1>Loading...</h1>;
 
   return (
     <div>
-      <input
-        className="search"
-        type="text"
-        id="name-filter"
-        data-testid="name-filter"
-        name="name-filter"
-        value={ search }
-        onChange={ handleChanges }
-        placeholder="Pesquisar:"
-      />
       <table className="planets">
         <thead>
           <tr>
