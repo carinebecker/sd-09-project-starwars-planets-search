@@ -6,6 +6,7 @@ function ExcludeFilter(props) {
   // const { filterNumeric, selectColumns, setSelectColumns,
   //   setFilterNumeric } = useContext(StarWarsContext);
   const { removeClick, filterNumeric } = props;
+  console.log(filterNumeric);
 
   return (
     filterNumeric.length > 0 && (
@@ -29,7 +30,8 @@ function ExcludeFilter(props) {
 }
 
 ExcludeFilter.propTypes = {
-  filterNumeric: PropTypes.array.isRequired,
+  removeClick: PropTypes.func.isRequired,
+  filterNumeric: PropTypes.arrayOf.isRequired,
 };
 
 export default ExcludeFilter;
