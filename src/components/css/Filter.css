@@ -1,6 +1,6 @@
 .inputName {
   background-color: white;
-  background-position: 10px 10px; 
+  background-position: 10px 10px;
   background-repeat: no-repeat;
   border: 2px solid #ccc;
   border-radius: 4px;
@@ -8,7 +8,6 @@
   font-size: 16px;
   padding: 12px 20px 12px 40px;
   width: 50%;
-  /* background-image: url('searchicon.png'); */
 }
 
 .dropdown {
