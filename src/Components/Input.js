@@ -45,6 +45,17 @@ export default function Input() {
     });
     setOptions(INITIAL_STATE_OPTIONS.filter((option) => option !== inputState.column));
   };
+  const handleClearFilters = (index) => {
+    filters.filterByNumericValues.splice(index, 1);
+    setFilter({
+      ...filters,
+      filterByName: {
+        name: '',
+      },
+      ...filters.filterByNumericValues,
+    });
+  };
+  // Source of the handleClearFilters functions: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/52/files /
 
   return (
     <div>
@@ -103,6 +114,23 @@ export default function Input() {
       >
         Filter
       </button>
+      <div>
+        { filters.filterByNumericValues.length
+          ? filters.filterByNumericValues.map(({ column, comparison, value }, index) => (
+            <div key={ index }>
+              <span>{`Filtro: ${column} ${comparison} ${value}`}</span>
+              <div data-testid="filter">
+                <button
+                  type="button"
+                  onClick={ () => handleClearFilters(index) }
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          ))
+          : ''}
+      </div>
     </div>
   );
 }
