@@ -2,27 +2,46 @@ import React, { useState, useEffect } from 'react';
 
 function Table() {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [newData, setNewData] = useState([]);
 
-  useEffect(() => {
+  const get = () => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => result.json())
       .then((json) => {
         setData(json.results);
-        setLoading(true);
+        setNewData(json.results);
       });
-  });
+  };
 
-  if (loading === false) return <h2>loading</h2>;
+  useEffect(() => {
+    get();
+  }, []);
+
+  const filterPlanets = ({ target }) => {
+    const filter = data.filter(({ name }) => name.toUpperCase()
+      .includes(target.value.toUpperCase()));
+    setNewData(filter);
+  };
+
+  if (data.length === 0) return <h2>loading</h2>;
   return (
     <div>
+      <label htmlFor="planet">
+        Pesquisar:
+        <input
+          type="text"
+          id="planet"
+          onChange={ filterPlanets }
+          data-testid="name-filter"
+        />
+      </label>
       <table>
         <tr>
           {Object.keys(data[0])
             .filter((value) => value !== 'residents')
             .map((value) => <th key={ value }>{value}</th>)}
         </tr>
-        {data.map((tagTd) => (
+        {newData.map((tagTd) => (
           <tr key={ tagTd.name }>
             <td>{tagTd.name}</td>
             <td>{tagTd.rotation_period}</td>
