@@ -5,7 +5,7 @@ export default function Input() {
   const INITIAL_STATE = {
     column: 'population',
     comparison: 'maior que',
-    value: '100000',
+    value: '0',
   };
   const INITIAL_STATE_OPTIONS = [
     'population',
@@ -17,7 +17,6 @@ export default function Input() {
   const { filters, setFilter } = useContext(StarWarsContext);
   const [options, setOptions] = useState(INITIAL_STATE_OPTIONS);
   const [inputState, setInput] = useState(INITIAL_STATE);
-  const { filterByNumericValues } = filters;
   const handleChange = ({ target }) => {
     const { value } = target;
     setFilter({
@@ -34,6 +33,17 @@ export default function Input() {
       [name]: value,
     });
   };
+  const handleButton = () => {
+    setFilter({
+      filterByName: {
+        name: filters.filterByName.name,
+      },
+      filterByNumericValues: [
+        inputState,
+      ],
+    });
+    setOptions(options.filter((option) => option !== inputState.column));
+  };
 
   return (
     <div>
@@ -41,18 +51,17 @@ export default function Input() {
         Search
         <input
           type="text"
-          id="search"
           data-testid="name-filter"
           value={ filters.filterByName.name }
           onChange={ handleChange }
         />
       </label>
       <label htmlFor="column-filter">
-        Column Filter
+        Column
         <select
           data-testid="column-filter"
-          value={ inputState.colum }
-          name="colum"
+          value={ inputState.column }
+          name="column"
           onChange={ handleSelect }
         >
           { options
@@ -63,6 +72,36 @@ export default function Input() {
             )) }
         </select>
       </label>
+      <label htmlFor="comparison-filter">
+        Comparison
+        <select
+          data-testid="comparison-filter"
+          name="comparison"
+          value={ inputState.comparison }
+          onChange={ handleSelect }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+      </label>
+      <label htmlFor="value-filter">
+        Value
+        <input
+          type="number"
+          name="value"
+          data-testid="value-filter"
+          value={ inputState.value }
+          onChange={ handleSelect }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="button-filter"
+        onClick={ handleButton }
+      >
+        Filter
+      </button>
     </div>
   );
 }

@@ -4,16 +4,45 @@ import StarWarsContext from '../Context/StarWarsContext';
 export default function Table() {
   const {
     data,
-    filters,
+    filters: {
+      filterByName,
+      filterByNumericValues,
+    },
   } = useContext(StarWarsContext);
   const rowHead = () => (
     <tr>
       {Object.keys(data.results[0]).map((title) => <th key={ title }>{title}</th>)}
     </tr>
   );
+
+  const filterColumn = () => {
+    const [{ column, comparison, value }] = filterByNumericValues;
+    let newData = '';
+    switch (comparison) {
+    case 'maior que':
+      newData = data.results.filter((element) => element[column] > value);
+      break;
+    case 'menor que':
+      newData = data.results.filter((element) => element[column] < value);
+      break;
+    case 'igual a':
+      newData = data.results.filter((element) => element[column] === value);
+      break;
+    default:
+      newData = data.results;
+    }
+    return newData
+      .filter((planet) => planet.name.includes(filterByName.name))
+      .map((element) => (
+        <tr key={ element.name }>
+          { Object.values(element)
+            .map((elementValue) => <td key={ elementValue }>{ elementValue }</td>) }
+        </tr>));
+  };
+
   const rowBody = () => (
     data.results
-      .filter((planet) => planet.name.includes(filters.filterByName.name))
+      .filter((planet) => planet.name.includes(filterByName.name))
       .map((element) => (
         <tr key={ element.name }>
           { Object.values(element).map((value) => <td key={ value }>{ value }</td>) }
@@ -32,7 +61,7 @@ export default function Table() {
           { rowHead() }
         </thead>
         <tbody>
-          { rowBody() }
+          { filterByNumericValues.length ? filterColumn() : rowBody()}
         </tbody>
       </table>
     </div>
