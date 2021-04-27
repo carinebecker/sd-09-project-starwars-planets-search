@@ -14,6 +14,7 @@ function SearchBar() {
   return (
     <section>
       <input
+        className="search-input"
         data-testid="name-filter"
         name="name-filter"
         onChange={ handleChange }
@@ -23,7 +24,5 @@ function SearchBar() {
     </section>
   );
 }
-
-SearchBar.contextType = StarWarsContext;
 
 export default SearchBar;

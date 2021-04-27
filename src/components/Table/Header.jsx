@@ -15,8 +15,12 @@ function Header(props) {
   );
 }
 
+Header.defaultProps = {
+  data: [],
+};
+
 Header.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.Object).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Header;

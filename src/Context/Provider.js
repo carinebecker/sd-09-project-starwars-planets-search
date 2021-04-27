@@ -7,7 +7,7 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [filters, setFilters] = useState({});
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  /* const [filteredPlanets, setFilteredPlanets] = useState([]); */
 
   useEffect(() => {
     const fetchPlanetsFromApi = () => {
