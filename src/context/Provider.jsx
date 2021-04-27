@@ -7,20 +7,17 @@ function Provider({ children }) {
   const [planets, setPlanets] = useState();
   const [tableHeaders, setTableHeaders] = useState();
   const [isLoading, setLoading] = useState(true);
-  const [columnOptions, setColumnOptions] = useState([
+  const initialColumnOptions = [
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
-  ]);
+  ];
+  const [columnOptions, setColumnOptions] = useState(initialColumnOptions);
   const [filterByName, setFilterByName] = useState({ name: '' });
-  const [filterByValues, setFilterByValues] = useState({
-    column: '',
-    comparison: '',
-    value: '0',
-  });
-  const [activeFilters, setActiveFilters] = useState([]);
+  const [filterByValues, setFilterByValues] = useState([]);
+  const [activeFilters, setActiveFilters] = useState([...filterByValues]);
 
   useEffect(() => {
     async function getPlanets() {
@@ -37,13 +34,14 @@ function Provider({ children }) {
     tableHeaders,
     isLoading,
     filterByName,
-    filterByValues,
-    columnOptions,
-    activeFilters,
     setFilterByName,
+    filterByValues,
     setFilterByValues,
-    setActiveFilters,
+    initialColumnOptions,
+    columnOptions,
     setColumnOptions,
+    activeFilters,
+    setActiveFilters,
   };
 
   return (

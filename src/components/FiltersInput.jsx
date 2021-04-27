@@ -3,10 +3,12 @@ import StarWarsContext from '../context/StarWarsContext';
 
 function FiltersInput() {
   const {
+    filterByValues,
     setFilterByName,
     setFilterByValues,
     activeFilters,
     setActiveFilters,
+    initialColumnOptions,
     columnOptions,
     setColumnOptions } = useContext(StarWarsContext);
   const [filterByNumericValues, setFilterByNumericValues] = useState({
@@ -27,14 +29,7 @@ function FiltersInput() {
   };
 
   const handleButtonClick = () => {
-    const initialColumnOptions = [
-      'population',
-      'orbital_period',
-      'diameter',
-      'rotation_period',
-      'surface_water',
-    ];
-    setFilterByValues(filterByNumericValues);
+    setFilterByValues([...filterByValues, filterByNumericValues]);
     setColumnOptions(initialColumnOptions
       .filter((option) => option !== filterByNumericValues.column));
     setFilterByNumericValues({
@@ -102,15 +97,6 @@ function FiltersInput() {
         onClick={ handleButtonClick }
       >
         Filter
-      </button>
-
-      <button
-        type="button"
-        data-testid="filter"
-        id="filter-button"
-        onClick={ () => setFilterByValues({}) }
-      >
-        X
       </button>
     </div>
   );

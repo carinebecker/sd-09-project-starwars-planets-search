@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import Loading from './Loading';
 import FiltersInput from './FiltersInput';
 import StarWarsContext from '../context/StarWarsContext';
+import ActiveFilters from './ActiveFilters';
 
 function Table() {
   const {
     planets,
     tableHeaders,
     isLoading,
-    filterByValues: { column, comparison, value },
+    filterByValues,
     filterByName: { name } } = useContext(StarWarsContext);
 
   const createTableHeaders = () => (
@@ -22,21 +23,25 @@ function Table() {
   );
 
   function tableRows() {
-    let filteredPlanets = planets;
-    if (comparison === 'menor que') {
-      filteredPlanets = planets
-        .filter((planet) => +(planet[column]) < +(value));
-    }
-    if (comparison === 'maior que') {
-      filteredPlanets = planets
-        .filter((planet) => +(planet[column]) > +(value));
-    }
-    if (comparison === 'igual a') {
-      filteredPlanets = planets
-        .filter((planet) => +(planet[column]) === +(value));
+    let filteredPlanets = planets
+      .filter((planet) => planet.name
+        .toLowerCase()
+        .includes(name.toLowerCase()));
+    if (filterByValues.length > 0) {
+      filterByValues.forEach(({ comparison, column, value }) => {
+        if (comparison === 'menor que') {
+          filteredPlanets = planets
+            .filter((planet) => +(planet[column]) < +(value));
+        } else if (comparison === 'maior que') {
+          filteredPlanets = planets
+            .filter((planet) => +(planet[column]) > +(value));
+        } else if (comparison === 'igual a') {
+          filteredPlanets = planets
+            .filter((planet) => +(planet[column]) === +(value));
+        }
+      });
     }
     return filteredPlanets
-      .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))
       .map((planet, index) => (
         <tr key={ index }>
           <td id="planetsName">{planet.name}</td>
@@ -61,6 +66,7 @@ function Table() {
     <>
       <h1>Star Wars Planet Table</h1>
       <FiltersInput />
+      <ActiveFilters />
       <table>
         <thead>
           {createTableHeaders()}
