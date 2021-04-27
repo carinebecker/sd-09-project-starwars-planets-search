@@ -35,8 +35,9 @@ function FilterName() {
             value={ fields.column }
             onChange={ (event) => handleChangeFields(event.target) }
           >
-            {selectColumn.map((option) => (
-              <option key={ option } value={ option }>{option}</option>))}
+            {selectColumn.map(({ option, enabled }) => (
+              enabled && (<option key={ option } value={ option }>{option}</option>)
+            ))}
           </select>
           <select
             name="comparison"

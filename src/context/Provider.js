@@ -15,11 +15,11 @@ function Provider({ children }) {
   });
 
   const [selectColumn, setSelectColumn] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
+    { option: 'population', enabled: true },
+    { option: 'orbital_period', enabled: true },
+    { option: 'diameter', enabled: true },
+    { option: 'rotation_period', enabled: true },
+    { option: 'surface_water', enabled: true },
   ]);
 
   const providerValues = {

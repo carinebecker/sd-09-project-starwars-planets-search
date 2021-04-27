@@ -19,7 +19,12 @@ const useFilterByNumericValues = (initialValue) => {
 
     const { filterByNumericValues: arrayNumericValues } = allFilters.filters;
 
-    selectColumn.splice(selectColumn.indexOf(column), 1);
+    selectColumn.forEach(({ option }, index) => {
+      if (option === column) {
+        selectColumn[index].enabled = false;
+      }
+    });
+
     setSelectColumn([...selectColumn]);
 
     const findFilter = arrayNumericValues

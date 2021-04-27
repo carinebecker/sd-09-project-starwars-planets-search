@@ -18,32 +18,39 @@ const useFilterTable = () => {
 
   useEffect(() => {
     if (filtersLength !== filterByNumericValues.length) {
+      let planets = planetsFilter;
+
+      if (filtersLength > filterByNumericValues.length) {
+        planets = data;
+      }
+
       setFiltersLength(filterByNumericValues.length);
 
       filterByNumericValues.forEach(({ column, comparison, value }) => {
         switch (comparison) {
         case 'maior que':
-          setPlanetsFilter(planetsFilter.filter(
+          planets = planets.filter(
             (planet) => planet[column] > parseInt(value, 10),
-          ));
+          );
           break;
         case 'menor que':
-          setPlanetsFilter(planetsFilter.filter(
+          planets = planets.filter(
             (planet) => planet[column] < parseInt(value, 10),
-          ));
+          );
           break;
         case 'igual a':
-          setPlanetsFilter(planetsFilter.filter(
+          planets = planets.filter(
             (planet) => planet[column] === value,
-          ));
+          );
           break;
         default:
-          setPlanetsFilter(planetsFilter);
           break;
         }
       });
+
+      setPlanetsFilter(planets);
     }
-  }, [filterByNumericValues, filtersLength, planetsFilter]);
+  }, [data, filterByNumericValues, filtersLength, planetsFilter]);
 
   return [planetsFilter];
 };
