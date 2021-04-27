@@ -6,19 +6,30 @@ import planetsData from '../services';
 function Provider({ children }) {
   const [allPlanets, setAllPlanets] = useState([]);
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({
+  const [objectFilters, setObjectFilters] = useState({
     filters: {
       filterByName: {
         name: '',
       },
     },
   });
+
+  const [selectColumn, setSelectColumn] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   const providerValues = {
     allPlanets,
     data,
     setData,
-    filters,
-    setFilters,
+    objectFilters,
+    setObjectFilters,
+    selectColumn,
+    setSelectColumn,
   };
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import FilterName from './components/FilterName';
+import FilterName from './components/Filters';
 import Table from './components/Table';
 import Provider from './context/Provider';
 
