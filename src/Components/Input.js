@@ -42,7 +42,7 @@ export default function Input() {
         inputState,
       ],
     });
-    setOptions(options.filter((option) => option !== inputState.column));
+    setOptions(INITIAL_STATE_OPTIONS.filter((option) => option !== inputState.column));
   };
 
   return (
