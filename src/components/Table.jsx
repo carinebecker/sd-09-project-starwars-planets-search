@@ -2,9 +2,34 @@ import React, { useContext } from 'react';
 import { DataApiContext } from '../context/DataApi';
 
 const Table = () => {
-  const { apiData } = useContext(DataApiContext);
+  const { data, filters, isFetching } = useContext(DataApiContext);
 
-  if (!apiData.length) {
+  const tablePlanets = (planets) => (
+    planets.map((eachElement) => (
+      <tr key={ eachElement.name }>
+        {Object.values(eachElement).map((eachValue) => (
+          <td key={ eachValue }>
+            {eachValue}
+          </td>
+        ))}
+      </tr>
+    ))
+  );
+
+  const filterPlanets = () => {
+    const { filterByName: { name } } = filters;
+    if (data) {
+      const filteredPlanets = data.filter(({
+        name: planetName,
+      }) => planetName.toLowerCase().includes(name.toLowerCase()));
+      if (filteredPlanets.length) {
+        return tablePlanets(filteredPlanets);
+      }
+    }
+    return tablePlanets(data);
+  };
+
+  if (isFetching) {
     return <h2>Loading...</h2>;
   }
 
@@ -15,20 +40,14 @@ const Table = () => {
         <thead>
           <tr>
             {
-              Object.keys(apiData[0]).map((eachKey) => <th key={ eachKey }>{eachKey}</th>)
+              Object.keys(data[0]).map((eachKey) => <th key={ eachKey }>{eachKey}</th>)
             }
           </tr>
         </thead>
         <tbody>
-          {apiData.map((eachElement) => (
-            <tr key={ eachElement.name }>
-              {Object.values(eachElement).map((eachValue) => (
-                <td key={ eachValue }>
-                  {eachValue}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {
+            filterPlanets()
+          }
         </tbody>
       </table>
     </>
@@ -36,12 +55,3 @@ const Table = () => {
 };
 
 export default Table;
-
-/* {
-  apiData.map((eachElement) => (
-    <tr key={ eachElement.name }>
-      <td>{eachElement.name}</td>
-      <td>{eachElement.rotation_period}</td>
-    </tr>
-  ))
-} */

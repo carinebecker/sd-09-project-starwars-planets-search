@@ -1,17 +1,18 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { node } from 'prop-types';
+import useInputValue from '../hooks/filterInputValueByName';
 import fetchData from '../services/fetchData';
 
 export const DataApiContext = createContext();
 
 const DataApiContextProvider = ({ children }) => {
-  const [apiData, setApiData] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
+  const [filters, filterInputValueByName] = useInputValue();
 
   const getApiData = async () => {
-    setIsFetching(true);
-    const data = await fetchData();
-    setApiData(data);
+    const apiData = await fetchData();
+    setData(apiData);
     setIsFetching(false);
   };
 
@@ -20,10 +21,10 @@ const DataApiContextProvider = ({ children }) => {
   }, []);
 
   const context = {
-    apiData,
-    setApiData,
+    data,
+    filters,
+    filterInputValueByName,
     isFetching,
-    setIsFetching,
   };
 
   return (
