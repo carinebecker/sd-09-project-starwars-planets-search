@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import TodoContext from './TodoContext';
+import FilterPlanets from './FilterPlanets';
 
 function Table() {
-  const [data, setData] = useState([]);
-  const [newData, setNewData] = useState([]);
-
+  const { data, newData, setData, setNewData } = useContext(TodoContext);
   const get = () => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => result.json())
@@ -17,7 +17,7 @@ function Table() {
     get();
   }, []);
 
-  const filterPlanets = ({ target }) => {
+  const filterPlanetsName = ({ target }) => {
     const filter = data.filter(({ name }) => name.toUpperCase()
       .includes(target.value.toUpperCase()));
     setNewData(filter);
@@ -31,10 +31,11 @@ function Table() {
         <input
           type="text"
           id="planet"
-          onChange={ filterPlanets }
+          onChange={ filterPlanetsName }
           data-testid="name-filter"
         />
       </label>
+      <FilterPlanets />
       <table>
         <tr>
           {Object.keys(data[0])

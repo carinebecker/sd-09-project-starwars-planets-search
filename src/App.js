@@ -1,10 +1,13 @@
 import React from 'react';
+import TodoProvaider from './components/TodoProvaider';
 import Table from './components/Table';
 
 function App() {
   return (
     <div>
-      <Table />
+      <TodoProvaider>
+        <Table />
+      </TodoProvaider>
     </div>
   );
 }
