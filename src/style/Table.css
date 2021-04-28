@@ -1,0 +1,51 @@
+body {
+  background-image: url('./swBackground.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  color: white;
+}
+
+.tablePage {
+  display: grid;
+  grid-template-rows: 10vh 10vh 80vh;
+  grid-template-columns: 150vw;
+  overflow: overlay;
+  overflow-x: clip;
+  height: 100vh;
+  width: 101vw;
+}
+
+.filters {
+  grid-row: 1;
+}
+
+.sortData {
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+}
+
+.table {
+  grid-row: 3;
+  display: grid;
+  grid-template-rows: 7vh 91vh;
+  grid-gap: 2vh;
+}
+
+.tableHeaders {
+  display: grid;
+  grid-template-columns: 5vw 5vw 5vw 6vw 6vw 7vw 6vw 6vw 9.5vw 30.5vw 17vw 17vw 18vw;
+  text-align: center;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.137);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  align-items: center;
+  z-index: 10;
+  color: azure;
+}
+
+.tableBody {
+  grid-row: 2;
+}
