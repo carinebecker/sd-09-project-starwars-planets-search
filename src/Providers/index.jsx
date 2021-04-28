@@ -7,16 +7,24 @@ function Provider({ children }) {
   const initialState = {
     data: [],
     loading: true,
+    filterDone: false,
     filters: {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [
+        {
+          column: '',
+          comparison: '',
+          value: '',
+        },
+      ],
     },
   };
 
   const [state, setState] = useState(initialState);
 
-  function handleChange({ name, value }) {
+  const handleChange = ({ name, value }) => {
     setState((prevState) => ({
       ...prevState,
       filters: {
@@ -27,7 +35,50 @@ function Provider({ children }) {
         },
       },
     }));
-  }
+  };
+
+  const handleDropdown = ({ column, comparison, value }) => {
+    const objFilter = {
+      column,
+      comparison,
+      value,
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      filterDone: true,
+      filters: {
+        ...prevState.filters,
+        filterByNumericValues: [
+          ...prevState.filters.filterByNumericValues,
+          objFilter,
+        ],
+      },
+    }));
+  };
+
+  const doFilter = (filter, data) => {
+    const index = filter.length - 1;
+    const { column, comparison, value } = filter[index];
+
+    const result = data.filter(
+      (element) => {
+        if (comparison === 'Maior que') {
+          if (element[column] > value) {
+            return element;
+          }
+        } else if (comparison === 'Menor que') {
+          if (element[column] < value) {
+            return element;
+          }
+        } else if (element[column] === value) {
+          return element;
+        }
+        return null;
+      },
+    );
+    return result;
+  };
 
   useEffect(() => {
     async function planetAPI() {
@@ -44,6 +95,8 @@ function Provider({ children }) {
   const contextValue = {
     ...state,
     handleChange,
+    handleDropdown,
+    doFilter,
   };
 
   return (
