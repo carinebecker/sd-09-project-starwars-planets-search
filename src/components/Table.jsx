@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Loading from './Loading';
 import Filters from './Filters';
+import ActiveFilters from './ActiveFilters';
 import PlanetsContext from '../context/PlanetsContext';
 import '../styles/Table.css';
 
@@ -10,7 +11,9 @@ function Table() {
     tableHeaders,
     loading,
     filterByName: { name },
-    filterByNumericValues: { column, comparison, value },
+    filterByNumericValues,
+    sortPlanets,
+    sortState,
   } = useContext(PlanetsContext);
 
   if (loading) return <Loading />;
@@ -18,7 +21,7 @@ function Table() {
   function tableHead() {
     return (
       <tr>
-        { Object.keys(tableHeaders[0]).map((header) => (
+        { tableHeaders.map((header) => (
           <th key={ header }>{header}</th>
         ))}
       </tr>
@@ -26,27 +29,38 @@ function Table() {
   }
 
   function tableRows() {
-    let filteredPlanets = planets;
-    if (comparison === 'menor que') {
-      filteredPlanets = filteredPlanets
-        .filter((planet) => +(planet[column]) < +(value));
+    let filteredPlanets = planets
+      .filter((planet) => planet.name.toUpperCase().includes(name.toUpperCase()));
+
+    if (filterByNumericValues.length > 0) {
+      filterByNumericValues.forEach(({ comparison, column, value }) => {
+        if (comparison === 'menor que') {
+          filteredPlanets = filteredPlanets
+            .filter((planet) => +(planet[column]) < +(value));
+        }
+
+        if (comparison === 'maior que') {
+          filteredPlanets = filteredPlanets
+            .filter((planet) => +(planet[column]) > +(value));
+        }
+
+        if (comparison === 'igual a') {
+          filteredPlanets = filteredPlanets
+            .filter((planet) => +(planet[column]) === +(value));
+        }
+      });
     }
 
-    if (comparison === 'maior que') {
-      filteredPlanets = filteredPlanets
-        .filter((planet) => +(planet[column]) > +(value));
-    }
-
-    if (comparison === 'igual a') {
-      filteredPlanets = filteredPlanets
-        .filter((planet) => +(planet[column]) === +(value));
+    if (sortState.sortType === 'ASC') {
+      filteredPlanets = sortPlanets(filteredPlanets, sortState.sortColumn);
+    } else {
+      filteredPlanets = sortPlanets(filteredPlanets, sortState.sortColumn).reverse();
     }
 
     return filteredPlanets
-      .filter((planet) => planet.name.toUpperCase().includes(name.toUpperCase()))
       .map((planet, index) => (
         <tr key={ index }>
-          <td id="planetsName">{planet.name}</td>
+          <td id="planetsName" data-testid="planet-name">{planet.name}</td>
           <td>{planet.rotation_period}</td>
           <td>{planet.orbital_period}</td>
           <td>{planet.diameter}</td>
@@ -68,6 +82,7 @@ function Table() {
       <h1>Star Wars Planet Search</h1>
 
       <Filters />
+      <ActiveFilters />
 
       <table id="planetsTable">
         <thead>

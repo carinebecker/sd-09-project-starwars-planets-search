@@ -11,21 +11,37 @@ function Provider({ children }) {
   const [columns, setColumns] = useState(
     ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
   );
-  const [filterByNumericValues, setFilterByNumericValues] = useState({
-    column: '',
-    comparison: '',
-    value: '0',
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [sortState, setSortState] = useState({
+    sortColumn: 'name',
+    sortType: 'ASC',
   });
 
   useEffect(() => {
     async function planetsFromAPI() {
       const results = await fetchPlanets();
       setPlanets(results);
-      setTableHeaders(results);
+      setTableHeaders(Object.keys(results[0]));
       setLoading(false);
     }
     planetsFromAPI();
   }, []);
+
+  function sortPlanets(planetsSort, selector) {
+    let result = planetsSort;
+    const magicNumber = -1;
+    if (selector === 'name') {
+      result = planetsSort.sort((a, b) => {
+        if (a[selector] > b[selector]) {
+          return 1;
+        }
+        return magicNumber;
+      });
+    } else {
+      result = planetsSort.sort((a, b) => +(a[selector]) - +(b[selector]));
+    }
+    return result;
+  }
 
   const context = {
     planets,
@@ -37,6 +53,9 @@ function Provider({ children }) {
     setColumns,
     filterByNumericValues,
     setFilterByNumericValues,
+    sortState,
+    setSortState,
+    sortPlanets,
   };
 
   return (
