@@ -10,6 +10,7 @@ function TableProvider({ children }) {
     const getData = async () => {
       const apiData = await fetch(endpoint)
         .then((response) => response.json()).catch((error) => console.log(error));
+        // Obrigada Rafa Reis pela dica do delete!
       apiData.results.forEach((element) => delete element.residents);
       setData(apiData);
       setFetching(false);
