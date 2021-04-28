@@ -8,6 +8,9 @@ function Provider({ children }) {
   const [isFetching, setIsFetching] = useState(true);
 
   const [text, setText] = useState('');
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     const fetchPlanetsFromApi = () => {
@@ -22,18 +25,53 @@ function Provider({ children }) {
     fetchPlanetsFromApi();
   }, []);
 
-  // searchName based on => https://www.youtube.com/watch?v=d1r0aK5awWk
-  const searchName = ((rows) => {
+  // search based on => https://www.youtube.com/watch?v=d1r0aK5awWk
+  const search = ((rows) => {
     const ONE_LESS = -1;
-    return rows.filter((row) => row.name.toLowerCase().indexOf(text) > ONE_LESS);
+    return rows.filter(
+      (row) => row.name.toLowerCase().indexOf(text.toLowerCase()) > ONE_LESS,
+    );
+  });
+
+  const searchButton = (() => {
+    let filterPlanets = [];
+    switch (comparison) {
+    case 'maior que':
+      filterPlanets = data.filter((row) => row[column] > parseInt(value, 10));
+      return setData(filterPlanets);
+    case 'menor que':
+      filterPlanets = data.filter((row) => row[column] < parseInt(value, 10));
+      return setData(filterPlanets);
+    case 'igual a':
+      filterPlanets = data.filter((row) => row[column] === value);
+      return setData(filterPlanets);
+    default:
+      break;
+    }
   });
 
   const contextStarWars = {
     isFetching,
     data,
-    text,
     setText,
-    searchName,
+    search,
+    setColumn,
+    setComparison,
+    setValue,
+    searchButton,
+    filters:
+      {
+        filterByName: {
+          name: text,
+        },
+        filterByNumericValues: [
+          {
+            column,
+            comparison,
+            value,
+          },
+        ],
+      },
   };
 
   return (

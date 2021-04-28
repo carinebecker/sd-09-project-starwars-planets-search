@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import SearchBar from './components/SearchBar';
+import SearchBar from './components/SearchBar/Index';
 import Table from './components/Table/Index';
 import Provider from './Context/Provider';
 
