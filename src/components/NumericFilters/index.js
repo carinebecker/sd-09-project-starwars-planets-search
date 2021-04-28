@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useNumericFilter from '../../hooks/useNumericFilters';
+import DropFilters from './DropFilters';
 
 const columnOptions = [
   'population',
@@ -31,10 +32,11 @@ function NumericFilters() {
       numericSearchTerm,
     };
     setNumericFilter(newFilter);
+    setColumn(checkOptions[0]);
   };
 
-  const drawSelect = (options) => options.map((option) => (
-    <option key={ option } value={ option }>
+  const drawSelect = (options) => options.map((option, index) => (
+    <option key={ index } value={ option }>
       {option}
     </option>
   ));
@@ -76,6 +78,7 @@ function NumericFilters() {
       >
         Incluir Filtro
       </button>
+      <DropFilters filters={ filter.filterByNumericValues } />
     </>
   );
 }

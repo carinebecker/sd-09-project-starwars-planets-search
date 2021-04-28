@@ -26,7 +26,16 @@ function useNumericFilter() {
     });
   };
 
-  return { filter, setNumericFilter };
+  const deleteNumericFilter = (columnName) => {
+    setFilter((prevState) => ({
+      ...prevState,
+      filterByNumericValues: prevState.filterByNumericValues.filter(
+        (filterItem) => filterItem.column !== columnName,
+      ),
+    }));
+  };
+
+  return { filter, setNumericFilter, deleteNumericFilter };
 }
 
 export default useNumericFilter;
