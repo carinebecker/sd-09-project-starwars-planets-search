@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
+import SelectedFilters from './SelectedFilters';
 import MyContext from '../context/MyContext';
 
 function Filters() {
-  const { filters, setFilters } = useContext(MyContext);
+  const { filters, setFilters, filterByNum, setFilterByNum } = useContext(MyContext);
   const initialState = {
     column: '',
     comparison: '',
@@ -30,30 +31,31 @@ function Filters() {
 
   function handleDropDown({ target }) {
     const { name, value } = target;
-    setState((lastState) => ({
-      ...lastState,
+    setState({
+      ...state,
       [name]: value,
-    }));
+    });
   }
 
-  function handleFilteredInputs(object) {
-    if (filters.filterByNumericValues[0].comparison === '') {
-      return (
-        setFilters({
-          ...filters,
-          filterByNumericValues: [object],
-        })
-      );
-    }
-    return (
-      setFilters({
-        ...filters,
-        filterByNumericValues: [
-          ...filters.filterByNumericValues,
-          object,
-        ],
-      })
-    );
+  function handleFilteredInputs() {
+    setFilterByNum([...filterByNum, state]);
+    // if (filters.filterByNumericValues[0].comparison === '') {
+    //   return (
+    //     setFilters({
+    //       ...filters,
+    //       filterByNumericValues: [state],
+    //     })
+    //   );
+    // }
+    // return (
+    //   setFilters({
+    //     ...filters,
+    //     filterByNumericValues: [
+    //       ...filters.filterByNumericValues,
+    //       state,
+    //     ],
+    //   })
+    // );
   }
 
   return (
@@ -101,13 +103,14 @@ function Filters() {
         type="button"
         data-testid="button-filter"
         onClick={ () => {
-          handleFilteredInputs(state);
+          handleFilteredInputs();
           unavailableFilters.push(state.column);
           setUnavailableFilters([...unavailableFilters]);
         } }
       >
         Filtrar
       </button>
+      <SelectedFilters />
     </div>
   );
 }

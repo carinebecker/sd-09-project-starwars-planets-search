@@ -3,25 +3,30 @@ import MyContext from '../context/MyContext';
 import Filters from './Filters';
 
 function Table() {
-  const { planets, filters } = useContext(MyContext);
+  const { planets, filters, filterByNum } = useContext(MyContext);
   const {
     filterByName: { name },
-    filterByNumericValues: [{ column, comparison, value }],
+    // filterByNumericValues: [{ column, comparison, value }],
   } = filters;
 
   function filterResults() {
-    let filteredPlanets = planets;
-    if (comparison === 'maior que') {
-      filteredPlanets = planets
-        .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
-    }
-    if (comparison === 'menor que') {
-      filteredPlanets = planets
-        .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
-    }
-    if (comparison === 'igual a') {
-      filteredPlanets = planets
-        .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
+    let filteredPlanets = planets
+      .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
+    if (filterByNum.length > 0) {
+      filterByNum.forEach(({ column, comparison, value }) => {
+        if (comparison === 'maior que') {
+          filteredPlanets = planets
+            .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+        }
+        if (comparison === 'menor que') {
+          filteredPlanets = planets
+            .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
+        }
+        if (comparison === 'igual a') {
+          filteredPlanets = planets
+            .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
+        }
+      });
     }
     return filteredPlanets
       .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()))

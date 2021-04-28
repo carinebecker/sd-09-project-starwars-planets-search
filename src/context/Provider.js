@@ -9,14 +9,15 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: '',
-        value: '',
-      },
-    ],
+    // filterByNumericValues: [
+    //   {
+    //     column: '',
+    //     comparison: '',
+    //     value: '',
+    //   },
+    // ],
   });
+  const [filterByNum, setFilterByNum] = useState([]);
 
   useEffect(() => {
     async function getPlanetsfromAPI() {
@@ -27,7 +28,9 @@ function Provider({ children }) {
   }, []);
 
   return (
-    <MyContext.Provider value={ { planets, filters, setFilters } }>
+    <MyContext.Provider
+      value={ { planets, filters, setFilters, filterByNum, setFilterByNum } }
+    >
       { children }
     </MyContext.Provider>
   );
