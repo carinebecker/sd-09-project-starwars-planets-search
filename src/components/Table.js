@@ -2,12 +2,15 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, filteredByName } = useContext(StarwarsContext);
-  const filteredPlanets = (data.results)
-    ? data.results.filter((planets) => (
-      planets.name.includes(filteredByName.filters.filterByName.name)))
+  const { data, filteredByName, filteredByNumeric } = useContext(StarwarsContext);
+    // const filteredPlanets = (data.results)
+    //   ? data.results.filter((planets) => (
+    //     planets.name.includes(filteredByName.filters.filterByName.name)))
+    //   : '';
+  const filteredPlanets = (filteredByNumeric.filterByNumeric.column)
+    ? data.results.filter((planet) => console.log(planet.filteredByNumeric.filterByNumeric.column >= filteredByNumeric.filterByNumeric.value))
     : '';
-
+    console.log(filteredPlanets)
   return (
     <table>
       <thead>

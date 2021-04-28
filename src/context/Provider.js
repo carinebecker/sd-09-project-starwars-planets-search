@@ -6,23 +6,25 @@ import StarwarsContext from './StarwarsContext';
 import fetchApiPlanets from '../services/fetchPlanet';
 
 function Provider({ children }) {
-  const filterResults = {
+  const filterByName = {
     filters: {
       filterByName: {
         name: '',
       },
-      filterByNumericValues: [
-        {
-          column: '',
-          comparison: '',
-          value: '',
-        },
-      ],
+    },
+  };
+
+  const filterByNumeric = {
+    filterByNumeric: {
+      column: '',
+      comparison: '',
+      value: 0,
     },
   };
 
   const [data, setData] = useState({});
-  const [filteredByName, setFilteredByName] = useState(filterResults);
+  const [filteredByName, setFilteredByName] = useState(filterByName);
+  const [filteredByNumeric, setFilteredByNumeric] = useState(filterByNumeric);
 
   async function getPlanets() {
     const apiResponse = await fetchApiPlanets();
@@ -37,6 +39,8 @@ function Provider({ children }) {
     data,
     filteredByName,
     setFilteredByName,
+    filteredByNumeric,
+    setFilteredByNumeric,
   };
   return (
     <StarwarsContext.Provider value={ contextValue }>
