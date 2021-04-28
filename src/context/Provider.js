@@ -5,7 +5,12 @@ import planetsAPI from '../services/Api';
 import StarWarsContext from './StarWarsContext';
 
 function Provider({ children }) {
+  const INITIAL_STATE = {
+    filterByName: { name: '' },
+  };
+
   const [data, setData] = useState([]);
+  const [filters, setFilterName] = useState(INITIAL_STATE);
 
   const getPlanets = async () => {
     const planets = await planetsAPI();
@@ -17,8 +22,14 @@ function Provider({ children }) {
     getPlanets();
   }, []);
 
+  const contextValue = {
+    data,
+    filters,
+    setFilterName,
+  };
+
   return (
-    <StarWarsContext.Provider value={ { data } }>
+    <StarWarsContext.Provider value={ { contextValue } }>
       {children}
     </StarWarsContext.Provider>
   );
