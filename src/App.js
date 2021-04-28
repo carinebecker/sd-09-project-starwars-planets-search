@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import SearchBar from './components/SearchBar';
-import Table from './components/Table/Table';
+import Table from './components/Table/Index';
 import Provider from './Context/Provider';
 
 function App() {

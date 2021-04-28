@@ -4,14 +4,14 @@ import Body from './Body';
 import Header from './Header';
 
 const Table = () => {
-  const { data, isFetching } = useContext(StarWarsContext);
+  const { data, isFetching, searchName } = useContext(StarWarsContext);
   return !isFetching ? (
     <table className="table">
       <thead>
         <Header data={ data } />
       </thead>
       <tbody>
-        <Body data={ data } />
+        <Body data={ searchName(data) } />
       </tbody>
     </table>
 

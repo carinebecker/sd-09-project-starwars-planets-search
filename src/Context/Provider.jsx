@@ -6,8 +6,8 @@ import requestApiStarWars from '../services/requestApi';
 function Provider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
-  const [filters, setFilters] = useState({});
-  /* const [filteredPlanets, setFilteredPlanets] = useState([]); */
+
+  const [text, setText] = useState('');
 
   useEffect(() => {
     const fetchPlanetsFromApi = () => {
@@ -22,11 +22,18 @@ function Provider({ children }) {
     fetchPlanetsFromApi();
   }, []);
 
+  // searchName based on => https://www.youtube.com/watch?v=d1r0aK5awWk
+  const searchName = ((rows) => {
+    const ONE_LESS = -1;
+    return rows.filter((row) => row.name.toLowerCase().indexOf(text) > ONE_LESS);
+  });
+
   const contextStarWars = {
     isFetching,
     data,
-    filters,
-    setFilters,
+    text,
+    setText,
+    searchName,
   };
 
   return (

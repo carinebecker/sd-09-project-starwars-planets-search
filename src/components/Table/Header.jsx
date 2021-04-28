@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Header(props) {
-  const { data } = props;
+function Header({ data }) {
   const headers = data[0];
   return (
     <tr>

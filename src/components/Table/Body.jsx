@@ -1,29 +1,26 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function Body(data) {
-  const planets = data.data;
+function Body({ data }) {
+  const columns = data[0] && Object.keys(data[0]);
+  console.log(data);
   return (
     <>
-      { planets
-        .map((planet, index) => (
-          <tr key={ index }>
-            <td>{ planet.name }</td>
-            <td>{ planet.rotation_period }</td>
-            <td>{ planet.orbital_period }</td>
-            <td>{ planet.diameter }</td>
-            <td>{ planet.climate }</td>
-            <td>{ planet.gravity }</td>
-            <td>{ planet.terrain }</td>
-            <td>{ planet.surface_water }</td>
-            <td>{ planet.population }</td>
-            <td>{ planet.films }</td>
-            <td>{ planet.created }</td>
-            <td>{ planet.edited }</td>
-            <td>{ planet.url }</td>
-          </tr>
-        )) }
+      {data.map((row) => (
+        <tr key={ row.name }>
+          {columns
+            .filter((header) => header !== 'residents')
+            .map((column) => <td key={ column }>{ row[column] }</td>)}
+        </tr>))}
     </>
   );
 }
 
+Body.defaultProps = {
+  data: [],
+};
+
+Body.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+};
 export default Body;
