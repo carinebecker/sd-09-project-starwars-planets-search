@@ -1,7 +1,7 @@
 .tableBody {
   align-items: center;
-  background-color: #0000007a;
   backdrop-filter: saturate(0.5) blur(2px);
+  background-color: #0000007a;
   border-radius: 10px;
   color: azure;
   display: grid;
@@ -20,7 +20,7 @@ tr {
 }
 
 .col1 {
-grid-column: 1;
+  grid-column: 1;
 }
 
 .col2 {
