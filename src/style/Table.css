@@ -1,18 +1,18 @@
 body {
   background-image: url('./swBackground.jpg');
-  background-size: cover;
   background-repeat: no-repeat;
-  overflow: hidden;
+  background-size: cover;
   color: white;
+  overflow: hidden;
 }
 
 .tablePage {
   display: grid;
-  grid-template-rows: 10vh 10vh 80vh;
   grid-template-columns: 150vw;
+  grid-template-rows: 10vh 10vh 80vh;
+  height: 100vh;
   overflow: overlay;
   overflow-x: clip;
-  height: 100vh;
   width: 101vw;
 }
 
@@ -21,29 +21,29 @@ body {
 }
 
 .sortData {
-  grid-row: 2;
-  display: flex;
   align-items: center;
+  display: flex;
+  grid-row: 2;
 }
 
 .table {
-  grid-row: 3;
   display: grid;
-  grid-template-rows: 7vh 91vh;
   grid-gap: 2vh;
+  grid-row: 3;
+  grid-template-rows: 7vh 91vh;
 }
 
 .tableHeaders {
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.137);
+  border-radius: 10px;
+  color: azure;
   display: grid;
   grid-template-columns: 5vw 5vw 5vw 6vw 6vw 7vw 6vw 6vw 9.5vw 30.5vw 17vw 17vw 18vw;
-  text-align: center;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.137);
-  backdrop-filter: blur(5px);
-  border-radius: 10px;
-  align-items: center;
+  text-align: center;
   z-index: 10;
-  color: azure;
 }
 
 .tableBody {

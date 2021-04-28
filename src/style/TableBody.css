@@ -1,20 +1,20 @@
 .tableBody {
-  display: grid;
-  grid-template-rows: auto;
-  grid-gap: 2vh;
-  backdrop-filter: saturate(0.5) blur(2px);
-  height: 150vh;
   align-items: center;
-  color: azure;
   background-color: #0000007a;
+  backdrop-filter: saturate(0.5) blur(2px);
   border-radius: 10px;
+  color: azure;
+  display: grid;
+  grid-gap: 2vh;
+  grid-template-rows: auto;
+  height: 150vh;
 }
 
 tr {
   display: grid;
+  grid-gap: 2vh;
   grid-template-columns: 5vw 5vw 5vw 6vw 6vw 7vw 6vw 6vw 9.5vw 35vw 17vw 17vw 18vw;
   justify-items: center;
-  grid-gap: 2vh;
   text-align: center;
 
 }
