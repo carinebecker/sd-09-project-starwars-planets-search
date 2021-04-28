@@ -63,11 +63,11 @@ function Provider({ children }) {
 
     const result = data.filter(
       (element) => {
-        if (comparison === 'Maior que') {
+        if (comparison === 'maior que') {
           if (element[column] > value) {
             return element;
           }
-        } else if (comparison === 'Menor que') {
+        } else if (comparison === 'menor que') {
           if (element[column] < value) {
             return element;
           }

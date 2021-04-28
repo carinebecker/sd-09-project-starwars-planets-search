@@ -55,9 +55,9 @@ const FilterNumberValue = () => {
         name="compare"
         onClick={ ({ target }) => compareFilter(target.value) }
       >
-        <option>Maior que</option>
-        <option>Menor que</option>
-        <option>Igual a</option>
+        <option>maior que</option>
+        <option>menor que</option>
+        <option>igual a</option>
       </select>
 
       <input
