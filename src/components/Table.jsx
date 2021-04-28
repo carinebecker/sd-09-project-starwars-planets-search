@@ -1,11 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { MyContext } from '../MyContext';
 
 function Table() {
-  const { isLoading, keysData, dataToChange } = useContext(MyContext);
+  const { isLoading, keysData, dataToChange, filters } = useContext(MyContext);
+  const [filterByNumber, setFilterByNumber] = useState();
+
+  const deletCombineFilters = ({ target }) => {
+    const newFiltersCombine = filterByNumber
+      .filter((element) => target.name !== element.column);
+    setFilterByNumber(newFiltersCombine);
+    console.log(filterByNumber);
+  };
+
+  useEffect(() => {
+    if (filters.filterByNumericValues.length === 0) {
+      setFilterByNumber(false);
+    } else {
+      setFilterByNumber(filters.filterByNumericValues);
+    }
+  }, [filters.filterByNumericValues]);
 
   return (isLoading ? <p>Loading...</p> : (
     <div>
+      {filterByNumber ? filterByNumber.map((element) => (
+        <div key={ element.column }>
+          <button
+            type="button"
+            onClick={ deletCombineFilters }
+            data-testid="filter"
+            name={ element.column }
+          >
+            {`${element.column} | ${element.comparison} | ${element.value} | X`}
+            {/* <button type="button">X</button> */}
+          </button>
+        </div>
+      )) : console.log(filterByNumber)}
       <table>
         <thead>
           <tr>

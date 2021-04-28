@@ -69,6 +69,8 @@ const MyContextProvider = ({ children }) => {
       .filter((columnToFilter) => columnToFilter !== column);
     setColumnFilter(newColumnsArray);
     setColumn(newColumnsArray[0]);
+
+    // Esse setFilter serva para add filtros.
     setFilter((prevState) => (
       { filtersByName: { name },
         filterByNumericValues: [...prevState.filterByNumericValues,
