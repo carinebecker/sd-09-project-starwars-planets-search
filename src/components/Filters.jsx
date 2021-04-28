@@ -3,16 +3,25 @@ import StarWarsContext from '../context/StarWarsContext';
 
 function Filters() {
   const {
+    data,
     filters,
     filterByName,
     filterByNumericValues,
     removeFilter,
+    orderBy,
   } = useContext(StarWarsContext);
+
   const [numericValuesFilter, setNumericValuesFilters] = useState({
     column: 'population',
     comparison: 'maior que',
     value: '0',
   });
+
+  const [orderByFilters, setOrderByFilters] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
+
   const [activeFilters, setActiveFilters] = useState([]);
 
   function handleFilterByName({ target: { value } }) {
@@ -34,6 +43,14 @@ function Filters() {
   function handleRemoveFilter({ target: { name } }) {
     removeFilter(name);
     setActiveFilters([...activeFilters.filter((filter) => filter !== name)]);
+  }
+
+  function handleSortFilters({ target: { name, value } }) {
+    setOrderByFilters({ ...orderByFilters, [name]: value });
+  }
+
+  function handleSortButton() {
+    orderBy(orderByFilters);
   }
 
   function renderFilterByName() {
@@ -138,6 +155,70 @@ function Filters() {
     );
   }
 
+  function getColumnTitles() {
+    return Object.keys(data[0]);
+  }
+
+  function renderColumnSort() {
+    const columnTitles = getColumnTitles();
+    return (
+      <label htmlFor="column-sort">
+        Sort by:
+        <select
+          data-testid="column-sort"
+          id="column-sort"
+          name="column"
+          onChange={ handleSortFilters }
+        >
+          { columnTitles.map(
+            (title) => <option key={ `column-${title}` }>{title}</option>,
+          )}
+        </select>
+      </label>
+    );
+  }
+
+  function renderRadiosSort() {
+    return (
+      <div>
+        <label htmlFor="column-sort-input-asc">
+          Asc:
+          <input
+            type="radio"
+            data-testid="column-sort-input-asc"
+            id="column-sort-input-asc"
+            name="sort"
+            value="ASC"
+            onClick={ handleSortFilters }
+          />
+        </label>
+        <label htmlFor="column-sort-input-desc">
+          Desc:
+          <input
+            type="radio"
+            data-testid="column-sort-input-desc"
+            id="column-sort-input-desc"
+            name="sort"
+            value="DESC"
+            onClick={ handleSortFilters }
+          />
+        </label>
+      </div>
+    );
+  }
+
+  function renderSortButton() {
+    return (
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ handleSortButton }
+      >
+        Sort
+      </button>
+    );
+  }
+
   function renderFilterByNumericValues() {
     return (
       <div>
@@ -145,6 +226,9 @@ function Filters() {
         { renderComparisonFilter() }
         { renderValueFilter() }
         { renderAddFilter() }
+        { renderColumnSort() }
+        { renderRadiosSort() }
+        { renderSortButton() }
         { renderActiveFilters() }
       </div>
     );

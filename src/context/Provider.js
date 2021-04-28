@@ -17,6 +17,10 @@ function Provider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   useEffect(() => {
@@ -62,6 +66,16 @@ function Provider({ children }) {
     });
   }
 
+  function orderBy({ column = filters.order.column, sort = filters.order.sort }) {
+    setFilters({
+      ...filters,
+      order: {
+        column,
+        sort,
+      },
+    });
+  }
+
   const contextValue = {
     data,
     isLoading,
@@ -70,6 +84,7 @@ function Provider({ children }) {
     filterByName,
     filterByNumericValues,
     removeFilter,
+    orderBy,
   };
 
   return (
