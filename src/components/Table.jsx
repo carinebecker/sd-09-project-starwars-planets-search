@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { StarWarsContext } from '../contexts/StarWarsProvider';
 
 const Table = () => {
-  const { planets, filters } = useContext(StarWarsContext);
-  const { filterByName: { name }, filterByNumericValues } = filters;
-  const headers = planets[0] || [];
+  const { planets, filters, headers } = useContext(StarWarsContext);
+  const { filterByName: { name }, filterByNumericValues, order } = filters;
+  const { column: header, sort } = order;
 
   const comparingBetween = (valueA, valueB, comparison) => {
     if (typeof (valueA) === 'number' || typeof (valueB) === 'number') return false;
@@ -25,7 +25,7 @@ const Table = () => {
         <tr>
           {
             Object.keys(headers)
-              .map((header) => <th key={ header }>{header}</th>)
+              .map((headerInitial) => <th key={ headerInitial }>{headerInitial}</th>)
           }
         </tr>
       </thead>
@@ -37,11 +37,38 @@ const Table = () => {
                 comparingBetween(planet[column], value, comparison))),
             planets)
             .filter((planet) => (planet.name).includes(name))
+            .sort((a, b) => {
+              let fieldA = a[header];
+              let fieldB = b[header];
+
+              if (fieldA === 'unknown') fieldA = 0;
+              if (fieldB === 'unknown') fieldB = 0;
+
+              if (!Number.isNaN(Number(fieldA))) {
+                fieldA = Number(fieldA);
+                fieldB = Number(fieldB);
+              }
+
+              if (fieldA > fieldB) {
+                return sort === 'ASC' ? 1 : +'-1';
+              }
+              if (fieldA < fieldB) {
+                return sort === 'ASC' ? +'-1' : 1;
+              }
+              return 0;
+            })
             .map((planet, index) => (
               <tr key={ index }>
                 {
-                  Object.values(planet)
-                    .map((info) => <td key={ info }>{info}</td>)
+                  Object.entries(planet)
+                    .map(([key, info]) => (
+                      <td
+                        data-testid={ key === 'name' ? 'planet-name' : null }
+                        key={ info }
+                      >
+                        {info}
+                      </td>
+                    ))
                 }
               </tr>
             ))

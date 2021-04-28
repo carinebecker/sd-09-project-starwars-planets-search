@@ -9,6 +9,10 @@ const StarWarsProvider = ({ children }) => {
   const [name, setName] = useState('');
   const [filtersByNumericValues, setFiltersByNumericValues] = useState([]);
   const [unavailableFilters, setUnavailableFilters] = useState([]);
+  const [order, setOrder] = useState({
+    column: 'name',
+    sort: 'ASC',
+  });
 
   useEffect(() => {
     fetchPlanets().then((requestPlanets) => {
@@ -17,12 +21,15 @@ const StarWarsProvider = ({ children }) => {
     });
   }, []);
 
+  const headers = planets[0] || [];
+
   const filters = {
     filters: {
       filterByName: {
         name,
       },
       filterByNumericValues: filtersByNumericValues,
+      order,
     },
   };
 
@@ -30,9 +37,11 @@ const StarWarsProvider = ({ children }) => {
     planets,
     ...filters,
     unavailableFilters,
+    headers,
     setName,
     setFiltersByNumericValues,
     setUnavailableFilters,
+    setOrder,
   };
 
   return (
