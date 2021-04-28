@@ -8,9 +8,10 @@ function TableProvider({ children }) {
   useEffect(() => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
     const getData = async () => {
-      const results = await fetch(endpoint)
+      const apiData = await fetch(endpoint)
         .then((response) => response.json()).catch((error) => console.log(error));
-      setData(results);
+      apiData.results.forEach((element) => delete element.residents);
+      setData(apiData);
       setFetching(false);
     };
     getData();

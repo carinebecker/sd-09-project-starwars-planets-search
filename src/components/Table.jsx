@@ -9,19 +9,16 @@ function Table() {
 
   function renderHeader() {
     return resultsKeys[0].map((each, i) => (
-      each === 'residents'
-        ? ''
-        : <th key={ i }>{each.toUpperCase().replace('_', ' ')}</th>
+      <th key={ i }>{each.toUpperCase().replace('_', ' ')}</th>
     ));
   }
 
   function renderBody() {
-    const residentsIndex = 9;
     return resultsValues.map((value, i) => (
       <tr key={ i }>
         {
           value.map((currValue, index) => (
-            index !== residentsIndex ? <td key={ index }>{currValue}</td> : ''
+            <td key={ index }>{currValue}</td>
           ))
         }
       </tr>
