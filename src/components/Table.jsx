@@ -5,7 +5,9 @@ function Table() {
   const { data, filters } = useContext(TableContext);
   const { results } = data;
   const resultsKeys = results.map((res) => Object.keys(res));
-  const resultsValues = results.map((res) => Object.values(res));
+
+  const nameToFilter = filters.filterByName.name.toLowerCase();
+  const resultsValues = results.filter((res) => res.name.toLowerCase().includes(nameToFilter)).map((res) => Object.values(res));
   console.log(resultsValues);
 
   function renderHeader() {
@@ -14,7 +16,6 @@ function Table() {
     ));
   }
 
-  const nameToFilter = filters.filterByName.name;
   console.log(nameToFilter);
 
   function renderBody() {
