@@ -13,6 +13,7 @@ function UserProvider({ children }) {
     },
     filterByNumericValues: [],
   });
+
   const context = {
     filter,
     setFilter,

@@ -13,7 +13,16 @@ function NumericFilters() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [numericSearchTerm, setNumericSearchTerm] = useState('0');
-  const { setNumericFilter } = useNumericFilter();
+  const { filter, setNumericFilter } = useNumericFilter();
+
+  const checkOptions = () => {
+    if (filter.filterByNumericValues.length) {
+      return columnOptions.filter((columnOpt) => filter.filterByNumericValues.find(
+        ({ column: filteredColumn }) => filteredColumn !== columnOpt,
+      ));
+    }
+    return columnOptions;
+  };
 
   const setNewNumFilter = () => {
     const newFilter = {
@@ -39,7 +48,7 @@ function NumericFilters() {
         id="column"
         value={ column }
       >
-        {drawSelect(columnOptions)}
+        {drawSelect([...checkOptions()])}
       </select>
       <select
         onChange={ (e) => setComparison(e.target.value) }

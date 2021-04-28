@@ -2,33 +2,13 @@ import React from 'react';
 
 import TableFields from './TableFields';
 import TableBody from './TableBody';
-import useAPI from '../../hooks/useAPI';
-import useFilter from '../../hooks/useFilterName';
+import useFilter from '../../hooks/useFilter';
 
 function Table() {
-  const data = useAPI();
-  const { filter } = useFilter();
-
-  const showAll = () => {
-    const {
-      data: { results: planets },
-    } = data;
-    return [...planets];
-  };
-
-  const getFiltered = () => {
-    if (filter.isSearching) {
-      const {
-        results,
-      } = filter;
-      return [...results];
-    }
-
-    return showAll();
-  };
+  const planets = useFilter();
 
   const drawTable = () => {
-    const newPlanets = getFiltered();
+    const newPlanets = [...planets];
     newPlanets.map((planet) => {
       delete planet.residents;
       return planet;
@@ -42,7 +22,7 @@ function Table() {
     );
   };
 
-  return <table>{data && drawTable()}</table>;
+  return <table>{planets && drawTable()}</table>;
 }
 
 export default Table;
