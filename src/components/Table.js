@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import PlanetContext from '../context/planetContext';
 
 export default function Table() {
-  const { filterPlanetsByName, filterPlanets } = useContext(PlanetContext);
+  const { filterPlanets } = useContext(PlanetContext);
 
   return (
     <div>
-      <input type="text" data-testid="name-filter" onChange={ filterPlanetsByName } />
       <table>
         <thead>
           <tr>

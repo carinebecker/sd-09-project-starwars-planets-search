@@ -6,6 +6,16 @@ import Api from '../services/api';
 export default function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterPlanets, setFilterPlanets] = useState([]);
+  const [filters, setFilter] = useState({
+    filterByName: { name: '' },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
+  });
 
   useEffect(() => {
     async function getPlanets() {
@@ -23,13 +33,42 @@ export default function PlanetProvider({ children }) {
   const filterPlanetsByName = ({ target: { value } }) => {
     const filteredData = planets.filter(({ name }) => name.includes(value));
 
+    setFilter({
+      filterByName: { name: value },
+    });
     setFilterPlanets(filteredData);
+  };
+
+  const filterPlanetsByNumber = (event) => {
+    event.preventDefault();
+    const column = event.target[1].value;
+    const comparison = event.target[2].value;
+    const { value } = event.target[3];
+
+    const filterName = planets
+      .filter(({ name }) => name.includes(filters.filterByName.name));
+
+    const menor = filterName.filter((planet) => planet[column] < value);
+    const maior = filterName.filter((planet) => planet[column] > value);
+    const igual = filterName.filter((planet) => planet[column] === value);
+
+    if (comparison === 'menor') {
+      setFilterPlanets(menor);
+    }
+    if (comparison === 'maior') {
+      setFilterPlanets(maior);
+    }
+    if (comparison === 'igual') {
+      setFilterPlanets(igual);
+    }
   };
 
   const contextValue = {
     planets,
     filterPlanetsByName,
+    filterPlanetsByNumber,
     filterPlanets,
+    filters,
   };
 
   return (
