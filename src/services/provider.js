@@ -22,21 +22,17 @@ const Provider = ({ children }) => {
     let filteredData = data.filter((planet) => planet.name.includes(name));
     numericFilters.forEach(({ column, comparison, value }) => {
       if (column && comparison) {
-        switch (comparison) {
-        case 'maior que':
+        if (comparison === 'maior que') {
           filteredData = filteredData
             .filter((planet) => parseFloat(planet[column]) > value);
-          break;
-        case 'menor que':
+        }
+        if (comparison === 'menor que') {
           filteredData = filteredData
             .filter((planet) => parseFloat(planet[column]) < value);
-          break;
-        case 'igual a':
+        }
+        if (comparison === 'igual a') {
           filteredData = filteredData
             .filter((planet) => parseFloat(planet[column]) === value);
-          break;
-        default:
-          break;
         }
       }
     });
