@@ -6,6 +6,8 @@ import getPlanets from '../services/api';
 
 function PlanetsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [namePlanets, setNamePlanets] = useState('');
+  const [filterPlanets, setFilterPlanets] = useState('');
 
   useEffect(() => {
     getPlanets().then(({ results }) => {
@@ -14,8 +16,22 @@ function PlanetsProvider({ children }) {
     });
   }, []);
 
+  const handleNamePlanets = ({ target: { value } }) => {
+    setNamePlanets(value);
+  };
+
+  useEffect(() => {
+    const planetsForFilters = [...planets];
+    const planetsFilters = planetsForFilters
+      .filter((planet) => planet.name.includes((namePlanets)));
+    setFilterPlanets(planetsFilters);
+  }, [planets, namePlanets]);
+
   const contextValue = {
     planets,
+    namePlanets,
+    handleNamePlanets,
+    filterPlanets,
   };
 
   return (

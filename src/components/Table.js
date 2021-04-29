@@ -2,7 +2,17 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { planets } = useContext(PlanetsContext);
+  const { planets, filterPlanets } = useContext(PlanetsContext);
+  const dinamicRow = (element, index) => (
+    <tr key={ index }>
+      {
+        Object.values(element).map((elementPlanets, key) => (
+          <td key={ key }>
+            {elementPlanets}
+          </td>))
+      }
+    </tr>
+  );
 
   return (
     <table>
@@ -24,22 +34,9 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {planets.map((element, index) => (
-          <tr key={ index }>
-            <td>{element.name}</td>
-            <td>{element.rotation_period}</td>
-            <td>{element.orbital_period}</td>
-            <td>{element.diameter}</td>
-            <td>{element.climate}</td>
-            <td>{element.gravity}</td>
-            <td>{element.terrain}</td>
-            <td>{element.surface_water}</td>
-            <td>{element.population}</td>
-            <td>{element.films}</td>
-            <td>{element.created}</td>
-            <td>{element.edited}</td>
-            <td>{element.url}</td>
-          </tr>))}
+        {filterPlanets.length > 0
+          ? filterPlanets.map((element, index) => dinamicRow(element, index))
+          : planets.map((element, index) => dinamicRow(element, index))}
       </tbody>
     </table>
   );
