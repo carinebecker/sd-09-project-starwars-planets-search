@@ -3,48 +3,45 @@ import { node } from 'prop-types';
 import AppContext from './contextAPI';
 
 const Provider = ({ children }) => {
-  const [data, setData] = useState([]);
-  const [name, setFilterName] = useState('');
-  const [numericFilters, setNumericFilters] = useState([]);
-  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [data, changeData] = useState([]);
+  const [name, changeFilterName] = useState('');
+  const [numericFilters, changeNumericFilters] = useState([]);
+  const [filteredPlanets, changeFilteredPlanets] = useState([]);
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => {
         result.json()
           .then(({ results }) => {
-            setData(results);
+            changeData(results);
           });
       });
   }, []);
 
   useEffect(() => {
-    let filteredData = data.filter((planet) => planet.name.includes(name));
+    let filtered = data.filter((planet) => planet.name.includes(name));
     numericFilters.forEach(({ column, comparison, value }) => {
       if (column && comparison) {
         switch (comparison) {
         case 'maior que':
-          filteredData = filteredData
-            .filter((planet) => parseFloat(planet[column]) > value);
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
           break;
         case 'menor que':
-          filteredData = filteredData
-            .filter((planet) => parseFloat(planet[column]) < value);
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
           break;
         case 'igual a':
-          filteredData = filteredData
-            .filter((planet) => parseFloat(planet[column]) === value);
+          filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
           break;
         default:
           break;
         }
       }
     });
-    setFilteredPlanets(filteredData);
+    changeFilteredPlanets(filtered);
   }, [name, data, numericFilters]);
 
   const addNumericFilter = ({ column, comparison, value }) => {
-    setNumericFilters([
+    changeNumericFilters([
       ...numericFilters,
       { column, comparison, value },
     ]);
@@ -57,7 +54,7 @@ const Provider = ({ children }) => {
         filters.push(filter);
       }
     });
-    setNumericFilters(filters);
+    changeNumericFilters(filters);
   };
 
   const value = {
@@ -70,7 +67,7 @@ const Provider = ({ children }) => {
         ...numericFilters,
       ],
     },
-    setFilterName,
+    changeFilterName,
     addNumericFilter,
     deleteNumericFilter,
   };
