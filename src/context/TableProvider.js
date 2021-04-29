@@ -21,9 +21,10 @@ function TableProvider({ children }) {
 
   const numericFilters = ({ target }) => {
     const { name, value } = target;
-    setFilterByNumericValues([{
+    setFilterByNumericValues((prevState) => ([{
+      ...prevState,
       [name]: value,
-    }]);
+    }]));
   };
 
   useEffect(() => {

@@ -18,8 +18,6 @@ function Table() {
     ));
   }
 
-  console.log(nameToFilter);
-
   function renderBody() {
     return resultsValues.map((value, i) => (
       <tr key={ i }>
