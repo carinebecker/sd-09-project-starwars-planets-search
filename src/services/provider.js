@@ -6,7 +6,13 @@ import fetchPlanets from './fetchPlanets';
 const Provider = ({ children }) => {
   const [data, changeData] = useState([]);
   const [name, changeFilterName] = useState('');
-  const [numericFilters, changeNumericFilters] = useState([]);
+  const [numericFilters, changeNumericFilters] = useState(
+    {
+      column: '',
+      comparison: '',
+      value: 0,
+    },
+  );
   const [filteredPlanets, changeFilteredPlanets] = useState([]);
 
   useEffect(() => {
@@ -16,45 +22,25 @@ const Provider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    let filtered = data
-      .filter((planet) => planet.name.includes(name));
-    numericFilters
-      .forEach(({ column, comparison, value }) => {
-        if (column && comparison) {
-          switch (comparison) {
-          case 'maior que':
-            filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
-            break;
-          case 'menor que':
-            filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
-            break;
-          case 'igual a':
-            filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
-            break;
-          default:
-            break;
-          }
-        }
-      });
+    const { column, comparison, value } = numericFilters;
+    let filtered = data.filter((planet) => planet.name.includes(name));
+    if (column && comparison) {
+      switch (comparison) {
+      case 'maior que':
+        filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
+        break;
+      case 'menor que':
+        filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
+        break;
+      case 'igual a':
+        filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
+        break;
+      default:
+        break;
+      }
+    }
     changeFilteredPlanets(filtered);
   }, [name, data, numericFilters]);
-
-  const addNumericFilter = ({ column, comparison, value }) => {
-    changeNumericFilters([
-      ...numericFilters,
-      { column, comparison, value },
-    ]);
-  };
-
-  const deleteNumericFilter = (column) => {
-    const filters = [];
-    numericFilters.forEach((filter) => {
-      if (filter.column !== column) {
-        filters.push(filter);
-      }
-    });
-    changeNumericFilters(filters);
-  };
 
   const value = {
     data: filteredPlanets,
@@ -62,13 +48,12 @@ const Provider = ({ children }) => {
       filterByName: {
         name,
       },
-      filterByNumericValues: [
+      filterByNumericValues: [{
         ...numericFilters,
-      ],
+      }],
     },
     changeFilterName,
-    addNumericFilter,
-    deleteNumericFilter,
+    changeNumericFilters,
   };
 
   return (
