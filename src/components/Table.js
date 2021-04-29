@@ -2,7 +2,27 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Table = () => {
-  const { dataFilterByName } = useContext(StarWarsContext);
+  const { dataFilterByName, filters } = useContext(StarWarsContext);
+
+  const findPlanets = () => {
+    let findedPlanet = dataFilterByName;
+    if (filters.filterByNumericValues.length > 0) {
+      filters.filterByNumericValues.forEach((element, index) => {
+        const { column, comparison, value } = filters.filterByNumericValues[index];
+        if (comparison === 'maior que') {
+          findedPlanet = dataFilterByName
+            .filter((planet) => Number(planet[column]) > Number(value));
+        } else if (comparison === 'menor que') {
+          findedPlanet = dataFilterByName
+            .filter((planet) => Number(planet[column]) < Number(value));
+        } else {
+          findedPlanet = dataFilterByName
+            .filter((planet) => Number(planet[column]) === Number(value));
+        }
+      });
+    }
+    return findedPlanet;
+  };
   return (
     <table>
       <thead>
@@ -23,7 +43,7 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {dataFilterByName.map((planet, index) => {
+        {findPlanets().map((planet, index) => {
           const { climate, created, diameter, edited, films, gravity, name,
             orbital_period: orbitalPeriod, population, rotation_period: rotationPeriod,
             surface_water: surfaceWater, terrain, url } = planet;

@@ -6,56 +6,52 @@ import { getStarWarsData } from '../services/starWarsAPI';
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [dataFilterByName, setDataFilterByName] = useState([]);
+  const [namePlanets, setNamePlanets] = useState(['population',
+    'orbital_period', 'diameter',
+    'rotation_period', 'surface_water']);
   const [filters, setFilters] = useState(
     { filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: '',
-        comparison: '',
-        value: 0,
-      },
-    ] },
+    filterByNumericValues: [],
+    },
   );
+  const [filterByNumericValues, setFilterByNumericValues] = useState({
+    column: '',
+    comparison: '',
+    value: 0,
+  });
   const getData = async () => {
     const dataStarWars = await getStarWarsData();
     setData(dataStarWars);
     setDataFilterByName(dataStarWars);
   };
 
-  function saveFilter({ target }) {
-    const { value, name } = target;
-    if (name === 'name') {
-      setFilters(
-        { ...filters,
-          filterByName: { [name]: value } },
-      );
-    } else {
-      setFilters(
-        { ...filters,
-          filterByNumericValues: [
-            {
-              ...filters.filterByNumericValues[0],
-              [name]: value,
-            },
-          ],
-        },
-      );
-    }
+  function saveFilterName({ target }) {
+    const { value } = target;
+    setFilters(
+      { ...filters,
+        filterByName: { name: value } },
+    );
   }
-  const handleChangeFilter = () => {
-    const { column, comparison, value } = filters.filterByNumericValues[0];
-    const newData = dataFilterByName.filter((planet) => {
-      if (comparison === 'maior que') {
-        return Number(planet[column]) > Number(value);
-      }
-      if (comparison === 'menor que') {
-        return Number(planet[column]) < Number(value);
-      }
-      return Number(planet[column]) === Number(value);
+
+  const saveCustomFilter = ({ target }) => {
+    const { name, value } = target;
+    setFilterByNumericValues({
+      ...filterByNumericValues,
+      [name]: value,
     });
-    setDataFilterByName(newData);
+  };
+
+  const saveAllFilters = () => {
+    setFilters({
+      ...filters,
+      filterByNumericValues:
+      [...filters.filterByNumericValues, filterByNumericValues],
+    });
+    setNamePlanets([
+      ...namePlanets.filter((planet) => planet !== filterByNumericValues.column),
+    ]);
   };
 
   useEffect(() => {
@@ -71,8 +67,10 @@ const Provider = ({ children }) => {
   const context = {
     dataFilterByName,
     filters,
-    saveFilter,
-    handleChangeFilter,
+    saveFilterName,
+    saveCustomFilter,
+    saveAllFilters,
+    namePlanets,
   };
 
   return (

@@ -2,10 +2,15 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 const Filter = () => {
-  const { saveFilter, handleChangeFilter } = useContext(StarWarsContext);
-  const namePlanets = ['population', 'orbital_period', 'diameter',
-    'rotation_period', 'surface_water'];
+  const { saveFilterName, namePlanets,
+    saveAllFilters, saveCustomFilter } = useContext(StarWarsContext);
+
   const valueRange = ['maior que', 'menor que', 'igual a'];
+
+  const handleChange = () => {
+    saveAllFilters();
+  };
+
   return (
     <form>
       <input
@@ -13,13 +18,13 @@ const Filter = () => {
         name="name"
         placeholder="Filtrar por nome"
         data-testid="name-filter"
-        onChange={ saveFilter }
+        onChange={ saveFilterName }
       />
       <select
         id="column-filter"
         name="column"
         data-testid="column-filter"
-        onChange={ saveFilter }
+        onChange={ saveCustomFilter }
       >
         {namePlanets.map((planet) => (
           <option key={ planet }>
@@ -31,7 +36,7 @@ const Filter = () => {
         id="comparison-filter"
         name="comparison"
         data-testid="comparison-filter"
-        onChange={ saveFilter }
+        onChange={ saveCustomFilter }
       >
         {valueRange.map((v) => (
           <option key={ v }>
@@ -45,12 +50,12 @@ const Filter = () => {
         name="value"
         placeholder="Valor"
         data-testid="value-filter"
-        onChange={ saveFilter }
+        onChange={ saveCustomFilter }
       />
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ handleChangeFilter }
+        onClick={ handleChange }
       >
         Adicionar filtro
       </button>
