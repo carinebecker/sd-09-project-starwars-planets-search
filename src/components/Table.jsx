@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function Table() {
-  const { data, filters } = useContext(TableContext);
+  const { data, filterByName } = useContext(TableContext);
   const { results } = data;
   const resultsKeys = results.map((res) => Object.keys(res));
 
-  const nameToFilter = filters.filterByName.name.toLowerCase();
+  const nameToFilter = filterByName.name.toLowerCase();
   const resultsValues = results
     .filter((res) => (res.name.toLowerCase().includes(nameToFilter)))
     .map((res) => Object.values(res));
