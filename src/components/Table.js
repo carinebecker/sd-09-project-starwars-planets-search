@@ -2,20 +2,7 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Table() {
-  const { planets, search } = useContext(MyContext);
-  const { filterByName, filterByNumericValues } = search;
-  const { name } = filterByName;
-  // const { column, comparison, value } = filterByNumericValues;
-  // // const conditions = {
-  // //   maior: planet[column] > value,
-  // //   menor: planet[column] < value,
-  // //   igual: planet[column] = value,
-  // // };
-  const filteredBySearch = (planets.length > 0)
-    ? planets.filter((planet) => planet.name.includes(name))
-    : '';
-
-  const filteredPlanets = filteredBySearch;
+  const { filtered } = useContext(MyContext);
 
   return (
     <table>
@@ -38,8 +25,8 @@ function Table() {
       </thead>
       <tbody>
         {
-          (filteredPlanets.length > 0)
-            ? filteredPlanets.map((planet) => (
+          (filtered.length > 0)
+            ? filtered.map((planet) => (
               <tr key={ planet.name }>
                 <td data-testid="planet-name">{ planet.name }</td>
                 <td>{ planet.rotation_period }</td>

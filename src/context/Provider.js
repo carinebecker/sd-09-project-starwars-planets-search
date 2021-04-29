@@ -7,15 +7,18 @@ function Provider({ children }) {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [{
-      column: '',
-      comparison: '',
-      value: '',
-    }],
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   };
 
   const [planets, setPlanets] = useState([]);
-  const [search, setSearch] = useState(filtersOptions);
+  const [filters, setFilters] = useState(filtersOptions);
+  const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -24,11 +27,44 @@ function Provider({ children }) {
       .catch((error) => error);
   }, []);
 
+  useEffect(() => {
+    const { filterByName: { name }, filterByNumericValues } = filters;
+    const {
+      column, comparison, value,
+    } = filterByNumericValues[filterByNumericValues.length - 1];
+
+    const byName = planets
+      .filter((planet) => planet.name.includes(name));
+
+    if (comparison === '') {
+      const result = byName;
+      setFiltered(result);
+    }
+
+    if (comparison === 'maior que') {
+      const result = byName
+        .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+      setFiltered(result);
+    }
+
+    if (comparison === 'igual a') {
+      const result = byName.filter((planet) => planet[column] === value);
+      setFiltered(result);
+    }
+
+    if (comparison === 'menor que') {
+      const result = byName.filter((planet) => planet[column] < value);
+      setFiltered(result);
+    }
+  }, [planets, filters]);
+
   const context = {
     planets,
     setPlanets,
-    search,
-    setSearch,
+    filters,
+    setFilters,
+    filtered,
+    setFiltered,
   };
 
   return (

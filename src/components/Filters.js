@@ -2,55 +2,35 @@ import React, { useContext } from 'react';
 import MyContext from '../context/MyContext';
 
 function Filters() {
-  const { search, setSearch } = useContext(MyContext);
-  const { filterByName, filterByNumericValues } = search;
+  const { filters, setFilters } = useContext(MyContext);
+  const { filterByNumericValues } = filters;
+
+  const numberFilter = {
+    column: 'population',
+    comparison: '',
+    value: '',
+  };
 
   const handleChangeSearch = ({ target }) => {
     const { value } = target;
-    setSearch({
-      ...search,
+    setFilters({
+      ...filters,
       filterByName: {
         name: value,
       },
     });
   };
 
-  const handleChangeColumnFilter = ({ target }) => {
-    const { value } = target;
-    setSearch({
-      ...search,
-      filterByNumericValues: [
-        {
-          ...filterByNumericValues[0],
-          column: value,
-        },
-      ],
-    });
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+
+    numberFilter[name] = value;
   };
 
-  const handleChangeComparisonFilter = ({ target }) => {
-    const { value } = target;
-    setSearch({
-      ...search,
-      filterByNumericValues: [
-        {
-          ...filterByNumericValues[0],
-          comparison: value,
-        },
-      ],
-    });
-  };
-
-  const handleChangeValueFilter = ({ target }) => {
-    const { value } = target;
-    setSearch({
-      ...search,
-      filterByNumericValues: [
-        {
-          ...filterByNumericValues[0],
-          value,
-        },
-      ],
+  const atualizeNumeric = () => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filterByNumericValues, numberFilter],
     });
   };
 
@@ -70,14 +50,14 @@ function Filters() {
         <select
           data-testid="column-filter"
           id="column-filter"
-          onChange={ handleChangeColumnFilter }
+          value={ numberFilter.column }
+          onChange={ handleChange }
         >
-          <option value="">Select</option>
-          <option value="population">Population</option>
-          <option value="orbital-period">Orbital period</option>
-          <option value="diameter">Diameter</option>
-          <option value="rotation-period">Rotation period</option>
-          <option value="surface-water">Surface water</option>
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
         </select>
       </label>
       <label htmlFor="comparison-filter">
@@ -85,12 +65,13 @@ function Filters() {
         <select
           data-testid="comparison-filter"
           id="comparison-filter"
-          onChange={ handleChangeComparisonFilter }
+          name="comparison"
+          onChange={ handleChange }
         >
           <option value="">Select</option>
-          <option value="maior">maior que</option>
-          <option value="igual">igual a</option>
-          <option value="menor">menor que</option>
+          <option value="maior que">maior que</option>
+          <option value="igual a">igual a</option>
+          <option value="menor que">menor que</option>
         </select>
       </label>
       <label htmlFor="value-filter">
@@ -99,13 +80,14 @@ function Filters() {
           type="number"
           id="value-filter"
           data-testid="value-filter"
-          onChange={ handleChangeValueFilter }
+          name="value"
+          onChange={ handleChange }
         />
       </label>
       <button
         type="button"
         data-testid="button-filter"
-        onClick=""
+        onClick={ atualizeNumeric }
       >
         Filter
       </button>
