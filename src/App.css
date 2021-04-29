@@ -20,11 +20,26 @@ header {
   background-color: rgb(188, 201, 218);
   display: flex;
   justify-content: center;
+  gap: 16px;
   padding: 16px;
 }
 
-.filters-container input {
+.filters-container input, .filters-container select, .filters-container button {
   border: 2px rgb(171, 133, 110) solid;
   border-radius: 8px;
   padding: 8px 16px;
+}
+
+.filters-container button {
+  background-color: rgb(106, 143, 187);
+  border: none;
+  color: whitesmoke;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.2s ease-in-out;
+}
+
+.filters-container button:hover{
+  background-color: rgb(81, 113, 153);
 }
