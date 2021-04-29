@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from '../services/api';
 
 function Table() {
-  const { data } = useContext(Context);
+  const { data, filterPlanets } = useContext(Context);
   const column = [
     'NAME',
     'ROTATION PERIOD',
@@ -19,6 +19,8 @@ function Table() {
     'URL',
   ];
 
+  const renderPlanets = (filterPlanets === [] ? data : filterPlanets);
+
   return (
     <div>
       <table>
@@ -30,7 +32,7 @@ function Table() {
           </tr>
         </thead>
 
-        {data.map((item, index) => (
+        {renderPlanets.map((item, index) => (
           <tr key={ index }>
             <td data-testid="planet-name">{item.name}</td>
             <td>{item.rotation_period}</td>
