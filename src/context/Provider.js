@@ -12,6 +12,13 @@ function Provider({ children }) {
     comparison: 'maior que',
     number: 0,
   });
+  const [columnsInput, setColumnsInput] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   async function fetchData() {
     const response = await fetch(url);
@@ -39,6 +46,12 @@ function Provider({ children }) {
     }
   };
 
+  const filterColumnInput = () => {
+    const { column } = options;
+    const newColumn = columnsInput.filter((elemt) => elemt !== column);
+    setColumnsInput(newColumn);
+  };
+
   const filterByNumber = () => {
     const { column, comparison, number } = options;
     const numberFilter = filteredPlanets.filter((planet) => {
@@ -54,6 +67,7 @@ function Provider({ children }) {
       return filteredPlanets;
     });
     setFilteredPlanets(numberFilter);
+    filterColumnInput();
   };
 
   useEffect(() => {
@@ -66,6 +80,7 @@ function Provider({ children }) {
     filteredPlanets,
     filterOptions,
     filterByNumber,
+    columnsInput,
   };
 
   return (

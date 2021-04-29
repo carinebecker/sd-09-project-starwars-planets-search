@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import planetsContext from '../context/Context';
 
 function Input() {
-  const { filterPlanets, filterOptions, filterByNumber } = useContext(planetsContext);
+  const {
+    filterPlanets,
+    filterOptions,
+    filterByNumber,
+    columnsInput,
+  } = useContext(planetsContext);
   return (
     <div>
       <div>
@@ -19,11 +24,7 @@ function Input() {
           name="column"
           onChange={ filterOptions }
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          {columnsInput.map((elemt) => <option key={ elemt }>{elemt}</option>)}
         </select>
       </div>
       <div>
