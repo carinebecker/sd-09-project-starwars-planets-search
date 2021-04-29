@@ -11,7 +11,7 @@ function Table() {
   );
 
   function tableHeaders() {
-    if (clicked === false) {
+    if (clicked === false && newData.length > 0) {
       return (
         Object.keys(newData[0]).map(
           (currentValue) => <th key={ currentValue }>{currentValue}</th>,
@@ -99,15 +99,15 @@ function Table() {
     let dataNumericFilter;
     if (comparison === 'maior que') {
       dataNumericFilter = data.filter(
-        (currentValue) => currentValue[column] > parseInt(value, 10),
+        (currentValue) => parseInt(currentValue[column], 10) > parseInt(value, 10),
       );
     } else if (comparison === 'menor que') {
       dataNumericFilter = data.filter(
-        (currentValue) => currentValue[column] < parseInt(value, 10),
+        (currentValue) => parseInt(currentValue[column], 10) < parseInt(value, 10),
       );
     } else if (comparison === 'igual a') {
       dataNumericFilter = data.filter(
-        (currentValue) => currentValue[column] === parseInt(value, 10),
+        (currentValue) => parseInt(currentValue[column], 10) === parseInt(value, 10),
       );
     }
     setNewData(dataNumericFilter);

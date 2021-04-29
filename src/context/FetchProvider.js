@@ -27,7 +27,7 @@ function FetchProvider({ children }) {
 
   return (
     <div>
-      <FetchContext.Provider value={ { data, loading, setData } }>
+      <FetchContext.Provider value={ { data, loading } }>
         {children}
       </FetchContext.Provider>
     </div>
