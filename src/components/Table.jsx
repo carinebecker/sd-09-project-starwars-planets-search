@@ -7,7 +7,9 @@ function Table() {
   const resultsKeys = results.map((res) => Object.keys(res));
 
   const nameToFilter = filters.filterByName.name.toLowerCase();
-  const resultsValues = results.filter((res) => res.name.toLowerCase().includes(nameToFilter)).map((res) => Object.values(res));
+  const resultsValues = results
+    .filter((res) => (res.name.toLowerCase().includes(nameToFilter)))
+    .map((res) => Object.values(res));
   console.log(resultsValues);
 
   function renderHeader() {
