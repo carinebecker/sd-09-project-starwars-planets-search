@@ -1,112 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../services/provider';
 
 const Table = () => {
-  const {
-    data,
-    changeFilterName,
-    addNumericFilter,
-    deleteNumericFilter,
-    filters,
-  } = useContext(AppContext);
-
-  const [columnFilter, changeColumnFilter] = useState('population');
-  const [comparisonFilter, changeComparisonFilter] = useState('maior que');
-  const [valueFilter, changeValueFilter] = useState(0);
-  const [availableFilters, changeAvailableFilters] = useState([
-    'population', 'orbital_period',
-    'diameter', 'rotation_period',
-    'surface_water',
-  ]);
-
-  const submitFilter = () => {
-    addNumericFilter({
-      column: columnFilter,
-      comparison: comparisonFilter,
-      value: parseFloat(valueFilter),
-    });
-    availableFilters.forEach((filter, index) => {
-      if (filter === columnFilter) {
-        const list = availableFilters;
-        list.splice(index, 1);
-        changeAvailableFilters(list);
-      }
-    });
-    changeColumnFilter(availableFilters[0]);
-  };
-
-  const deleteAPliedFilter = (column) => {
-    changeAvailableFilters([
-      ...availableFilters,
-      column,
-    ]);
-    deleteNumericFilter(column);
-  };
+  const { data, changeFilterName } = useContext(AppContext);
 
   return (
     <div>
-      <form>
-        <h2>Filters</h2>
-        <input
-          type="text"
-          data-testid="name-filter"
-          onChange={ ({ target: { value } }) => changeFilterName(value) }
-        />
-        <select
-          value={ availableFilters[0] }
-          data-testid="column-filter"
-          onChange={ ({ target: { value } }) => changeColumnFilter(value) }
-        >
-          { availableFilters.map((filter) => (
-            <option
-              key={ filter }
-              value={ filter }
-            >
-              {filter}
-            </option>
-          )) }
-        </select>
-        <select
-          data-testid="comparison-filter"
-          onChange={ ({ target: { value } }) => changeComparisonFilter(value) }
-        >
-          <option>maior que</option>
-          <option>menor que</option>
-          <option>igual a</option>
-        </select>
-        <input
-          type="number"
-          data-testid="value-filter"
-          onChange={ ({ target: { value } }) => changeValueFilter(value) }
-        />
-        <button
-          type="button"
-          data-testid="button-filter"
-          onClick={ submitFilter }
-        >
-          Filter
-        </button>
-      </form>
-      { filters.filterByNumericValues.length > 0
-        && (
-          <div>
-            {filters.filterByNumericValues.map((filter) => (
-              <div
-                key={ filter.column }
-                data-testid="filter"
-              >
-                <button
-                  type="button"
-                  onClick={ () => deleteAPliedFilter(filter.column) }
-                >
-                  X
-                </button>
-                <spam>
-                  { filter.column }
-                </spam>
-              </div>))}
-          </div>
-        )}
+      <input
+        type="text"
+        data-testid="name-filter"
+        onChange={ ({ target: { value } }) => changeFilterName(value) }
+      />
       <table>
         <thead>
           <tr>
