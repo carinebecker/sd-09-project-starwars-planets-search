@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import response from '../testData';
 
 const Context = createContext({});
 
