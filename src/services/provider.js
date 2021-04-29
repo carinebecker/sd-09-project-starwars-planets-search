@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
 import AppContext from './contextAPI';
+import fetchPlanets from './fetchPlanets';
 
 const Provider = ({ children }) => {
   const [data, changeData] = useState([]);
@@ -9,34 +10,32 @@ const Provider = ({ children }) => {
   const [filteredPlanets, changeFilteredPlanets] = useState([]);
 
   useEffect(() => {
-    fetch('https://swapi-trybe.herokuapp.com/api/planets/')
-      .then((result) => {
-        result.json()
-          .then(({ results }) => {
-            changeData(results);
-          });
-      });
+    fetchPlanets().then(({ results }) => {
+      changeData(results);
+    });
   }, []);
 
   useEffect(() => {
-    let filtered = data.filter((planet) => planet.name.includes(name));
-    numericFilters.forEach(({ column, comparison, value }) => {
-      if (column && comparison) {
-        switch (comparison) {
-        case 'maior que':
-          filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
-          break;
-        case 'menor que':
-          filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
-          break;
-        case 'igual a':
-          filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
-          break;
-        default:
-          break;
+    let filtered = data
+      .filter((planet) => planet.name.includes(name));
+    numericFilters
+      .forEach(({ column, comparison, value }) => {
+        if (column && comparison) {
+          switch (comparison) {
+          case 'maior que':
+            filtered = filtered.filter((planet) => parseFloat(planet[column]) > value);
+            break;
+          case 'menor que':
+            filtered = filtered.filter((planet) => parseFloat(planet[column]) < value);
+            break;
+          case 'igual a':
+            filtered = filtered.filter((planet) => parseFloat(planet[column]) === value);
+            break;
+          default:
+            break;
+          }
         }
-      }
-    });
+      });
     changeFilteredPlanets(filtered);
   }, [name, data, numericFilters]);
 
