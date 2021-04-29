@@ -7,13 +7,30 @@ function TableProvider({ children }) {
   const [isFetching, setFetching] = useState(true);
 
   const allFilters = {
-    filterByName: { name: '' },
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   };
 
   const [filters, setFilters] = useState(allFilters);
 
   const nameFilter = ({ target: { value } }) => {
-    setFilters({ filterByName: { name: value } });
+    setFilters({ ...filters, filterByName: { name: value } });
+  };
+
+  const numericFilters = ({ target }) => {
+    const { name, value } = target;
+    setFilters((prevState) => ({
+      ...prevState,
+      filterByNumericValues: [{ [name]: value }],
+    }));
   };
 
   useEffect(() => {
@@ -29,7 +46,7 @@ function TableProvider({ children }) {
     getData();
   }, []);
 
-  const contextValue = { data, setData, nameFilter, filters };
+  const contextValue = { data, setData, nameFilter, filters, numericFilters };
 
   return (
     <TableContext.Provider value={ contextValue }>
