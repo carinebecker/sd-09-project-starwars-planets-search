@@ -20,7 +20,6 @@ function FetchProvider({ children }) {
       const responseJSON = await response.json();
       const newData = deleteResidents(responseJSON.results);
       setData(newData);
-      console.log(newData.filter((currentValue) => currentValue.name.includes('oo')));
       setLoading(false);
     }
     getPlanets();
@@ -28,7 +27,7 @@ function FetchProvider({ children }) {
 
   return (
     <div>
-      <FetchContext.Provider value={ { data, loading } }>
+      <FetchContext.Provider value={ { data, loading, setData } }>
         {children}
       </FetchContext.Provider>
     </div>

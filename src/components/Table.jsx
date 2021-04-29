@@ -4,8 +4,20 @@ import FetchContext from '../context/FetchContext';
 function Table() {
   const { data, loading } = useContext(FetchContext);
   const [filters, setFilters] = useState();
+  const [clicked, setClicked] = useState(true);
+  const [newData, setNewData] = useState([]);
+  const [numericFilters, setNumericFilters] = useState(
+    { column: '', comparison: '', value: '' },
+  );
 
-  function dataHeaders() {
+  function tableHeaders() {
+    if (clicked === false) {
+      return (
+        Object.keys(newData[0]).map(
+          (currentValue) => <th key={ currentValue }>{currentValue}</th>,
+        )
+      );
+    }
     return (
       Object.keys(data[0]).map(
         (currentValue) => <th key={ currentValue }>{currentValue}</th>,
@@ -34,7 +46,7 @@ function Table() {
     );
   }
 
-  function dataValues() {
+  function tableValues() {
     if (typeof filters !== 'undefined') {
       const filteredData = data.filter(
         (currentValue) => currentValue.name.toUpperCase().includes(filters.toUpperCase()),
@@ -42,6 +54,12 @@ function Table() {
       return filteredData.map((currentValue) => (
         parametersValues(currentValue)
       ));
+    }
+    if (clicked === false) {
+      return (
+        newData.map((currentValue) => (
+          parametersValues(currentValue)
+        )));
     }
     return (
       data.map((currentValue) => (
@@ -53,29 +71,125 @@ function Table() {
     setFilters(target.value);
   }
 
+  function changeNumericFilter({ target }) {
+    setNumericFilters({
+      ...numericFilters,
+      [target.name]: target.value,
+    });
+  }
+
+  function getTable() {
+    return (
+      <table>
+        <thead>
+          <tr>
+            {tableHeaders()}
+          </tr>
+        </thead>
+        <tbody>
+          {tableValues()}
+        </tbody>
+      </table>
+    );
+  }
+
+  function handleClick() {
+    const { column, comparison, value } = numericFilters;
+    if (comparison === '>') {
+      setClicked(false);
+      const dataNumericFilter = data.filter(
+        (currentValue) => currentValue[column] > parseInt(value, 10),
+      );
+      setNewData(dataNumericFilter);
+      getTable();
+    } else if (comparison === '<') {
+      setClicked(false);
+      const dataNumericFilter = data.filter(
+        (currentValue) => currentValue[column] < parseInt(value, 10),
+      );
+      setNewData(dataNumericFilter);
+      getTable();
+    } else if (comparison === '===') {
+      setClicked(false);
+      const dataNumericFilter = data.filter(
+        (currentValue) => currentValue[column] === parseInt(value, 10),
+      );
+      setNewData(dataNumericFilter);
+      getTable();
+    }
+  }
+
   if (loading) {
     return 'Loading...';
   }
   return (
     <div>
-      <label htmlFor="name-filter">
-        Filtrar:
-        <input
-          data-testid="name-filter"
-          type="text"
-          onChange={ handleChange }
-        />
-      </label>
-      <table>
-        <thead>
-          <tr>
-            {dataHeaders()}
-          </tr>
-        </thead>
-        <tbody>
-          {dataValues()}
-        </tbody>
-      </table>
+      <div>
+        <label htmlFor="name-filter">
+          Filtrar por nome:
+          <input
+            data-testid="name-filter"
+            type="text"
+            onChange={ handleChange }
+          />
+        </label>
+
+        <br />
+        <br />
+
+        <label htmlFor="column-filter">
+          Filtro avançado:
+          <select
+            data-testid="column-filter"
+            name="column"
+            onChange={ changeNumericFilter }
+          >
+            <option disabled selected value> -- select an option -- </option>
+            <option value="population">population</option>
+            <option value="orbital_period">orbital_period</option>
+            <option value="diameter">diameter</option>
+            <option value="rotation_period">rotation_period</option>
+            <option value="surface_water">surface_water</option>
+          </select>
+        </label>
+
+        <label htmlFor="comparison-filter">
+          <select
+            data-testid="comparison-filter"
+            name="comparison"
+            onChange={ changeNumericFilter }
+          >
+            <option disabled selected value> -- select an option -- </option>
+            <option value=">">maior que</option>
+            <option value="<">menor que</option>
+            <option value="===">igual a</option>
+          </select>
+        </label>
+
+        <label htmlFor="value-filter">
+          <input
+            type="number"
+            data-testid="value-filter"
+            name="value"
+            onChange={ changeNumericFilter }
+            placeholder="0"
+            min="0"
+          />
+        </label>
+
+        <button
+          type="button"
+          data-testid="button-filter"
+          name="button"
+          onClick={ handleClick }
+        >
+          Filtrar
+        </button>
+
+        <hr />
+        <br />
+        {getTable()}
+      </div>
     </div>
   );
 }
