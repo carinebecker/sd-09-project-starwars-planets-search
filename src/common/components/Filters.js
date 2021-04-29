@@ -3,16 +3,16 @@ import PlanetContext from '../../context/PlanetContext';
 import GenericFilterInput from './GenericFilterInput';
 
 const Filters = () => {
-  const { contextValue, setFilterClicked, filterClicked, setFilterByValues } = useContext(PlanetContext);
-  const { setName, setColumn, setComparison, setValue, filters, setFilterByNumericValues } = contextValue;
+  const { contextValue } = useContext(PlanetContext);
+  const { setName, filters, setFilterByNumericValues } = contextValue;
   const { filterByNumericValues } = filters;
-  const [ numericValues, setNumericValues ] = useState({
+  const [numericValues, setNumericValues] = useState({
     column: '',
     comparison: '',
     value: '',
   });
 
-  function handleClick () {
+  function handleClick() {
     setFilterByNumericValues([...filterByNumericValues, numericValues]);
   }
 
@@ -35,7 +35,7 @@ const Filters = () => {
           onChange={ (event) => setNumericValues({
             ...numericValues,
             column: event.target.value,
-          })}
+          }) }
         >
           <option selected value="vazio">vazio</option>
           <option value="population">population</option>
@@ -49,24 +49,26 @@ const Filters = () => {
           onChange={ (event) => setNumericValues({
             ...numericValues,
             comparison: event.target.value,
-          })}
+          }) }
         >
           <option selected value="vazio">vazio</option>
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
           <option value="igual a">igual a</option>
         </select>
-        <label>
+        <label htmlFor="seilasoqueroacabaroprojeto">
           <input
             data-testid="value-filter"
             type="number"
+            id="seilasoqueroacabaroprojeto"
             onChange={ (event) => setNumericValues({
               ...numericValues,
               value: event.target.value,
-            })}
+            }) }
           />
         </label>
         <button
+          type="button"
           data-testid="button-filter"
           onClick={ () => handleClick() }
         >
