@@ -6,6 +6,10 @@ import TableContext from './TableContext';
 function TableProvider({ children }) {
   const [isFetching, setIsFetching] = useState(true);
   const [planets, setPlanets] = useState([]);
+  const [filters, setFilters] = useState(
+    { filterByName: { name: '' },
+      filterByNumericValues: [] },
+  );
 
   const fetchPlanets = async () => {
     const planetsFromApi = await getPlanets();
@@ -17,6 +21,8 @@ function TableProvider({ children }) {
     <TableContext.Provider
       value={ { isFetching,
         planets,
+        filters,
+        setFilters,
         fetchPlanets } }
     >
       { children }
