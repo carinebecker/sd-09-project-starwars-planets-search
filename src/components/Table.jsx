@@ -2,14 +2,28 @@ import React, { useContext, useState, useEffect } from 'react';
 import { MyContext } from '../MyContext';
 
 function Table() {
-  const { isLoading, keysData, dataToChange, filters } = useContext(MyContext);
+  const {
+    data,
+    setDataToChange,
+    isLoading,
+    keysData,
+    dataToChange,
+    filters,
+    setColumnFilter,
+    columnFilter,
+    setFilter,
+  } = useContext(MyContext);
   const [filterByNumber, setFilterByNumber] = useState();
 
   const deletCombineFilters = ({ target }) => {
     const newFiltersCombine = filterByNumber
       .filter((element) => target.name !== element.column);
     setFilterByNumber(newFiltersCombine);
-    console.log(filterByNumber);
+    setColumnFilter([...columnFilter, target.name]);
+    setDataToChange(data);
+    setFilter(
+      (prevState) => ({ ...prevState, filterByNumericValues: newFiltersCombine }),
+    );
   };
 
   useEffect(() => {
@@ -23,18 +37,19 @@ function Table() {
   return (isLoading ? <p>Loading...</p> : (
     <div>
       {filterByNumber ? filterByNumber.map((element) => (
-        <div key={ element.column }>
+        <div data-testid="filter" key={ element.column }>
           <button
             type="button"
             onClick={ deletCombineFilters }
-            data-testid="filter"
             name={ element.column }
           >
             {`${element.column} | ${element.comparison} | ${element.value} | X`}
+
             {/* <button type="button">X</button> */}
           </button>
         </div>
-      )) : console.log(filterByNumber)}
+
+      )) : null}
       <table>
         <thead>
           <tr>

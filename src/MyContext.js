@@ -44,6 +44,7 @@ const MyContextProvider = ({ children }) => {
       .filter((element) => element.name.indexOf(target.value) !== num);
     setDataToChange(nameFiltered);
 
+    // setFilter((prevState) => ({ ...prevState, filtersByName: { name } }));
     if (target.value === '') setDataToChange(data);
   };
 
@@ -93,7 +94,7 @@ const MyContextProvider = ({ children }) => {
       break;
     case 'menor que': {
       const result = data
-        .filter((element) => element[column] < value || element[column] === 'unknown');
+        .filter((element) => element[column] < parseInt(value, 10));
       setDataToChange(result);
     }
       break;
@@ -117,6 +118,9 @@ const MyContextProvider = ({ children }) => {
     serchInput,
     setOptionsFilter,
     filterByNumber,
+    setColumnFilter,
+    setDataToChange,
+    setFilter,
   };
 
   return (
