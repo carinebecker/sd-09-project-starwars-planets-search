@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import AppContext from '../services/provider';
+import React, { useContext, useState } from 'react';
+import AppContext from '../services/contextAPI';
 
 const Table = () => {
   const { data, changeFilterName, changeNumericFilters } = useContext(AppContext);
