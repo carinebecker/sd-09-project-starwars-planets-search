@@ -7,6 +7,23 @@ function Planets({ children }) {
   const [data, setData] = useState([]);
   const [seekText, setSeekText] = useState('');
   const [filterPlanets, setFilterPlanets] = useState([]);
+  const [columnFilter] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+  const [numericFilters, setNumericFilters] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
+  const [comparisonFilter] = useState([
+    'maior que',
+    'menor que',
+    'igual a',
+  ]);
 
   useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -19,19 +36,94 @@ function Planets({ children }) {
     setFilterPlanets(searchingPlanets);
   }, [data, seekText]);
 
-  function filterByNameInput() {
+  function handleClick() {
+    const numericFilterPlanets = data.filter((planet) => {
+      const tag = Number(planet[numericFilters.column]);
+      const inputValue = Number(numericFilters.value);
+      if (numericFilters.comparison === 'maior que') {
+        return tag > inputValue;
+      }
+      if (numericFilters.comparison === 'menor que') {
+        return tag < inputValue;
+      }
+      if (numericFilters.comparison === 'igual a') {
+        return tag === inputValue;
+      }
+      return (numericFilterPlanets);
+    });
+    setFilterPlanets(numericFilterPlanets);
+  }
+
+  function filterNameInput() {
     return (
-      <form>
-        <label htmlFor="name-filter">
+      <div>
+        <form>
+          <label htmlFor="name-filter">
+            PLANETAS
+            <input
+              type="text"
+              onChange={ (item) => setSeekText(item.target.value) }
+              placeholder="Search"
+              name="name-filter"
+              data-testid="name-filter"
+            />
+          </label>
+        </form>
+      </div>
+    );
+  }
+
+  function handleChangeColumn(event) {
+    setNumericFilters({ ...numericFilters, column: event.target.value });
+  }
+
+  function handleChangeComparison(event) {
+    setNumericFilters({ ...numericFilters, comparison: event.target.value });
+  }
+
+  function handleChangeValue(event) {
+    setNumericFilters({ ...numericFilters, value: event.target.value });
+  }
+
+  function numericFiltersSelects() {
+    return (
+      <section>
+        <div>
+          <select data-testid="column-filter" onChange={ handleChangeColumn }>
+            {columnFilter.map((tag) => (
+              <option key={ tag } value={ tag }>
+                {tag}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <select
+            data-testid="comparison-filter"
+            onChange={ handleChangeComparison }
+          >
+            {comparisonFilter.map((option) => (
+              <option key={ option } value={ option }>
+                {option}
+              </option>
+            ))}
+          </select>
           <input
-            type="text"
-            onChange={ (e) => setSeekText(e.target.value) }
-            placeholder="Search"
-            name="name-filter"
-            data-testid="name-filter"
+            data-testid="value-filter"
+            type="number"
+            onChange={ handleChangeValue }
           />
-        </label>
-      </form>
+        </div>
+        <div>
+          <button
+            data-testid="button-filter"
+            type="button"
+            onClick={ handleClick }
+          >
+            FILTRAR
+          </button>
+        </div>
+      </section>
     );
   }
 
@@ -42,7 +134,8 @@ function Planets({ children }) {
 
   return (
     <Context.Provider value={ contextValue }>
-      { filterByNameInput() }
+      {numericFiltersSelects()}
+      { filterNameInput() }
       {children}
     </Context.Provider>
   );
