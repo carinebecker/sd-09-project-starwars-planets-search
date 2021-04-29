@@ -15,30 +15,32 @@ function Table() {
   );
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Rotation_period</th>
-          <th>Orbital_period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th>Surface_water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
-        </tr>
-      </thead>
-      <tbody>
-        {filterPlanets.length > 0
-          ? filterPlanets.map((element, index) => dinamicRow(element, index))
-          : planets.map((element, index) => dinamicRow(element, index))}
-      </tbody>
-    </table>
+    <div className="table-container">
+      <table className="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Rotation_period</th>
+            <th>Orbital_period</th>
+            <th>Diameter</th>
+            <th>Climate</th>
+            <th>Gravity</th>
+            <th>Terrain</th>
+            <th>Surface_water</th>
+            <th>Population</th>
+            <th>Films</th>
+            <th>Created</th>
+            <th>Edited</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filterPlanets.length > 0
+            ? filterPlanets.map((element, index) => dinamicRow(element, index))
+            : planets.map((element, index) => dinamicRow(element, index))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

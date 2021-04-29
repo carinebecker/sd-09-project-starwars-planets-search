@@ -14,3 +14,5 @@ function App() {
 }
 
 export default App;
+
+// Projeto feito com ajuda da rosiele, muito obrigado pela força

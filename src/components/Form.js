@@ -7,7 +7,7 @@ function Form() {
     handleClickFilter } = useContext(PlanetsContext);
   return (
     <form>
-      <label htmlFor="name-filter">
+      <label htmlFor="name-filter" className="label">
         Nome:
         <input
           type="text"
@@ -15,9 +15,10 @@ function Form() {
           data-testid="name-filter"
           value={ namePlanets }
           onChange={ handleNamePlanets }
+          className="input"
         />
       </label>
-      <label htmlFor="column-filter">
+      <label htmlFor="column-filter" className="label">
         Filtro de coluna:
         <select
           name="columnFilter"
@@ -25,6 +26,7 @@ function Form() {
           data-testid="column-filter"
           value={ preferenceFilter.column }
           onChange={ handlePreferenceFilter }
+          className="select"
         >
           {columnsOptions
             .map((column, index) => (
@@ -33,7 +35,7 @@ function Form() {
               </option>))}
         </select>
       </label>
-      <label htmlFor="comparison-filter">
+      <label htmlFor="comparison-filter" className="label">
         Filtro de Comparação:
         <select
           name="comparisonFilter"
@@ -41,13 +43,14 @@ function Form() {
           data-testid="comparison-filter"
           value={ preferenceFilter.comparison }
           onChange={ handlePreferenceFilter }
+          className="select"
         >
           {comparisonOptions
             .map((column, index) => (
               <option key={ index } value={ column }>{column}</option>))}
         </select>
       </label>
-      <label htmlFor="value-filter">
+      <label htmlFor="value-filter" className="label">
         Filtro de valor:
         <input
           type="number"
@@ -56,6 +59,7 @@ function Form() {
           data-testid="value-filter"
           value={ preferenceFilter.value }
           onChange={ handlePreferenceFilter }
+          className="input is-small"
         />
       </label>
       <button type="button" data-testid="button-filter" onClick={ handleClickFilter }>
