@@ -63,17 +63,27 @@ function Provider({ children }) {
 
     const result = data.filter(
       (element) => {
-        if (comparison === 'maior que') {
-          if (element[column] > value) {
-            return element;
-          }
-        } else if (comparison === 'menor que') {
-          if (element[column] < value) {
-            return element;
-          }
-        } else if (element[column] === value) {
+        if (
+          comparison === 'maior que'
+          && parseInt(element[column], 10) > parseInt(value, 10)
+        ) {
           return element;
         }
+
+        if (
+          comparison === 'menor que'
+          && parseInt(element[column], 10) < parseInt(value, 10)
+        ) {
+          return element;
+        }
+
+        if (
+          comparison === 'igual a'
+          && parseInt(element[column], 10) === parseInt(value, 10)
+        ) {
+          return element;
+        }
+
         return null;
       },
     );

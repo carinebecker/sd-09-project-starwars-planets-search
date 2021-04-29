@@ -41,7 +41,7 @@ const FilterNumberValue = () => {
         data-testid="column-filter"
         name="column"
         id="filter-column"
-        onClick={ ({ target }) => columnFilter(target.value) }
+        onChange={ ({ target }) => columnFilter(target.value) }
       >
         <option value="population">population</option>
         <option value="orbital_period">orbital_period</option>
@@ -53,17 +53,17 @@ const FilterNumberValue = () => {
       <select
         data-testid="comparison-filter"
         name="compare"
-        onClick={ ({ target }) => compareFilter(target.value) }
+        onChange={ ({ target }) => compareFilter(target.value) }
       >
-        <option>maior que</option>
-        <option>menor que</option>
-        <option>igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
 
       <input
         data-testid="value-filter"
         type="number"
-        onClick={ ({ target }) => numberFilter(target.value) }
+        onChange={ ({ target }) => numberFilter(target.value) }
       />
 
       <button
