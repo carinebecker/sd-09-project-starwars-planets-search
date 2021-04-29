@@ -19,8 +19,8 @@ header {
 .filters-container {
   background-color: rgb(188, 201, 218);
   display: flex;
-  justify-content: center;
   gap: 16px;
+  justify-content: center;
   padding: 16px;
 }
 
@@ -40,6 +40,6 @@ header {
   transition: 0.2s ease-in-out;
 }
 
-.filters-container button:hover{
+.filters-container button:hover {
   background-color: rgb(81, 113, 153);
 }
