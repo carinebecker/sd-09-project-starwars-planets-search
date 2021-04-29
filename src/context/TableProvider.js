@@ -10,6 +10,10 @@ function TableProvider({ children }) {
     { filterByName: { name: '' },
       filterByNumericValues: [] },
   );
+  const [columnFilterOptions, setColumnFilterOptions] = useState(
+    ['rotation_period', 'orbital_period', 'diameter',
+      'surface_water', 'population'],
+  );
 
   const fetchPlanets = async () => {
     const planetsFromApi = await getPlanets();
@@ -22,6 +26,8 @@ function TableProvider({ children }) {
       value={ { isFetching,
         planets,
         filters,
+        columnFilterOptions,
+        setColumnFilterOptions,
         setFilters,
         fetchPlanets } }
     >

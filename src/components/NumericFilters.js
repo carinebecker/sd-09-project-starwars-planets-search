@@ -2,16 +2,17 @@ import React, { useContext, useState } from 'react';
 import TableContext from '../context/TableContext';
 
 function NumericFilters() {
-  const { filters, setFilters } = useContext(TableContext);
+  const { filters, setFilters, columnFilterOptions,
+    setColumnFilterOptions } = useContext(TableContext);
 
   const [currentFilters, setCurrentFilters] = useState({
     column: '',
-    comparison: 'maior que',
+    comparison: '',
     value: '',
   });
 
-  const columnFilterOptions = ['rotation_period', 'orbital_period', 'diameter',
-    'surface_water', 'population'];
+  // const columnFilterOptions = ['rotation_period', 'orbital_period', 'diameter',
+  //   'surface_water', 'population'];
 
   const handleColumnFilter = ({ target: { value } }) => {
     setCurrentFilters({ ...currentFilters, column: value });
@@ -26,6 +27,8 @@ function NumericFilters() {
   };
 
   const handleSubmitFilter = () => {
+    setColumnFilterOptions(columnFilterOptions
+      .filter((options) => options !== currentFilters.column));
     setFilters({
       ...filters,
       filterByNumericValues: [currentFilters],
