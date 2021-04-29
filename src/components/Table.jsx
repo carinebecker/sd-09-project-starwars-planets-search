@@ -95,28 +95,23 @@ function Table() {
 
   function handleClick() {
     const { column, comparison, value } = numericFilters;
-    if (comparison === '>') {
-      setClicked(false);
-      const dataNumericFilter = data.filter(
+    setClicked(false);
+    let dataNumericFilter;
+    if (comparison === 'maior que') {
+      dataNumericFilter = data.filter(
         (currentValue) => currentValue[column] > parseInt(value, 10),
       );
-      setNewData(dataNumericFilter);
-      getTable();
-    } else if (comparison === '<') {
-      setClicked(false);
-      const dataNumericFilter = data.filter(
+    } else if (comparison === 'menor que') {
+      dataNumericFilter = data.filter(
         (currentValue) => currentValue[column] < parseInt(value, 10),
       );
-      setNewData(dataNumericFilter);
-      getTable();
-    } else if (comparison === '===') {
-      setClicked(false);
-      const dataNumericFilter = data.filter(
+    } else if (comparison === 'igual a') {
+      dataNumericFilter = data.filter(
         (currentValue) => currentValue[column] === parseInt(value, 10),
       );
-      setNewData(dataNumericFilter);
-      getTable();
     }
+    setNewData(dataNumericFilter);
+    getTable();
   }
 
   if (loading) {
@@ -160,9 +155,9 @@ function Table() {
             onChange={ changeNumericFilter }
           >
             <option disabled selected value> -- select an option -- </option>
-            <option value=">">maior que</option>
-            <option value="<">menor que</option>
-            <option value="===">igual a</option>
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
           </select>
         </label>
 
