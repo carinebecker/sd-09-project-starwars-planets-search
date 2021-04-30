@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 import getPlanets from '../service/StarWarsApi';
 
+const INITIAL_FILTERS = {
+  filterByNumericValues: [],
+};
+
 function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
   const context = { data };
 
   useEffect(() => {
@@ -15,9 +20,18 @@ function StarWarsProvider({ children }) {
     fetchData();
   }, []);
 
+  const addFiltersInputs = (obj) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, obj],
+    });
+  };
+
+  const value = { context, data, addFiltersInputs, filters };
+
   return (
     <main>
-      <StarWarsContext.Provider value={ context }>
+      <StarWarsContext.Provider value={ value }>
         {children}
       </StarWarsContext.Provider>
     </main>
