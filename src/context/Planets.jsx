@@ -5,7 +5,8 @@ const PlanetsContext = createContext();
 
 export default function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  const context = { data, setData };
+  const [filters, setFilters] = useState({});
+  const context = { data, setData, filters, setFilters };
   return (
     <PlanetsContext.Provider value={ context }>
       { children }
@@ -18,6 +19,13 @@ export function usePlanets() {
   if (!context) throw new Error('usePlanets must be used within a PlanetsProvider');
   const { data, setData } = context;
   return { data, setData };
+}
+
+export function useFilters() {
+  const context = useContext(PlanetsContext);
+  if (!context) throw new Error('usePlanets must be used within a PlanetsProvider');
+  const { filters, setFilters } = context;
+  return { filters, setFilters };
 }
 
 PlanetsProvider.propTypes = {
