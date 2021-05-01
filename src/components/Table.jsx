@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePlanets } from '../context/Planets';
+import { useFilters, usePlanets } from '../context/Planets';
 
 const generateTableHeader = (data) => {
   const headers = Object.keys(data)
@@ -25,10 +25,21 @@ const generateTableContent = (data) => {
   return content;
 };
 
+const handleDataFiltering = (data, filters) => {
+  if (filters.filterByName) {
+    const newData = data.filter((element) => element
+      .name.toLowerCase().includes(filters.filterByName.name.toLowerCase()));
+    return newData;
+  }
+  return data;
+};
+
 const Table = () => {
   const { data } = usePlanets();
+  const { filters } = useFilters();
+  const filteredData = handleDataFiltering(data, filters);
   const tableHeaders = data.length ? generateTableHeader(data[0]) : [];
-  const tableContent = data.length ? generateTableContent(data) : [];
+  const tableContent = filteredData ? generateTableContent(filteredData) : [];
   return (
     <table>
       <thead>
