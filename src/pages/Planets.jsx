@@ -7,7 +7,7 @@ const Planets = () => {
   const { setData } = usePlanets();
   useEffect(() => {
     fetchPlanets().then((planets) => setData(planets));
-  }, []);
+  }, [setData]);
   return (
     <div className="planets-container">
       <Table />

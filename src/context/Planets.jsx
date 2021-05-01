@@ -20,6 +20,6 @@ export function usePlanets() {
   return { data, setData };
 }
 
-PlanetsProvider.propType = {
+PlanetsProvider.propTypes = {
   children: PropTypes.element.isRequired,
 };
