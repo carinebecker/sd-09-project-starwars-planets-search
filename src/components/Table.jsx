@@ -26,12 +26,30 @@ const generateTableContent = (data) => {
 };
 
 const handleDataFiltering = (data, filters) => {
-  if (filters.filterByName) {
-    const newData = data.filter((element) => element
+  let filteredData = false;
+  if (filters.filterByName.name) {
+    filteredData = data.filter((element) => element
       .name.toLowerCase().includes(filters.filterByName.name.toLowerCase()));
-    return newData;
   }
-  return data;
+  if (filters.filterByNumericValues.length) {
+    filteredData = filteredData || data;
+    filteredData = filters.filterByNumericValues.map((filter) => (
+      filteredData.filter((element) => {
+        switch (filter.comparison) {
+        case 'maior que':
+          return Number(element[filter.column]) > Number(filter.value);
+        case 'menor que':
+          return Number(element[filter.column]) < Number(filter.value);
+        case 'igual a':
+          return Number(element[filter.column]) === Number(filter.value);
+        default:
+          return false;
+        }
+      })));
+    filteredData = filteredData
+      .reduce((array, currentValue) => [...array, ...currentValue], []);
+  }
+  return filteredData || data;
 };
 
 const Table = () => {
