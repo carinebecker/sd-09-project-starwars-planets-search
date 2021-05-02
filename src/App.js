@@ -1,7 +1,7 @@
 import React from 'react';
-import { Header, Table } from './Components';
-import PlanetsProvider from './Context/PlanetsProvider';
-import './CSS/App.css';
+import { Header, Table } from './components';
+import PlanetsProvider from './context/PlanetsProvider';
+import './css/App.css';
 
 function App() {
   return (
