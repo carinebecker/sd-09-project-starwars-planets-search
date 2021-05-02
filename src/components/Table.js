@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data } = useContext(PlanetsContext);
+  const { data, filters } = useContext(PlanetsContext);
+  const { filterByName: { name } } = filters;
   if (!data.results) return <div>loading</div>;
   return (
     <table>
@@ -12,11 +13,12 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.results.map((planet, index) => (
-          <tr key={ index }>
-            { Object.values(planet)
-              .map((value) => <td key={ value }>{value}</td>) }
-          </tr>)) }
+        { data.results.filter((planets) => (planets.name.toLowerCase().includes(name)))
+          .map((planet, index) => (
+            <tr key={ index }>
+              { Object.values(planet)
+                .map((value) => <td key={ value }>{value}</td>) }
+            </tr>)) }
       </tbody>
     </table>
   );
