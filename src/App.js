@@ -1,12 +1,14 @@
 import React from 'react';
-import './Pages/CSS/index';
-import { Header } from './Pages/index';
+import { Header, Table, Filter } from './components';
+import PlanetsProvider from './context/PlanetsProvider';
 
 function App() {
   return (
-    <div className="align-text">
+    <PlanetsProvider>
       <Header />
-    </div>
+      <Filter />
+      <Table />
+    </PlanetsProvider>
   );
 }
 
