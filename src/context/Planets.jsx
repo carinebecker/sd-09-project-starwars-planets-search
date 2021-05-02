@@ -5,7 +5,13 @@ const PlanetsContext = createContext();
 
 export default function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(
+    { filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+    },
+  );
   const context = { data, setData, filters, setFilters };
   return (
     <PlanetsContext.Provider value={ context }>
@@ -29,5 +35,5 @@ export function useFilters() {
 }
 
 PlanetsProvider.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
