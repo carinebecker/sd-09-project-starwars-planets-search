@@ -3,7 +3,10 @@ import { node } from 'prop-types';
 import fetchPlanetApi from '../services/PlanetsApi';
 import PlanetsContext from './PlanetsContext';
 
-const initialFilters = { filterByName: { name: '' } };
+const initialFilters = {
+  filterByName: { name: '' },
+  filterByNumericValues: [],
+};
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState({});
@@ -12,11 +15,21 @@ function PlanetsProvider({ children }) {
   const getData = async () => setData(await fetchPlanetApi());
   useEffect(() => { getData(); }, []);
 
-  const handleName = ({ target }) => {
-    setFilters({ ...filters, filterByName: { name: target.value.toLowerCase() } });
-  };
+  function handleName({ target: { value, name } }) {
+    setFilters({ ...filters, filterByName: { [name]: value.toLowerCase() } });
+  }
 
-  const value = { data, filters, handleName };
+  function handleNum(values) {
+    setFilters({ ...filters,
+      filterByNumericValues: [...filters.filterByNumericValues, values] });
+  }
+
+  const value = {
+    data,
+    filters,
+    handleName,
+    handleNum,
+  };
 
   return (
     <PlanetsContext.Provider value={ value }>

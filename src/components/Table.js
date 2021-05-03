@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import filterPlanets from './Filter';
 
 function Table() {
   const { data, filters } = useContext(PlanetsContext);
-  const { filterByName: { name } } = filters;
+  const { filterByName: { name }, filterByNumericValues } = filters;
+
   if (!data.results) return <div>loading</div>;
   return (
     <table>
@@ -13,7 +15,8 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.results.filter((planets) => (planets.name.toLowerCase().includes(name)))
+        { filterPlanets(data.results, filterByNumericValues)
+          .filter((planet) => (planet.name.toLowerCase().includes(name)))
           .map((planet, index) => (
             <tr key={ index }>
               { Object.values(planet)
