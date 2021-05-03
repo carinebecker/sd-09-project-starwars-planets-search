@@ -14,6 +14,8 @@ function TableProvider({ children }) {
       value: '',
     },
   );
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [activeFilters, setActiveFilters] = useState([]);
 
   useEffect(() => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -39,6 +41,10 @@ function TableProvider({ children }) {
     setFilterByNumeric,
     filteredData,
     setFilteredData,
+    filterByNumericValues,
+    setFilterByNumericValues,
+    activeFilters,
+    setActiveFilters,
   };
 
   return (

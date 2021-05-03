@@ -8,6 +8,9 @@ function Filters() {
     setFilteredData,
     setFilterByNumeric,
     filterByNumeric,
+    setFilterByNumericValues,
+    activeFilters,
+    setActiveFilters,
   } = useContext(TableContext);
   const { results } = data;
 
@@ -30,6 +33,13 @@ function Filters() {
     });
   };
 
+  const renderActiveFilters = () => {
+    if (activeFilters.length !== 0) {
+      return activeFilters
+        .map((filter) => (<span key={ filter }>{ filter }</span>));
+    }
+  };
+
   const handleClick = () => {
     const { column, comparison, value } = filterByNumeric;
     let result;
@@ -47,6 +57,9 @@ function Filters() {
     }
     const filteredResults = result.map((res) => Object.values(res));
     setFilteredData(filteredResults);
+    setFilterByNumericValues((prevState) => [...prevState, filterByNumeric]);
+    setActiveFilters((prevState) => [...prevState, column]);
+    renderActiveFilters();
   };
 
   return (
@@ -65,6 +78,7 @@ function Filters() {
           data-testid="column-filter"
           onChange={ numericFilters }
         >
+          {/* SE O FILTRO JÁ FOI USADO ELE DESAPARECE DAQUI */}
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
@@ -96,6 +110,7 @@ function Filters() {
       >
         Filtrar
       </button>
+      <div>{ renderActiveFilters() }</div>
     </div>
   );
 }
