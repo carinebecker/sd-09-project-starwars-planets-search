@@ -13,15 +13,12 @@ function Table() {
   }
 
   function renderBody() {
-    return filteredData.map((planet, i) => (
-      <tr key={ i }>
-        {
-          planet.map((currValue, index) => (
-            <td key={ index }>{currValue}</td>
-          ))
-        }
-      </tr>
-    ));
+    return filteredData.map((planet, i) => {
+      const td = planet.map((currValue, index) => (
+        <td key={ index }>{currValue}</td>
+      ));
+      return (<tr key={ i }>{ td }</tr>);
+    });
   }
 
   return (

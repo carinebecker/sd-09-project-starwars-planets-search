@@ -30,21 +30,23 @@ function Filters() {
     });
   };
 
-  //VERIFICAR OS TESTES DO REQUISITO 3 ! Boa noite!
-
   const handleClick = () => {
     const { column, comparison, value } = filterByNumeric;
     let result;
     if (comparison === 'greater') {
-      result = results.filter((currPlanet) => currPlanet[column] > Number(value));
+      result = results
+        .filter((currPlanet) => Number(currPlanet[column]) > Number(value));
     }
     if (comparison === 'less') {
-      result = results.filter((currPlanet) => currPlanet[column] < Number(value));
+      result = results
+        .filter((currPlanet) => Number(currPlanet[column]) < Number(value));
     }
     if (comparison === 'equal') {
-      result = results.filter((currPlanet) => currPlanet[column] === Number(value));
+      result = results
+        .filter((currPlanet) => Number(currPlanet[column]) === Number(value));
     }
-    setFilteredData(result.map((res) => Object.values(res)));
+    const filteredResults = result.map((res) => Object.values(res));
+    setFilteredData(filteredResults);
   };
 
   return (
