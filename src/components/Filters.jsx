@@ -4,7 +4,6 @@ import TableContext from '../context/TableContext';
 function Filters() {
   const {
     data,
-    filterByName,
     setFilterByName,
     setFilteredData,
     setFilterByNumeric,
@@ -12,17 +11,15 @@ function Filters() {
   } = useContext(TableContext);
   const { results } = data;
 
-  function resultsByName() {
-    const nameToFilter = filterByName.name.toLowerCase();
+  const handleChange = ({ target: { value } }) => {
+    // debugger;
+    setFilterByName({ name: value });
+
+    const nameToFilter = value.toLowerCase();
     const resultsValues = results
       .filter((res) => (res.name.toLowerCase().includes(nameToFilter)))
       .map((res) => Object.values(res));
     setFilteredData(resultsValues);
-  }
-
-  const nameFilter = ({ target: { value } }) => {
-    setFilterByName({ name: value });
-    resultsByName();
   };
 
   const numericFilters = ({ target }) => {
@@ -33,15 +30,15 @@ function Filters() {
     });
   };
 
-  const filterNumericValues = () => {
+  const handleClick = () => {
     const { column, comparison, value } = filterByNumeric;
     console.log(filterByNumeric);
     let result;
     if (comparison === 'greater') {
-      result = results.filter((currPlanet) => currPlanet[column] > Number(value));
+      result = results.filter((currPlanet) => currPlanet[column] >= Number(value));
     }
     if (comparison === 'less') {
-      result = results.filter((currPlanet) => currPlanet[column] < Number(value));
+      result = results.filter((currPlanet) => currPlanet[column] <= Number(value));
     }
     if (comparison === 'equal') {
       result = results.filter((currPlanet) => currPlanet[column] === Number(value));
@@ -56,7 +53,7 @@ function Filters() {
         id="name-filter"
         data-testid="name-filter"
         placeholder="Pesquisar planeta"
-        onChange={ nameFilter }
+        onChange={ handleChange }
       />
       <div className="numeric-filters">
         <select
@@ -92,7 +89,7 @@ function Filters() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ filterNumericValues }
+        onClick={ handleClick }
       >
         Filtrar
       </button>
