@@ -10,7 +10,7 @@ function TableProvider({ children }) {
   const [filterByNumeric, setFilterByNumeric] = useState(
     {
       column: 'population',
-      comparison: 'greater',
+      comparison: 'maior que',
       value: '',
     },
   );

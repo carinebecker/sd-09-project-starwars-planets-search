@@ -33,15 +33,15 @@ function Filters() {
   const handleClick = () => {
     const { column, comparison, value } = filterByNumeric;
     let result;
-    if (comparison === 'greater') {
+    if (comparison === 'maior que') {
       result = results
         .filter((currPlanet) => Number(currPlanet[column]) > Number(value));
     }
-    if (comparison === 'less') {
+    if (comparison === 'menor que') {
       result = results
         .filter((currPlanet) => Number(currPlanet[column]) < Number(value));
     }
-    if (comparison === 'equal') {
+    if (comparison === 'igual a') {
       result = results
         .filter((currPlanet) => Number(currPlanet[column]) === Number(value));
     }
@@ -77,9 +77,9 @@ function Filters() {
           data-testid="comparison-filter"
           onChange={ numericFilters }
         >
-          <option value="greater">maior que</option>
-          <option value="less">menor que</option>
-          <option value="equal">igual a</option>
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
         </select>
         <input
           name="value"
