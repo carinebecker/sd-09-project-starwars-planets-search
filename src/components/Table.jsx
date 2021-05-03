@@ -2,15 +2,9 @@ import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function Table() {
-  const { data, filterByName } = useContext(TableContext);
+  const { data, filteredData } = useContext(TableContext);
   const { results } = data;
   const resultsKeys = results.map((res) => Object.keys(res));
-
-  const nameToFilter = filterByName.name.toLowerCase();
-  const resultsValues = results
-    .filter((res) => (res.name.toLowerCase().includes(nameToFilter)))
-    .map((res) => Object.values(res));
-  console.log(resultsValues);
 
   function renderHeader() {
     return resultsKeys[0].map((each, i) => (
@@ -19,10 +13,10 @@ function Table() {
   }
 
   function renderBody() {
-    return resultsValues.map((value, i) => (
+    return filteredData.map((planet, i) => (
       <tr key={ i }>
         {
-          value.map((currValue, index) => (
+          planet.map((currValue, index) => (
             <td key={ index }>{currValue}</td>
           ))
         }

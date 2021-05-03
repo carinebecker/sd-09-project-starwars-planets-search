@@ -2,7 +2,52 @@ import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function Filters() {
-  const { nameFilter, numericFilters } = useContext(TableContext);
+  const {
+    data,
+    filterByName,
+    setFilterByName,
+    setFilteredData,
+    setFilterByNumeric,
+    filterByNumeric,
+  } = useContext(TableContext);
+  const { results } = data;
+
+  function resultsByName() {
+    const nameToFilter = filterByName.name.toLowerCase();
+    const resultsValues = results
+      .filter((res) => (res.name.toLowerCase().includes(nameToFilter)))
+      .map((res) => Object.values(res));
+    setFilteredData(resultsValues);
+  }
+
+  const nameFilter = ({ target: { value } }) => {
+    setFilterByName({ name: value });
+    resultsByName();
+  };
+
+  const numericFilters = ({ target }) => {
+    const { name, value } = target;
+    setFilterByNumeric({
+      ...filterByNumeric,
+      [name]: value,
+    });
+  };
+
+  const filterNumericValues = () => {
+    const { column, comparison, value } = filterByNumeric;
+    console.log(filterByNumeric);
+    let result;
+    if (comparison === 'greater') {
+      result = results.filter((currPlanet) => currPlanet[column] > Number(value));
+    }
+    if (comparison === 'less') {
+      result = results.filter((currPlanet) => currPlanet[column] < Number(value));
+    }
+    if (comparison === 'equal') {
+      result = results.filter((currPlanet) => currPlanet[column] === Number(value));
+    }
+    setFilteredData(result.map((res) => Object.values(res)));
+  };
 
   return (
     <div className="filters-container">
@@ -47,6 +92,7 @@ function Filters() {
       <button
         type="button"
         data-testid="button-filter"
+        onClick={ filterNumericValues }
       >
         Filtrar
       </button>

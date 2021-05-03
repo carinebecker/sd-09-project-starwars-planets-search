@@ -5,27 +5,15 @@ import TableContext from './TableContext';
 function TableProvider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setFetching] = useState(true);
-
+  const [filteredData, setFilteredData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
-  const [filterByNumericValues, setFilterByNumericValues] = useState([
+  const [filterByNumeric, setFilterByNumeric] = useState(
     {
       column: 'population',
       comparison: 'greater',
       value: '',
     },
-  ]);
-
-  const nameFilter = ({ target: { value } }) => {
-    setFilterByName({ name: value });
-  };
-
-  const numericFilters = ({ target }) => {
-    const { name, value } = target;
-    setFilterByNumericValues((prevState) => ([{
-      ...prevState,
-      [name]: value,
-    }]));
-  };
+  );
 
   useEffect(() => {
     const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -36,6 +24,8 @@ function TableProvider({ children }) {
       apiData.results.forEach((element) => delete element.residents);
       setData(apiData);
       setFetching(false);
+      const apiDataValues = apiData.results.map((res) => Object.values(res));
+      setFilteredData(apiDataValues);
     };
     getData();
   }, []);
@@ -44,9 +34,11 @@ function TableProvider({ children }) {
     data,
     setData,
     filterByName,
-    filterByNumericValues,
-    nameFilter,
-    numericFilters,
+    setFilterByName,
+    filterByNumeric,
+    setFilterByNumeric,
+    filteredData,
+    setFilteredData,
   };
 
   return (
