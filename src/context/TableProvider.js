@@ -7,9 +7,11 @@ function TableProvider({ children }) {
   const [isFetching, setFetching] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [columnFilter, setColumnFilter] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
   const [filterByNumeric, setFilterByNumeric] = useState(
     {
-      column: 'population',
+      column: columnFilter[0],
       comparison: 'maior que',
       value: '',
     },
@@ -43,6 +45,8 @@ function TableProvider({ children }) {
     setFilteredData,
     filterByNumericValues,
     setFilterByNumericValues,
+    columnFilter,
+    setColumnFilter,
     activeFilters,
     setActiveFilters,
   };

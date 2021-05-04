@@ -9,6 +9,8 @@ function Filters() {
     setFilterByNumeric,
     filterByNumeric,
     setFilterByNumericValues,
+    columnFilter,
+    setColumnFilter,
     activeFilters,
     setActiveFilters,
   } = useContext(TableContext);
@@ -59,7 +61,13 @@ function Filters() {
     setFilteredData(filteredResults);
     setFilterByNumericValues((prevState) => [...prevState, filterByNumeric]);
     setActiveFilters((prevState) => [...prevState, column]);
+    setColumnFilter(columnFilter.filter((filt) => filt !== column));
     renderActiveFilters();
+    setFilterByNumeric({
+      column: columnFilter[0],
+      comparison: 'maior que',
+      value: '',
+    });
   };
 
   return (
@@ -79,11 +87,9 @@ function Filters() {
           onChange={ numericFilters }
         >
           {/* SE O FILTRO JÁ FOI USADO ELE DESAPARECE DAQUI */}
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columnFilter.map((filter) => (
+            <option value={ filter } key={ filter }>{filter}</option>
+          ))}
         </select>
         <select
           name="comparison"
