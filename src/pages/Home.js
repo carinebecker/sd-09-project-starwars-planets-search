@@ -1,15 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { Nav } from 'react-bootstrap';
 import Table from '../components/PlanetTable';
-// import PlanetContext from '../context/context';
+import Filter from '../components/Filter';
+import PlanetContext from '../context/context';
 import fetchPlanets from '../services/planetAPI';
 
 export default function Home() {
-  const [planetList, setPlanetList] = useState(null);
+  const { planetList, setPlanetList, filters } = useContext(PlanetContext);
   useEffect(() => {
     const setPlanets = async () => {
-      setPlanetList(await fetchPlanets());
+      const planets = await fetchPlanets();
+      setPlanetList(planets.results);
     };
     setPlanets();
-  }, []);
-  return (planetList && <Table list={ planetList.results } />);
+  }, [setPlanetList]);
+  const { name } = filters.filterByName;
+  return (
+    <div>
+      <Nav>
+        <Filter />
+      </Nav>
+      {planetList && <Table
+        list={ planetList.filter((each) => each.name.includes(name)) }
+      />}
+    </div>);
 }
