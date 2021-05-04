@@ -5,7 +5,7 @@ import TableContext from './TableContext';
 function TableProvider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setFetching] = useState(true);
-  const [resultsKeys, setResultsKeys] = useState([])
+  const [resultsKeys, setResultsKeys] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [columnFilter, setColumnFilter] = useState([

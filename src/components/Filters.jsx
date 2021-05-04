@@ -43,16 +43,21 @@ function Filters() {
 
   const renderActiveFilters = () => {
     if (activeFilters.length !== 0) {
-      return activeFilters
-        .map((filter) => (
-          <span key={ filter } data-testid="filter">
-            { filter }
-            <button type="button" onClick={ () => removeFilter(filter) }>X</button>
-          </span>));
+      return (
+        <div className="active-filters">
+          { activeFilters
+            .map((filter) => (
+              <span key={ filter } data-testid="filter">
+                { filter }
+                <button type="button" onClick={ () => removeFilter(filter) }>X</button>
+              </span>
+            ))}
+        </div>
+      );
     }
   };
 
-  const handleClick = () => {
+  const handleNumericFilter = () => {
     const { column, comparison, value } = filterByNumeric;
     let result;
     if (comparison === 'maior que') {
@@ -80,18 +85,22 @@ function Filters() {
     });
   };
 
+  const handleOrderFilter = () => console.log('clicou');
+
   const renderNameFilter = () => (
-    <input
-      type="text"
-      id="name-filter"
-      data-testid="name-filter"
-      placeholder="Pesquisar planeta"
-      onChange={ handleChange }
-    />
+    <div className="name-filter">
+      <input
+        type="text"
+        id="name-filter"
+        data-testid="name-filter"
+        placeholder="Pesquisar planeta"
+        onChange={ handleChange }
+      />
+    </div>
   );
 
   const renderNumericFilters = () => (
-    <div>
+    <div className="numeric-filters">
       <select
         name="column"
         id="column-filter"
@@ -123,7 +132,7 @@ function Filters() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ handleClick }
+        onClick={ handleNumericFilter }
       >
         Filtrar
       </button>
@@ -131,17 +140,44 @@ function Filters() {
   );
 
   const renderOrderFilters = () => (
-    <select data-testid="column-sort">
-      {resultsKeys[0].map((key) => <option value={ key } key={ key }>{key}</option>)}
-    </select>
+    <div className="order-filters">
+      <select data-testid="column-sort">
+        {resultsKeys[0].map((key) => <option value={ key } key={ key }>{key}</option>)}
+      </select>
+      <label htmlFor="column-sort-input-asc">
+        <input
+          type="radio"
+          id="column-sort-input-asc"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+        />
+        Ordem crescente
+      </label>
+      <label htmlFor="column-sort-input-desc">
+        <input
+          type="radio"
+          id="column-sort-input-desc"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+        />
+        Ordem decrescente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ handleOrderFilter }
+      >
+        Filtrar
+      </button>
+    </div>
   );
 
   return (
     <div className="filters-container">
-      <div className="name-filter">{ renderNameFilter() }</div>
-      <div className="numeric-filters">{ renderNumericFilters() }</div>
-      <div className="active-filters">{ renderActiveFilters() }</div>
-      <div className="order-filters">{ renderOrderFilters() }</div>
+      { renderNameFilter() }
+      { renderNumericFilters() }
+      { renderActiveFilters() }
+      { renderOrderFilters() }
     </div>
   );
 }
