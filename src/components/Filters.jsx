@@ -35,10 +35,20 @@ function Filters() {
     });
   };
 
+  const removeFilter = (filter) => {
+    setActiveFilters(activeFilters.filter((filt) => filt !== filter));
+    setColumnFilter((prevState) => [...prevState, filter]);
+    setFilteredData(results.map((res) => Object.values(res)));
+  };
+
   const renderActiveFilters = () => {
     if (activeFilters.length !== 0) {
       return activeFilters
-        .map((filter) => (<span key={ filter }>{ filter }</span>));
+        .map((filter) => (
+          <span key={ filter } data-testid="filter">
+            { filter }
+            <button type="button" onClick={ () => removeFilter(filter) }>X</button>
+          </span>));
     }
   };
 
