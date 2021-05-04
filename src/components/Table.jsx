@@ -3,31 +3,12 @@ import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
   const { data, filterPlanets } = useContext(StarWarsContext);
-  // const { filterByName: { name = '' } } = filters;
   const tableHead = data[0] || [];
 
   function renderTableHead() {
     return Object.keys(tableHead)
       .map((element, index) => <th key={ index }>{element}</th>);
   }
-
-  /* function filterPlanets() {
-    let planetList = data
-      .filter((planet) => planet.name.includes(name));
-    if (filters.filterByNumericValues.length > 0) {
-      filters.filterByNumericValues.forEach((element) => {
-        const { column, comparsion, value } = element;
-        if (comparsion === 'maior que') {
-          planetList = planetList.filter((planet) => +(planet[column]) > +(value));
-        } else if (comparsion === 'menor que') {
-          planetList = planetList.filter((planet) => +(planet[column]) < +(value));
-        } else {
-          planetList = planetList.filter((planet) => +(planet[column]) === +(value));
-        }
-      });
-    }
-    return planetList;
-  } */
 
   function tableBody() {
     return filterPlanets.map((planet) => (

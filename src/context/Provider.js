@@ -18,27 +18,22 @@ function Provider({ children }) {
     ],
   };
 
-  /* const INITIAL_COLUMNS = ['rotation_period', 'orbital_period', 'diameter',
-    'surface_water', 'population']; */
-
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(INITIAL_STATE);
   const [filterPlanets, setFilterPlanets] = useState([]);
-  // const [columns, setColumns] = useState(INITIAL_COLUMNS);
-  // const [filterByNumbers, setFilterByNumbers] = useState(
-  // INITIAL_STATE,
-  // );
 
   const getPlanets = async () => {
     const planets = await planetsAPI();
-    // const { results } = planets;
-    setData(planets.results);
+    const { results } = planets;
+    results.map((obj) => delete obj.residents);
+    setData(results);
   };
 
   useEffect(() => {
     getPlanets();
   }, []);
 
+  // Código feito com ajuda de colegas da turma do Discord
   useEffect(() => {
     const { filterByName: { name }, filterByNumericValues } = filters;
     const { column, comparison,
@@ -74,8 +69,6 @@ function Provider({ children }) {
         setFilters,
         filterPlanets,
         setFilterPlanets,
-        // filterByNumbers,
-        // setFilterByNumbers,
       } }
     >
       {children}
