@@ -2,32 +2,49 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function Table() {
-  const { contextValue: { data, filters } } = useContext(StarWarsContext);
+  const { data, filterPlanets } = useContext(StarWarsContext);
+  // const { filterByName: { name = '' } } = filters;
+  const tableHead = data[0] || [];
 
-  function filterPlanets() {
-    const { filterByName: { name } } = filters;
-    const planetsFilteredByname = data
-      .filter((planet) => planet.name.toLowerCase()
-        .includes(name.toLowerCase()));
-    return planetsFilteredByname;
+  function renderTableHead() {
+    return Object.keys(tableHead)
+      .map((element, index) => <th key={ index }>{element}</th>);
   }
 
-  function tableBody(planets) {
-    return planets.map((element, index) => (
-      <tr key={ index }>
-        <td>{ element.name }</td>
-        <td>{ element.rotation_period }</td>
-        <td>{ element.orbital_period }</td>
-        <td>{ element.diameter }</td>
-        <td>{ element.climate }</td>
-        <td>{ element.gravity }</td>
-        <td>{ element.terrain }</td>
-        <td>{ element.surface_water }</td>
-        <td>{ element.population }</td>
-        <td>{ element.films }</td>
-        <td>{ element.created }</td>
-        <td>{ element.edited }</td>
-        <td>{ element.url }</td>
+  /* function filterPlanets() {
+    let planetList = data
+      .filter((planet) => planet.name.includes(name));
+    if (filters.filterByNumericValues.length > 0) {
+      filters.filterByNumericValues.forEach((element) => {
+        const { column, comparsion, value } = element;
+        if (comparsion === 'maior que') {
+          planetList = planetList.filter((planet) => +(planet[column]) > +(value));
+        } else if (comparsion === 'menor que') {
+          planetList = planetList.filter((planet) => +(planet[column]) < +(value));
+        } else {
+          planetList = planetList.filter((planet) => +(planet[column]) === +(value));
+        }
+      });
+    }
+    return planetList;
+  } */
+
+  function tableBody() {
+    return filterPlanets.map((planet) => (
+      <tr key={ planet.name }>
+        <td>{ planet.name }</td>
+        <td>{ planet.rotation_period }</td>
+        <td>{ planet.orbital_period }</td>
+        <td>{ planet.diameter }</td>
+        <td>{ planet.climate }</td>
+        <td>{ planet.gravity }</td>
+        <td>{ planet.terrain }</td>
+        <td>{ planet.surface_water }</td>
+        <td>{ planet.population }</td>
+        <td>{ planet.films }</td>
+        <td>{ planet.created }</td>
+        <td>{ planet.edited }</td>
+        <td>{ planet.url }</td>
       </tr>
     ));
   }
@@ -36,23 +53,11 @@ function Table() {
     <table border="10">
       <thead>
         <tr>
-          <th>name</th>
-          <th>rotation_period</th>
-          <th>orbital_period</th>
-          <th>diameter</th>
-          <th>climate</th>
-          <th>gravity</th>
-          <th>terrain</th>
-          <th>surface_water</th>
-          <th>population</th>
-          <th>films</th>
-          <th>created</th>
-          <th>edited</th>
-          <th>url</th>
+          { renderTableHead() }
         </tr>
       </thead>
       <tbody>
-        {tableBody(filterPlanets())}
+        {tableBody()}
       </tbody>
     </table>
   );

@@ -6,30 +6,78 @@ import StarWarsContext from './StarWarsContext';
 
 function Provider({ children }) {
   const INITIAL_STATE = {
-    filterByName: { name: '' },
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [
+      {
+        column: '',
+        comparison: '',
+        value: '',
+      },
+    ],
   };
 
+  /* const INITIAL_COLUMNS = ['rotation_period', 'orbital_period', 'diameter',
+    'surface_water', 'population']; */
+
   const [data, setData] = useState([]);
-  const [filters, setFilterName] = useState(INITIAL_STATE);
+  const [filters, setFilters] = useState(INITIAL_STATE);
+  const [filterPlanets, setFilterPlanets] = useState([]);
+  // const [columns, setColumns] = useState(INITIAL_COLUMNS);
+  // const [filterByNumbers, setFilterByNumbers] = useState(
+  // INITIAL_STATE,
+  // );
 
   const getPlanets = async () => {
     const planets = await planetsAPI();
-    const { results } = planets;
-    setData(results);
+    // const { results } = planets;
+    setData(planets.results);
   };
 
   useEffect(() => {
     getPlanets();
   }, []);
 
-  const contextValue = {
-    data,
-    filters,
-    setFilterName,
-  };
+  useEffect(() => {
+    const { filterByName: { name }, filterByNumericValues } = filters;
+    const { column, comparison,
+      value } = filterByNumericValues[filterByNumericValues.length - 1];
+    const planetsFilteredByName = data
+      .filter((planet) => planet.name.toLowerCase().includes(name.toLowerCase()));
+    if (comparison === 'maior que') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
+      setFilterPlanets(result);
+    }
+    if (comparison === 'menor que') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
+      setFilterPlanets(result);
+    }
+    if (comparison === 'igual a') {
+      const result = planetsFilteredByName
+        .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
+      setFilterPlanets(result);
+    }
+    if (comparison === '') {
+      setFilterPlanets(planetsFilteredByName);
+    }
+  }, [data, filters]);
 
   return (
-    <StarWarsContext.Provider value={ { contextValue } }>
+    <StarWarsContext.Provider
+      value={ {
+        data,
+        filters,
+        setData,
+        setFilters,
+        filterPlanets,
+        setFilterPlanets,
+        // filterByNumbers,
+        // setFilterByNumbers,
+      } }
+    >
       {children}
     </StarWarsContext.Provider>
   );
