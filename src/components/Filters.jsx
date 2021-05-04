@@ -13,11 +13,11 @@ function Filters() {
     setColumnFilter,
     activeFilters,
     setActiveFilters,
+    resultsKeys,
   } = useContext(TableContext);
   const { results } = data;
 
   const handleChange = ({ target: { value } }) => {
-    // debugger;
     setFilterByName({ name: value });
 
     const nameToFilter = value.toLowerCase();
@@ -80,45 +80,46 @@ function Filters() {
     });
   };
 
-  return (
-    <div className="filters-container">
+  const renderNameFilter = () => (
+    <input
+      type="text"
+      id="name-filter"
+      data-testid="name-filter"
+      placeholder="Pesquisar planeta"
+      onChange={ handleChange }
+    />
+  );
+
+  const renderNumericFilters = () => (
+    <div>
+      <select
+        name="column"
+        id="column-filter"
+        data-testid="column-filter"
+        onChange={ numericFilters }
+      >
+        {/* SE O FILTRO JÁ FOI USADO ELE DESAPARECE DAQUI */}
+        {columnFilter.map((filter) => (
+          <option value={ filter } key={ filter }>{filter}</option>
+        ))}
+      </select>
+      <select
+        name="comparison"
+        id="comparison-filter"
+        data-testid="comparison-filter"
+        onChange={ numericFilters }
+      >
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
+      </select>
       <input
-        type="text"
-        id="name-filter"
-        data-testid="name-filter"
-        placeholder="Pesquisar planeta"
-        onChange={ handleChange }
+        name="value"
+        type="number"
+        data-testid="value-filter"
+        placeholder="Quantidade"
+        onChange={ numericFilters }
       />
-      <div className="numeric-filters">
-        <select
-          name="column"
-          id="column-filter"
-          data-testid="column-filter"
-          onChange={ numericFilters }
-        >
-          {/* SE O FILTRO JÁ FOI USADO ELE DESAPARECE DAQUI */}
-          {columnFilter.map((filter) => (
-            <option value={ filter } key={ filter }>{filter}</option>
-          ))}
-        </select>
-        <select
-          name="comparison"
-          id="comparison-filter"
-          data-testid="comparison-filter"
-          onChange={ numericFilters }
-        >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-        <input
-          name="value"
-          type="number"
-          data-testid="value-filter"
-          placeholder="Quantidade"
-          onChange={ numericFilters }
-        />
-      </div>
       <button
         type="button"
         data-testid="button-filter"
@@ -126,7 +127,21 @@ function Filters() {
       >
         Filtrar
       </button>
-      <div>{ renderActiveFilters() }</div>
+    </div>
+  );
+
+  const renderOrderFilters = () => (
+    <select data-testid="column-sort">
+      {resultsKeys[0].map((key) => <option value={ key } key={ key }>{key}</option>)}
+    </select>
+  );
+
+  return (
+    <div className="filters-container">
+      <div className="name-filter">{ renderNameFilter() }</div>
+      <div className="numeric-filters">{ renderNumericFilters() }</div>
+      <div className="active-filters">{ renderActiveFilters() }</div>
+      <div className="order-filters">{ renderOrderFilters() }</div>
     </div>
   );
 }

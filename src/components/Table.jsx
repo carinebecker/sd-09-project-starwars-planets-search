@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
 function Table() {
-  const { data, filteredData } = useContext(TableContext);
-  const { results } = data;
-  const resultsKeys = results.map((res) => Object.keys(res));
+  const { filteredData, resultsKeys } = useContext(TableContext);
 
   function renderHeader() {
     return resultsKeys[0].map((each, i) => (

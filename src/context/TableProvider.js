@@ -5,6 +5,7 @@ import TableContext from './TableContext';
 function TableProvider({ children }) {
   const [data, setData] = useState([]);
   const [isFetching, setFetching] = useState(true);
+  const [resultsKeys, setResultsKeys] = useState([])
   const [filteredData, setFilteredData] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [columnFilter, setColumnFilter] = useState([
@@ -27,9 +28,9 @@ function TableProvider({ children }) {
         // Obrigada Rafa Reis pela dica do delete
       apiData.results.forEach((element) => delete element.residents);
       setData(apiData);
+      setFilteredData(apiData.results.map((res) => Object.values(res)));
+      setResultsKeys(apiData.results.map((res) => Object.keys(res)));
       setFetching(false);
-      const apiDataValues = apiData.results.map((res) => Object.values(res));
-      setFilteredData(apiDataValues);
     };
     getData();
   }, []);
@@ -49,6 +50,7 @@ function TableProvider({ children }) {
     setColumnFilter,
     activeFilters,
     setActiveFilters,
+    resultsKeys,
   };
 
   return (
