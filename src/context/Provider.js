@@ -18,9 +18,13 @@ function Provider({ children }) {
     ],
   };
 
+  const INITIAL_COLUMNS = ['rotation_period', 'orbital_period',
+    'surface_water', 'population'];
+
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(INITIAL_STATE);
   const [filterPlanets, setFilterPlanets] = useState([]);
+  const [columns, setColumns] = useState(INITIAL_COLUMNS);
 
   const getPlanets = async () => {
     const planets = await planetsAPI();
@@ -69,6 +73,8 @@ function Provider({ children }) {
         setFilters,
         filterPlanets,
         setFilterPlanets,
+        columns,
+        setColumns,
       } }
     >
       {children}
