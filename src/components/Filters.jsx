@@ -31,8 +31,8 @@ function Filters() {
     setColumns([...columns, column]);
     setFilters({
       ...filters,
-      filterByNumericValues: filterByNumericValues.filter((value) => (
-        value.column !== column
+      filterByNumericValues: filterByNumericValues.filter((item) => (
+        item.column !== column
       )),
     });
   };

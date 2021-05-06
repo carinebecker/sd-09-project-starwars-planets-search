@@ -6,21 +6,16 @@ const INITIAL_STATE = {
   sort: 'ASC',
 };
 
-const INITIAL_COLUMN = ['name', 'rotation_period', 'orbital_period', 'diameter',
-  'surface_water', 'population'];
-
 function ColumnOrdering() {
-  const { filters, setFilters } = useContext(StarWarsContext);
+  const { filters, setFilters, data } = useContext(StarWarsContext);
   const [sortColumn, setSortColumn] = useState(INITIAL_STATE);
+  const tableHead = data[0] || [];
 
   function handleChange({ target }) {
     const { name, value } = target;
     setSortColumn({ ...sortColumn, [name]: value });
   }
 
-  // function sortButton() {
-  //   ordenation(orderByFilters);
-  // }
   function handleClick() {
     const { column, sort } = sortColumn;
     setFilters({
@@ -40,14 +35,9 @@ function ColumnOrdering() {
         data-testid="column-sort"
         onChange={ handleChange }
       >
-        { INITIAL_COLUMN.map((columnOption) => (
-          <option key={ columnOption }>{ columnOption }</option>
+        {Object.keys(tableHead).map((columnOption, index) => (
+          <option key={ index }>{ columnOption }</option>
         ))}
-        {/* {Object.keys(data.results[0]).map((columnOption) => (
-          <option key={ columnOption }>
-            { columnOption }
-          </option>
-        ))} */}
       </select>
       <div>
         <label htmlFor="column-sort-input-asc">
