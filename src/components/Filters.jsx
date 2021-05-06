@@ -5,6 +5,7 @@ function Filters() {
   const {
     data,
     setFilterByName,
+    filteredData,
     setFilteredData,
     setFilterByNumeric,
     filterByNumeric,
@@ -14,6 +15,8 @@ function Filters() {
     activeFilters,
     setActiveFilters,
     resultsKeys,
+    order,
+    setOrder,
   } = useContext(TableContext);
   const { results } = data;
 
@@ -85,8 +88,6 @@ function Filters() {
     });
   };
 
-  const handleOrderFilter = () => console.log('clicou');
-
   const renderNameFilter = () => (
     <div className="name-filter">
       <input
@@ -107,7 +108,6 @@ function Filters() {
         data-testid="column-filter"
         onChange={ numericFilters }
       >
-        {/* SE O FILTRO JÁ FOI USADO ELE DESAPARECE DAQUI */}
         {columnFilter.map((filter) => (
           <option value={ filter } key={ filter }>{filter}</option>
         ))}
@@ -139,26 +139,68 @@ function Filters() {
     </div>
   );
 
+  const handleOrderChange = (e) => {
+    const { name, value } = e.target;
+    setOrder({ ...order, [name]: value });
+  };
+
+  const handleOrderFilter = () => {
+    const { column, sort } = order;
+    let result;
+    if (sort === 'ASC') {
+      result = results.map((res) => res[column]).sort((a, b) => {
+        if (a > b) {
+          return 1;
+        }
+        if (a < b) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+
+    if (sort === 'DESC') {
+      result = results.map((res) => res[column]).sort((a, b) => {
+        if (a > b) {
+          return -1;
+        }
+        if (a < b) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    setFilteredData((prevState) => [...prevState, result]);
+  };
+
   const renderOrderFilters = () => (
     <div className="order-filters">
-      <select data-testid="column-sort">
+      <select
+        data-testid="column-sort"
+        name="column"
+        onChange={ (e) => handleOrderChange(e) }
+      >
         {resultsKeys[0].map((key) => <option value={ key } key={ key }>{key}</option>)}
       </select>
       <label htmlFor="column-sort-input-asc">
         <input
           type="radio"
+          name="sort"
           id="column-sort-input-asc"
           data-testid="column-sort-input-asc"
           value="ASC"
+          onClick={ (e) => handleOrderChange(e) }
         />
         Ordem crescente
       </label>
       <label htmlFor="column-sort-input-desc">
         <input
           type="radio"
+          name="sort"
           id="column-sort-input-desc"
           data-testid="column-sort-input-desc"
           value="DESC"
+          onClick={ (e) => handleOrderChange(e) }
         />
         Ordem decrescente
       </label>
