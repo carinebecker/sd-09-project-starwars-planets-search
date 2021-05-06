@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import ColumnOrdering from './ColumnOrdering';
 
 function Filters() {
   const INITIAL_STATE = {
@@ -120,6 +121,7 @@ function Filters() {
         </button>
       </div>
       { renderFiltersOptions() }
+      <ColumnOrdering />
     </section>
   );
 }

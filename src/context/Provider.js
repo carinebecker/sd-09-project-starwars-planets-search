@@ -16,6 +16,10 @@ function Provider({ children }) {
         value: '',
       },
     ],
+    order: {
+      column: 'name',
+      sort: '',
+    },
   };
 
   const INITIAL_COLUMNS = ['rotation_period', 'orbital_period',
@@ -37,6 +41,27 @@ function Provider({ children }) {
     getPlanets();
   }, []);
 
+  const compare = (planet1, planet2) => {
+    const { order } = filters;
+    const magicNumber = -1;
+    if (order.sort === 'ASC') {
+      return (planet1 > planet2) ? 1 : magicNumber;
+    }
+    if (order.sort === 'DESC') {
+      return (planet2 > planet1) ? 1 : magicNumber;
+    }
+    return 0;
+  };
+
+  const sortPlanets = (planets) => {
+    const { order: { column } } = filters;
+    planets.sort((planet1, planet2) => {
+      const A = (column === 'name') ? planet1[column] : parseInt(planet1[column], 10);
+      const B = (column === 'name') ? planet2[column] : parseInt(planet2[column], 10);
+      return compare(A, B);
+    });
+  };
+
   // Código feito com ajuda de colegas da turma do Discord
   useEffect(() => {
     const { filterByName: { name }, filterByNumericValues } = filters;
@@ -48,19 +73,23 @@ function Provider({ children }) {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) > parseInt(value, 10));
       setFilterPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === 'menor que') {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) < parseInt(value, 10));
       setFilterPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === 'igual a') {
       const result = planetsFilteredByName
         .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10));
       setFilterPlanets(result);
+      sortPlanets(result);
     }
     if (comparison === '') {
       setFilterPlanets(planetsFilteredByName);
+      sortPlanets(planetsFilteredByName);
     }
   }, [data, filters]);
 
@@ -75,6 +104,7 @@ function Provider({ children }) {
         setFilterPlanets,
         columns,
         setColumns,
+        // ordenation,
       } }
     >
       {children}
