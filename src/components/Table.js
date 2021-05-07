@@ -5,7 +5,10 @@ import './Table.css';
 const Table = () => {
   const [planetsName, setPlanetsName] = useState([]);
   const [searchPlanet, setSearchPlanet] = useState('');
-  const [state, setState] = useState({});
+  const [state, setState] = useState({ column: 'population' });
+  const [colunas, setColunas] = useState(['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water']);
+  const [filtros, setFiltros] = useState([]);
   const { data } = useContext(StarWarsContext);
 
   const handleChangeSelects = ({ target }) => {
@@ -13,9 +16,21 @@ const Table = () => {
     setState({ ...state, [name]: value });
   };
 
-  // const handleClick = () => {
-  //   addFiltersInputs(state);
-  // };
+  const mostrarFiltro = () => {
+    setFiltros([...filtros, state.column]);
+  };
+
+  const removerColuna = (coluna) => {
+    const colunasFiltradas = colunas
+      .filter((colunaFiltrada) => colunaFiltrada !== coluna);
+    setColunas(colunasFiltradas);
+  };
+
+  const adicionarColuna = (filtro) => {
+    setColunas([...colunas, filtro]);
+    setFiltros(filtros.filter((coluna) => coluna !== filtro));
+    setPlanetsName(data);
+  };
 
   const filtersValues = () => {
     if (state.comparison === 'menor que') {
@@ -30,6 +45,8 @@ const Table = () => {
       setPlanetsName(data
         .filter((planet) => (planet[state.column] === state.value)));
     }
+    mostrarFiltro();
+    removerColuna(state.column);
   };
 
   useEffect(() => {
@@ -68,11 +85,8 @@ const Table = () => {
             id="columnFilter"
             data-testid="column-filter"
           >
-            <option>population</option>
-            <option>orbital_period</option>
-            <option>diameter</option>
-            <option>rotation_period</option>
-            <option>surface_water</option>
+            { colunas.map((coluna) => <option key={ coluna }>{coluna}</option>) }
+
           </select>
         </label>
         <label htmlFor="comparisonFilter">
@@ -103,6 +117,17 @@ const Table = () => {
         >
           Filtrar
         </button>
+        <br />
+        { filtros.map((filtro) => (
+          <div data-testid="filter" key={ filtro }>
+            <spam>
+              {' '}
+              { filtro }
+              {' '}
+            </spam>
+            <button type="button" onClick={ () => adicionarColuna(filtro) }>X</button>
+          </div>
+        ))}
       </forms>
       <table>
         <thead>
