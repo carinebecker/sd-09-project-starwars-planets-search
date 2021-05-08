@@ -148,11 +148,11 @@ function Filters() {
     const { column, sort } = order;
     let result;
     if (sort === 'ASC') {
-      result = results.map((res) => res[column]).sort((a, b) => {
-        if (a > b) {
+      result = filteredData.sort((a, b) => {
+        if (a[column] > b[column]) {
           return 1;
         }
-        if (a < b) {
+        if (a[column] < b[column]) {
           return -1;
         }
         return 0;
@@ -160,17 +160,17 @@ function Filters() {
     }
 
     if (sort === 'DESC') {
-      result = results.map((res) => res[column]).sort((a, b) => {
-        if (a > b) {
+      result = filteredData.sort((a, b) => {
+        if (a[column] > b[column]) {
           return -1;
         }
-        if (a < b) {
+        if (a[column] < b[column]) {
           return 1;
         }
         return 0;
       });
     }
-    setFilteredData((prevState) => [...prevState, result]);
+    setFilteredData(result);
   };
 
   const renderOrderFilters = () => (
