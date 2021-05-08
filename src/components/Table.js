@@ -8,8 +8,11 @@ const Table = () => {
   const [state, setState] = useState({ column: 'population' });
   const [colunas, setColunas] = useState(['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water']);
+
+  const [orderColumn, setOrderColumn] = useState({});
+  const orderColumnArray = ['Name', ...colunas];
   const [filtros, setFiltros] = useState([]);
-  const { data } = useContext(StarWarsContext);
+  const { data, handleClick} = useContext(StarWarsContext);
 
   const handleChangeSelects = ({ target }) => {
     const { name, value } = target;
@@ -62,6 +65,10 @@ const Table = () => {
 
   const handleChange = ({ target }) => {
     setSearchPlanet(target.value);
+  };
+
+  const handleChangeOrder = ({ target }) => {
+    setOrderColumn({ ...orderColumn, [target.name]: target.value });
   };
 
   return (
@@ -128,6 +135,45 @@ const Table = () => {
             <button type="button" onClick={ () => adicionarColuna(filtro) }>X</button>
           </div>
         ))}
+        <label htmlFor="column-sort">
+          <select
+            onChange={ handleChangeOrder }
+            name="column"
+            id="column-sort"
+            data-testid="column-sort"
+          >
+            { orderColumnArray.map((orCol) => (
+              <option
+                value={ orCol }
+                key={ orCol }
+              >
+                {orCol}
+              </option>))}
+          </select>
+        </label>
+        <label htmlFor="column-sort-input-asc">
+          asc
+          <input
+            onChange={ handleChangeOrder }
+            type="radio"
+            value="ASC"
+            name="sort"
+            id="column-sort-input-asc"
+            testid="column-sort-input-asc"
+          />
+        </label>
+        <label htmlFor="column-sort-input-desc">
+          desc
+          <input
+            onChange={ handleChangeOrder }
+            type="radio"
+            value="DESC"
+            name="sort"
+            id="column-sort-input-desc"
+            data-testid="column-sort-input-desc"
+          />
+        </label>
+        <button type="button" data-testid="column-sort-button" onClick={ () => handleClick(orderColumn) }>Ordenar</button>
       </forms>
       <table>
         <thead>
@@ -140,7 +186,7 @@ const Table = () => {
         <tbody>
           {planetsName.map((planet) => (
             <tr key={ planet.name }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>
