@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
-// import handleOrderFilter from '../store';
+import handleOrderFilter from '../store';
 
 function Filters() {
   const {
@@ -145,33 +145,9 @@ function Filters() {
     setOrder({ ...order, [name]: value });
   };
 
-  const handleOrderFilter = (planets, { column, sort }) => {
-    const negative = -1;
-    let result;
-    if (sort === 'ASC') {
-      result = planets.sort((a, b) => {
-        if (a[column] > b[column]) {
-          return 1;
-        }
-        if (a[column] < b[column]) {
-          return negative;
-        }
-        return 0;
-      });
-    }
-
-    if (sort === 'DESC') {
-      result = planets.sort((a, b) => {
-        if (a[column] > b[column]) {
-          return negative;
-        }
-        if (a[column] < b[column]) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    setFilteredData(result);
+  const handleOrder = () => {
+    const planets = handleOrderFilter(filteredData, order);
+    setFilteredData(planets);
   };
 
   const renderOrderFilters = () => (
@@ -208,7 +184,7 @@ function Filters() {
       <button
         type="button"
         data-testid="column-sort-button"
-        onClick={ () => handleOrderFilter(filteredData, order) }
+        onClick={ handleOrder }
       >
         Filtrar
       </button>

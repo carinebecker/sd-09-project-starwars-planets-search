@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
-// import handleOrderFilter from '../store';
 
 function Table() {
   const { filteredData, resultsKeys } = useContext(TableContext);
@@ -10,7 +9,6 @@ function Table() {
       <th key={ i }>{each.toUpperCase().replace('_', ' ')}</th>
     ));
   }
-  console.log(filteredData);
   function renderBody() {
     return filteredData.map((res) => Object.values(res)).map((planet, i) => {
       const td = planet.map((currValue, index) => (

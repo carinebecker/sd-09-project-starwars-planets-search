@@ -2,7 +2,7 @@ import React from 'react';
 import Table from './components/Table';
 import './App.css';
 import TableProvider from './context/TableProvider';
-import SearchBar from './components/Filters';
+import Filters from './components/Filters';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       </header>
       {/* OBRIGADA LUCIANO LODI PELA AJUDA 🙏🏻 */}
       <TableProvider>
-        <SearchBar />
+        <Filters />
         <Table />
       </TableProvider>
     </div>
