@@ -32,7 +32,7 @@ function TableProvider({ children }) {
         // Obrigada Rafa Reis pela dica do delete
       apiData.results.forEach((element) => delete element.residents);
       setData(apiData);
-      setFilteredData(apiData.results.map((res) => Object.values(res)));
+      setFilteredData(apiData.results);
       setResultsKeys(apiData.results.map((res) => Object.keys(res)));
       setFetching(false);
     };

@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
+// import handleOrderFilter from '../store';
 
 function Filters() {
   const {
     data,
     setFilterByName,
-    filteredData,
     setFilteredData,
+    filteredData,
     setFilterByNumeric,
     filterByNumeric,
     setFilterByNumericValues,
@@ -139,30 +140,30 @@ function Filters() {
     </div>
   );
 
-  const handleOrderChange = (e) => {
-    const { name, value } = e.target;
+  const handleOrderChange = ({ target }) => {
+    const { name, value } = target;
     setOrder({ ...order, [name]: value });
   };
 
-  const handleOrderFilter = () => {
-    const { column, sort } = order;
+  const handleOrderFilter = (planets, { column, sort }) => {
+    const negative = -1;
     let result;
     if (sort === 'ASC') {
-      result = filteredData.sort((a, b) => {
+      result = planets.sort((a, b) => {
         if (a[column] > b[column]) {
           return 1;
         }
         if (a[column] < b[column]) {
-          return -1;
+          return negative;
         }
         return 0;
       });
     }
 
     if (sort === 'DESC') {
-      result = filteredData.sort((a, b) => {
+      result = planets.sort((a, b) => {
         if (a[column] > b[column]) {
-          return -1;
+          return negative;
         }
         if (a[column] < b[column]) {
           return 1;
@@ -178,7 +179,7 @@ function Filters() {
       <select
         data-testid="column-sort"
         name="column"
-        onChange={ (e) => handleOrderChange(e) }
+        onChange={ handleOrderChange }
       >
         {resultsKeys[0].map((key) => <option value={ key } key={ key }>{key}</option>)}
       </select>
@@ -189,7 +190,7 @@ function Filters() {
           id="column-sort-input-asc"
           data-testid="column-sort-input-asc"
           value="ASC"
-          onClick={ (e) => handleOrderChange(e) }
+          onChange={ handleOrderChange }
         />
         Ordem crescente
       </label>
@@ -200,14 +201,14 @@ function Filters() {
           id="column-sort-input-desc"
           data-testid="column-sort-input-desc"
           value="DESC"
-          onClick={ (e) => handleOrderChange(e) }
+          onChange={ handleOrderChange }
         />
         Ordem decrescente
       </label>
       <button
         type="button"
         data-testid="column-sort-button"
-        onClick={ handleOrderFilter }
+        onClick={ () => handleOrderFilter(filteredData, order) }
       >
         Filtrar
       </button>
