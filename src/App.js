@@ -1,9 +1,14 @@
 import React from 'react';
+import Routes from './routes/index';
+import PlanetsContext from './context/PlanetsContext';
+
 import './App.css';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <PlanetsContext>
+      <Routes />
+    </PlanetsContext>
   );
 }
 
