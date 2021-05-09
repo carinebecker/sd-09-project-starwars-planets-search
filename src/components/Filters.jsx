@@ -6,7 +6,6 @@ function Filters() {
     data,
     setFilterByName,
     setFilteredData,
-    // filteredData,
     setFilterByNumeric,
     filterByNumeric,
     setFilterByNumericValues,
@@ -15,7 +14,6 @@ function Filters() {
     activeFilters,
     setActiveFilters,
     resultsKeys,
-    order,
     setOrder,
   } = useContext(TableContext);
   const { results } = data;
