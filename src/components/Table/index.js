@@ -3,9 +3,17 @@ import { Link } from 'react-router-dom';
 
 import { ContextPlanets } from '../../context/PlanetsContext';
 
-function Table() {
-  const planets = useContext(ContextPlanets);
+function filterData(data, filters) {
+  const { filterByName: { name } } = filters;
+  const filteredData = data.filter((planet) => planet.name.includes(name));
+  return filteredData;
+};
 
+function Table() {
+  const { data, filters } = useContext(ContextPlanets);
+
+  const filteredData = filterData(data, filters);
+  console.log(filteredData);
   const render = () => (
     <table>
       <thead>
@@ -26,7 +34,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planets.map((planet) => (
+        { filteredData.map((planet) => (
           <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>

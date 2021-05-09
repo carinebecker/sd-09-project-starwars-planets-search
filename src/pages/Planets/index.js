@@ -1,9 +1,14 @@
 import React from 'react';
 import Table from '../../components/Table/index';
+import Filters from '../../components/Filters';
 
 function Planets() {
+
   return (
-    <Table />
+    <div>
+      <Filters />
+      <Table />
+    </div>
   );
 }
 

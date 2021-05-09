@@ -7,6 +7,11 @@ export const ContextPlanets = createContext();
 function PlanetsContext(props) {
   const { children } = props;
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     const connect = async () => {
@@ -16,8 +21,23 @@ function PlanetsContext(props) {
     connect();
   }, []);
 
+  const filterByName = (name) => {
+    setFilters({
+      ...filters,
+      filterByName: {
+        name,
+      },
+    });
+  };
+
+  const contextValue = {
+    data,
+    filters,
+    filterByName,
+  };
+
   return (
-    <ContextPlanets.Provider value={ data }>
+    <ContextPlanets.Provider value={ contextValue }>
       { children }
     </ContextPlanets.Provider>
   );
