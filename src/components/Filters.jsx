@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import TableContext from '../context/TableContext';
-import handleOrderFilter from '../store';
 
 function Filters() {
   const {
     data,
     setFilterByName,
     setFilteredData,
-    filteredData,
+    // filteredData,
     setFilterByNumeric,
     filterByNumeric,
     setFilterByNumericValues,
@@ -140,14 +139,14 @@ function Filters() {
     </div>
   );
 
+  const [state, setState] = useState({ column: 'name', sort: 'ASC' });
   const handleOrderChange = ({ target }) => {
     const { name, value } = target;
-    setOrder({ ...order, [name]: value });
+    setState({ ...state, [name]: value });
   };
 
-  const handleOrder = () => {
-    const planets = handleOrderFilter(filteredData, order);
-    setFilteredData(planets);
+  const handleOrderClick = () => {
+    setOrder(state);
   };
 
   const renderOrderFilters = () => (
@@ -184,7 +183,7 @@ function Filters() {
       <button
         type="button"
         data-testid="column-sort-button"
-        onClick={ handleOrder }
+        onClick={ handleOrderClick }
       >
         Filtrar
       </button>

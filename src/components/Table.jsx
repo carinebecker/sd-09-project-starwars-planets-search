@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
+import handleOrderFilter from '../store';
 
 function Table() {
-  const { filteredData, resultsKeys } = useContext(TableContext);
+  const { filteredData, resultsKeys, order } = useContext(TableContext);
+
+  const planets = handleOrderFilter(filteredData, order);
 
   function renderHeader() {
     return resultsKeys[0].map((each, i) => (
@@ -10,7 +13,7 @@ function Table() {
     ));
   }
   function renderBody() {
-    return filteredData.map((res) => Object.values(res)).map((planet, i) => {
+    return planets.map((res) => Object.values(res)).map((planet, i) => {
       const td = planet.map((currValue, index) => (
         <td key={ index }>{currValue}</td>
       ));
