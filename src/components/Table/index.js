@@ -7,7 +7,7 @@ function filterData(data, filters) {
   const { filterByName: { name } } = filters;
   const filteredData = data.filter((planet) => planet.name.includes(name));
   return filteredData;
-};
+}
 
 function Table() {
   const { data, filters } = useContext(ContextPlanets);
