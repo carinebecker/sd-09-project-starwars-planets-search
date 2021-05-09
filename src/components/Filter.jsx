@@ -10,13 +10,14 @@ const handleInputChange = (event, key, setState) => {
 };
 
 const removeFilter = (index, filters, setFilters) => {
-  filters.filterByNumericValues.splice(index, 1);
-  setFilters(filters);
+  const newFilters = { ...filters };
+  newFilters.filterByNumericValues.splice(index, 1);
+  setFilters(newFilters);
 };
 
 const renderCurrentFilters = (filters, setFilters) => (
   filters.filterByNumericValues.map(({ column, comparison, value }, index) => (
-    <div key={ index }>
+    <div key={ index } data-testid="filter">
       <span>{column}</span>
       <span>{comparison}</span>
       <span>{value}</span>
@@ -79,13 +80,15 @@ const Filter = () => {
   const { filters, setFilters } = useFilters();
   const [column, setColumn] = useState(false);
   const [comparison, setComparison] = useState('maior que');
+  const [selectFilter, setSelectFilter] = useState();
   const [appliedFilter, setAppliedFilter] = useState();
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    setAppliedFilter(renderNumericFilter(setColumn, setComparison, setValue,
+    setSelectFilter(renderNumericFilter(setColumn, setComparison, setValue,
       filters.filterByNumericValues));
-  }, [filters]);
+    setAppliedFilter(renderCurrentFilters(filters, setFilters));
+  }, [filters, setFilters]);
 
   const addNumericFilter = () => {
     if (!column) {
@@ -111,8 +114,8 @@ const Filter = () => {
         data-testid="name-filter"
       />
       <div>
-        {renderCurrentFilters(filters, setFilters)}
         {appliedFilter}
+        {selectFilter}
         <button
           type="button"
           onClick={ () => addNumericFilter() }
