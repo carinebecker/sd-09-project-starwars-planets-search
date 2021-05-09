@@ -15,7 +15,9 @@ function Table() {
   function renderBody() {
     return planets.map((res) => Object.values(res)).map((planet, i) => {
       const td = planet.map((currValue, index) => (
-        <td key={ index }>{currValue}</td>
+        planet[0] === currValue
+          ? <td key={ index } data-testid="planet-name">{currValue}</td>
+          : <td key={ index }>{currValue}</td>
       ));
       return (<tr key={ i }>{ td }</tr>);
     });
