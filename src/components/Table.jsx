@@ -46,8 +46,12 @@ const handleDataFiltering = (data, filters) => {
           return false;
         }
       })));
-    filteredData = filteredData
-      .reduce((array, currentValue) => [...array, ...currentValue], []);
+    if (filteredData.length > 1) {
+      filteredData = filteredData[0]
+        .filter((element) => filteredData[1].includes(element));
+    } else {
+      filteredData = [...filteredData[0]];
+    }
   }
   return filteredData || data;
 };
