@@ -1,67 +1,54 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 import './Table.css';
 
 const Table = () => {
-  const [planetsName, setPlanetsName] = useState([]);
   const [searchPlanet, setSearchPlanet] = useState('');
-  const [state, setState] = useState({ column: 'population' });
+  const [state, setState] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
   const [colunas, setColunas] = useState(['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water']);
 
-  const [orderColumn, setOrderColumn] = useState({});
+  const [orderColumn, setOrderColumn] = useState({
+    column: 'Name',
+    sort: 'ASC',
+  });
+  
   const orderColumnArray = ['Name', ...colunas];
-  const [filtros, setFiltros] = useState([]);
-  const { data, handleClick} = useContext(StarWarsContext);
+
+  const { data, handleClick, addFiltersInputs, filters, removeFilter, orderPlanets } = useContext(StarWarsContext);
 
   const handleChangeSelects = ({ target }) => {
     const { name, value } = target;
     setState({ ...state, [name]: value });
   };
 
-  const mostrarFiltro = () => {
-    setFiltros([...filtros, state.column]);
+  const filtersValues = (planets) => {
+    filters.filterByNumericValues.forEach((filter) => {
+      if (filter.comparison === 'menor que') {
+        planets = planets.filter((planet) => (planet[filter.column] < +(filter.value)));
+      }
+      if (filter.comparison === 'maior que') {
+        planets = planets.filter((planet) => (planet[filter.column] > +(filter.value)));
+      }
+      if (filter.comparison === 'igual a') {
+        planets = planets.filter((planet) => (planet[filter.column] === filter.value));
+      }
+    });
+    return planets;
   };
 
-  const removerColuna = (coluna) => {
-    const colunasFiltradas = colunas
-      .filter((colunaFiltrada) => colunaFiltrada !== coluna);
-    setColunas(colunasFiltradas);
+  if (!data.length) return <h1>loading</h1>;
+
+  const dataPlanets = orderPlanets(data);
+
+  const filtersColumn = () => {
+    addFiltersInputs(state);
+    setColunas(colunas.filter((coluna) => coluna !== state.column));
   };
-
-  const adicionarColuna = (filtro) => {
-    setColunas([...colunas, filtro]);
-    setFiltros(filtros.filter((coluna) => coluna !== filtro));
-    setPlanetsName(data);
-  };
-
-  const filtersValues = () => {
-    if (state.comparison === 'menor que') {
-      setPlanetsName(data
-        .filter((planet) => (planet[state.column] < parseInt(state.value, 10))));
-    }
-    if (state.comparison === 'maior que') {
-      setPlanetsName(data
-        .filter((planet) => (planet[state.column] > parseInt(state.value, 10))));
-    }
-    if (state.comparison === 'igual a') {
-      setPlanetsName(data
-        .filter((planet) => (planet[state.column] === state.value)));
-    }
-    mostrarFiltro();
-    removerColuna(state.column);
-  };
-
-  useEffect(() => {
-    const filtrando = data.filter((planet) => planet.name.includes(searchPlanet));
-    if (filtrando.length !== 0) {
-      setPlanetsName(filtrando);
-    } else {
-      setPlanetsName(data);
-    }
-  }, [data, searchPlanet]);
-
-  if (planetsName.length < 1) return <h1>loading</h1>;
 
   const handleChange = ({ target }) => {
     setSearchPlanet(target.value);
@@ -73,7 +60,7 @@ const Table = () => {
 
   return (
     <div>
-      <forms>
+      <form>
         <label htmlFor="filterByName">
           Pesquisar um planeta você deve fazer:
           <input
@@ -119,20 +106,20 @@ const Table = () => {
         </label>
         <button
           type="button"
-          onClick={ filtersValues }
+          onClick={ filtersColumn }
           data-testid="button-filter"
         >
           Filtrar
         </button>
         <br />
-        { filtros.map((filtro) => (
+        { filters.filterByNumericValues.map((filtro) => (
           <div data-testid="filter" key={ filtro }>
-            <spam>
-              {' '}
-              { filtro }
-              {' '}
-            </spam>
-            <button type="button" onClick={ () => adicionarColuna(filtro) }>X</button>
+            <span>
+              { filtro.column }
+              { filtro.comparison }
+              { filtro.value }
+            </span>
+            <button type="button" onClick={ () => removeFilter(filtro) }>X</button>
           </div>
         ))}
         <label htmlFor="column-sort">
@@ -173,18 +160,24 @@ const Table = () => {
             data-testid="column-sort-input-desc"
           />
         </label>
-        <button type="button" data-testid="column-sort-button" onClick={ () => handleClick(orderColumn) }>Ordenar</button>
-      </forms>
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ () => handleClick(orderColumn) }
+        >
+          Ordenar
+        </button>
+      </form>
       <table>
         <thead>
           <tr>
-            {Object.keys(planetsName[0]).map((header) => (
+            {Object.keys(data[0]).map((header) => (
               <th key={ header }>{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {planetsName.map((planet) => (
+          { filtersValues(dataPlanets).filter((planet) => planet.name.includes(searchPlanet)).map((planet) => (
             <tr key={ planet.name }>
               <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>

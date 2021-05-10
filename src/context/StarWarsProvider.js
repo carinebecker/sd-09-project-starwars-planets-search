@@ -12,45 +12,58 @@ const INITIAL_FILTERS = {
 };
 
 function StarWarsProvider({ children }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const context = { data };
 
+  const fetchData = async () => {
+    const planetsApi = await getPlanets();
+    setData(planetsApi);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const planetsApi = await getPlanets();
-      planetsApi.sort((a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
-      });
-      setData(planetsApi);
-    };
     fetchData();
   }, []);
 
-  const addFiltersInputs = (obj) => {
+  const addFiltersInputs = (filterObj) => {
     setFilters({
       ...filters,
-      filterByNumericValues: [...filters.filterByNumericValues, obj],
+      filterByNumericValues: [...filters.filterByNumericValues, filterObj],
     });
   };
 
-  const orderPlanets = () => {
+  // https://www.javascripttutorial.net/array/javascript-sort-an-array-of-objects/
+
+  const orderPlanets = (planets) => {
     const { order } = filters;
+    const menosUm = -1;
+    if (order.column === 'Name') {
+      return planets.sort((a, b) => {
+        if (a.name < b.name) return order.sort === 'ASC' ? menosUm : 1;
+        if (a.name > b.name) return order.sort === 'ASC' ? 1 : menosUm;
+        return 0;
+      });
+    }
+
     if (order.sort === 'ASC') {
-      setData(data.sort((a, b) => a[order.column] - b[order.column]));
+      return planets.sort((a, b) => a[order.column] - b[order.column]);
     }
     if (order.sort === 'DESC') {
-      setData(data.sort((a, b) => b[order.column] - a[order.column]));
+      return planets.sort((a, b) => b[order.column] - a[order.column]);
     }
+  };
+
+  const removeFilter = (filter) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: filters.filterByNumericValues
+        .filter((fil) => fil !== filter),
+    });
   };
 
   const handleClick = (orderColumn) => {
     setFilters({ ...filters, order: orderColumn });
-    orderPlanets();
   };
-  const value = { context, data, addFiltersInputs, handleClick, filters };
+
+  const value = { data, addFiltersInputs, handleClick, filters, removeFilter, orderPlanets };
 
   return (
     <main>
