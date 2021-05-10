@@ -50,7 +50,6 @@ function StarWarsProvider({ children }) {
       return planets.sort((a, b) => b[order.column] - a[order.column]);
     }
   };
-
   const removeFilter = (filter) => {
     setFilters({
       ...filters,
@@ -63,7 +62,14 @@ function StarWarsProvider({ children }) {
     setFilters({ ...filters, order: orderColumn });
   };
 
-  const value = { data, addFiltersInputs, handleClick, filters, removeFilter, orderPlanets };
+  const value = {
+    data,
+    addFiltersInputs,
+    handleClick,
+    filters,
+    removeFilter,
+    orderPlanets,
+  };
 
   return (
     <main>
