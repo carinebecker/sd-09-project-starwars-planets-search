@@ -2,8 +2,37 @@
 import React, { useContext } from 'react';
 import Context from '../context/Context';
 
-const Table = () => {
-  const { data } = useContext(Context);
+function Table() {
+  const { data, filtered } = useContext(Context);
+
+  const titles = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
+    'gravity', 'terrain', 'surface_water', 'population', 'created', 'edited',
+    'films', 'url'];
+
+  const dataBase = () => {
+    const { name } = filtered.filters.filterByName;
+    if (name !== '') {
+      return data.filter((planet) => planet.name.includes(name))
+        .map((element, index) => (
+          <tr key={ index }>
+            { titles.map((item, id) => (
+              <td key={ id }>
+                {element[item]}
+              </td>
+            )) }
+          </tr>
+      ));
+    }
+    return data.map((element, index) => (
+      <tr key={ index }>
+        { titles.map((item, id) => (
+          <td key={ id }>
+            {element[item]}
+          </td>
+        )) }
+      </tr>
+    ));
+  };
 
   return (
     <div>
@@ -27,30 +56,11 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          { data.map(({ climate, created, diameter, edited, films, gravity, name,
-            orbital_period: orbital, population, rotation_period: rotation,
-            surface_water: water, terrain, url }, index) => (
-            // eslint-disable-next-line indent
-              <tr key={ index }>
-                <td>{ name }</td>
-                <td>{ rotation }</td>
-                <td>{ orbital }</td>
-                <td>{ diameter }</td>
-                <td>{ climate }</td>
-                <td>{ gravity }</td>
-                <td>{ terrain }</td>
-                <td>{ water }</td>
-                <td>{ population }</td>
-                <td>{ created }</td>
-                <td>{ edited }</td>
-                <td>{ films }</td>
-                <td>{ url }</td>
-              </tr>
-          ))}
+          { dataBase() }
         </tbody>
       </table>
     </div>
   );
-};
+}
 
 export default Table;
