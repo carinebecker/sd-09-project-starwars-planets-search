@@ -21,7 +21,7 @@ function Table() {
               </td>
             )) }
           </tr>
-      ));
+        ));
     }
     return data.map((element, index) => (
       <tr key={ index }>
