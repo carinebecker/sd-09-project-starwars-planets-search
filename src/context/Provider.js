@@ -1,38 +1,44 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import StarwarsContext from './StarwarsContext';
 import { getPlanets } from '../services/planetListAPI';
 
 const Provider = ({ children }) => {
-  const [planets, setPlanets] = useState(['xablau']);
+  const [planets, setPlanets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [tableHeaders, setTableHeaders] = useState([]);
 
-  /* const fetchPlanets = () => {
-    if (isFetching) return;
+  const removeResidentsKey = (planets) => {
+    planets.forEach((planet) => {
+      delete planet.residents;
+    });
+  };
 
+  const fetchPlanets = async () => {
     setIsFetching(true);
-    const searchResults = getPlanets();
-  }; */
-
-  useEffect(async () => {
     try {
       const response = await getPlanets();
-      console.log(response);
+      removeResidentsKey(response);
+      filterTableHeads(response);
+      setPlanets(response);
+      setIsFetching(false);
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }
-  }, [])
-
-
-  /* setPlanets([1, 2, 3]);
-  setIsFetching(true); */
-
-  /* const planets = 'xablau';
-  const isFetching = true; */
+  }
+  const filterTableHeads = (planets) => {
+    const headers =  Object.keys(planets[0]);
+    console.log('headers');
+    console.log(headers);
+    setTableHeaders(headers);
+  }
 
   const context = {
     planets,
     isFetching,
+    tableHeaders,
+    fetchPlanets,
   };
 
   // console.log(context);
