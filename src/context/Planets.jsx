@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 const PlanetsContext = createContext();
-
+const providerError = 'usePlanets must be used within a PlanetsProvider';
 export default function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState(
@@ -10,6 +10,10 @@ export default function PlanetsProvider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: '',
+      sort: '',
+    },
     },
   );
   const context = { data, setData, filters, setFilters };
@@ -22,14 +26,14 @@ export default function PlanetsProvider({ children }) {
 
 export function usePlanets() {
   const context = useContext(PlanetsContext);
-  if (!context) throw new Error('usePlanets must be used within a PlanetsProvider');
+  if (!context) throw new Error(providerError);
   const { data, setData } = context;
   return { data, setData };
 }
 
 export function useFilters() {
   const context = useContext(PlanetsContext);
-  if (!context) throw new Error('usePlanets must be used within a PlanetsProvider');
+  if (!context) throw new Error(providerError);
   const { filters, setFilters } = context;
   return { filters, setFilters };
 }

@@ -17,16 +17,33 @@ const generateTableContent = (data) => {
   const content = data.map((element, index) => {
     const td = Object.values(element)
       .filter((value) => typeof (value) !== 'object')
-      .map((value, i) => (
-        <td key={ i }>{value}</td>
-      ));
+      .map((value, i) => {
+        if (i === 0) {
+          return (<td key={ i } data-testid="planet-name">{value}</td>);
+        }
+        return (<td key={ i }>{value}</td>);
+      });
     return (<tr key={ index }>{td}</tr>);
   });
   return content;
 };
 
+const sortTable = (data, column, sort) => {
+  const negativeOne = -1;
+  if (sort === 'ASC') {
+    return data.sort((a, b) => (Number(a[column]) > Number(b[column]) ? 1 : negativeOne));
+  }
+  return data.sort((a, b) => (Number(a[column]) < Number(b[column]) ? 1 : negativeOne));
+};
+
 const handleDataFiltering = (data, filters) => {
+  const negativeOne = -1;
   let filteredData = false;
+  filteredData = data.sort((a, b) => (a.name > b.name ? 1 : negativeOne));
+  if (filters.order.column) {
+    const { order: { column }, order: { sort } } = filters;
+    filteredData = sortTable(data, column, sort);
+  }
   if (filters.filterByName.name) {
     filteredData = data.filter((element) => element
       .name.toLowerCase().includes(filters.filterByName.name.toLowerCase()));
