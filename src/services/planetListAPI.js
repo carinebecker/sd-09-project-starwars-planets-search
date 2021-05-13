@@ -1,4 +1,4 @@
-export const getPlanets = async () => {
+const getPlanets = async () => {
   const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
   try {
@@ -13,4 +13,4 @@ export const getPlanets = async () => {
   }
 };
 
-// console.log(getPlanets());
+export default getPlanets;

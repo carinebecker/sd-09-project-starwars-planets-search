@@ -1,34 +1,39 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+
 import StarwarsContext from '../context/StarwarsContext';
+import '../css/Table.css';
+import TableRow from './TableRow';
 
 const Table = () => {
-  const { planets, fetchPlanets, isFetching, tableHeaders } = useContext(StarwarsContext);
-  
+  const {
+    planets,
+    fetchPlanets,
+    isFetching,
+    tableHeaders,
+  } = useContext(StarwarsContext);
 
-  
-
-  useEffect(() =>{
-    // filterTableHeads();
+  useEffect(() => {
     fetchPlanets();
-    console.log('useEffect table');
-    console.log(planets);
-    console.log(isFetching);
   }, []);
+
+  const table = (
+    <table>
+      <thead>
+        <tr>
+          {tableHeaders.map((header, index) => <th key={ index }>{ header }</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {planets.map((planet, index) => (
+          <TableRow key={ index } planet={ planet } />
+        ))}
+      </tbody>
+    </table>
+  );
+
   return (
     <div>
-      {(isFetching) ? 'Loading...'
-        : <table>
-            <thead>
-              <tr>
-                {tableHeaders.map((header) => <th>{ header }</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-              {/* {planets.map((header) => <th>{ header }</th>)} */}
-              </tr>
-            </tbody>
-          </table>}
+      { isFetching ? 'Loading...' : table }
     </div>
   );
 };

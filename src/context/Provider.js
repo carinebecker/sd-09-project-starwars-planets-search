@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import StarwarsContext from './StarwarsContext';
-import { getPlanets } from '../services/planetListAPI';
+import getPlanets from '../services/planetListAPI';
 
 const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [tableHeaders, setTableHeaders] = useState([]);
 
-  const removeResidentsKey = (planets) => {
-    planets.forEach((planet) => {
+  const removeResidentsKey = (planetsArray) => {
+    planetsArray.forEach((planet) => {
       delete planet.residents;
     });
+  };
+
+  const filterTableHeads = (planetsHeaders) => {
+    const headers = Object.keys(planetsHeaders[0]);
+    setTableHeaders(headers);
   };
 
   const fetchPlanets = async () => {
@@ -26,13 +32,7 @@ const Provider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-  const filterTableHeads = (planets) => {
-    const headers =  Object.keys(planets[0]);
-    console.log('headers');
-    console.log(headers);
-    setTableHeaders(headers);
-  }
+  };
 
   const context = {
     planets,
@@ -41,13 +41,15 @@ const Provider = ({ children }) => {
     fetchPlanets,
   };
 
-  // console.log(context);
-
   return (
-    <StarwarsContext.Provider value={context}>
+    <StarwarsContext.Provider value={ context }>
       { children }
     </StarwarsContext.Provider>
   );
-}
+};
+
+Provider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default Provider;
