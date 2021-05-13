@@ -3,7 +3,18 @@ import React from 'react';
 
 function Form() {
   return (
-    <h1>form</h1>
+    <div>
+      <form action="">
+        <label htmlFor="filter">
+          Filtrar
+          <input
+            type="text"
+            id="filter"
+            data-testid='name-filter'
+            />
+        </label>
+      </form>
+    </div>
   );
 }
 
