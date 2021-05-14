@@ -13,6 +13,13 @@ const Provider = ({ children }) => {
       filterByName: {
         name: '',
       },
+      filterByNumericValues: [
+        {
+          column: 'population',
+          comparison: 'maior que',
+          value: '100000',
+        }
+      ]
     },
   });
   const [filteredByName, setFilteredByName] = useState([]);
@@ -49,17 +56,56 @@ const Provider = ({ children }) => {
     setFilteredByName(filtered);
   };
 
-  const handleChangeText = ({ target }) => {
-    const { value } = target;
-    setFilterTypes({
-      filters: {
-        filterByName: {
-          name: value,
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    if (name === 'name') {
+      // console.log(`name:${name}, value:${value}`);
+      setFilterTypes((prevState) => ({
+        ...prevState,
+        filters: {
+          filterByName: {
+            name: value,
+          },
         },
-      },
-    });
-    filterByNameText(value);
+      }));
+    } else {
+      // console.log(`name:${name}, value:${value}`);
+      setFilterTypes({
+        ...filterTypes,
+        filterByNumericValues: {
+          [name]: value,
+        }
+      });
+    }
+    if (name === 'name') filterByNameText(value);
   };
+  /* const handleChange = ({ target }) => {
+    const { name, value } = target;
+    if (name === 'name') {
+      // console.log(`name:${name}, value:${value}`);
+      setFilterTypes({
+        ...filterTypes,
+        filterByName: {
+          [name]: value,
+        }
+      });
+    } else {
+      // console.log(`name:${name}, value:${value}`);
+      setFilterTypes({
+        ...filterTypes,
+        filterByNumericValues: {
+          [name]: value,
+        }
+      });
+    }
+    if (name === 'name') filterByNameText(value);
+  }; */
+
+  console.log(filterTypes);
+
+  const handleClickBtn = ({ target }) => {
+
+  }
 
   const context = {
     planets,
@@ -68,7 +114,7 @@ const Provider = ({ children }) => {
     filterTypes,
     filteredByName,
     fetchPlanets,
-    handleChangeText,
+    handleChange,
   };
 
   return (

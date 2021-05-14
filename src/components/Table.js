@@ -33,7 +33,7 @@ const Table = () => {
     </table>
   );
 
-  console.log(`filter: ${filteredByName.length}`);
+  // console.log(`filter: ${filteredByName.length}`);
 
   return (
     <div>
