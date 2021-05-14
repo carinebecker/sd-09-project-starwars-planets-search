@@ -32,6 +32,12 @@ function Form() {
         <select name="comparison" id="comparison" data-testid="comparison-filter">
           {comparison.map((value, index) => <option key={ index }>{ value }</option> )}
         </select>
+        <input
+          type="number"
+          value={ name }
+          // onChange={ handleChangeText }
+          data-testid="value-filter"
+        />
       </form>
     </div>
   );
