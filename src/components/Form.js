@@ -10,11 +10,23 @@ function Form() {
   } = useContext(StarwarsContext);
   const { filterByName, filterByNumericValues } = filterTypes.filters;
 
-  const [column, setColumn] = useState('population');
+  const [numericValues, setNumericValues] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: 0,
+  });
+  /* const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0); */
 
   const handleChangeNumericValues = ({ target }) => {
+    const { name, value } = target;
+    setNumericValues((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  /* const handleChangeNumericValues = ({ target }) => {
     const { name, value } = target;
     switch (name) {
       case 'column':
@@ -29,15 +41,15 @@ function Form() {
       default:
         break;
     }
-  };
+  }; */
 
   const handleClickBtn = () => {
-    const filterNumber = {
+    /* const filterNumber = {
       column,
       comparison,
       value,
-    };
-    setFilterByNumericValues((prevState) => [...prevState, filterNumber]);
+    }; */
+    setFilterByNumericValues((prevState) => [...prevState, numericValues]);
   };
 
   const columnsItems = ['population',
@@ -64,7 +76,7 @@ function Form() {
         <select
           name="column"
           onChange={ handleChangeNumericValues }
-          value={ column }
+          value={ numericValues.column }
           ata-testid="column-filter"
         >
           {columnsItems.map((value, index) => <option key={ index }>{ value }</option> )}
@@ -72,7 +84,7 @@ function Form() {
         <select
           name="comparison"
           onChange={ handleChangeNumericValues }
-          value={ comparison }
+          value={ numericValues.comparison }
           data-testid="comparison-filter"
         >
           {comparisonItems.map((value, index) => <option key={ index }>{ value }</option> )}
@@ -80,7 +92,7 @@ function Form() {
         <input
           type="number"
           name="value"
-          value={ value }
+          value={ numericValues.value }
           onChange={ handleChangeNumericValues }
           data-testid="value-filter"
         />
