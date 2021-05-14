@@ -6,12 +6,13 @@ function Form() {
   const { filterTypes, handleChangeText } = useContext(StarwarsContext);
   const { filters: { filterByName: { name } } } = filterTypes;
 
-  const colums = ['population',
+  const columns = ['population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
   ];
+  const comparison = ['maior que', 'menor que', 'igual a'];
   return (
     <div>
       <form action="">
@@ -25,8 +26,11 @@ function Form() {
             data-testid="name-filter"
           />
         </label>
-        <select name="colums" id="colums" data-testid="column-filter">
-          {colums.map((value, index) => <option key={ index }>{ value }</option> )}
+        <select name="columns" id="columns" data-testid="column-filter">
+          {columns.map((value, index) => <option key={ index }>{ value }</option> )}
+        </select>
+        <select name="comparison" id="comparison" data-testid="comparison-filter">
+          {comparison.map((value, index) => <option key={ index }>{ value }</option> )}
         </select>
       </form>
     </div>
