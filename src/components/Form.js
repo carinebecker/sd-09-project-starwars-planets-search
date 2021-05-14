@@ -38,6 +38,7 @@ function Form() {
           // onChange={ handleChangeText }
           data-testid="value-filter"
         />
+        <button type="button" data-testid="button-filter">Filtrar</button>
       </form>
     </div>
   );
