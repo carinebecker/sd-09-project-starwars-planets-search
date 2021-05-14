@@ -8,20 +8,8 @@ const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [tableHeaders, setTableHeaders] = useState([]);
-  const [filterTypes, setFilterTypes] = useState({
-    filters: {
-      filterByName: {
-        name: '',
-      },
-      filterByNumericValues: [
-        {
-          column: 'population',
-          comparison: 'maior que',
-          value: '100000',
-        }
-      ]
-    },
-  });
+  const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [filteredByName, setFilteredByName] = useState([]);
 
   const removeResidentsKey = (planetsArray) => {
@@ -43,7 +31,6 @@ const Provider = ({ children }) => {
       filterTableHeads(response);
       setPlanets(response);
       setIsFetching(false);
-      // console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -57,55 +44,19 @@ const Provider = ({ children }) => {
   };
 
   const handleChange = ({ target }) => {
-    const { name, value } = target;
-    if (name === 'name') {
-      // console.log(`name:${name}, value:${value}`);
-      setFilterTypes((prevState) => ({
-        ...prevState,
-        filters: {
-          filterByName: {
-            name: value,
-          },
-        },
-      }));
-    } else {
-      // console.log(`name:${name}, value:${value}`);
-      setFilterTypes({
-        ...filterTypes,
-        filterByNumericValues: {
-          [name]: value,
-        }
-      });
-    }
-    if (name === 'name') filterByNameText(value);
+    const { value } = target;
+    setFilterByName({ name: value });
+    filterByNameText(value)
   };
-  /* const handleChange = ({ target }) => {
-    const { name, value } = target;
-    if (name === 'name') {
-      // console.log(`name:${name}, value:${value}`);
-      setFilterTypes({
-        ...filterTypes,
-        filterByName: {
-          [name]: value,
-        }
-      });
-    } else {
-      // console.log(`name:${name}, value:${value}`);
-      setFilterTypes({
-        ...filterTypes,
-        filterByNumericValues: {
-          [name]: value,
-        }
-      });
+  
+  const filterTypes = {
+    filters: {
+      filterByName,
+      filterByNumericValues,
     }
-    if (name === 'name') filterByNameText(value);
-  }; */
+  }
 
   console.log(filterTypes);
-
-  const handleClickBtn = ({ target }) => {
-
-  }
 
   const context = {
     planets,
@@ -115,11 +66,12 @@ const Provider = ({ children }) => {
     filteredByName,
     fetchPlanets,
     handleChange,
+    setFilterByNumericValues,
   };
 
   return (
-    <StarwarsContext.Provider value={ context }>
-      { children }
+    <StarwarsContext.Provider value={context}>
+      { children}
     </StarwarsContext.Provider>
   );
 };
