@@ -8,6 +8,14 @@ const Provider = ({ children }) => {
   const [planets, setPlanets] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [tableHeaders, setTableHeaders] = useState([]);
+  const [filterTypes, setFilterTypes] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
+  const [filteredByName, setFilteredByName] = useState([]);
 
   const removeResidentsKey = (planetsArray) => {
     planetsArray.forEach((planet) => {
@@ -34,11 +42,33 @@ const Provider = ({ children }) => {
     }
   };
 
+  const filterByNameText = (value) => {
+    const filtered = planets.filter(({ name }) => (
+      name.toLowerCase().includes(value.toLowerCase())
+    ));
+    setFilteredByName(filtered);
+  };
+
+  const handleChangeText = ({ target }) => {
+    const { value } = target;
+    setFilterTypes({
+      filters: {
+        filterByName: {
+          name: value,
+        },
+      },
+    });
+    filterByNameText(value);
+  };
+
   const context = {
     planets,
     isFetching,
     tableHeaders,
+    filterTypes,
+    filteredByName,
     fetchPlanets,
+    handleChangeText,
   };
 
   return (
