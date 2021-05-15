@@ -2,20 +2,23 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function FilterNumeric() {
-  const { setFilteredByNumeric, filteredByNumeric } = useContext(StarwarsContext);
+  const { filteredByNumeric, setFilteredByNumeric } = useContext(StarwarsContext);
+
   const columnSearchItems = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-  const columnSearchValues = [
-    'População', 'Período de Órbita',
-    'Diâmetro', 'Período de Rotação',
-    'Quantidade de água na superfície'];
-  const columnComparisonValues = ['Maior que', 'Menor que', 'Igual a'];
+
+  const columnComparisonValues = ['maior que', 'menor que', 'igual a'];
+
   let column = '';
   let comparison = '';
   let contextvalue = 0;
+
+  // function removeElementFromSelect(event) {
+  //   if(event.)
+  // }
+
   function handleChange({ target }) {
     const { name, value } = target;
-    console.log(name, value);
     switch (name) {
     case 'column':
       column = value;
@@ -27,13 +30,13 @@ function FilterNumeric() {
       contextvalue = value;
       break;
     default:
-      console.log('Sem valores númericos');
+      console.log('Pesquisa Indisponível');
     }
   }
 
   function submit() {
-    console.log(contextvalue);
     setFilteredByNumeric({
+      ...filteredByNumeric,
       filterByNumeric: {
         column,
         comparison,
@@ -52,8 +55,8 @@ function FilterNumeric() {
           name="column"
           onChange={ handleChange }
         >
-          {columnSearchItems.map((item, index) => (
-            <option value={ item } key={ item }>{columnSearchValues[[index]]}</option>))}
+          {columnSearchItems.map((item) => (
+            <option value={ item } key={ item }>{item}</option>))}
         </select>
       </label>
       <label htmlFor="columnComparison">
@@ -75,6 +78,7 @@ function FilterNumeric() {
       />
       <button
         type="button"
+        data-testid="button-filter"
         onClick={ submit }
       >
         Buscar
