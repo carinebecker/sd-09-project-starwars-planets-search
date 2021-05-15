@@ -2,12 +2,12 @@ import React from 'react';
 import Table from './components/Table';
 import DataApiContextProvider from './context/DataApi';
 import './App.css';
-import Filters from './components/Filters';
+import SearchBar from './components/SearchBar';
 
 function App() {
   return (
     <DataApiContextProvider>
-      <Filters />
+      <SearchBar />
       <Table />
     </DataApiContextProvider>
   );

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { DataApiContext } from '../context/DataApi';
+import DataApiContext from '../context/DataApiContext';
 
 const Table = () => {
   const { data, filters, isFetching } = useContext(DataApiContext);
@@ -17,15 +17,29 @@ const Table = () => {
   );
 
   const filterPlanets = () => {
-    const { filterByName: { name } } = filters;
-    if (data) {
-      const filteredPlanets = data.filter(({
-        name: planetName,
-      }) => planetName.toLowerCase().includes(name.toLowerCase()));
-      if (filteredPlanets.length) {
-        return tablePlanets(filteredPlanets);
+    const { filterByName: { name }, filterByNumericValues } = filters;
+    // if (data) {
+    let filteredPlanets = data.filter(({
+      name: planetName,
+    }) => planetName.toLowerCase().includes(name.toLowerCase()));
+    filterByNumericValues.forEach((planet) => {
+      const { comparison, column, value } = planet;
+      if (comparison === 'maior que') {
+        filteredPlanets = filteredPlanets
+          .filter((eachPlanet) => +(eachPlanet[column]) > +(value));
+      } else if (comparison === 'menor que') {
+        filteredPlanets = filteredPlanets
+          .filter((eachPlanet) => +(eachPlanet[column]) < +(value));
+      } else {
+        filteredPlanets = filteredPlanets
+          .filter((eachPlanet) => +(eachPlanet[column]) === +(value));
       }
+      // +() converte string para number
+    });
+    if (filteredPlanets.length) {
+      return tablePlanets(filteredPlanets);
     }
+    // }
     return tablePlanets(data);
   };
 

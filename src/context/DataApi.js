@@ -1,14 +1,18 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { node } from 'prop-types';
-import useInputValue from '../hooks/filterInputValueByName';
 import fetchData from '../services/fetchData';
+import DataApiContext from './DataApiContext';
 
-export const DataApiContext = createContext();
+const INITIAL_STATE = {
+  filterByName:
+      { name: '' },
+  filterByNumericValues: [],
+};
 
 const DataApiContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
-  const [filters, filterInputValueByName] = useInputValue();
+  const [filters, setFilters] = useState(INITIAL_STATE);
 
   const getApiData = async () => {
     const apiData = await fetchData();
@@ -23,7 +27,7 @@ const DataApiContextProvider = ({ children }) => {
   const context = {
     data,
     filters,
-    filterInputValueByName,
+    setFilters,
     isFetching,
   };
 
