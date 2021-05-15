@@ -4,6 +4,7 @@ import StarWarsContext from '../context/StarWarsContext';
 function Table() {
   return (
     <div>
+      <h1>Table</h1>
       <table>
         <thead>
           <tr>
@@ -25,9 +26,14 @@ function Table() {
         <tbody>
           <StarWarsContext.Consumer>
             {(value) => {
-              if (value) {
-                console.log(value);
-                return value.map((planet) => (
+              if (value.responseApi) {
+                let showPlanet = value.responseApi;
+                if (value.filters.filterByName.name !== undefined) {
+                  showPlanet = showPlanet
+                    .filter((planet) => planet.name
+                      .includes(value.filters.filterByName.name));
+                }
+                return showPlanet.map((planet) => (
                   <tr key={ planet.name }>
                     {Object.keys(planet)
                       .filter((key) => key !== 'residents')
@@ -39,7 +45,6 @@ function Table() {
           </StarWarsContext.Consumer>
         </tbody>
       </table>
-      <h1>Table</h1>
     </div>
   );
 }

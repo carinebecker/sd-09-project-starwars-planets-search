@@ -5,6 +5,12 @@ import './App.css';
 
 function App() {
   const [responseApi, setResponseApi] = useState();
+  const [namefilter, setNameFilter] = useState();
+  const [filters, setFilters] = useState({
+    filterByName: {
+      name: '',
+    },
+  });
 
   useEffect(() => {
     if (responseApi === undefined) {
@@ -22,10 +28,25 @@ function App() {
     }
   }, [responseApi]);
 
+  useEffect(() => {
+    setFilters({
+      filterByName: {
+        name: namefilter,
+      },
+    });
+  }, [namefilter]);
+
   return (
-    <StarWarsContext.Provider value={ responseApi }>
-      <Table />
-    </StarWarsContext.Provider>
+    <div className="App">
+      <StarWarsContext.Provider value={ { responseApi, filters } }>
+        <input
+          value={ namefilter }
+          onChange={ ({ target }) => setNameFilter(target.value) }
+          data-testid="name-filter"
+        />
+        <Table />
+      </StarWarsContext.Provider>
+    </div>
   );
 }
 
