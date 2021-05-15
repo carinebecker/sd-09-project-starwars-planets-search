@@ -3,7 +3,15 @@ import { node } from 'prop-types';
 import fetchData from '../services/fetchData';
 import DataApiContext from './DataApiContext';
 
-const INITIAL_STATE = {
+const INITIAL_STATE = [
+  'population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water',
+];
+
+const INITIAL_STATE_2 = {
   filterByName:
       { name: '' },
   filterByNumericValues: [],
@@ -12,7 +20,8 @@ const INITIAL_STATE = {
 const DataApiContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
-  const [filters, setFilters] = useState(INITIAL_STATE);
+  const [columnDropdown, setColumnDropdown] = useState(INITIAL_STATE);
+  const [filters, setFilters] = useState(INITIAL_STATE_2);
 
   const getApiData = async () => {
     const apiData = await fetchData();
@@ -29,6 +38,8 @@ const DataApiContextProvider = ({ children }) => {
     filters,
     setFilters,
     isFetching,
+    columnDropdown,
+    setColumnDropdown,
   };
 
   return (

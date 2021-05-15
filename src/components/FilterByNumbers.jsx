@@ -7,7 +7,7 @@ const FilterByNumbers = () => {
     comparison: 'maior que',
     value: '',
   });
-  const { filters, setFilters } = useContext(DataApiContext);
+  const { filters, setFilters, columnDropdown, setColumnDropdown } = useContext(DataApiContext);
 
   const handleChange = ({ target: { name, value } }) => {
     setInputFilterByNumericValues({
@@ -24,41 +24,30 @@ const FilterByNumbers = () => {
         inputFilterByNumericValues,
       ],
     });
+    const filterValues = Object.values(inputFilterByNumericValues)[0];
+    const newColumn = columnDropdown.filter((eachColumn) => (
+      eachColumn !== filterValues
+    ));
+    setColumnDropdown(newColumn);
   };
+
+  const renderColumnDropdown = () => (
+    <select
+      data-testid="column-filter"
+      name="column"
+      onChange={ handleChange }
+    >
+      <option>---</option>
+      { columnDropdown.map((eachColumn) => (
+        <option key={ eachColumn } value={ eachColumn }>{ eachColumn }</option>
+      ))}
+      ;
+    </select>
+  );
 
   return (
     <div>
-      <select
-        data-testid="column-filter"
-        name="column"
-        onChange={ handleChange }
-      >
-        <option
-          value="population"
-        >
-          population
-        </option>
-        <option
-          value="orbital_period"
-        >
-          orbital_period
-        </option>
-        <option
-          value="diameter"
-        >
-          diameter
-        </option>
-        <option
-          value="rotation_period"
-        >
-          rotation_period
-        </option>
-        <option
-          value="surface_water"
-        >
-          surface_water
-        </option>
-      </select>
+      { renderColumnDropdown() }
       <select
         data-testid="comparison-filter"
         name="comparison"
