@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import StarWarsContext from './context/StarWarsContext';
+import Table from './components/Table';
 import './App.css';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
           const data = await fetch('https://swapi-trybe.herokuapp.com/api/planets/')
             .then((response) => response.json());
           setResponseApi(data.results);
-          console.log(data.results);
+          // console.log(data.results);
         } catch (error) {
           console.log(error);
         }
@@ -22,7 +23,9 @@ function App() {
   }, [responseApi]);
 
   return (
-    <span>Hello, App!</span>
+    <StarWarsContext.Provider value={ responseApi }>
+      <Table />
+    </StarWarsContext.Provider>
   );
 }
 
