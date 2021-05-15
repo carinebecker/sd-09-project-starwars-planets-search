@@ -7,7 +7,9 @@ const FilterByNumbers = () => {
     comparison: 'maior que',
     value: '',
   });
-  const { filters, setFilters, columnDropdown, setColumnDropdown } = useContext(DataApiContext);
+  const {
+    filters, setFilters, columnDropdown, setColumnDropdown,
+  } = useContext(DataApiContext);
 
   const handleChange = ({ target: { name, value } }) => {
     setInputFilterByNumericValues({
