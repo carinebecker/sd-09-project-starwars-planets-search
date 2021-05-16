@@ -8,12 +8,21 @@ const FILTER = {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [
+      {
+        column: 'population',
+        comparison: 'maior que',
+        value: '100000',
+      },
+    ],
   },
 };
 
 const Provider = ({ children }) => {
   const [data, setData] = useState([]);
   const [filtered, setFilter] = useState(FILTER);
+  const [filterBtn, setFilterBtn] = useState(false);
+  const [planet, setPlanet] = useState([]);
 
   const handleDataSuccess = (response) => {
     setData(response.results);
@@ -22,6 +31,26 @@ const Provider = ({ children }) => {
   const getData = () => {
     dataAPI()
       .then(handleDataSuccess);
+  };
+
+  const filterColumn = () => {
+    let filterPlanet = [...data];
+    if (filterBtn) {
+      filtered.filters.filterByNumericValues.forEach((element) => {
+        const { column, comparison, value } = element;
+        filterPlanet = data.filter((row) => {
+          const valueColumn = parseInt(row[column], 10);
+          if (comparison === 'maior que') {
+            return valueColumn > value;
+          }
+          if (comparison === 'menor que') {
+            return valueColumn < value;
+          }
+          return String(valueColumn) === value;
+        });
+        setPlanet(filterPlanet);
+      });
+    }
   };
 
   useEffect(getData, []);
@@ -38,10 +67,26 @@ const Provider = ({ children }) => {
     });
   };
 
+  const btnFilter = (value) => {
+    setFilter({
+      ...filtered,
+      filters: {
+        filterByName: { ...filtered.filters.filterByName },
+        filterByNumericValues: [value],
+      },
+    });
+    setFilterBtn(true);
+  };
+
   const contextValue = {
+    btnFilter,
     data,
-    getData,
+    filterBtn,
+    filterColumn,
     filtered,
+    getData,
+    planet,
+    setFilterBtn,
     setFilterName,
   };
 

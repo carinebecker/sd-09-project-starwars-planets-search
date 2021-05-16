@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.filter {
+  margin-right: 10px;
+  text-align: center;
+}
+
+.filterName, .filterColumn, .filterComparison, .filterValue {
+  width: 17vw;
+}
+
+.main-filter {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
