@@ -46,20 +46,17 @@ const Table = () => {
     return tablePlanets(data);
   };
 
-  const sortPlanets = useCallback(() => {
+  const sortPlanets = () => {
     const { order: { sort, column } } = sortColumn;
     const lowCaseColumn = column.toLowerCase();
-    console.log(lowCaseColumn);
     let sorteredPlanets = [];
     if (sort === 'ASC') {
-      console.log(lowCaseColumn);
       if (typeof lowCaseColumn === 'number') {
         sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
       } else {
         sorteredPlanets = data
           .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
       }
-      console.log(sorteredPlanets, 'a', lowCaseColumn, sort);
     } if (sort === 'DESC') {
       if (typeof lowCaseColumn === 'number') {
         sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
@@ -69,11 +66,11 @@ const Table = () => {
       }
     }
     return sorteredPlanets;
-  });
+  };
 
   useEffect(() => {
     sortPlanets();
-  }, [sortPlanets], sortPlanets);
+  }, [sortPlanets]);
 
   if (isFetching) {
     return <h2>Loading...</h2>;
