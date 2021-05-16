@@ -10,6 +10,7 @@ function App() {
     filterByName: {
       name: '',
     },
+    filterByNumericValues: [],
   });
 
   useEffect(() => {
