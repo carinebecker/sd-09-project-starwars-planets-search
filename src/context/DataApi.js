@@ -11,10 +11,27 @@ const INITIAL_STATE = [
   'surface_water',
 ];
 
+const allColumns = [
+  'Name',
+  'Rotation_period',
+  'Orbital_period',
+  'Diameter',
+  'Climate',
+  'Gravity',
+  'Terrain',
+  'Surface_water',
+  'Population',
+  'Films',
+];
+
 const INITIAL_STATE_2 = {
   filterByName:
       { name: '' },
   filterByNumericValues: [],
+  order: {
+    column: 'Name',
+    sort: 'ASC',
+  },
 };
 
 const DataApiContextProvider = ({ children }) => {
@@ -22,6 +39,7 @@ const DataApiContextProvider = ({ children }) => {
   const [isFetching, setIsFetching] = useState(true);
   const [columnDropdown, setColumnDropdown] = useState(INITIAL_STATE);
   const [filters, setFilters] = useState(INITIAL_STATE_2);
+  const [sortColumn, setSortColumn] = useState(INITIAL_STATE_2);
 
   const getApiData = async () => {
     const apiData = await fetchData();
@@ -35,11 +53,14 @@ const DataApiContextProvider = ({ children }) => {
 
   const context = {
     data,
+    allColumns,
     filters,
     setFilters,
     isFetching,
     columnDropdown,
     setColumnDropdown,
+    sortColumn,
+    setSortColumn,
   };
 
   return (
