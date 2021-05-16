@@ -4,7 +4,14 @@ import PlanetContext from './context';
 
 export default function Provider({ children }) {
   const [planetList, setPlanetList] = useState(null);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filters, setFilters] = useState({
+    filterByName: { name: '' },
+    filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
+  });
   const contextValue = {
     planetList,
     setPlanetList,

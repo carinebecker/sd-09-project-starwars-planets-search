@@ -4,6 +4,7 @@ import Table from '../components/PlanetTable';
 import Filter from '../components/Filter';
 import PlanetContext from '../context/context';
 import fetchPlanets from '../services/planetAPI';
+import SortForm from '../components/sortFilter';
 
 export default function Home() {
   const { planetList, setPlanetList, filters } = useContext(PlanetContext);
@@ -15,13 +16,16 @@ export default function Home() {
     setPlanets();
   }, [setPlanetList]);
   const { name } = filters.filterByName;
+  const nameFilteredList = planetList
+  && planetList.filter((each) => each.name.includes(name));
   return (
     <div>
       <Nav>
         <Filter />
+        <SortForm />
       </Nav>
       {planetList && <Table
-        list={ planetList.filter((each) => each.name.includes(name)) }
+        list={ nameFilteredList }
       />}
     </div>);
 }
