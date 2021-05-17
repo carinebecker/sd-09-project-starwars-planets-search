@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from 'react';
+import React, { useContext } from 'react';
 import DataApiContext from '../context/DataApiContext';
 
 const Table = () => {
@@ -68,7 +68,7 @@ const Table = () => {
     }) => planetName.toLowerCase().includes(name.toLowerCase()));
 
     filterByNumericValues.forEach((planet) => {
-      const { comparison, column, value } = planet;
+      const { comparison, value } = planet;
       if (comparison === 'maior que') {
         filteredPlanets = filteredPlanets
           .filter((eachPlanet) => +(eachPlanet[column]) > +(value));
