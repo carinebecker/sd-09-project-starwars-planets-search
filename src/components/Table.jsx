@@ -21,11 +21,52 @@ const Table = () => {
     ))
   );
 
+  const sortPlanetsByStringTypeColumn = () => {
+    const { order: { sort, column } } = sortColumn;
+    const lowCaseColumn = column.toLowerCase();
+    let sorteredPlanets = [];
+    if (typeof lowCaseColumn === 'string') {
+      if (sort === 'ASC') {
+        sorteredPlanets = data
+          .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
+      } else {
+        sorteredPlanets = data
+          .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
+      }
+    }
+    return sorteredPlanets;
+  };
+
+  const sortPlanetsByNumberTypeColumn = () => {
+    const { order: { sort, column } } = sortColumn;
+    const lowCaseColumn = column.toLowerCase();
+    let sorteredPlanets = [];
+    if (typeof lowCaseColumn === 'number') {
+      if (sort === 'ASC') {
+        sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
+      } else {
+        sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
+      }
+    }
+    return sorteredPlanets;
+  };
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+
   const filterPlanets = () => {
+    const { order: { column } } = sortColumn;
+    let sorteredPlanets = [];
+    if (typeof column === 'string') {
+      sorteredPlanets = sortPlanetsByStringTypeColumn();
+    } else {
+      sorteredPlanets = sortPlanetsByNumberTypeColumn();
+    }
+
     const { filterByName: { name }, filterByNumericValues } = filters;
+
     let filteredPlanets = data.filter(({
       name: planetName,
     }) => planetName.toLowerCase().includes(name.toLowerCase()));
+
     filterByNumericValues.forEach((planet) => {
       const { comparison, column, value } = planet;
       if (comparison === 'maior que') {
@@ -43,34 +84,16 @@ const Table = () => {
     if (filteredPlanets.length) {
       return tablePlanets(filteredPlanets);
     }
+    if (sortColumn.length) {
+      return tablePlanets(sorteredPlanets);
+    }
     return tablePlanets(data);
   };
 
-  const sortPlanets = () => {
-    const { order: { sort, column } } = sortColumn;
-    const lowCaseColumn = column.toLowerCase();
-    let sorteredPlanets = [];
-    if (sort === 'ASC') {
-      if (typeof lowCaseColumn === 'number') {
-        sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
-      } else {
-        sorteredPlanets = data
-          .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
-      }
-    } if (sort === 'DESC') {
-      if (typeof lowCaseColumn === 'number') {
-        sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
-      } else {
-        sorteredPlanets = data
-          .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
-      }
-    }
-    return sorteredPlanets;
-  };
-
-  useEffect(() => {
-    sortPlanets();
-  }, [sortPlanets]);
+  // useEffect(() => {
+  //   sortPlanetsByNumberTypeColumn();
+  //   sortPlanetsByStringTypeColumn();
+  // }, [sortPlanetsByNumberTypeColumn, sortPlanetsByStringTypeColumn]);
 
   if (isFetching) {
     return <h2>Loading...</h2>;
