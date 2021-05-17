@@ -25,14 +25,12 @@ const Table = () => {
     const { order: { sort, column } } = sortColumn;
     const lowCaseColumn = column.toLowerCase();
     let sorteredPlanets = [];
-    if (typeof lowCaseColumn === 'string') {
-      if (sort === 'ASC') {
-        sorteredPlanets = data
-          .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
-      } else {
-        sorteredPlanets = data
-          .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
-      }
+    if (sort === 'ASC') {
+      sorteredPlanets = data
+        .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
+    } else {
+      sorteredPlanets = data
+        .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
     }
     return sorteredPlanets;
   };
@@ -41,18 +39,16 @@ const Table = () => {
     const { order: { sort, column } } = sortColumn;
     const lowCaseColumn = column.toLowerCase();
     let sorteredPlanets = [];
-    if (typeof lowCaseColumn === 'number') {
-      if (sort === 'ASC') {
-        sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
-      } else {
-        sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
-      }
+    if (sort === 'ASC') {
+      sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
+    } else {
+      sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
     }
     return sorteredPlanets;
   };
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
 
-  const filterPlanets = () => {
+  const verifyTypeOfColumn = () => {
     const { order: { column } } = sortColumn;
     let sorteredPlanets = [];
     if (typeof column === 'string') {
@@ -60,7 +56,11 @@ const Table = () => {
     } else {
       sorteredPlanets = sortPlanetsByNumberTypeColumn();
     }
+    return sorteredPlanets;
+  };
 
+  const filterPlanets = () => {
+    const sorteredPlanets = verifyTypeOfColumn();
     const { filterByName: { name }, filterByNumericValues } = filters;
 
     let filteredPlanets = data.filter(({
@@ -68,10 +68,12 @@ const Table = () => {
     }) => planetName.toLowerCase().includes(name.toLowerCase()));
 
     filterByNumericValues.forEach((planet) => {
-      const { comparison, value } = planet;
+      const { comparison, column, value } = planet;
       if (comparison === 'maior que') {
         filteredPlanets = filteredPlanets
           .filter((eachPlanet) => +(eachPlanet[column]) > +(value));
+        console.log(filteredPlanets);
+        console.log(column);
       } else if (comparison === 'menor que') {
         filteredPlanets = filteredPlanets
           .filter((eachPlanet) => +(eachPlanet[column]) < +(value));
