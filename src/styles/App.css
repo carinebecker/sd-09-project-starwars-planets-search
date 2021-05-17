@@ -17,6 +17,10 @@ body {
   font-family: sans-serif;
 }
 
+.btn {
+  margin: 5px;
+}
+
 .filter {
   margin-right: 10px;
   text-align: center;
@@ -26,8 +30,25 @@ body {
   width: 17vw;
 }
 
-.main-filter {
+.filtered {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 5px;
+}
+
+.filters {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.main-filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-filtered {
+  display: flex;
+  flex-flow: row wrap;
 }

@@ -8,13 +8,7 @@ const FILTER = {
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '100000',
-      },
-    ],
+    filterByNumericValues: [],
   },
 };
 
@@ -35,7 +29,7 @@ const Provider = ({ children }) => {
 
   const filterColumn = () => {
     let filterPlanet = [...data];
-    if (filterBtn) {
+    if (filterBtn > 0) {
       filtered.filters.filterByNumericValues.forEach((element) => {
         const { column, comparison, value } = element;
         filterPlanet = data.filter((row) => {
@@ -72,7 +66,7 @@ const Provider = ({ children }) => {
       ...filtered,
       filters: {
         filterByName: { ...filtered.filters.filterByName },
-        filterByNumericValues: [value],
+        filterByNumericValues: [...filtered.filters.filterByNumericValues, value],
       },
     });
     setFilterBtn(true);
@@ -86,6 +80,7 @@ const Provider = ({ children }) => {
     filtered,
     getData,
     planet,
+    setFilter,
     setFilterBtn,
     setFilterName,
   };
