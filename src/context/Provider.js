@@ -56,7 +56,7 @@ const Provider = ({ children }) => {
     }
   }
 
-  console.log(filterTypes);
+  // console.log(filterTypes);
 
   const context = {
     planets,
