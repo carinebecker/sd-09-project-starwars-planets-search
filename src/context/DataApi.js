@@ -51,6 +51,33 @@ const DataApiContextProvider = ({ children }) => {
     getApiData();
   }, []);
 
+  const sortPlanetsByStringTypeColumn = () => {
+    const { order: { sort, column } } = sortColumn;
+    const lowCaseColumn = column.toLowerCase();
+    let sorteredPlanets = [];
+    if (sort === 'ASC') {
+      sorteredPlanets = data
+        .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
+    } else {
+      sorteredPlanets = data
+        .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
+    }
+    return sorteredPlanets;
+  };
+
+  const sortPlanetsByNumberTypeColumn = () => {
+    const { order: { sort, column } } = sortColumn;
+    const lowCaseColumn = column.toLowerCase();
+    let sorteredPlanets = [];
+    if (sort === 'ASC') {
+      sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
+    } else {
+      sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
+    }
+    return sorteredPlanets;
+  };
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
+
   const context = {
     data,
     allColumns,
@@ -61,6 +88,8 @@ const DataApiContextProvider = ({ children }) => {
     setColumnDropdown,
     sortColumn,
     setSortColumn,
+    sortPlanetsByStringTypeColumn,
+    sortPlanetsByNumberTypeColumn,
   };
 
   return (
