@@ -4,7 +4,7 @@ import Context from '../context/Context';
 
 function Filters() {
   const { filtered, setFilter, setFilterName,
-    btnFilter, filterBtn, filterColumn } = useContext(Context);
+    btnFilter, filterBtn, filterColumn, updatePlanet } = useContext(Context);
 
   useEffect(filterColumn, [filtered]);
 
@@ -54,12 +54,18 @@ function Filters() {
           <span>
             { `${element.column} / ${element.comparison} / ${element.value}` }
           </span>
-          <input
+          <button
             className="btn"
+            data-testid="filter"
             type="button"
-            onClick={ () => remove(element) }
-            value="X"
-          />
+            onClick={ () => {
+              remove(element);
+              updatePlanet();
+              setColumns([columnFilter.column]);
+            } }
+          >
+            X
+          </button>
         </span>
       </div>
     )));

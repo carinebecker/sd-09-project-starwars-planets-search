@@ -49,6 +49,10 @@ const Provider = ({ children }) => {
 
   useEffect(getData, []);
 
+  const updatePlanet = () => {
+    setPlanet(data);
+  };
+
   const setFilterName = ({ target }) => {
     const { value } = target;
     setFilter({
@@ -83,6 +87,7 @@ const Provider = ({ children }) => {
     setFilter,
     setFilterBtn,
     setFilterName,
+    updatePlanet,
   };
 
   return (
