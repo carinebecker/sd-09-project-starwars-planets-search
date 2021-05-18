@@ -7,35 +7,43 @@ const Table = () => {
     filters,
     isFetching,
     sortColumn,
-    sortPlanetsByStringTypeColumn,
-    sortPlanetsByNumberTypeColumn,
+    sortPlanets,
   } = useContext(DataApiContext);
 
   const tablePlanets = (planets) => (
     planets.map((eachElement) => (
       <tr key={ eachElement.name }>
-        {Object.values(eachElement).map((eachValue) => (
-          <td key={ eachValue }>
-            {eachValue}
-          </td>
-        ))}
+        {
+          Object.values(eachElement).map((eachValue, index) => {
+            if (index === 0) {
+              return (
+                <td key={ eachValue } data-testid="planet-name">
+                  {eachValue}
+                </td>
+              );
+            }
+            return <td key={ eachValue }>{eachValue}</td>;
+          })
+        }
       </tr>
     ))
   );
 
-  const verifyTypeOfColumn = () => {
-    const { order: { column } } = sortColumn;
-    let sorteredPlanets = [];
-    if (typeof column === 'string') {
-      sorteredPlanets = sortPlanetsByStringTypeColumn();
-    } else {
-      sorteredPlanets = sortPlanetsByNumberTypeColumn();
-    }
-    return sorteredPlanets;
-  };
+  // const verifyTypeOfColumn = () => {
+  //   const { order: { column } } = sortColumn;
+  //   let sorteredPlanets = [];
+  //   console.log(column);
+  //   console.log(Number.isNaN(+column));
+  //   if (Number.isNaN(+column)) {
+  //     sorteredPlanets = sortPlanetsByStringTypeColumn();
+  //   } else {
+  //     sorteredPlanets = sortPlanetsByNumberTypeColumn();
+  //   }
+  //   return sorteredPlanets;
+  // };
 
   const filterPlanets = () => {
-    const sorteredPlanets = verifyTypeOfColumn();
+    const sorteredPlanets = sortPlanets();
     const { filterByName: { name }, filterByNumericValues } = filters;
 
     let filteredPlanets = data.filter(({
@@ -47,8 +55,6 @@ const Table = () => {
       if (comparison === 'maior que') {
         filteredPlanets = filteredPlanets
           .filter((eachPlanet) => +(eachPlanet[column]) > +(value));
-        console.log(filteredPlanets);
-        console.log(column);
       } else if (comparison === 'menor que') {
         filteredPlanets = filteredPlanets
           .filter((eachPlanet) => +(eachPlanet[column]) < +(value));
@@ -66,11 +72,6 @@ const Table = () => {
     }
     return tablePlanets(data);
   };
-
-  // useEffect(() => {
-  //   sortPlanetsByNumberTypeColumn();
-  //   sortPlanetsByStringTypeColumn();
-  // }, [sortPlanetsByNumberTypeColumn, sortPlanetsByStringTypeColumn]);
 
   if (isFetching) {
     return <h2>Loading...</h2>;

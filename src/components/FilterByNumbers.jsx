@@ -39,7 +39,6 @@ const FilterByNumbers = () => {
       name="column"
       onChange={ handleChange }
     >
-      <option>---</option>
       { columnDropdown.map((eachColumn) => (
         <option key={ eachColumn } value={ eachColumn }>{ eachColumn }</option>
       ))}

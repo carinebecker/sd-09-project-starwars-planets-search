@@ -3,13 +3,26 @@ import { node } from 'prop-types';
 import fetchData from '../services/fetchData';
 import DataApiContext from './DataApiContext';
 
-const INITIAL_STATE = [
+const INITIAL_COLUMN_DROPDOWN_STATE = [
   'population',
   'orbital_period',
   'diameter',
   'rotation_period',
   'surface_water',
 ];
+
+const INITIAL_FILTERS_STATE = {
+  filterByName:
+  { name: '' },
+  filterByNumericValues: [],
+};
+
+const INITIAL_SORT_COLUMN_STATE = {
+  order: {
+    column: 'Name',
+    sort: 'ASC',
+  },
+};
 
 const allColumns = [
   'Name',
@@ -24,22 +37,12 @@ const allColumns = [
   'Films',
 ];
 
-const INITIAL_STATE_2 = {
-  filterByName:
-      { name: '' },
-  filterByNumericValues: [],
-  order: {
-    column: 'Name',
-    sort: 'ASC',
-  },
-};
-
 const DataApiContextProvider = ({ children }) => {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
-  const [columnDropdown, setColumnDropdown] = useState(INITIAL_STATE);
-  const [filters, setFilters] = useState(INITIAL_STATE_2);
-  const [sortColumn, setSortColumn] = useState(INITIAL_STATE_2);
+  const [columnDropdown, setColumnDropdown] = useState(INITIAL_COLUMN_DROPDOWN_STATE);
+  const [filters, setFilters] = useState(INITIAL_FILTERS_STATE);
+  const [sortColumn, setSortColumn] = useState(INITIAL_SORT_COLUMN_STATE);
 
   const getApiData = async () => {
     const apiData = await fetchData();
@@ -51,31 +54,23 @@ const DataApiContextProvider = ({ children }) => {
     getApiData();
   }, []);
 
-  const sortPlanetsByStringTypeColumn = () => {
+  const sortPlanets = () => {
     const { order: { sort, column } } = sortColumn;
+    // console.log(column);
     const lowCaseColumn = column.toLowerCase();
     let sorteredPlanets = [];
-    if (sort === 'ASC') {
-      sorteredPlanets = data
-        .sort((a, b) => a[lowCaseColumn].localeCompare(b[lowCaseColumn]));
-    } else {
-      sorteredPlanets = data
-        .sort((a, b) => b[lowCaseColumn].localeCompare(a[lowCaseColumn]));
-    }
+    sorteredPlanets = data.sort((a, b) => {
+      const value1 = sort === 'ASC' ? a : b;
+      const value2 = sort === 'ASC' ? b : a;
+      // console.log(value1[lowCaseColumn]);
+      if (Number.isNaN(+value1[lowCaseColumn])) {
+        return value1[lowCaseColumn].localeCompare(value2[lowCaseColumn]);
+      }
+      return (+value1[lowCaseColumn]) - (+value2[lowCaseColumn]);
+    });
     return sorteredPlanets;
   };
 
-  const sortPlanetsByNumberTypeColumn = () => {
-    const { order: { sort, column } } = sortColumn;
-    const lowCaseColumn = column.toLowerCase();
-    let sorteredPlanets = [];
-    if (sort === 'ASC') {
-      sorteredPlanets = data.sort((a, b) => a[lowCaseColumn] - b[lowCaseColumn]);
-    } else {
-      sorteredPlanets = data.sort((a, b) => b[lowCaseColumn] - a[lowCaseColumn]);
-    }
-    return sorteredPlanets;
-  };
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/localeCompare
 
   const context = {
@@ -88,8 +83,7 @@ const DataApiContextProvider = ({ children }) => {
     setColumnDropdown,
     sortColumn,
     setSortColumn,
-    sortPlanetsByStringTypeColumn,
-    sortPlanetsByNumberTypeColumn,
+    sortPlanets,
   };
 
   return (

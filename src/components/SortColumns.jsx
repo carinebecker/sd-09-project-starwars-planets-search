@@ -19,6 +19,7 @@ const SortColumns = () => {
   };
 
   const handleClick = () => {
+    console.log(selectedColumn);
     setSortColumn({
       ...sortColumn,
       order: {
