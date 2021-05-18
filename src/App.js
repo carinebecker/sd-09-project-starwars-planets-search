@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+export default function App() {
   return (
     <span>Hello, App!</span>
   );
 }
 
-export default App;
