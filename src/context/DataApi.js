@@ -27,7 +27,7 @@ const INITIAL_SORT_COLUMN_STATE = {
 const allColumns = [
   'Name',
   'Rotation_period',
-  'Orbital_period',
+  'orbital_period',
   'Diameter',
   'Climate',
   'Gravity',

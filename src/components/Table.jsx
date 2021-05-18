@@ -29,19 +29,6 @@ const Table = () => {
     ))
   );
 
-  // const verifyTypeOfColumn = () => {
-  //   const { order: { column } } = sortColumn;
-  //   let sorteredPlanets = [];
-  //   console.log(column);
-  //   console.log(Number.isNaN(+column));
-  //   if (Number.isNaN(+column)) {
-  //     sorteredPlanets = sortPlanetsByStringTypeColumn();
-  //   } else {
-  //     sorteredPlanets = sortPlanetsByNumberTypeColumn();
-  //   }
-  //   return sorteredPlanets;
-  // };
-
   const filterPlanets = () => {
     const sorteredPlanets = sortPlanets();
     const { filterByName: { name }, filterByNumericValues } = filters;
@@ -70,7 +57,7 @@ const Table = () => {
     if (sortColumn.length) {
       return tablePlanets(sorteredPlanets);
     }
-    return tablePlanets(data);
+    // return tablePlanets(data);
   };
 
   if (isFetching) {
