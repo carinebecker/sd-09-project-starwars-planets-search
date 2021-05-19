@@ -7,6 +7,8 @@ function StarWarsProvider({ children }) {
   const [searchName, setSearchName] = useState('');
   const [filterPlanet, setFilterPlanet] = useState([]);
 
+  // ComponentDidMount - Dispara funções após o componente ser inserido no DOM
+  // Requisição da API
   useEffect(() => {
     const fetchPlanets = async () => {
       const endpoint = 'https://swapi-trybe.herokuapp.com/api/planets/';
@@ -17,16 +19,19 @@ function StarWarsProvider({ children }) {
     fetchPlanets();
   }, []);
 
+  // Atualiza o estado de searchName
   const handleSearchName = ({ target }) => {
     setSearchName(target.value);
   };
 
+  // ComponentDidMount - Dispara funções após o componente ser inserido no DOM
   useEffect(() => {
     let filterPlanets = planets;
     filterPlanets = planets.filter((planet) => planet.name.includes((searchName)));
     setFilterPlanet(filterPlanets);
   }, [planets, searchName]);
 
+  // O que starWarsContext vai prover para os fihos
   const data = {
     planets,
     setPlanets,
@@ -35,7 +40,6 @@ function StarWarsProvider({ children }) {
     filterPlanet,
     setFilterPlanet,
     handleSearchName,
-
   };
 
   return (

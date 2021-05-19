@@ -2,8 +2,7 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../Context/StarWarsContext';
 
 function Form() {
-  const {
-    handleSearchName, searchName } = useContext(StarWarsContext);
+  const { handleSearchName, searchName } = useContext(StarWarsContext);
 
   return (
     <div>
