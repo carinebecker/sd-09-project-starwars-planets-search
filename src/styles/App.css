@@ -21,13 +21,18 @@ body {
   margin: 5px;
 }
 
+.btnOrder {
+  margin-top: 5px;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+}
+
 .filter {
   margin-right: 10px;
   text-align: center;
-}
-
-.filterName, .filterColumn, .filterComparison, .filterValue {
-  width: 17vw;
 }
 
 .filtered {
@@ -37,10 +42,18 @@ body {
   padding: 5px;
 }
 
+.filterName, .filterColumn, .filterComparison, .filterValue {
+  width: 17vw;
+}
+
 .filters {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.labelDesc {
+  margin: 0 15px;
 }
 
 .main-filter {
@@ -51,4 +64,13 @@ body {
 .main-filtered {
   display: flex;
   flex-flow: row wrap;
+}
+
+.radios {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  text-align: center;
 }

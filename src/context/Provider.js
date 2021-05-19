@@ -9,6 +9,10 @@ const FILTER = {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   },
 };
 
@@ -17,6 +21,80 @@ const Provider = ({ children }) => {
   const [filtered, setFilter] = useState(FILTER);
   const [filterBtn, setFilterBtn] = useState(false);
   const [planet, setPlanet] = useState([]);
+
+  // ref. Gabriel Pires (18/05/2021): https://medium.com/@gpiress/reactjs-tabela-do-brasileir%C3%A3o-722a3cdf27c5
+
+  const compareDataASC = (dataA, dataB) => {
+    const columnToSort = filtered.filters.order.column;
+    const num = -1;
+    const test = +dataA[columnToSort];
+
+    if (!test) {
+      if (Object.prototype.hasOwnProperty.call(!dataA, columnToSort)
+      || Object.prototype.hasOwnProperty.call(!dataB, columnToSort)) {
+        return 0;
+      }
+      if (dataA[columnToSort] < dataB[columnToSort]) {
+        return num;
+      }
+      if (dataA[columnToSort] > dataB[columnToSort]) {
+        return 1;
+      }
+      return 0;
+    }
+    if (Object.prototype.hasOwnProperty.call(!dataA, columnToSort)
+    || Object.prototype.hasOwnProperty.call(!dataB, columnToSort)) {
+      return 0;
+    }
+    if (+dataA[columnToSort] < +dataB[columnToSort]) {
+      return num;
+    }
+    if (+dataA[columnToSort] > +dataB[columnToSort]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const compareDataDESC = (dataA, dataB) => {
+    const columnToSort = filtered.filters.order.column;
+    const num = -1;
+    const test = +dataA[columnToSort];
+
+    if (test && !NaN && test !== 'unknown') {
+      if (Object.prototype.hasOwnProperty.call(!dataA, columnToSort)
+      || Object.prototype.hasOwnProperty.call(!dataB, columnToSort)) {
+        return 0;
+      }
+      if (+dataA[columnToSort] > +dataB[columnToSort]) {
+        return num;
+      }
+      if (+dataA[columnToSort] < +dataB[columnToSort]) {
+        return 1;
+      }
+      return 0;
+    }
+    if (Object.prototype.hasOwnProperty.call(!dataA, columnToSort)
+    || Object.prototype.hasOwnProperty.call(!dataB, columnToSort)) {
+      return 0;
+    }
+    if (dataA[columnToSort] > dataB[columnToSort]) {
+      return num;
+    }
+    if (dataA[columnToSort] < dataB[columnToSort]) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const takesSortedData = () => {
+    const orderSort = filtered.filters.order.sort;
+    if (orderSort === 'ASC') {
+      const sortedData = data.sort(compareDataASC);
+      return sortedData;
+    }
+    const sortedData = data.sort(compareDataDESC);
+    return sortedData;
+  };
 
   const handleDataSuccess = (response) => {
     setData(response.results);
@@ -58,6 +136,7 @@ const Provider = ({ children }) => {
     setFilter({
       ...filtered,
       filters: {
+        ...filtered.filters,
         filterByName: {
           name: value,
         },
@@ -69,15 +148,28 @@ const Provider = ({ children }) => {
     setFilter({
       ...filtered,
       filters: {
-        filterByName: { ...filtered.filters.filterByName },
+        ...filtered.filters,
         filterByNumericValues: [...filtered.filters.filterByNumericValues, value],
       },
     });
     setFilterBtn(true);
   };
 
-  const contextValue = {
-    btnFilter,
+  const titles = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
+    'gravity', 'terrain', 'surface_water', 'population', 'created', 'edited',
+    'films', 'url'];
+
+  const setOrderColumn = (param) => {
+    setFilter({
+      ...filtered,
+      filters: {
+        ...filtered.filters,
+        order: param,
+      },
+    });
+  };
+
+  const contextValue = { btnFilter,
     data,
     filterBtn,
     filterColumn,
@@ -87,8 +179,10 @@ const Provider = ({ children }) => {
     setFilter,
     setFilterBtn,
     setFilterName,
-    updatePlanet,
-  };
+    setOrderColumn,
+    takesSortedData,
+    titles,
+    updatePlanet };
 
   return (
     <Context.Provider value={ contextValue }>

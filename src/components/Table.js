@@ -2,14 +2,10 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Table() {
-  const { data, filtered, planet } = useContext(Context);
+  const { data, filtered, planet, titles, takesSortedData } = useContext(Context);
 
   const headers = ['Nome', 'Rotação', 'Órbita', 'Diâmetro', 'Clima', 'Gravidade',
     'Terreno', 'Água da Superfície', 'População', 'Criado', 'Editado', 'Filmes', 'Url'];
-
-  const titles = ['name', 'rotation_period', 'orbital_period', 'diameter', 'climate',
-    'gravity', 'terrain', 'surface_water', 'population', 'created', 'edited',
-    'films', 'url'];
 
   const tableHeader = () => (
     <tr>
@@ -27,32 +23,66 @@ function Table() {
       return data.filter((row) => row.name.includes(name))
         .map((element, index) => (
           <tr key={ index }>
-            { titles.map((item, id) => (
-              <td key={ id }>
-                {element[item]}
-              </td>
-            )) }
+            { titles.map((item, id) => {
+              if (item === 'name') {
+                return (
+                  <td key={ id } data-testid="planet-name">
+                    {element[item]}
+                  </td>
+                );
+              }
+              return (
+                <td
+                  key={ id }
+                >
+                  {element[item]}
+                </td>
+              );
+            }) }
           </tr>
         ));
     }
     if (planet.length > 0) {
       return planet.map((element, index) => (
         <tr key={ index }>
-          { titles.map((item, id) => (
-            <td key={ id }>
-              {element[item]}
-            </td>
-          )) }
+          { titles.map((item, id) => {
+            if (item === 'name') {
+              return (
+                <td key={ id } data-testid="planet-name">
+                  {element[item]}
+                </td>
+              );
+            }
+            return (
+              <td
+                key={ id }
+              >
+                {element[item]}
+              </td>
+            );
+          }) }
         </tr>
       ));
     }
-    return data.map((element, index) => (
+    const order = takesSortedData();
+    return order.map((element, index) => (
       <tr key={ index }>
-        { titles.map((item, id) => (
-          <td key={ id }>
-            {element[item]}
-          </td>
-        )) }
+        { titles.map((item, id) => {
+          if (item === 'name') {
+            return (
+              <td key={ id } data-testid="planet-name">
+                {element[item]}
+              </td>
+            );
+          }
+          return (
+            <td
+              key={ id }
+            >
+              {element[item]}
+            </td>
+          );
+        }) }
       </tr>
     ));
   };

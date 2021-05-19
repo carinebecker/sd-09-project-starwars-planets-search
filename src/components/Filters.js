@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import Context from '../context/Context';
 
 function Filters() {
-  const { filtered, setFilter, setFilterName,
+  const { filtered, setFilter, setFilterName, titles, setOrderColumn,
     btnFilter, filterBtn, filterColumn, updatePlanet } = useContext(Context);
 
   useEffect(filterColumn, [filtered]);
@@ -19,7 +19,22 @@ function Filters() {
   const [columns, setColumns] = useState(['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water']);
 
+  const [order, setOrder] = useState(
+    {
+      column: 'Name',
+      sort: 'ASC',
+    },
+  );
+
   const options = ['maior que', 'igual a', 'menor que'];
+
+  const columnOrder = ({ target }) => {
+    const { name, value } = target;
+    setOrder({
+      ...order,
+      [name]: value,
+    });
+  };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -137,17 +152,74 @@ function Filters() {
           </label>
         </div>
         <div className="filter">
-          <button
-            data-testid="button-filter"
-            type="button"
-            onClick={ () => {
-              const el = columnFilter.column;
-              setColumns(columns.filter((e) => (e !== el)));
-              btnFilter(columnFilter);
-            } }
-          >
-            Filtrar
-          </button>
+          <label htmlFor="orderColumn">
+            Ordenar Coluna:
+            <br />
+            <select
+              className="orderColumn"
+              data-testid="column-sort"
+              id="orderColumn"
+              name="column"
+              onChange={ columnOrder }
+              value={ order.column }
+            >
+              { columnsOptions(titles) }
+            </select>
+          </label>
+        </div>
+        <div className="radios">
+          <label htmlFor="orderAsc">
+            ASC
+            <br />
+            <input
+              checked={ order.sort === 'ASC' }
+              className="orderAsc"
+              data-testid="column-sort-input-asc"
+              id="orderAsc"
+              name="sort"
+              onChange={ columnOrder }
+              type="radio"
+              value="ASC"
+            />
+          </label>
+          <label htmlFor="orderDesc" className="labelDesc">
+            DESC
+            <br />
+            <input
+              checked={ order.sort === 'DESC' }
+              className="orderDesc"
+              data-testid="column-sort-input-desc"
+              id="orderDesc"
+              name="sort"
+              onChange={ columnOrder }
+              type="radio"
+              value="DESC"
+            />
+          </label>
+        </div>
+        <div className="btns">
+          <div className="filter">
+            <button
+              data-testid="button-filter"
+              type="button"
+              onClick={ () => {
+                const el = columnFilter.column;
+                setColumns(columns.filter((e) => (e !== el)));
+                btnFilter(columnFilter);
+              } }
+            >
+              Filtrar
+            </button>
+          </div>
+          <div className="filter, btnOrder">
+            <button
+              data-testid="column-sort-button"
+              type="button"
+              onClick={ () => setOrderColumn(order) }
+            >
+              Ordenar
+            </button>
+          </div>
         </div>
       </div>
       <div>
