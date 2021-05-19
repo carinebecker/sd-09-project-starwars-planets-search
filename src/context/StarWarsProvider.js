@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import StarWarsContext from './StarWarsContext';
 import getPlanets from '../service/StarWarsApi';
+// Tirei dúvidas de como fazer alguns requisitos com o Rafael e o Luís Carlos.
 
 const INITIAL_FILTERS = {
   filterByNumericValues: [],
@@ -50,6 +51,7 @@ function StarWarsProvider({ children }) {
       return planets.sort((a, b) => b[order.column] - a[order.column]);
     }
   };
+  
   const removeFilter = (filter) => {
     setFilters({
       ...filters,
