@@ -11,6 +11,7 @@ const Provider = ({ children }) => {
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [filteredByName, setFilteredByName] = useState([]);
+  const [filtered, setFiltered] = useState([]);
 
   const removeResidentsKey = (planetsArray) => {
     planetsArray.forEach((planet) => {
@@ -36,8 +37,8 @@ const Provider = ({ children }) => {
     }
   };
 
-  const filterByNameText = (value) => {
-    const filtered = planets.filter(({ name }) => (
+  const filterByNameText = (array, value) => {
+    const filtered = array.filter(({ name }) => (
       name.toLowerCase().includes(value.toLowerCase())
     ));
     setFilteredByName(filtered);
@@ -53,6 +54,38 @@ const Provider = ({ children }) => {
     filters: {
       filterByName,
       filterByNumericValues,
+    }
+  }
+
+  const filterNumericValues = () => {
+    const { filters: { filterByNumericValues } } = filterTypes;
+    const { column, comparison, value } = filterByNumericValues;
+    const result = planets.filter((planet) => {
+      switch (comparison) {
+        case 'maior que':
+          return planet[column] > value;
+        case 'menor que':
+          return planet[column] < value;
+        case 'igual a':
+          return planet[column] === value;
+        default:
+          return planet;
+      }
+    });
+    return result;
+  }
+
+  const filterPlanets = () => {
+    const { filters: { filterByName, filterByNumericValues} } = filterTypes;
+    if (filterByName.name === '' && filterByNumericValues === []) {
+      return planets;
+    } else if (filterByName.name !== '' && filterByNumericValues === []) {
+      return filterByNameText(planets, filterByName.name);
+    } else if (filterByName.name === '' && filterByNumericValues.length > 0) {
+      return filterNumericValues();
+    } else {
+      const numericFilter = filterNumericValues();
+      return filterByNameText(numericFilter, filterByName.name);
     }
   }
 

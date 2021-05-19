@@ -15,41 +15,37 @@ function Form() {
     comparison: 'maior que',
     value: 0,
   });
-  /* const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('maior que');
-  const [value, setValue] = useState(0); */
+
+  const checkIfTheFilterAlreadyExists = (value) => {
+    return filterByNumericValues.some(({ column }) => column === value);
+  }
 
   const handleChangeNumericValues = ({ target }) => {
     const { name, value } = target;
+    /* console.log(name);
+    if (name === 'column') {
+      const checkColumn = checkIfTheFilterAlreadyExists(value);
+      console.log(checkColumn);
+      if (!checkColumn) {
+        setNumericValues((prevState) => ({
+          ...prevState,
+          [name]: value,
+        }));
+      }
+    } else {
+    } */
     setNumericValues((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
-  /* const handleChangeNumericValues = ({ target }) => {
-    const { name, value } = target;
-    switch (name) {
-      case 'column':
-        setColumn(value);
-        break;
-      case 'comparison':
-        setComparison(value);
-        break;
-      case 'value':
-        setValue(value);
-        break;
-      default:
-        break;
-    }
-  }; */
 
   const handleClickBtn = () => {
-    /* const filterNumber = {
-      column,
-      comparison,
-      value,
-    }; */
-    setFilterByNumericValues((prevState) => [...prevState, numericValues]);
+    const { column } = numericValues;
+    const checkColumn = checkIfTheFilterAlreadyExists(column);
+    if (!checkColumn) {
+      setFilterByNumericValues((prevState) => [...prevState, numericValues]);
+    }
   };
 
   const columnsItems = ['population',
@@ -77,7 +73,7 @@ function Form() {
           name="column"
           onChange={ handleChangeNumericValues }
           value={ numericValues.column }
-          ata-testid="column-filter"
+          data-testid="column-filter"
         >
           {columnsItems.map((value, index) => <option key={ index }>{ value }</option> )}
         </select>

@@ -1,4 +1,9 @@
+import data from '../testData';
 const getPlanets = async () => {
+  // console.log(data);
+  return data.results;
+};
+/* const getPlanets = async () => {
   const ENDPOINT = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
   try {
@@ -11,6 +16,6 @@ const getPlanets = async () => {
   } catch (error) {
     return error;
   }
-};
+}; */
 
 export default getPlanets;
