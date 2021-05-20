@@ -11,6 +11,7 @@ function Provider({ children }) {
   const [column, setColumn] = useState('');
   const [comparison, setComparison] = useState('');
   const [value, setValue] = useState('');
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const fetchPlanetsFromApi = () => {
@@ -35,6 +36,7 @@ function Provider({ children }) {
 
   const searchButton = (() => {
     let filterPlanets = [];
+    setFilterByNumericValues([...filterByNumericValues, { column, comparison, value }]);
     switch (comparison) {
     case 'maior que':
       filterPlanets = data.filter((row) => row[column] > parseInt(value, 10));
@@ -52,25 +54,19 @@ function Provider({ children }) {
 
   const contextStarWars = {
     isFetching,
-    data,
     setText,
     search,
     setColumn,
     setComparison,
     setValue,
     searchButton,
+    data,
     filters:
       {
         filterByName: {
           name: text,
         },
-        filterByNumericValues: [
-          {
-            column,
-            comparison,
-            value,
-          },
-        ],
+        filterByNumericValues,
       },
   };
 
