@@ -10,7 +10,7 @@ function Provider({ children }) {
   const [text, setText] = useState('');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
-  const [order, setOrder] = useState({ column: 'Name', sort: 'ASC' });
+  const [order, setOrder] = useState({ column: 'name', sort: 'ASC' });
 
   async function fetchPlanetsFromApi() {
     setIsFetching(true);
