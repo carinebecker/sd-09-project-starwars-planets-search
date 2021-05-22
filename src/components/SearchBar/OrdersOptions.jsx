@@ -34,7 +34,7 @@ function OrdersOptions() {
       <select
         data-testid="column-sort"
         onChange={ ({ target }) => setColumnSelected(target.value) }
-        value={ order.column }
+        value={ columnSelected }
       >
         { attFilters() }
       </select>
