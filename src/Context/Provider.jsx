@@ -10,6 +10,8 @@ function Provider({ children }) {
   const [text, setText] = useState('');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
+  const [order, setOrder] = useState({ column: 'Name', sort: 'ASC' });
+
   async function fetchPlanetsFromApi() {
     setIsFetching(true);
     await requestApiStarWars()
@@ -64,12 +66,14 @@ function Provider({ children }) {
     data,
     setData,
     fetchPlanetsFromApi,
+    setOrder,
     filters:
       {
         filterByName: {
           name: text,
         },
         filterByNumericValues,
+        order,
       },
   };
 

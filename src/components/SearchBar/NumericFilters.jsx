@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import StarWarsContext from '../../Context/StarWarsContext';
 
-export default function Filters() {
+export default function NumericFilters() {
   const { filters, fetchPlanetsFromApi,
     setFilterByNumericValues } = useContext(StarWarsContext);
   const { filterByNumericValues } = filters;
