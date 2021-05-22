@@ -1,15 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarWarsContext from '../../Context/StarWarsContext';
+import Filters from './Filters';
 
 const COLUMNS = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
-const COMPARISON = ['', 'maior que', 'menor que', 'igual a'];
+const COMPARISON = ['maior que', 'menor que', 'igual a'];
 
 function SearchBar() {
-  const { setText, name, setColumn, column, setComparison,
-    comparison, setValue, value, searchButton, filters } = useContext(StarWarsContext);
+  const { setText, name, filters,
+    setFilterByNumericValues } = useContext(StarWarsContext);
   const { filterByNumericValues } = filters;
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState('');
 
+  const searchButton = (() => {
+    setFilterByNumericValues([...filterByNumericValues, { column, comparison, value }]);
+  });
   function attFilters() {
     return (
       COLUMNS
@@ -65,6 +72,7 @@ function SearchBar() {
           Filtrar
         </button>
       </section>
+      <Filters />
     </main>
   );
 }

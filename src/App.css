@@ -61,3 +61,13 @@
   padding-top: 12px;
   text-align: left;
 }
+
+.filtersCard {
+  background-color: rgba(5, 31, 78, 0.438);
+  border: 1px solid rgb(5, 31, 78);
+  border-radius: 10px;
+  color: white;
+  padding: 2px;
+  text-align: center;
+  width: fit-content;
+}
