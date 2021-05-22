@@ -18,14 +18,14 @@ export default function Filters() {
         <section
           key={ index }
           className="filtersCard"
+          data-testid="filter"
         >
-          <section>
+          <p>
             {`${elem.column} | ${elem.comparison} | ${elem.value}`}
-          </section>
+          </p>
           <button
             onClick={ () => handleClick(index) }
             type="button"
-            data-testid="filter"
           >
             X
           </button>
