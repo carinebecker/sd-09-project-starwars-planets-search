@@ -18,6 +18,7 @@ function Provider({ children }) {
   const contextValue = {
     getPlanets,
     dataFromApi,
+    setDataFromApi,
     loading,
     setLoading,
   };
