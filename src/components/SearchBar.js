@@ -1,26 +1,27 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function SearchBar() {
   const [query, setQuery] = useState({ filters: { filterByName: { search: '' } } });
-  const [planet, setPlanet] = useState({ filter: { filteredPlanets: [] } });
-  const { dataFromApi } = useContext(StarWarsContext);
+  const { dataFromApi, setFilter } = useContext(StarWarsContext);
   const { planets } = dataFromApi;
+  const { filters: { filterByName: { search } } } = query;
 
   const filterPlanets = () => {
-    const { filters: { filterByName: { search } } } = query;
-    const myReg = new RegExp(`${search}.*`, 'i');
+    const filterByQuery = new RegExp(`^.*${search}.*`, 'i');
 
-    setPlanet({
-      filter: { filteredPlanets: planets.results
-        .filter((result) => myReg.test(result.name)),
-      },
+    setFilter({
+      filteredPlanets: planets.results
+        .filter((result) => filterByQuery.test(result.name)),
     });
   };
 
+  useEffect(() => {
+    filterPlanets();
+  }, [search]);
+
   const handleChange = ({ target: { name, value } }) => {
     setQuery({ filters: { filterByName: { [name]: value } } });
-    filterPlanets();
   };
 
   return (

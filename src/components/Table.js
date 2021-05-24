@@ -3,31 +3,31 @@ import StarWarsContext from '../context/StarWarsContext';
 import './Table.css';
 
 function Table() {
-  const { dataFromApi, loading, getPlanets } = useContext(StarWarsContext);
-  const { planets } = dataFromApi;
+  const { dataFromApi, filter, loading, getPlanets } = useContext(StarWarsContext);
+  const { planets: { results } } = dataFromApi;
+  const { filteredPlanets } = filter;
 
   useEffect(() => {
     getPlanets();
   }, []);
 
-  return loading ? (
-    <h1>Loading...</h1>
-  ) : (
-    <table cellSpacing="0">
-      <thead>
-        <tr>
-          {Object.keys(planets.results[0])
-            .map((header, index) => (
-              <th className="table" key={ index }>
-                { header }
-              </th>
-            ))}
-        </tr>
-      </thead>
+  const createPlanetsTable = (data = results) => {
+    if (filteredPlanets.length) { data = filteredPlanets; }
+    return (
+      <table cellSpacing="0">
+        <thead>
+          <tr>
+            {Object.keys(data[0])
+              .map((header, index) => (
+                <th className="table" key={ index }>
+                  { header }
+                </th>
+              ))}
+          </tr>
+        </thead>
 
-      <tbody>
-        {planets.results
-          .map((result, index) => (
+        <tbody>
+          {data.map((result, index) => (
             <tr key={ index }>
               {Object.values(result)
                 .map((planet, position) => (
@@ -37,8 +37,15 @@ function Table() {
                 ))}
             </tr>
           ))}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    );
+  };
+
+  return loading ? (
+    <h1>Loading...</h1>
+  ) : (
+    createPlanetsTable()
   );
 }
 

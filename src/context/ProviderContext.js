@@ -4,7 +4,8 @@ import StarWarsContext from './StarWarsContext';
 import fetchStarWarsPlanets from '../services/api';
 
 function Provider({ children }) {
-  const [dataFromApi, setDataFromApi] = useState({ planets: {} });
+  const [dataFromApi, setDataFromApi] = useState({ planets: { results: [] } });
+  const [filter, setFilter] = useState({ filteredPlanets: [] });
   const [loading, setLoading] = useState(true);
 
   const getPlanets = async () => {
@@ -21,6 +22,8 @@ function Provider({ children }) {
     setDataFromApi,
     loading,
     setLoading,
+    filter,
+    setFilter,
   };
 
   return (
