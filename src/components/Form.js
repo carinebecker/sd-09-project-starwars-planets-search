@@ -42,12 +42,20 @@ function Form() {
   };
 
   const handleClickBtn = () => {
-    /* const { column } = numericValues;
+    const { column } = numericValues;
     const checkColumn = checkIfTheFilterAlreadyExists(column);
     if (!checkColumn) {
-      setFilterByNumericValues((prevState) => [...prevState, numericValues]);
-      filterPlanets();
-    } */
+      setFilterTypes((prevState) => ({
+        ...prevState,
+        filters: {
+          ...prevState.filters,
+          filterByNumericValues: [
+            ...prevState.filters.filterByNumericValues,
+            numericValues
+          ],
+        },
+      }));
+    }
   };
 
   const columnsItems = ['population',
