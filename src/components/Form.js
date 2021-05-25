@@ -1,14 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import StarwarsContext from '../context/StarwarsContext';
 
 function Form() {
   const {
     filterTypes,
-    handleChange,
-    setFilterByNumericValues,
+    setFilterTypes,
+    filterPlanets,
   } = useContext(StarwarsContext);
-  const { filterByName, filterByNumericValues } = filterTypes.filters;
+
+  const { filters: { filterByName, filterByNumericValues } } = filterTypes;
 
   const [numericValues, setNumericValues] = useState({
     column: 'population',
@@ -20,32 +21,33 @@ function Form() {
     return filterByNumericValues.some(({ column }) => column === value);
   }
 
-  const handleChangeNumericValues = ({ target }) => {
+  const handleChange = ({ target }) => {
     const { name, value } = target;
-    /* console.log(name);
-    if (name === 'column') {
-      const checkColumn = checkIfTheFilterAlreadyExists(value);
-      console.log(checkColumn);
-      if (!checkColumn) {
-        setNumericValues((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
+    if (name === 'name') {
+      setFilterTypes((prevState) => ({
+        ...prevState,
+        filters: {
+          ...prevState.filters,
+          filterByName: {
+            name: value,
+          },
+        },
+      }));
     } else {
-    } */
-    setNumericValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+      setNumericValues((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   const handleClickBtn = () => {
-    const { column } = numericValues;
+    /* const { column } = numericValues;
     const checkColumn = checkIfTheFilterAlreadyExists(column);
     if (!checkColumn) {
       setFilterByNumericValues((prevState) => [...prevState, numericValues]);
-    }
+      filterPlanets();
+    } */
   };
 
   const columnsItems = ['population',
@@ -71,7 +73,7 @@ function Form() {
         </label>
         <select
           name="column"
-          onChange={ handleChangeNumericValues }
+          onChange={ handleChange }
           value={ numericValues.column }
           data-testid="column-filter"
         >
@@ -79,7 +81,7 @@ function Form() {
         </select>
         <select
           name="comparison"
-          onChange={ handleChangeNumericValues }
+          onChange={ handleChange }
           value={ numericValues.comparison }
           data-testid="comparison-filter"
         >
@@ -89,7 +91,7 @@ function Form() {
           type="number"
           name="value"
           value={ numericValues.value }
-          onChange={ handleChangeNumericValues }
+          onChange={ handleChange }
           data-testid="value-filter"
         />
         <button

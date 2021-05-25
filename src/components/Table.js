@@ -10,12 +10,14 @@ const Table = () => {
     fetchPlanets,
     isFetching,
     tableHeaders,
-    filteredByName,
+    filteredPlanets,
   } = useContext(StarwarsContext);
 
   useEffect(() => {
     fetchPlanets();
   }, []);
+
+  console.log(filteredPlanets);
 
   const table = (
     <table>
@@ -25,15 +27,13 @@ const Table = () => {
         </tr>
       </thead>
       <tbody>
-        {(filteredByName.length === 0)
+        {(filteredPlanets.length === 0)
           ? planets.map((planet, index) => <TableRow key={ index } planet={ planet } />)
-          : filteredByName
+          : filteredPlanets
             .map((planet, index) => <TableRow key={ index } planet={ planet } />)}
       </tbody>
     </table>
   );
-
-  // console.log(`filter: ${filteredByName.length}`);
 
   return (
     <div>
