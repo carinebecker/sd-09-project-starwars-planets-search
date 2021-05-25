@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import StarWarsContext from './context/StarWarsContext';
 import Table from './components/Table';
+import Filter from './components/Filter';
 import './App.css';
 
 function App() {
   const [responseApi, setResponseApi] = useState();
-  const [namefilter, setNameFilter] = useState();
-  const [filters, setFilters] = useState({
-    filterByName: {
-      name: '',
+  const [nameFilter, setNameFilter] = useState();
+  const [numFilter, setNumFilter] = useState();
+  const [filters, setFilters] = useState(
+    {
+      filterByName: { name: '' },
+      filterByNumericValues: [],
     },
-    filterByNumericValues: [],
-  });
+  );
 
   useEffect(() => {
     if (responseApi === undefined) {
@@ -20,7 +22,6 @@ function App() {
           const data = await fetch('https://swapi-trybe.herokuapp.com/api/planets/')
             .then((response) => response.json());
           setResponseApi(data.results);
-          // console.log(data.results);
         } catch (error) {
           console.log(error);
         }
@@ -30,21 +31,36 @@ function App() {
   }, [responseApi]);
 
   useEffect(() => {
-    setFilters({
-      filterByName: {
-        name: namefilter,
-      },
-    });
-  }, [namefilter]);
+    if (filters.filterByNumericValues.length < 1 && numFilter !== undefined) {
+      setFilters({
+        filterByName: { name: nameFilter },
+        filterByNumericValues: [numFilter],
+      });
+    } else if ((filters.filterByNumericValues[filters.filterByNumericValues.length - 1]
+      !== numFilter)) {
+      setFilters({
+        filterByName: { name: nameFilter },
+        filterByNumericValues: [...filters.filterByNumericValues, numFilter],
+      });
+    } else if (nameFilter !== filters.filterByName.name) {
+      setFilters({
+        filterByName: { name: nameFilter },
+        filterByNumericValues: [],
+      });
+    }
+  }, [nameFilter, numFilter, filters]);
 
   return (
     <div className="App">
-      <StarWarsContext.Provider value={ { responseApi, filters } }>
+      <StarWarsContext.Provider
+        value={ { responseApi, filters, numFilter, setNumFilter } }
+      >
         <input
-          value={ namefilter }
+          value={ nameFilter }
           onChange={ ({ target }) => setNameFilter(target.value) }
           data-testid="name-filter"
         />
+        <Filter />
         <Table />
       </StarWarsContext.Provider>
     </div>

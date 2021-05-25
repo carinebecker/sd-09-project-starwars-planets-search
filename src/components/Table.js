@@ -33,6 +33,25 @@ function Table() {
                     .filter((planet) => planet.name
                       .includes(value.filters.filterByName.name));
                 }
+
+                if (value.filters.filterByNumericValues.length > 0) {
+                  value.filters.filterByNumericValues.forEach((condition) => {
+                    if (condition.comparison === 'maior que') {
+                      showPlanet = showPlanet
+                        .filter((planet) => Number(planet[condition.column])
+                        > Number(condition.value));
+                    } else if (condition.comparison === 'menor que') {
+                      showPlanet = showPlanet
+                        .filter((planet) => Number(planet[condition.column])
+                        < Number(condition.value));
+                    } else if (condition.comparison === 'igual a') {
+                      showPlanet = showPlanet
+                        .filter((planet) => Number(planet[condition.column])
+                        === Number(condition.value));
+                    }
+                  });
+                }
+
                 return showPlanet.map((planet) => (
                   <tr key={ planet.name }>
                     {Object.keys(planet)
