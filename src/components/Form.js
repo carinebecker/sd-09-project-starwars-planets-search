@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import StarwarsContext from '../context/StarwarsContext';
 
@@ -6,7 +6,6 @@ function Form() {
   const {
     filterTypes,
     setFilterTypes,
-    filterPlanets,
   } = useContext(StarwarsContext);
 
   const { filters: { filterByName, filterByNumericValues } } = filterTypes;
@@ -18,8 +17,9 @@ function Form() {
   });
 
   const checkIfTheFilterAlreadyExists = (value) => {
-    return filterByNumericValues.some(({ column }) => column === value);
-  }
+    const result = filterByNumericValues.some(({ column }) => column === value);
+    return result;
+  };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -51,7 +51,7 @@ function Form() {
           ...prevState.filters,
           filterByNumericValues: [
             ...prevState.filters.filterByNumericValues,
-            numericValues
+            numericValues,
           ],
         },
       }));
@@ -85,7 +85,7 @@ function Form() {
           value={ numericValues.column }
           data-testid="column-filter"
         >
-          {columnsItems.map((value, index) => <option key={ index }>{ value }</option> )}
+          {columnsItems.map((value, index) => <option key={ index }>{ value }</option>)}
         </select>
         <select
           name="comparison"
@@ -93,7 +93,8 @@ function Form() {
           value={ numericValues.comparison }
           data-testid="comparison-filter"
         >
-          {comparisonItems.map((value, index) => <option key={ index }>{ value }</option> )}
+          {comparisonItems
+            .map((value, index) => <option key={ index }>{ value }</option>)}
         </select>
         <input
           type="number"

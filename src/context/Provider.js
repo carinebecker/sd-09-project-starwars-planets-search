@@ -25,11 +25,6 @@ const Provider = ({ children }) => {
   // state com o array filtrado
   const [filteredPlanets, setFilteredPlanets] = useState([]);
 
-  useEffect(() => {
-    filterByNameText();
-    // filterPlanets();
-  }, [filterTypes]);
-
   const removeResidentsKey = (planetsArray) => {
     planetsArray.forEach((planet) => {
       delete planet.residents;
@@ -62,62 +57,42 @@ const Provider = ({ children }) => {
     setFilteredPlanets(filtered);
   };
 
-  const filterNumericValues = (array, filterRule) => {
-    console.log("filterRule");
-    console.log(filterRule);
+  const numericFilter = (array, filterRule) => {
     const { column, comparison, value } = filterRule;
     const result = array.filter((planet) => {
       switch (comparison) {
-        case 'maior que':
-          return planet[column] > value;
-        case 'menor que':
-          return planet[column] < value;
-        case 'igual a':
-          return planet[column] === value;
-        default:
-          return planet;
+      case 'maior que':
+        console.log(`${column}: ${planet[column]} maior que ${value}`);
+        return parseFloat(planet[column]) > parseFloat(value);
+      case 'menor que':
+        console.log(`${column}: ${planet[column]} menor que ${value}`);
+        return parseFloat(planet[column]) < parseFloat(value);
+      case 'igual a':
+        console.log(`${column}: ${planet[column]} igual a ${value}`);
+        return parseFloat(planet[column]) === parseFloat(value);
+      default:
+        return planet;
       }
     });
     return result;
-  }
+  };
 
-  const filterPlanets = () => {
-    // const { filterByName: { name }, filterByNumericValues } = filters;
+  const filterNumericValues = () => {
+    const { filters: { filterByNumericValues } } = filterTypes;
+    if (filterByNumericValues.length > 0) {
+      let filtered = [...planets];
+      filterByNumericValues.forEach((filter) => {
+        console.log('filtered');
+        filtered = numericFilter(filtered, filter);
+      });
+      setFilteredPlanets(filtered);
+    }
+  };
 
-    // /* console.log(filterByName);
-    // console.log(filterByNumericValues); */
-    // // 1 - iniciar o array de filtro com todos os planetas
-    // let filterResult = [...planets];
-    // console.log('array inicial');
-    // console.log(filterResult);
-
-    // /* 2 - iniciar a filtragem pelos valores numericos. comecando pelo primeiro
-    // filtro do primeiro indice ate o ultimo, retornar um array com o filtro geral
-    // dos filtros numericos. */
-    // if (filterByNumericValues.length > 0) {
-    //   filterByNumericValues.forEach((filterRule) => {
-    //     filterResult = filterNumericValues(filterResult, filterRule);
-    //   });
-    // }
-    // console.log('array com filtro numerico');
-    // console.log(filterResult);
-
-    // /* 3 - Apos realizar os filtros numericos pegar o resultado e filtrar pelo nome
-    // buscado. */
-    // if (name.length > 0) {
-    //   filterResult = filterByNameText(filterResult, name);
-    // }
-    // console.log('array filtrado pelo nome');
-    // console.log(filterResult);
-
-    // // 4 - Terminado todos os filtros setar o resultado no estado para ser usado
-    // setfilteredPlanets(filterResult);
-  }
-  
-  // console.log(filter);
-
-  // let filterResult = planets;
-  // console.log(filteredPlanets);
+  useEffect(() => {
+    filterByNameText();
+    filterNumericValues();
+  }, [filterTypes]);
 
   const context = {
     planets,
@@ -127,12 +102,11 @@ const Provider = ({ children }) => {
     fetchPlanets,
     filteredPlanets,
     setFilterTypes,
-    filterPlanets,
   };
 
   return (
-    <StarwarsContext.Provider value={context}>
-      { children}
+    <StarwarsContext.Provider value={ context }>
+      { children }
     </StarwarsContext.Provider>
   );
 };
@@ -142,63 +116,3 @@ Provider.propTypes = {
 };
 
 export default Provider;
-
-  /* const filterTypes = {
-    filters: {
-      filterByName,
-      filterByNumericValues,
-    }
-  } */
-
-  /* const filterNumericValues = () => {
-    const { filters: { filterByNumericValues } } = filterTypes;
-    const { column, comparison, value } = filterByNumericValues;
-    const result = planets.filter((planet) => {
-      switch (comparison) {
-        case 'maior que':
-          return planet[column] > value;
-        case 'menor que':
-          return planet[column] < value;
-        case 'igual a':
-          return planet[column] === value;
-        default:
-          return planet;
-      }
-    });
-    return result;
-  }
-
-  const filterPlanets = () => {
-    const { filters: { filterByName, filterByNumericValues} } = filterTypes;
-
-    console.log(filterByName);
-    console.log(filterByNumericValues);
-
-    if (filterByName.name.length === 0 && filterByNumericValues.length === 0) {
-      console.log('Sem filtro');
-      // return planets;
-      setFiltered(planets);
-    } else if (filterByName.name.length > 0 && filterByNumericValues.length === 0) {
-      filterByNameText(planets, filterByName.name);
-      console.log('filtro texto')
-      console.log(filteredByName)
-      // return filteredByName;
-      setFiltered(filteredByName);
-    } else if (filterByName.name.length === 0 && filterByNumericValues.length > 0) {
-      const result = filterNumericValues();
-      console.log('filtro numerico')
-      console.log(result);
-      // return result;
-      setFiltered(result);
-    } else {
-      const numericFilter = filterNumericValues();
-      filterByNameText(numericFilter, filterByName.name);
-      console.log('filtro numerico e texto');
-      console.log(numericFilter)
-      console.log(filteredByName)
-      // return filteredByName;
-      setFiltered(filteredByName);
-    }
-  } */
-
-

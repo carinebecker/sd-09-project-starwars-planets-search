@@ -17,8 +17,6 @@ const Table = () => {
     fetchPlanets();
   }, []);
 
-  console.log(filteredPlanets);
-
   const table = (
     <table>
       <thead>
