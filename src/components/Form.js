@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import StarwarsContext from '../context/StarwarsContext';
+import Order from './Order';
 
 function Form() {
   const {
@@ -111,6 +112,7 @@ function Form() {
         >
           Filtrar
         </button>
+        <Order />
       </form>
     </div>
   );

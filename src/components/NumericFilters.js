@@ -11,7 +11,6 @@ function NumericFilters() {
   };
 
   const handleRemoveFilter = (filter) => {
-    console.log(filter);
     setColumnItems((prevState) => [...prevState, filter.column]);
     setFilterTypes((prevState) => ({
       ...prevState,
