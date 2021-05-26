@@ -1,16 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import FilterSearch from './FilterSearch';
 
 function SearchBar() {
-  const [query, setQuery] = useState({ filters: { filterByName: { search: '' } } });
-  const { dataFromApi, setFilter } = useContext(StarWarsContext);
+  const [filter, setFilter] = useState({
+    filters: {
+      filterByName: { search: '' },
+      filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+    },
+  });
+  const { dataFromApi, setPlanetsFilter } = useContext(StarWarsContext);
   const { planets } = dataFromApi;
-  const { filters: { filterByName: { search } } } = query;
+  const { filters: { filterByName: { search } } } = filter;
 
   const filterPlanets = () => {
     const filterByQuery = new RegExp(`^.*${search}.*`, 'i');
 
-    setFilter({
+    setPlanetsFilter({
       filteredPlanets: planets.results
         .filter((result) => filterByQuery.test(result.name)),
     });
@@ -21,21 +27,26 @@ function SearchBar() {
   }, [search]);
 
   const handleChange = ({ target: { name, value } }) => {
-    setQuery({ filters: { filterByName: { [name]: value } } });
+    setFilter({
+      filters: { ...filter.filters, filterByName: { [name]: value } },
+    });
   };
 
   return (
-    <label htmlFor="search-bar">
-      Pesquisar:
+    <>
+      <label htmlFor="search-bar">
+        Pesquisar:
 
-      <input
-        type="text"
-        name="search"
-        id="search-bar"
-        data-testid="name-filter"
-        onChange={ handleChange }
-      />
-    </label>
+        <input
+          type="text"
+          name="search"
+          id="search-bar"
+          data-testid="name-filter"
+          onChange={ handleChange }
+        />
+      </label>
+      <FilterSearch filter={ filter } setFilter={ setFilter } />
+    </>
   );
 }
 

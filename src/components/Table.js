@@ -3,9 +3,9 @@ import StarWarsContext from '../context/StarWarsContext';
 import './Table.css';
 
 function Table() {
-  const { dataFromApi, filter, loading, getPlanets } = useContext(StarWarsContext);
+  const { dataFromApi, planetsFilter, loading, getPlanets } = useContext(StarWarsContext);
   const { planets: { results } } = dataFromApi;
-  const { filteredPlanets } = filter;
+  const { filteredPlanets } = planetsFilter;
 
   useEffect(() => {
     getPlanets();
@@ -13,6 +13,7 @@ function Table() {
 
   const createPlanetsTable = (data = results) => {
     if (filteredPlanets.length) { data = filteredPlanets; }
+
     return (
       <table cellSpacing="0">
         <thead>
