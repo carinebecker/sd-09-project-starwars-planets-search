@@ -24,6 +24,14 @@ const Provider = ({ children }) => {
   const [tableHeaders, setTableHeaders] = useState([]);
   // state com o array filtrado
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  // state com as colunas a serem filtradas
+  const [columnItems, setColumnItems] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const removeResidentsKey = (planetsArray) => {
     planetsArray.forEach((planet) => {
@@ -98,6 +106,8 @@ const Provider = ({ children }) => {
     fetchPlanets,
     filteredPlanets,
     setFilterTypes,
+    columnItems,
+    setColumnItems,
   };
 
   return (

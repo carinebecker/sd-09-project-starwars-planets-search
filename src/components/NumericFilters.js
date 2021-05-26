@@ -2,15 +2,32 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function NumericFilters() {
-  const { filterTypes } = useContext(StarwarsContext);
+  const { filterTypes, setFilterTypes, setColumnItems } = useContext(StarwarsContext);
   const { filters: { filterByNumericValues } } = filterTypes;
-  // console.log(filterByNumericValues);
+
+  const removeFilter = ({ column }) => {
+    const result = filterByNumericValues.filter((filter) => filter.column !== column);
+    return result;
+  };
+
+  const handleRemoveFilter = (filter) => {
+    console.log(filter);
+    setColumnItems((prevState) => [...prevState, filter.column]);
+    setFilterTypes((prevState) => ({
+      ...prevState,
+      filters: {
+        ...prevState.filters,
+        filterByNumericValues: removeFilter(filter),
+      },
+    }));
+  };
+
   return (
     <section>
-      {filterByNumericValues.map(({ column, comparison, value }, index) => (
-        <div key={ index }>
-          <span>{`${column}, ${comparison} ${value} `}</span>
-          <button type="button">X</button>
+      {filterByNumericValues.map((filter, index) => (
+        <div key={ index } data-testid="filter">
+          <span>{`${filter.column}, ${filter.comparison} ${filter.value} `}</span>
+          <button type="button" onClick={ () => handleRemoveFilter(filter) }>X</button>
         </div>
       ))}
     </section>

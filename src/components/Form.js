@@ -6,6 +6,8 @@ function Form() {
   const {
     filterTypes,
     setFilterTypes,
+    columnItems,
+    setColumnItems,
   } = useContext(StarwarsContext);
 
   const { filters: { filterByName } } = filterTypes;
@@ -15,13 +17,13 @@ function Form() {
     comparison: 'maior que',
     value: 0,
   });
-  const [columnItems, setColumnItems] = useState([
+  /* const [columnItems, setColumnItems] = useState([
     'population',
     'orbital_period',
     'diameter',
     'rotation_period',
     'surface_water',
-  ]);
+  ]); */
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
