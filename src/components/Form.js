@@ -8,18 +8,20 @@ function Form() {
     setFilterTypes,
   } = useContext(StarwarsContext);
 
-  const { filters: { filterByName, filterByNumericValues } } = filterTypes;
+  const { filters: { filterByName } } = filterTypes;
 
   const [numericValues, setNumericValues] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
-
-  const checkIfTheFilterAlreadyExists = (value) => {
-    const result = filterByNumericValues.some(({ column }) => column === value);
-    return result;
-  };
+  const [columnItems, setColumnItems] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -41,29 +43,26 @@ function Form() {
     }
   };
 
-  const handleClickBtn = () => {
-    const { column } = numericValues;
-    const checkColumn = checkIfTheFilterAlreadyExists(column);
-    if (!checkColumn) {
-      setFilterTypes((prevState) => ({
-        ...prevState,
-        filters: {
-          ...prevState.filters,
-          filterByNumericValues: [
-            ...prevState.filters.filterByNumericValues,
-            numericValues,
-          ],
-        },
-      }));
-    }
+  const removeColumn = (value) => {
+    const result = columnItems.filter((column) => column !== value);
+    return result;
   };
 
-  const columnsItems = ['population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
+  const handleClickBtn = () => {
+    const { column } = numericValues;
+    setColumnItems(removeColumn(column));
+    setFilterTypes((prevState) => ({
+      ...prevState,
+      filters: {
+        ...prevState.filters,
+        filterByNumericValues: [
+          ...prevState.filters.filterByNumericValues,
+          numericValues,
+        ],
+      },
+    }));
+  };
+
   const comparisonItems = ['maior que', 'menor que', 'igual a'];
   return (
     <div>
@@ -85,7 +84,7 @@ function Form() {
           value={ numericValues.column }
           data-testid="column-filter"
         >
-          {columnsItems.map((value, index) => <option key={ index }>{ value }</option>)}
+          {columnItems.map((value, index) => <option key={ index }>{ value }</option>)}
         </select>
         <select
           name="comparison"

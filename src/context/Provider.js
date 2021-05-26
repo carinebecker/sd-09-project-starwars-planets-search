@@ -62,13 +62,10 @@ const Provider = ({ children }) => {
     const result = array.filter((planet) => {
       switch (comparison) {
       case 'maior que':
-        console.log(`${column}: ${planet[column]} maior que ${value}`);
         return parseFloat(planet[column]) > parseFloat(value);
       case 'menor que':
-        console.log(`${column}: ${planet[column]} menor que ${value}`);
         return parseFloat(planet[column]) < parseFloat(value);
       case 'igual a':
-        console.log(`${column}: ${planet[column]} igual a ${value}`);
         return parseFloat(planet[column]) === parseFloat(value);
       default:
         return planet;
@@ -82,7 +79,6 @@ const Provider = ({ children }) => {
     if (filterByNumericValues.length > 0) {
       let filtered = [...planets];
       filterByNumericValues.forEach((filter) => {
-        console.log('filtered');
         filtered = numericFilter(filtered, filter);
       });
       setFilteredPlanets(filtered);
