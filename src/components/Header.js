@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import React, { useContext, useEffect } from 'react';
 import AppContext from '../appContext/Context';
 import headerNames from '../data/headerNames';
