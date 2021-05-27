@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 function useFilterByNumber(setFilteredPlanets, filterByNumber, planets) {
   useEffect(() => {
     function setFilter() {
-      if (!filterByNumber) setFilteredPlanets(planets);
+      if (!filterByNumber || filterByNumber.length === 0) setFilteredPlanets(planets);
       else {
         filterByNumber.forEach(({ column, comparison, value }) => {
           switch (comparison) {

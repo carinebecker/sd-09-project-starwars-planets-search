@@ -10,7 +10,7 @@ function NumericFilter() {
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
 
-  const handleClick = () => {
+  const handleAdd = () => {
     const newFilter = {
       column,
       comparison,
@@ -18,6 +18,11 @@ function NumericFilter() {
     };
     const filterList = filterByNumber.map((filter) => filter);
     filterList.push(newFilter);
+    setFilterByNumber(filterList);
+  };
+
+  const handleRemove = (name) => {
+    const filterList = filterByNumber.filter((filter) => filter.column !== name);
     setFilterByNumber(filterList);
   };
 
@@ -57,7 +62,7 @@ function NumericFilter() {
       />
       <button
         type="button"
-        onClick={ handleClick }
+        onClick={ handleAdd }
         data-testid="button-filter"
       >
         Apply Filter
@@ -65,9 +70,19 @@ function NumericFilter() {
       <div>
         {filterByNumber
           .map((filter) => (
-            <p key={ filter.column }>
-              {`${filter.column} ${filter.comparison} ${filter.value}`}
-            </p>
+            <div key={ filter.column }>
+              <p>
+                {`${filter.column} ${filter.comparison} ${filter.value}`}
+              </p>
+              <button
+                type="button"
+                data-testid="filter"
+                name={ filter.column }
+                onClick={ (e) => handleRemove(e.target.name) }
+              >
+                x
+              </button>
+            </div>
           ))}
       </div>
     </div>
