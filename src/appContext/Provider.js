@@ -4,10 +4,18 @@ import AppContext from './Context';
 
 const AppProvider = ({ children }) => {
   const [data, setData] = useState();
-
+  const [name, setFilter] = useState({
+    filters: {
+      filterByName: {
+        name: '',
+      },
+    },
+  });
   const contextValue = {
     data,
     setData,
+    name,
+    setFilter,
   };
 
   return (

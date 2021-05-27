@@ -1,5 +1,6 @@
 import React from 'react';
 import AppProvider from './appContext/Provider';
+import FilterName from './components/FilterName';
 import Header from './components/Header';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <div>
       <AppProvider>
         <Header />
+        <FilterName />
       </AppProvider>
     </div>
   );

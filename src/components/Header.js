@@ -3,7 +3,7 @@ import AppContext from '../appContext/Context';
 import headerNames from '../data/headerNames';
 
 const Header = () => {
-  const { data, setData } = useContext(AppContext);
+  const { data, setData, name } = useContext(AppContext);
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -26,8 +26,14 @@ const Header = () => {
 
   const renderRow = () => {
     if (data !== undefined) {
-      console.log(data);
-      return data.map((planets) => (
+      const initialData = data.filter((teste) => {
+        if (name.length > 0) {
+          return teste.name.includes(name);
+        }
+        return data;
+      });
+
+      const noFilter = initialData.map((planets) => (
         <tr key={ planets.name }>
           <td>{ planets.name }</td>
           <td>{ planets.rotation_period }</td>
@@ -38,9 +44,9 @@ const Header = () => {
           <td>{ planets.terrain }</td>
           <td>{ planets.surface_water }</td>
           <td>{ planets.population }</td>
-
         </tr>
       ));
+      return noFilter;
     }
     return <div>Loading...</div>;
   };
@@ -51,7 +57,7 @@ const Header = () => {
         { renderHeader() }
       </tbody>
       <tbody>
-        {renderRow() }
+        { renderRow() }
       </tbody>
     </table>
   );
