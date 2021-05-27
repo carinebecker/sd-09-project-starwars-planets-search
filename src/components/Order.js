@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 const Order = () => {
-  const { tableHeaders, setFilterTypes,} = useContext(StarwarsContext);
+  const { tableHeaders, setFilterTypes } = useContext(StarwarsContext);
   const [order, setOrder] = useState({
     column: 'Name',
     sort: 'ASC',
@@ -19,8 +19,8 @@ const Order = () => {
       filters: {
         ...prevState.filters,
         order,
-      }
-    }))
+      },
+    }));
   };
 
   return (
@@ -54,7 +54,7 @@ const Order = () => {
             name="sort"
             value="DESC"
             id="desc"
-            checked={ order.sort === 'DESC'}
+            checked={ order.sort === 'DESC' }
             onChange={ handleChange }
             data-testid="column-sort-input-desc"
           />
@@ -64,7 +64,9 @@ const Order = () => {
         type="button"
         onClick={ handleSendOrder }
         data-testid="column-sort-button"
-      >Ordenar</button>
+      >
+        Ordenar
+      </button>
     </div>
   );
 };

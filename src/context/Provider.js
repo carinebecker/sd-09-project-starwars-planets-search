@@ -13,7 +13,7 @@ const Provider = ({ children }) => {
       },
       filterByNumericValues: [],
       order: {
-        column: 'Name',
+        column: 'name',
         sort: 'ASC',
       },
     },
@@ -50,6 +50,7 @@ const Provider = ({ children }) => {
       const response = await getPlanets();
       removeResidentsKey(response);
       filterTableHeads(response);
+      orderPlanets(response);
       setPlanets(response);
       setIsFetching(false);
     } catch (error) {
@@ -57,12 +58,34 @@ const Provider = ({ children }) => {
     }
   };
 
+  const orderPlanets = (array) => {
+    const { filters: { order: { column } } } = filterTypes;
+    // let ordered = filteredPlanets.length > 0 ? [...filteredPlanets] : [...planets];
+    // console.log(ordered);
+    const equal = 0;
+    const bigger = 1;
+    const smaller = -1;
+    array.sort(function (a, b) {
+      if (a[column] > b[column]) {
+        return bigger;
+      }
+      if (a[column] < b[column]) {
+        return smaller;
+      }
+      return equal;
+    });
+    console.log(array);
+    // setFilteredPlanets(array);
+    return array;
+  };
+
   const filterByNameText = () => {
     const { filters: { filterByName: { name: value } } } = filterTypes;
     const filtered = planets.filter(({ name }) => (
       name.toLowerCase().includes(value.toLowerCase())
     ));
-    setFilteredPlanets(filtered);
+    const ordered = orderPlanets(filtered);
+    setFilteredPlanets(ordered);
   };
 
   const numericFilter = (array, filterRule) => {
@@ -89,13 +112,15 @@ const Provider = ({ children }) => {
       filterByNumericValues.forEach((filter) => {
         filtered = numericFilter(filtered, filter);
       });
-      setFilteredPlanets(filtered);
+      const ordered = orderPlanets(filtered);
+      setFilteredPlanets(ordered);
     }
   };
 
   useEffect(() => {
     filterByNameText();
     filterNumericValues();
+    // orderPlanets();
   }, [filterTypes]);
 
   const context = {
@@ -108,6 +133,7 @@ const Provider = ({ children }) => {
     setFilterTypes,
     columnItems,
     setColumnItems,
+    orderPlanets,
   };
 
   return (

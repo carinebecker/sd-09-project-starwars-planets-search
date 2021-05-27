@@ -5,7 +5,12 @@ function TableRow({ planet }) {
   const planetValues = Object.values(planet);
   return (
     <tr>
-      {planetValues.map((value, index) => <td key={ index }>{ value }</td>)}
+      {planetValues.map((value, index) => {
+        if (index === 0) {
+          return <td key={ index } data-testid="planet-name">{ value }</td>;
+        }
+        return <td key={ index }>{ value }</td>;
+      })}
     </tr>
   );
 }
