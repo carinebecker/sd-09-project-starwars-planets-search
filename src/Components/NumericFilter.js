@@ -4,7 +4,7 @@ import planetsContext from '../Context/planetsContext';
 function NumericFilter() {
   const { filterByNumber, setFilterByNumber } = useContext(planetsContext);
   const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('>');
+  const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
 
   const handleClick = () => {
@@ -38,9 +38,9 @@ function NumericFilter() {
         value={ comparison }
         onChange={ (e) => setComparison(e.target.value) }
       >
-        <option value=">">maior que</option>
-        <option value="<">menor que</option>
-        <option value="===">igual a</option>
+        <option value="maior que">maior que</option>
+        <option value="menor que">menor que</option>
+        <option value="igual a">igual a</option>
       </select>
       <input
         type="number"
