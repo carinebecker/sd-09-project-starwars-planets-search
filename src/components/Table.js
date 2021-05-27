@@ -2,8 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import AppContext from '../appContext/Context';
 import headerNames from '../data/headerNames';
 
-const Header = () => {
-  const { data, setData, name } = useContext(AppContext);
+const Table = () => {
+  const { data,
+    setData,
+    name,
+    column,
+    comparison,
+    value,
+    activateButton } = useContext(AppContext);
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -25,15 +31,21 @@ const Header = () => {
   );
 
   const renderRow = () => {
-    if (data !== undefined) {
-      const initialData = data.filter((teste) => {
-        if (name.length > 0) {
-          return teste.name.includes(name);
-        }
-        return data;
-      });
+    let filtered = data;
+    if (data !== undefined && name.length > 0) {
+      filtered = data.filter((itens) => itens.name.includes(name));
+    }
 
-      const noFilter = initialData.map((planets) => (
+    if (activateButton && comparison === 'maior que') {
+      filtered = filtered.filter((itens) => itens[column] > Number(value));
+    } if (activateButton && comparison === 'igual a') {
+      filtered = filtered.filter((itens) => itens[column] === value);
+    } if (activateButton && comparison === 'menor que') {
+      filtered = filtered.filter((itens) => itens[column] < Number(value));
+    }
+
+    if (data !== undefined) {
+      const noFilter = filtered.map((planets) => (
         <tr key={ planets.name }>
           <td>{ planets.name }</td>
           <td>{ planets.rotation_period }</td>
@@ -63,4 +75,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Table;
