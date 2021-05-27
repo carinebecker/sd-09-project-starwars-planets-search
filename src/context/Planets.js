@@ -5,6 +5,10 @@ import Api from '../services/api';
 
 export default function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [saveColumn, setSaveColumn] = useState('population');
+  const [saveComparison, setSaveComparison] = useState('maior que');
+  const [saveValue, setSaveValue] = useState('');
+
   const [filterPlanets, setFilterPlanets] = useState([]);
   const [filters, setFilter] = useState({
     filterByName: { name: '' },
@@ -41,24 +45,24 @@ export default function PlanetProvider({ children }) {
 
   const filterPlanetsByNumber = (event) => {
     event.preventDefault();
-    const column = event.target[1].value;
-    const comparison = event.target[2].value;
-    const { value } = event.target[3];
 
-    const filterName = planets
-      .filter(({ name }) => name.includes(filters.filterByName.name));
+    const menor = filterPlanets
+      .filter((planet) => Number(planet[saveColumn]) < Number(saveValue)
+      || planet[saveColumn] === 'unknown');
+    const maior = filterPlanets
+      .filter((planet) => Number(planet[saveColumn]) > Number(saveValue)
+      || planet[saveColumn] === 'unknown');
+    const igual = filterPlanets
+      .filter((planet) => Number(planet[saveColumn]) === Number(saveValue)
+      || planet[saveColumn] === 'unknown');
 
-    const menor = filterName.filter((planet) => planet[column] < value);
-    const maior = filterName.filter((planet) => planet[column] > value);
-    const igual = filterName.filter((planet) => planet[column] === value);
-
-    if (comparison === 'menor') {
+    if (saveComparison === 'menor') {
       setFilterPlanets(menor);
     }
-    if (comparison === 'maior') {
+    if (saveComparison === 'maior') {
       setFilterPlanets(maior);
     }
-    if (comparison === 'igual') {
+    if (saveComparison === 'igual') {
       setFilterPlanets(igual);
     }
   };
@@ -69,6 +73,9 @@ export default function PlanetProvider({ children }) {
     filterPlanetsByNumber,
     filterPlanets,
     filters,
+    setSaveColumn,
+    setSaveComparison,
+    setSaveValue,
   };
 
   return (
