@@ -3,6 +3,7 @@ import planetsContext from '../Context/planetsContext';
 
 function Table() {
   const {
+    planets,
     filteredPlanets,
     loading,
   } = useContext(planetsContext);
@@ -12,7 +13,7 @@ function Table() {
       <table>
         <thead>
           <tr>
-            {!loading && Object.keys(filteredPlanets[0])
+            {!loading && Object.keys(planets[0])
               .filter((item) => item !== 'residents')
               .map((item) => <th key={ item }>{item}</th>)}
           </tr>

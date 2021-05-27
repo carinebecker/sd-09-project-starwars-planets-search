@@ -17,6 +17,7 @@ function Provider({ children }) {
   useFilterByNumber(setFilteredPlanets, filterByNumber, planets);
 
   const context = {
+    planets,
     filteredPlanets,
     loading,
     filterByName,

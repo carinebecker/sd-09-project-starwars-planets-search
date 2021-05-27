@@ -6,6 +6,9 @@ function NumericFilter() {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
+  const filterOptions = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
 
   const handleClick = () => {
     const newFilter = {
@@ -26,11 +29,14 @@ function NumericFilter() {
         value={ column }
         onChange={ (e) => setColumn(e.target.value) }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        {filterOptions
+          .filter((option) => {
+            let answer = true;
+            filterByNumber.forEach((filter) => {
+              if (filter.column === option) answer = false;
+            });
+            return answer;
+          }).map((option) => (<option key={ option }>{ option }</option>))}
       </select>
       <select
         data-testid="comparison-filter"
