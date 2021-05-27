@@ -70,13 +70,12 @@ function NumericFilter() {
       <div>
         {filterByNumber
           .map((filter) => (
-            <div key={ filter.column }>
+            <div key={ filter.column } data-testid="filter">
               <p>
                 {`${filter.column} ${filter.comparison} ${filter.value}`}
               </p>
               <button
                 type="button"
-                data-testid="filter"
                 name={ filter.column }
                 onClick={ (e) => handleRemove(e.target.name) }
               >
