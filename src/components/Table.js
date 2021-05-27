@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, filteredPlanets, numericFiltered } = useContext(StarwarsContext);
+  const { data, numericFiltered } = useContext(StarwarsContext);
+  const filteredPlanets = (filteredByNumeric.filterByNumeric.column)
+    ? data.results.filter((planet) => (
+      planet.filteredByNumeric.filterByNumeric.column
+        >= filteredByNumeric.filterByNumeric.value))
+    : '';
   return (
     <table>
       <thead>

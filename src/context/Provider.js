@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -25,7 +25,7 @@ function Provider({ children }) {
   const [data, setData] = useState({});
   const [filteredByName, setFilteredByName] = useState(filterByName);
   const [filteredByNumeric, setFilteredByNumeric] = useState(filterByNumeric);
-  const [numericFiltered, setNumericFiltered] = useState([]);
+
   async function getPlanets() {
     const apiResponse = await fetchApiPlanets();
     setData(apiResponse);
@@ -37,7 +37,7 @@ function Provider({ children }) {
     ))
     : '';
 
-  const filterByNumericValues = useCallback(() => {
+  const filterByNumericValues = () => {
     const searchColumn = filteredByNumeric.filterByNumeric.column;
     const searchValue = filteredByNumeric.filterByNumeric.value;
     const searchComparison = filteredByNumeric.filterByNumeric.comparison;
@@ -56,25 +56,20 @@ function Provider({ children }) {
         }
       }));
     }
-  }, [data.results, filteredByNumeric.filterByNumeric.column,
-    filteredByNumeric.filterByNumeric.comparison, filteredByNumeric.filterByNumeric.value,
-    filteredPlanets, numericFiltered]);
+  };
 
-  console.log(numericFiltered);
   useEffect(() => {
     getPlanets();
     filterByNumericValues();
-  }, [filteredByNumeric, filteredByName, filterByNumericValues]);
+  }, [filteredByNumeric, filteredByName]);
 
   const contextValue = {
     data,
-    filteredPlanets,
+    filteredByName,
     setFilteredByName,
     filteredByNumeric,
     setFilteredByNumeric,
-    numericFiltered,
   };
-
   return (
     <StarwarsContext.Provider value={ contextValue }>
       {children}
