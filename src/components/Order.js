@@ -10,7 +10,7 @@ const Order = () => {
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setOrder((prevState) => ({...prevState, [name]: value }));
+    setOrder((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSendOrder = () => {

@@ -44,6 +44,47 @@ const Provider = ({ children }) => {
     setTableHeaders(headers);
   };
 
+  const orderPlanets = (array) => {
+    const { filters: { order: { column, sort } } } = filterTypes;
+
+    function compareString(a, b) {
+      const equal = 0;
+      const bigger = 1;
+      const smaller = -1;
+
+      if (a[column] > b[column]) return bigger;
+      if (a[column] < b[column]) return smaller;
+      return equal;
+    }
+
+    function compareNumbers(a, b) {
+      const equal = 0;
+      const bigger = 1;
+      const smaller = -1;
+
+      const firstElement = parseInt(a[column], 10);
+      const secondElement = parseInt(b[column], 10);
+
+      if (firstElement > secondElement) return bigger;
+      if (firstElement < secondElement) return smaller;
+      return equal;
+    }
+
+    if (column === 'rotation_period'
+      || column === 'orbital_period'
+      || column === 'diameter') {
+      array.sort(compareNumbers);
+    } else {
+      array.sort(compareString);
+    }
+
+    if (sort === 'DESC') {
+      array.reverse();
+    }
+
+    return array;
+  };
+
   const fetchPlanets = async () => {
     setIsFetching(true);
     try {
@@ -56,27 +97,6 @@ const Provider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const orderPlanets = (array) => {
-    const { filters: { order: { column } } } = filterTypes;
-    // let ordered = filteredPlanets.length > 0 ? [...filteredPlanets] : [...planets];
-    // console.log(ordered);
-    const equal = 0;
-    const bigger = 1;
-    const smaller = -1;
-    array.sort(function (a, b) {
-      if (a[column] > b[column]) {
-        return bigger;
-      }
-      if (a[column] < b[column]) {
-        return smaller;
-      }
-      return equal;
-    });
-    console.log(array);
-    // setFilteredPlanets(array);
-    return array;
   };
 
   const filterByNameText = () => {
