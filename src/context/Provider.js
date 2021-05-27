@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -37,35 +37,34 @@ function Provider({ children }) {
     ))
     : '';
 
-  const filterByNumericValues = () => {
+  const filterByNumericValues = useCallback(() => {
     const searchColumn = filteredByNumeric.filterByNumeric.column;
     const searchValue = filteredByNumeric.filterByNumeric.value;
     const searchComparison = filteredByNumeric.filterByNumeric.comparison;
     console.log(searchColumn, searchComparison, searchValue, numericFiltered);
-
     if (data.results !== undefined) {
-      const result = filteredPlanets.filter((planet) => {
+      setNumericFiltered(filteredPlanets.filter((planet) => {
         switch (searchComparison) {
         case 'maior que':
-          return planet[searchColumn] > searchValue;
+          return parseInt(planet[searchColumn], 10) > parseInt(searchValue, 10);
         case 'menor que':
-          console.log(planet[searchColumn], " ", searchValue);
-        return planet[searchColumn] < searchValue;
+          return parseInt(planet[searchColumn], 10) < parseInt(searchValue, 10);
         case 'igual a':
-          return planet[searchColumn] === searchValue;
+          return parseInt(planet[searchColumn], 10) === parseInt(searchValue, 10);
         default:
           return console.log('Erro');
         }
-      });
-      setNumericFiltered(result);
+      }));
     }
-  };
+  }, [data.results, filteredByNumeric.filterByNumeric.column,
+    filteredByNumeric.filterByNumeric.comparison, filteredByNumeric.filterByNumeric.value,
+    filteredPlanets, numericFiltered]);
 
   console.log(numericFiltered);
   useEffect(() => {
     getPlanets();
     filterByNumericValues();
-  }, [filteredByNumeric,filteredByName]);
+  }, [filteredByNumeric, filteredByName, filterByNumericValues]);
 
   const contextValue = {
     data,
