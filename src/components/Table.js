@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import React from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
