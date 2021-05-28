@@ -1,16 +1,11 @@
 import React from 'react';
 import { Provider } from './context/Provider';
-import Table from './components/Table';
-import TextFilter from './components/TextFilter';
-import './App.css';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
     <Provider>
-      <div className="App">
-        <TextFilter />
-        <Table />
-      </div>
+      <MainPage />
     </Provider>
   );
 }

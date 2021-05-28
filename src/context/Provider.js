@@ -1,41 +1,55 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Context = createContext();
 
 const DataProvider = ({ children }) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([{}]);
   const [planets, setPlanets] = useState([]);
-  const [headers, setHeaders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ filterByName: { name: '' } });
+  const [filters, setFilters] = useState(
+    { filterByName: { name: '' }, filterByNumericValues: [] },
+  );
 
   useEffect(() => {
-    async function fetchPlanets() {
-      const { results } = await fetch('https://swapi-trybe.herokuapp.com/api/planets/').then((response) => response.json());
+    async function fetchData() {
+      const { results } = await fetch('https://swapi-trybe.herokuapp.com/api/planets/').then((resp) => resp.json());
       setData(results);
-      setPlanets(results);
     }
-    fetchPlanets();
+    fetchData();
   }, []);
 
   useEffect(() => {
-    if (data.length > 0) {
-      const keys = Object.keys(data[0]);
-      setHeaders(keys);
-      setLoading(false);
-    }
+    setPlanets(data);
   }, [data]);
 
   useEffect(() => {
-    const filteredPlanets = data.filter(
-      (planet) => planet.name.toLowerCase()
-        .includes(filters.filterByName.name.toLowerCase()),
-    );
+    let filteredPlanets = [];
+    if (filters.filterByName.name !== '') {
+      filteredPlanets = data.filter(
+        (planet) => planet.name.toLowerCase().includes(
+          filters.filterByName.name.toLowerCase(),
+        ),
+      );
+    } else {
+      filteredPlanets = data;
+    }
     setPlanets(filteredPlanets);
+  }, [filters.filterByName, data]);
+
+  useEffect(() => {
+    const { filterByNumericValues } = filters;
+    if (filterByNumericValues.length > 0) {
+      console.log('bla');
+    }
   }, [filters, data]);
 
-  const context = { data, headers, loading, filters, setFilters, planets };
+  const context = {
+    data,
+    filters,
+    planets,
+    setFilters,
+  };
+
   return (
     <Context.Provider value={ context }>
       {children}
@@ -44,7 +58,7 @@ const DataProvider = ({ children }) => {
 };
 
 DataProvider.propTypes = {
-  children: PropTypes.objectOf.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export { Context, DataProvider as Provider };
