@@ -9,7 +9,8 @@ const Table = () => {
     column,
     comparison,
     value,
-    activateButton } = useContext(AppContext);
+    activateButton,
+    setActivateButton } = useContext(AppContext);
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -28,6 +29,17 @@ const Table = () => {
           </td>))
       }
     </tr>
+  );
+
+  const clearFilter = () => (
+    <div data-testid="filter">
+      <button
+        type="button"
+        onClick={ () => setActivateButton(false) }
+      >
+        x
+      </button>
+    </div>
   );
 
   const renderRow = () => {
@@ -71,6 +83,7 @@ const Table = () => {
       <tbody>
         { renderRow() }
       </tbody>
+      { clearFilter() }
     </table>
   );
 };

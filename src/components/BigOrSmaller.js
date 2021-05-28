@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../appContext/Context';
 
 const BigOrSmaller = () => {
-  const { setComparison, setActivateButton } = useContext(AppContext);
+  const { setComparison } = useContext(AppContext);
   return (
     <div>
       <select
@@ -15,13 +15,6 @@ const BigOrSmaller = () => {
         <option value="igual a">igual a</option>
         <option value="menor que">menor que</option>
       </select>
-      <button
-        type="button"
-        data-testid="filter"
-        onClick={ () => setActivateButton(false) }
-      >
-        x
-      </button>
     </div>
   );
 };

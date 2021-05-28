@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../appContext/Context';
 
 const SelectColumn = () => {
-  const { setColumn, setActivateButton } = useContext(AppContext);
+  const { setColumn } = useContext(AppContext);
   return (
     <div>
       <select
@@ -15,13 +15,6 @@ const SelectColumn = () => {
         <option value="rotation_period">rotation_period</option>
         <option value="surface_water">surface_water</option>
       </select>
-      <button
-        type="button"
-        data-testid="filter"
-        onClick={ () => setActivateButton(false) }
-      >
-        x
-      </button>
     </div>
   );
 };

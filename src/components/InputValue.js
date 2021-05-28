@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../appContext/Context';
 
 const InputValue = () => {
-  const { setValue, setActivateButton } = useContext(AppContext);
+  const { setValue } = useContext(AppContext);
   return (
     <div>
       <input
@@ -10,13 +10,6 @@ const InputValue = () => {
         data-testid="value-filter"
         onChange={ ({ target }) => setValue(target.value) }
       />
-      <button
-        type="button"
-        data-testid="filter"
-        onClick={ () => setActivateButton(false) }
-      >
-        x
-      </button>
     </div>
   );
 };
