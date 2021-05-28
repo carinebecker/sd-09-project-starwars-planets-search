@@ -24,6 +24,34 @@ function Table() {
     return filteredPlanets;
   };
 
+  const orderPlanets2 = (array, column, sort) => {
+    const magicNumber = -1;
+    if (sort === 'ASC' && Number(array[0][column])) {
+      array.sort((a, b) => a[column] - b[column]);
+    }
+    if (sort === 'DESC' && Number(array[0][column])) {
+      array.sort((a, b) => b[column] - a[column]);
+    }
+    if (sort === 'ASC') {
+      array.sort((a, b) => {
+        if (a[column] < b[column]) { return magicNumber; }
+        if (a[column] > b[column]) { return 1; }
+        return 0;
+      });
+    }
+    if (sort === 'DESC') {
+      array.sort();
+    }
+  };
+
+  const orderPlanets = (unorderedPlanets) => {
+    const { order: { column, sort } } = filters;
+    if (unorderedPlanets.length) {
+      orderPlanets2(unorderedPlanets, column, sort);
+    }
+    return unorderedPlanets;
+  };
+
   const headers = Object.keys(data[0]);
   const filteredHeaders = headers.filter((header) => header !== 'residents');
 
@@ -35,7 +63,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {numericFilter(planets).map((planet) => (
+        {orderPlanets(numericFilter(planets)).map((planet) => (
           <tr key={ planet.name }>
             <td data-testid="planet-name">{planet.name}</td>
             <td>{planet.rotation_period}</td>

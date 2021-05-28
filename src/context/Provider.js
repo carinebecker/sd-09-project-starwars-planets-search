@@ -10,7 +10,7 @@ const DataProvider = ({ children }) => {
     {
       filterByName: { name: '' },
       filterByNumericValues: [],
-      order: { column: 'Name', sort: 'ASC' },
+      order: { column: 'name', sort: 'ASC' },
     },
   );
 
