@@ -13,24 +13,30 @@ function FilterSearch() {
   } = useContext(StarWarsContext);
 
   const [submittedFilters, setSubmittedFilters] = useState({
-    filter: { column: 'population', comparison: 'maior que', value: '' },
-    optionFilters: [
-      'population',
-      'orbital_period',
-      'diameter',
-      'rotation_period',
-      'surface_water',
-    ],
+    column: 'population', comparison: 'maior que', value: '',
   });
-
-  const { filter: { column, comparison, value } } = submittedFilters;
-  const { optionFilters } = submittedFilters;
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+  const { column, comparison, value } = submittedFilters;
 
   const handleChange = ({ target }) => {
     setSubmittedFilters({
-      ...submittedFilters,
-      filter: { ...submittedFilters.filter, [target.name]: target.value },
+      ...submittedFilters, [target.name]: target.value,
     });
+  };
+
+  const deleteElInArray = (setState, state, element) => {
+    const leftEl = state.slice(0, state.indexOf(element));
+    const rightEl = state.slice(state.indexOf(element) + 1);
+
+    const newArr = [...leftEl, ...rightEl];
+    setState(newArr);
+    return newArr;
   };
 
   const handleSubmit = () => {
@@ -65,51 +71,94 @@ function FilterSearch() {
     }
 
     setSubmittedFilters({
-      ...submittedFilters,
-      filter: { column: 'population', comparison: 'maior que', value: '' },
+      column: 'population', comparison: 'maior que', value: '',
     });
 
-    optionFilters.splice(optionFilters.indexOf(column), 1);
+    deleteElInArray(setOptions, options, column);
+  };
+
+  const deleteFilter = (filter) => {
+    const filterToDelete = filterByNumericValues[filter];
+
+    const newArr = [
+      ...filterByNumericValues.slice(0, filterByNumericValues.indexOf(filterToDelete)),
+      ...filterByNumericValues.slice(filterByNumericValues.indexOf(filterToDelete) + 1),
+    ];
+
+    setInputFilter({
+      filters: {
+        ...inputFilter.filters,
+        filterByNumericValues: newArr,
+      },
+    });
   };
 
   return (
-    <form>
-      <select
-        data-testid="column-filter"
-        name="column"
-        value={ column }
-        onChange={ handleChange }
-      >
-        {optionFilters.map((option, index) => <option key={ index }>{option}</option>)}
-      </select>
+    <>
+      <form>
+        <select
+          data-testid="column-filter"
+          name="column"
+          value={ column }
+          onChange={ handleChange }
+        >
+          {options.map((option, index) => <option key={ index }>{option}</option>)}
+        </select>
 
-      <select
-        data-testid="comparison-filter"
-        name="comparison"
-        value={ comparison }
-        onChange={ handleChange }
-      >
-        <option>maior que</option>
-        <option>menor que</option>
-        <option>igual a</option>
-      </select>
+        <select
+          data-testid="comparison-filter"
+          name="comparison"
+          value={ comparison }
+          onChange={ handleChange }
+        >
+          <option>maior que</option>
+          <option>menor que</option>
+          <option>igual a</option>
+        </select>
 
-      <input
-        type="number"
-        data-testid="value-filter"
-        name="value"
-        value={ value }
-        onChange={ handleChange }
-      />
+        <input
+          type="number"
+          data-testid="value-filter"
+          name="value"
+          value={ value }
+          onChange={ handleChange }
+        />
 
-      <button
-        type="button"
-        data-testid="button-filter"
-        onClick={ handleSubmit }
-      >
-        Filtrar
-      </button>
-    </form>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ handleSubmit }
+        >
+          Filtrar
+        </button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>Filtros selecionados</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filterByNumericValues
+            .map((filter, index) => (
+              <tr key={ index }>
+                <td>{ filter.column }</td>
+                <td>{ filter.comparison }</td>
+                <td>{ filter.value }</td>
+                <td>
+                  <button
+                    type="button"
+                    data-testid="filter"
+                    onClick={ () => deleteFilter(index) }
+                  >
+                    x
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 
