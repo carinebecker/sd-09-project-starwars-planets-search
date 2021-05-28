@@ -7,7 +7,11 @@ const DataProvider = ({ children }) => {
   const [data, setData] = useState([{}]);
   const [planets, setPlanets] = useState([]);
   const [filters, setFilters] = useState(
-    { filterByName: { name: '' }, filterByNumericValues: [] },
+    {
+      filterByName: { name: '' },
+      filterByNumericValues: [],
+      order: { column: 'Name', sort: 'ASC' },
+    },
   );
 
   useEffect(() => {
@@ -35,13 +39,6 @@ const DataProvider = ({ children }) => {
     }
     setPlanets(filteredPlanets);
   }, [filters.filterByName, data]);
-
-  useEffect(() => {
-    const { filterByNumericValues } = filters;
-    if (filterByNumericValues.length > 0) {
-      console.log('bla');
-    }
-  }, [filters, data]);
 
   const context = {
     data,
