@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SWContext } from '../context/SWProvider';
 import API from '../services/API';
 
 export default function Table() {
   const [planets, setPlanets] = useState([]);
-  const [search, setSearch] = useState('');
+  const { filters, setFilters } = useContext(SWContext);
+  const { filterByName: { name } } = filters;
 
   useEffect(() => {
     async function fetchPlanets() {
@@ -13,9 +15,13 @@ export default function Table() {
     fetchPlanets();
   }, []);
 
-  const filterByName = planets.filter((planet) => (
-    planet.name.toLowerCase().includes(search.toLowerCase())
-  ));
+  function handleChange({ target }) {
+    setFilters({
+      filterByName: {
+        name: target.value,
+      },
+    });
+  }
 
   return (
     <div>
@@ -23,7 +29,7 @@ export default function Table() {
         type="text"
         placeholder="search"
         data-testid="name-filter"
-        onChange={ (e) => setSearch(e.target.value) }
+        onChange={ handleChange }
       />
       <table className="table table-striped table-dark">
         <thead>
@@ -44,26 +50,26 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {filterByName.map((e) => (
-            <tr key={ e.name }>
-              <td data-testid="planet-name">{ e.name }</td>
-              <td>{ e.rotation_period }</td>
-              <td>{ e.orbital_period }</td>
-              <td>{ e.diameter }</td>
-              <td>{ e.climate }</td>
-              <td>{ e.gravity }</td>
-              <td>{ e.terrain }</td>
-              <td>{ e.surface_water }</td>
-              <td>{ e.population }</td>
-              <td>{ e.films }</td>
-              <td>{ e.created }</td>
-              <td>{ e.edited }</td>
-              <td>{ e.url }</td>
-            </tr>
-          ))}
+          {planets.filter((p) => p.name.toLowerCase().includes(name.toLowerCase()))
+            .map((e) => (
+              <tr key={ e.name }>
+                <td data-testid="planet-name">{ e.name }</td>
+                <td>{ e.rotation_period }</td>
+                <td>{ e.orbital_period }</td>
+                <td>{ e.diameter }</td>
+                <td>{ e.climate }</td>
+                <td>{ e.gravity }</td>
+                <td>{ e.terrain }</td>
+                <td>{ e.surface_water }</td>
+                <td>{ e.population }</td>
+                <td>{ e.films }</td>
+                <td>{ e.created }</td>
+                <td>{ e.edited }</td>
+                <td>{ e.url }</td>
+              </tr>
+            )) }
         </tbody>
       </table>
-
     </div>
   );
 }
