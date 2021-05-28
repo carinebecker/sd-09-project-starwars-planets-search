@@ -37,7 +37,7 @@ function App() {
         filterByNumericValues: [numFilter],
       });
     } else if ((filters.filterByNumericValues[filters.filterByNumericValues.length - 1]
-      !== numFilter)) {
+      !== numFilter) && numFilter !== undefined) {
       setFilters({
         filterByName: { name: nameFilter },
         filterByNumericValues: [...filters.filterByNumericValues, numFilter],
@@ -60,6 +60,30 @@ function App() {
           onChange={ ({ target }) => setNameFilter(target.value) }
           data-testid="name-filter"
         />
+        {
+          filters.filterByNumericValues.map((filter, index) => (
+            <div data-testid="filter" key={ index }>
+              <p>{`${filter.column} filter`}</p>
+              <button
+                type="button"
+                onClick={ () => {
+                  setNumFilter();
+                  setFilters({
+                    filterByName: {
+                      name: nameFilter,
+                    },
+                    filterByNumericValues: [
+                      ...filters.filterByNumericValues
+                        .filter((value) => (value.column !== filter.column)),
+                    ],
+                  });
+                } }
+              >
+                X
+              </button>
+            </div>
+          ))
+        }
         <Filter />
         <Table />
       </StarWarsContext.Provider>

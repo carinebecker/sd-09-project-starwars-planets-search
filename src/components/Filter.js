@@ -15,6 +15,14 @@ function Filter() {
     });
   };
 
+  const colOptions = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
   return (
     <div>
       <select
@@ -22,11 +30,22 @@ function Filter() {
         value={ column }
         onChange={ ({ target }) => setColumn(target.value) }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        <StarWarsContext.Consumer>
+          {
+            ({ filters }) => {
+              let options = colOptions;
+              if (filters.filterByNumericValues.length > 0) {
+                const choosen = filters.filterByNumericValues
+                  .map((filter) => filter.column);
+                choosen.forEach((choose) => {
+                  options = options.filter((opt) => opt !== choose);
+                });
+              }
+              return options
+                .map((option) => <option key={ option }>{option}</option>);
+            }
+          }
+        </StarWarsContext.Consumer>
       </select>
       <select
         data-testid="comparison-filter"
