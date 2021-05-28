@@ -2,13 +2,22 @@ import React, { useContext } from 'react';
 import AppContext from '../appContext/Context';
 
 const InputValue = () => {
-  const { setValue } = useContext(AppContext);
+  const { setValue, setActivateButton } = useContext(AppContext);
   return (
-    <input
-      type="number"
-      data-testid="value-filter"
-      onChange={ ({ target }) => setValue(target.value) }
-    />
+    <div>
+      <input
+        type="number"
+        data-testid="value-filter"
+        onChange={ ({ target }) => setValue(target.value) }
+      />
+      <button
+        type="button"
+        data-testid="filter"
+        onClick={ () => setActivateButton(false) }
+      >
+        x
+      </button>
+    </div>
   );
 };
 
