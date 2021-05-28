@@ -52,11 +52,26 @@ function Table() {
                   });
                 }
 
+                const magicNumber = -1;
+
+                showPlanet.sort((a, b) => ((a.name > b.name) ? 1 : magicNumber));
+                if (value.filters.order) {
+                  if (value.filters.order.sort === 'ASC') {
+                    showPlanet.sort((a, b) => ((Number(b[value.filters.order.column])
+                    < Number(a[value.filters.order.column])) ? 1 : magicNumber));
+                  } else if (value.filters.order.sort === 'DESC') {
+                    showPlanet.sort((a, b) => ((Number(a[value.filters.order.column])
+                    < Number(b[value.filters.order.column])) ? 1 : magicNumber));
+                  }
+                }
+
                 return showPlanet.map((planet) => (
                   <tr key={ planet.name }>
                     {Object.keys(planet)
                       .filter((key) => key !== 'residents')
-                      .map((key) => <td key={ key }>{planet[key]}</td>)}
+                      .map((key) => (
+                        <td data-testid={ `planet-${key}` } key={ key }>{planet[key]}</td>
+                      ))}
                   </tr>
                 ));
               }

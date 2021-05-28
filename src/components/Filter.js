@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import StarWarsContext from '../context/StarWarsContext';
 
-function Filter() {
+function Filter(props) {
   const context = useContext(StarWarsContext);
   const [column, setColumn] = useState();
   const [comparison, setComparison] = useState();
   const [value, setValue] = useState();
+
+  const { colOptions } = props;
 
   const btnOnClick = () => {
     context.setNumFilter({
@@ -14,14 +17,6 @@ function Filter() {
       value,
     });
   };
-
-  const colOptions = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
 
   return (
     <div>
@@ -72,5 +67,9 @@ function Filter() {
     </div>
   );
 }
+
+Filter.propTypes = {
+  colOptions: PropTypes.arrayOf(String).isRequired,
+};
 
 export default Filter;
