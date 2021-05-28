@@ -9,7 +9,7 @@ function Provider({ children }) {
   const [inputFilter, setInputFilter] = useState({
     filters: {
       filterByName: { search: '' },
-      filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+      filterByNumericValues: [],
     },
   });
   const [loading, setLoading] = useState(true);

@@ -9,6 +9,7 @@ function SearchBar() {
     inputFilter,
     setInputFilter,
   } = useContext(StarWarsContext);
+
   const { planets } = dataFromApi;
   const { filters: { filterByName: { search } } } = inputFilter;
 

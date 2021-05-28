@@ -8,26 +8,39 @@ function FilterSearch() {
     setPlanetsFilter,
     dataFromApi: { planets: { results } },
     inputFilter,
+    inputFilter: { filters: { filterByNumericValues } },
     setInputFilter,
   } = useContext(StarWarsContext);
-  const { filters: { filterByNumericValues } } = inputFilter;
-  const { column, comparison, value } = filterByNumericValues[0];
-  // const [submittedFilters, setSubmittedFilters] = useState({ allFilters: [] });
+
+  const [submittedFilters, setSubmittedFilters] = useState({
+    filter: { column: 'population', comparison: 'maior que', value: '' },
+    optionFilters: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+  });
+
+  const { filter: { column, comparison, value } } = submittedFilters;
+  const { optionFilters } = submittedFilters;
 
   const handleChange = ({ target }) => {
-    setInputFilter({
-      filters: {
-        ...inputFilter.filters,
-        filterByNumericValues: [
-          {
-            column, comparison, value, [target.name]: target.value,
-          },
-        ],
-      },
+    setSubmittedFilters({
+      ...submittedFilters,
+      filter: { ...submittedFilters.filter, [target.name]: target.value },
     });
   };
 
   const handleSubmit = () => {
+    setInputFilter({
+      filters: {
+        ...inputFilter.filters,
+        filterByNumericValues: [...filterByNumericValues, submittedFilters],
+      },
+    });
+
     let data = results;
     if (filteredPlanets.length) { data = filteredPlanets; }
 
@@ -50,19 +63,32 @@ function FilterSearch() {
         filteredPlanets: data.filter((planet) => parseInt(planet[column], 10) > value),
       });
     }
+
+    setSubmittedFilters({
+      ...submittedFilters,
+      filter: { column: 'population', comparison: 'maior que', value: '' },
+    });
+
+    optionFilters.splice(optionFilters.indexOf(column), 1);
   };
 
   return (
     <form>
-      <select data-testid="column-filter" name="column" onChange={ handleChange }>
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+      <select
+        data-testid="column-filter"
+        name="column"
+        value={ column }
+        onChange={ handleChange }
+      >
+        {optionFilters.map((option, index) => <option key={ index }>{option}</option>)}
       </select>
 
-      <select data-testid="comparison-filter" name="comparison" onChange={ handleChange }>
+      <select
+        data-testid="comparison-filter"
+        name="comparison"
+        value={ comparison }
+        onChange={ handleChange }
+      >
         <option>maior que</option>
         <option>menor que</option>
         <option>igual a</option>
@@ -72,6 +98,7 @@ function FilterSearch() {
         type="number"
         data-testid="value-filter"
         name="value"
+        value={ value }
         onChange={ handleChange }
       />
 
