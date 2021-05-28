@@ -1,24 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import StarWarsContext from '../context/StarWarsContext';
 
-function FilterSearch(props) {
-  const { filter, setFilter } = props;
-  const { filters: { filterByNumericValues } } = filter;
-  const { column, comparison, value } = filterByNumericValues[0];
+function FilterSearch() {
   const {
     planetsFilter: { filteredPlanets },
     setPlanetsFilter,
     dataFromApi: { planets: { results } },
+    inputFilter,
+    setInputFilter,
   } = useContext(StarWarsContext);
+  const { filters: { filterByNumericValues } } = inputFilter;
+  const { column, comparison, value } = filterByNumericValues[0];
+  // const [submittedFilters, setSubmittedFilters] = useState({ allFilters: [] });
 
   const handleChange = ({ target }) => {
-    setFilter({
+    setInputFilter({
       filters: {
-        ...filter.filters,
-        filterByNumericValues: [{
-          ...filter.filters.filterByNumericValues[0], [target.name]: target.value,
-        }],
+        ...inputFilter.filters,
+        filterByNumericValues: [
+          {
+            column, comparison, value, [target.name]: target.value,
+          },
+        ],
       },
     });
   };

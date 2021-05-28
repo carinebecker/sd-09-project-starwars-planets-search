@@ -1,17 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 import FilterSearch from './FilterSearch';
 
 function SearchBar() {
-  const [filter, setFilter] = useState({
-    filters: {
-      filterByName: { search: '' },
-      filterByNumericValues: [{ column: '', comparison: '', value: '' }],
-    },
-  });
-  const { dataFromApi, setPlanetsFilter } = useContext(StarWarsContext);
+  const {
+    dataFromApi,
+    setPlanetsFilter,
+    inputFilter,
+    setInputFilter,
+  } = useContext(StarWarsContext);
   const { planets } = dataFromApi;
-  const { filters: { filterByName: { search } } } = filter;
+  const { filters: { filterByName: { search } } } = inputFilter;
 
   const filterPlanets = () => {
     const filterByQuery = new RegExp(`^.*${search}.*`, 'i');
@@ -27,8 +26,8 @@ function SearchBar() {
   }, [search]);
 
   const handleChange = ({ target: { name, value } }) => {
-    setFilter({
-      filters: { ...filter.filters, filterByName: { [name]: value } },
+    setInputFilter({
+      filters: { ...inputFilter.filters, filterByName: { [name]: value } },
     });
   };
 
@@ -45,7 +44,7 @@ function SearchBar() {
           onChange={ handleChange }
         />
       </label>
-      <FilterSearch filter={ filter } setFilter={ setFilter } />
+      <FilterSearch />
     </>
   );
 }

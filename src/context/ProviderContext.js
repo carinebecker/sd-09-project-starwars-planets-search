@@ -6,6 +6,12 @@ import fetchStarWarsPlanets from '../services/api';
 function Provider({ children }) {
   const [dataFromApi, setDataFromApi] = useState({ planets: { results: [] } });
   const [planetsFilter, setPlanetsFilter] = useState({ filteredPlanets: [] });
+  const [inputFilter, setInputFilter] = useState({
+    filters: {
+      filterByName: { search: '' },
+      filterByNumericValues: [{ column: '', comparison: '', value: '' }],
+    },
+  });
   const [loading, setLoading] = useState(true);
 
   const getPlanets = async () => {
@@ -23,6 +29,8 @@ function Provider({ children }) {
     loading,
     planetsFilter,
     setPlanetsFilter,
+    inputFilter,
+    setInputFilter,
   };
 
   return (
