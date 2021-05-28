@@ -24,7 +24,12 @@ function Table() {
               <tr key={ planet.name }>
                 {Object.entries(planet)
                   .filter((item) => item[0] !== 'residents')
-                  .map((item) => <td key={ item[0] }>{item[1]}</td>)}
+                  .map((item) => {
+                    if (item[0] === 'name') {
+                      return <td key={ item[0] } data-testid="planet-name">{item[1]}</td>;
+                    }
+                    return <td key={ item[0] }>{item[1]}</td>;
+                  })}
               </tr>))}
         </tbody>
       </table>
