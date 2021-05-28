@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function FilterNumeric() {
-  const { setFilteredByNumeric, filteredByNumeric } = useContext(StarwarsContext);
+  const { setFilteredByNumeric, filterByNumeric } = useContext(StarwarsContext);
   const columnSearchItems = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
   const columnSearchValues = [
@@ -15,7 +15,6 @@ function FilterNumeric() {
   let contextvalue = 0;
   function handleChange({ target }) {
     const { name, value } = target;
-    console.log(name, value);
     switch (name) {
     case 'column':
       column = value;
@@ -34,6 +33,7 @@ function FilterNumeric() {
   function submit() {
     console.log(contextvalue);
     setFilteredByNumeric({
+      ...filterByNumeric,
       filterByNumeric: {
         column,
         comparison,

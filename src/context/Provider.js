@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
-
 import StarwarsContext from './StarwarsContext';
 import fetchApiPlanets from '../services/fetchPlanet';
 
@@ -25,6 +23,7 @@ function Provider({ children }) {
   const [data, setData] = useState({});
   const [filteredByName, setFilteredByName] = useState(filterByName);
   const [filteredByNumeric, setFilteredByNumeric] = useState(filterByNumeric);
+  // const [numericFiltered, setNumericFiltered] = useState([]);
 
   async function getPlanets() {
     const apiResponse = await fetchApiPlanets();
@@ -37,38 +36,40 @@ function Provider({ children }) {
     ))
     : '';
 
-  const filterByNumericValues = () => {
-    const searchColumn = filteredByNumeric.filterByNumeric.column;
-    const searchValue = filteredByNumeric.filterByNumeric.value;
-    const searchComparison = filteredByNumeric.filterByNumeric.comparison;
-    console.log(searchColumn, searchComparison, searchValue, numericFiltered);
-    if (data.results !== undefined) {
-      setNumericFiltered(filteredPlanets.filter((planet) => {
-        switch (searchComparison) {
-        case 'maior que':
-          return parseInt(planet[searchColumn], 10) > parseInt(searchValue, 10);
-        case 'menor que':
-          return parseInt(planet[searchColumn], 10) < parseInt(searchValue, 10);
-        case 'igual a':
-          return parseInt(planet[searchColumn], 10) === parseInt(searchValue, 10);
-        default:
-          return console.log('Erro');
-        }
-      }));
-    }
-  };
+  // const filterByNumericValues = () => {
+  //   const searchColumn = filteredByNumeric.filterByNumeric.column;
+  //   const searchValue = filteredByNumeric.filterByNumeric.value;
+  //   const searchComparison = filteredByNumeric.filterByNumeric.comparison;
+  //   console.log(searchColumn, searchComparison, searchValue, numericFiltered);
+  //   if (data.results !== undefined) {
+  //     setNumericFiltered(filteredPlanets.filter((planet) => {
+  //       switch (searchComparison) {
+  //       case 'maior que':
+  //         return parseInt(planet[searchColumn], 10) > parseInt(searchValue, 10);
+  //       case 'menor que':
+  //         return parseInt(planet[searchColumn], 10) < parseInt(searchValue, 10);
+  //       case 'igual a':
+  //         return parseInt(planet[searchColumn], 10) === parseInt(searchValue, 10);
+  //       default:
+  //         return console.log('Erro');
+  //       }
+  //     }));
+  //   }
+  // };
 
   useEffect(() => {
     getPlanets();
-    filterByNumericValues();
+    // filterByNumericValues();
   }, [filteredByNumeric, filteredByName]);
 
   const contextValue = {
     data,
+    filteredPlanets,
     filteredByName,
     setFilteredByName,
     filteredByNumeric,
     setFilteredByNumeric,
+    // numericFiltered,
   };
   return (
     <StarwarsContext.Provider value={ contextValue }>

@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, numericFiltered } = useContext(StarwarsContext);
-  const filteredPlanets = (filteredByNumeric.filterByNumeric.column)
-    ? data.results.filter((planet) => (
-      planet.filteredByNumeric.filterByNumeric.column
-        >= filteredByNumeric.filterByNumeric.value))
-    : '';
+  const { data, filteredPlanets } = useContext(StarwarsContext);
+  // const filteredPlanets = (filteredByNumeric.filterByNumeric.column)
+  //   ? data.results.filter((planet) => (
+  //     planet.filteredByNumeric.filterByNumeric.column
+  //       >= filteredByNumeric.filterByNumeric.value))
+  //   : '';
   return (
     <table>
       <thead>
@@ -17,7 +17,13 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { filteredPlanets && numericFiltered.length === 0
+        {filteredPlanets.length
+          && filteredPlanets.map((planet) => (
+            <tr key={ planet.name }>
+              {Object.values(planet).map((planetItem) => (
+                <td key={ planetItem }>{planetItem}</td>))}
+            </tr>))}
+        {/* { filteredPlanets && numericFiltered.length === 0
           ? filteredPlanets.map((planet) => (
             <tr key={ planet.name }>
               {Object.values(planet).map((value) => (<td key={ value }>{value}</td>))}
@@ -26,7 +32,7 @@ function Table() {
             <tr key={ planet.name }>
               {!planet ? <td />
                 : Object.values(planet).map((value) => <td key={ value }>{value}</td>)}
-            </tr>))}
+            </tr>))} */}
       </tbody>
     </table>
   );

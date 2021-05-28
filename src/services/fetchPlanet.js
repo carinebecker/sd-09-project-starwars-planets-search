@@ -5,7 +5,7 @@ async function fetchApiPlanets() {
     response.results.forEach((element) => delete element.residents);
     return response;
   } catch (error) {
-    console.log(error);
+    console.log(error, 'fetch planets');
   }
 }
 
