@@ -162,14 +162,14 @@ function TableHeader() {
         <div>
           {filterByNumericValues.map((filter, index) => (
             <>
-              <p
+              <span
+                data-testid="filter"
                 type="button"
                 key={ index }
               >
                 {filter.column}
-              </p>
+              </span>
               <button
-                data-testid="filter"
                 key={ filter.column }
                 type="button"
                 onClick={ handleClick }
