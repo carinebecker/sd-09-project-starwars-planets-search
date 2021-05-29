@@ -29,11 +29,11 @@ function InputFilter() {
     options.map((filter) => <option key={ filter } value={ filter }>{filter}</option>)
   );
 
-  const revertFilterButton = (name) => (
+  const revertFilterButton = () => (
     <button
       type="button"
-      name={ name }
       data-testid="filter"
+      onClick={ resetFilter }
     >
       X
     </button>
@@ -53,20 +53,20 @@ function InputFilter() {
       <select data-testid="column-filter" onChange={ (e) => setColumn(e.target.value) }>
         {renderOptions(columnOptions)}
       </select>
-      { revertFilterButton('column') }
+      { revertFilterButton() }
       <select
         data-testid="comparison-filter"
         onChange={ (e) => setComparison(e.target.value) }
       >
         {renderOptions(comparationOptions)}
       </select>
-      { revertFilterButton('comparison') }
+      { revertFilterButton() }
       <input
         type="number"
         data-testid="value-filter"
         onChange={ (e) => setValueFilter(e.target.value) }
       />
-      { revertFilterButton('value') }
+      { revertFilterButton() }
       <button
         type="button"
         data-testid="button-filter"

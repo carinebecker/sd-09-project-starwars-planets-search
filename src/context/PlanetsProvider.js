@@ -4,7 +4,7 @@ import PlanetsContext from './PlanetsContext';
 import fetchPlanets from '../services/Api';
 
 function PlanetsProvider({ children }) {
-  const INICIAL_FILTER = {
+  const INITIAL_FILTER = {
     filterByName: { name: '' },
     filterByNumericValues: [{
       column: '',
@@ -13,13 +13,13 @@ function PlanetsProvider({ children }) {
     }],
     order: { column: '', sort: '' },
   };
-  const INICIAL_DROPCOLUMN = [
+  const INITIAL_DROPCOLUMN = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const [data, setData] = useState({});
   const [tableHeader, setTableHeader] = useState([]);
-  const [filters, setFilters] = useState(INICIAL_FILTER);
-  const [columnOptions, setColumnOptions] = useState(INICIAL_DROPCOLUMN);
+  const [filters, setFilters] = useState(INITIAL_FILTER);
+  const [columnOptions, setColumnOptions] = useState(INITIAL_DROPCOLUMN);
 
   const getPlanetsData = async () => {
     const planets = await fetchPlanets();
@@ -28,8 +28,8 @@ function PlanetsProvider({ children }) {
   };
 
   const resetFilter = () => {
-    setFilters(INICIAL_FILTER.filterByNumericValues);
-    setColumnOptions(INICIAL_DROPCOLUMN);
+    setFilters(INITIAL_FILTER);
+    setColumnOptions(INITIAL_DROPCOLUMN);
   };
 
   useEffect(() => {
