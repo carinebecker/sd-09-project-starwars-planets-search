@@ -11,7 +11,7 @@ function PlanetsProvider({ children }) {
       comparison: '',
       value: '',
     }],
-    order: { column: '', sort: '' },
+    order: { column: 'name', sort: 'ASC' },
   };
   const INITIAL_DROPCOLUMN = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
@@ -32,6 +32,25 @@ function PlanetsProvider({ children }) {
     setColumnOptions(INITIAL_DROPCOLUMN);
   };
 
+  function setOrder(tableData, column, sort) {
+    let orderedData = tableData;
+    const magicNumber = -1;
+    if (column === 'name') {
+      orderedData = tableData.sort((a, b) => {
+        if (a[column] > b[column]) {
+          return 1;
+        }
+        return magicNumber;
+      });
+    } else {
+      orderedData = tableData.sort((a, b) => +(a[column]) - +(b[column]));
+    }
+    if (sort === 'DESC') {
+      orderedData = orderedData.reverse();
+    }
+    return orderedData;
+  }
+
   useEffect(() => {
     getPlanetsData();
   }, []);
@@ -44,6 +63,7 @@ function PlanetsProvider({ children }) {
     columnOptions,
     setColumnOptions,
     resetFilter,
+    setOrder,
   };
 
   return (

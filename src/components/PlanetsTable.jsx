@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PlanetsProvider from '../context/PlanetsContext';
 
 function PlanetsTable() {
-  const { data, tableHeader, filters } = useContext(PlanetsProvider);
+  const { data, tableHeader, filters, setOrder } = useContext(PlanetsProvider);
   const { results } = data;
 
   const renderTableHead = () => (
@@ -28,7 +28,7 @@ function PlanetsTable() {
         planetFiltered = results.filter((planet) => +(planet[column]) === +(value));
       }
     }
-    return planetFiltered;
+    return setOrder(planetFiltered, filters.order.column, filters.order.sort);
   };
 
   const renderTableBody = () => (
