@@ -17,11 +17,8 @@ function PlanetsTable() {
       .filter((planet) => planet.name.toLowerCase().includes(filters.filterByName.name));
     if (filters.filterByNumericValues[0].column > '') {
       const { column, comparison, value } = filters.filterByNumericValues[0];
-      console.log(filters.filterByNumericValues[0]);
-      console.log(column);
       switch (comparison) {
       case 'maior que':
-        console.log(value);
         planetFiltered = results.filter((planet) => +(planet[column]) > +(value));
         break;
       case 'menor que':

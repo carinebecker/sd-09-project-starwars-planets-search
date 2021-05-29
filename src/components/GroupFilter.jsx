@@ -3,10 +3,14 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function InputFilter() {
   const {
-    filters, setFilters, columnOptions, setColumnOptions } = useContext(PlanetsContext);
+    filters,
+    setFilters,
+    columnOptions,
+    setColumnOptions,
+    resetFilter } = useContext(PlanetsContext);
   const [column, setColumn] = useState('');
   const [comparison, setComparison] = useState('');
-  const [valueFilter, setValuFilter] = useState('');
+  const [valueFilter, setValueFilter] = useState('');
   const comparationOptions = ['maior que', 'menor que', 'igual a'];
 
   const handleChange = ({ target: { value } }) => {
@@ -25,6 +29,16 @@ function InputFilter() {
     options.map((filter) => <option key={ filter } value={ filter }>{filter}</option>)
   );
 
+  const revertFilterButton = (name) => (
+    <button
+      type="button"
+      name={ name }
+      data-testid="filter"
+    >
+      X
+    </button>
+  );
+
   return (
     <div>
       <label htmlFor="name-filter">
@@ -39,17 +53,20 @@ function InputFilter() {
       <select data-testid="column-filter" onChange={ (e) => setColumn(e.target.value) }>
         {renderOptions(columnOptions)}
       </select>
+      { revertFilterButton('column') }
       <select
         data-testid="comparison-filter"
         onChange={ (e) => setComparison(e.target.value) }
       >
         {renderOptions(comparationOptions)}
       </select>
+      { revertFilterButton('comparison') }
       <input
         type="number"
         data-testid="value-filter"
-        onChange={ (e) => setValuFilter(e.target.value) }
+        onChange={ (e) => setValueFilter(e.target.value) }
       />
+      { revertFilterButton('value') }
       <button
         type="button"
         data-testid="button-filter"

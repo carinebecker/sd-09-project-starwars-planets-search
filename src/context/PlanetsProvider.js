@@ -11,6 +11,7 @@ function PlanetsProvider({ children }) {
       comparison: '',
       value: '',
     }],
+    order: { column: '', sort: '' },
   };
   const INICIAL_DROPCOLUMN = [
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
@@ -26,6 +27,11 @@ function PlanetsProvider({ children }) {
     setTableHeader(Object.keys(planets.results[0]));
   };
 
+  const resetFilter = () => {
+    setFilters(INICIAL_FILTER.filterByNumericValues);
+    setColumnOptions(INICIAL_DROPCOLUMN);
+  };
+
   useEffect(() => {
     getPlanetsData();
   }, []);
@@ -37,6 +43,7 @@ function PlanetsProvider({ children }) {
     setFilters,
     columnOptions,
     setColumnOptions,
+    resetFilter,
   };
 
   return (
