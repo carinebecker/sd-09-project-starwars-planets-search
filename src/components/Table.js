@@ -1,16 +1,30 @@
 import React, { useContext, useEffect } from 'react';
 import MyContext from '../context/MyContext';
-import fetchPlanets from '../services/starWarsPlanetsAPI';
+import { fetchPlanets } from '../services/starWarsPlanetsAPI';
 
 function Table() {
-  const { data, setData } = useContext(MyContext);
+  const {
+    data,
+    setData,
+    filteredData,
+    setFilteredData,
+    isFetching,
+    setIsFetching,
+  } = useContext(MyContext);
+
+  function getTable() {
+    fetchPlanets()
+      .then((json) => setData(json.results))
+      .then(() => setIsFetching(false));
+  }
 
   useEffect(() => {
-    fetchPlanets()
-      .then((json) => setData(json.results));
-  }, [setData]);
+    getTable();
+  }, []);
 
-  console.log(data);
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
 
   function planets(a) {
     return (
@@ -34,6 +48,12 @@ function Table() {
       </tbody>);
   }
 
+  if (isFetching) {
+    return (
+      <h3>Loading</h3>
+    );
+  }
+
   return (
     <table>
       <thead>
@@ -53,7 +73,7 @@ function Table() {
           <th>URL</th>
         </tr>
       </thead>
-      { planets(data) }
+      { planets(filteredData) }
     </table>
   );
 }
