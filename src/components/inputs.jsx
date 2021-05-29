@@ -15,7 +15,7 @@ function tableComponents(data, filters, setFilters) {
     <tbody>
       {data.filter((planet) => planet.name.toLowerCase().includes(filters.filterByName))
         .map((element) => (
-          <tr key={ element }>
+          <tr key={ element.name }>
             {Object.values(element)
               .map((value) => <td key={ value }>{value}</td>)}
           </tr>))}

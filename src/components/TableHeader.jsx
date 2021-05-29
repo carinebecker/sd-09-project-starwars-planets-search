@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StarWarsContext } from '../provider/Provider';
+import reqPlanets from '../services/serviceAPis';
 import InputsComponents from './inputs';
 
 function TableHeader() {
-  const obj = {};
-  const [inputFilt, setInputFilt] = useState(obj);
-  const { data, filters, setFilters, setData } = useContext(StarWarsContext);
-
   const valuesArray = [
     'population',
     'orbital_period',
@@ -21,6 +18,21 @@ function TableHeader() {
     'igual a',
   ];
 
+  const dataState = [];
+  const obj = {};
+  const [inputFilt, setInputFilt] = useState(obj);
+  const [dataOrigin, setDataOrigin] = useState(dataState);
+  const [filtersArray, setFiltersArray] = useState(valuesArray);
+  const { data, filters, setFilters, setData } = useContext(StarWarsContext);
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await reqPlanets();
+      setDataOrigin(result);
+    }
+    fetchData();
+  }, []);
+
   const handleChangeSelect = ({ target: { name, value } }) => {
     setInputFilt({
       ...inputFilt,
@@ -32,7 +44,7 @@ function TableHeader() {
     <>
       <select data-testid="column-filter" name="column" onChange={ handleChangeSelect }>
         <option>Select option</option>
-        {valuesArray
+        {filtersArray
           .map((element) => <option value={ element } key={ element }>{element}</option>)}
       </select>
       <select
@@ -69,41 +81,113 @@ function TableHeader() {
     </button>
   );
 
-  useEffect(() => {
-    console.log(filters, 'chamou!');
-    const xablau = () => {
-      if (filters.filterByNumericValues.length === 0) {
+  const deleteFilterArray = () => {
+    const elementDEl = filtersArray.filter((filtered) => filtered !== inputFilt.column);
+    setFiltersArray(
+      [...elementDEl],
+    );
+  };
+
+  const xablau = () => {
+    if (filters.filterByNumericValues.length === 0) {
+      return data;
+    }
+    const { filterByNumericValues } = filters;
+
+    filterByNumericValues.forEach((element) => {
+      const { comparison, column: compareKey, value } = element;
+      switch (comparison) {
+      case 'maior que':
+        setData(
+          [...dataOrigin
+            .filter((planet) => Number(planet[compareKey]) > Number(value))],
+        );
+        return data;
+      case 'menor que':
+        setData(
+          [...dataOrigin
+            .filter((planet) => Number(planet[compareKey]) < Number(value))],
+        );
+        return data;
+      case 'igual a':
+        setData(
+          [...dataOrigin
+            .filter((planet) => Number(planet[compareKey]) === Number(value))],
+        );
+        return data;
+      default:
         return data;
       }
-      const { filterByNumericValues } = filters;
+    });
+    deleteFilterArray();
+  };
 
-      filterByNumericValues.forEach((element) => {
-        const { comparison, column: compareKey, value } = element;
-        switch (comparison) {
-        case 'maior que':
-          setData(
-            [...data.filter((planet) => Number(planet[compareKey]) > Number(value))],
-          );
-          return data;
-        case 'menor que':
-          setData(
-            [...data.filter((planet) => Number(planet[compareKey]) < Number(value))],
-          );
-          return data;
-        case 'igual a':
-          setData(
-            [...data.filter((planet) => Number(planet[compareKey]) === Number(value))],
-          );
-          return data;
-        default:
-          return data;
-        }
-      });
-    };
+  const handleClick = (e) => {
+    const eventValue = e.target.previousSibling.innerText;
+    const { filterByNumericValues } = filters;
+
+    const newArray = filterByNumericValues
+      .filter((filter) => filter.column !== eventValue);
+
+    const outroValor = filterByNumericValues
+      .find((filter) => filter.column === eventValue);
+
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...newArray],
+    });
+
+    setFiltersArray([
+      ...filtersArray,
+      outroValor.column,
+    ]);
+
+    setData(dataOrigin);
+  };
+
+  const filterUsed = () => {
+    const { filterByNumericValues } = filters;
+    return (
+      <table>
+        <InputsComponents />
+        <div>
+          {selectsFilter()}
+          {inputFilter()}
+          {btn()}
+        </div>
+        <div>
+          {filterByNumericValues.map((filter) => (
+            <>
+              <button
+                type="button"
+                data-testid={ filter.column }
+                key={ filter.column }
+              >
+                {filter.column}
+              </button>
+              <button
+                key={ filter.column }
+                type="button"
+                onClick={ handleClick }
+              >
+                X
+              </button>
+            </>
+          ))}
+        </div>
+      </table>
+    );
+  };
+
+  useEffect(() => {
     xablau();
   }, [filters]);
 
   if (!data.length) return <h1>Loading...</h1>;
+
+  if (filters.filterByNumericValues.length !== 0) {
+    return filterUsed();
+  }
 
   return (
     <table>
