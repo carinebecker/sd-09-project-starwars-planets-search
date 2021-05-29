@@ -160,7 +160,6 @@ function TableHeader() {
             <>
               <button
                 type="button"
-                data-testid="filter"
                 key={ filter.column }
               >
                 {filter.column}
