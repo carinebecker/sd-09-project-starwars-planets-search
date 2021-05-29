@@ -6,11 +6,7 @@ import fetchPlanets from '../services/Api';
 function PlanetsProvider({ children }) {
   const INITIAL_FILTER = {
     filterByName: { name: '' },
-    filterByNumericValues: [{
-      column: '',
-      comparison: '',
-      value: '',
-    }],
+    filterByNumericValues: [],
     order: { column: 'name', sort: 'ASC' },
   };
   const INITIAL_DROPCOLUMN = [
@@ -27,8 +23,8 @@ function PlanetsProvider({ children }) {
     setTableHeader(Object.keys(planets.results[0]));
   };
 
-  const resetFilter = () => {
-    setFilters(INITIAL_FILTER);
+  const resetFilter = (newFilter) => {
+    setFilters({ ...filters, filterByNumericValues: newFilter });
     setColumnOptions(INITIAL_DROPCOLUMN);
   };
 

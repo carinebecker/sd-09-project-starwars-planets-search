@@ -20,7 +20,9 @@ function InputFilter() {
   const handleClick = () => {
     setFilters({
       ...filters,
-      filterByNumericValues: [{ column, comparison, value: valueFilter }] });
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        { column, comparison, value: valueFilter }] });
     const nextOptions = columnOptions.filter((option) => option !== column);
     setColumnOptions(nextOptions);
   };
@@ -29,14 +31,24 @@ function InputFilter() {
     options.map((filter) => <option key={ filter } value={ filter }>{filter}</option>)
   );
 
+  const newFilter = (currentColumn) => {
+    const result = filters.filterByNumericValues
+      .filter((filter) => filter.column !== currentColumn);
+    resetFilter(result);
+  };
+
   const revertFilterButton = () => (
-    <button
-      type="button"
-      data-testid="filter"
-      onClick={ resetFilter }
-    >
-      X
-    </button>
+
+    filters.filterByNumericValues.map((filter) => (
+      <p key={ filter.column } data-testid="filter">
+        <button
+          type="button"
+          onClick={ () => newFilter(filter.column) }
+        >
+          X
+        </button>
+      </p>
+    ))
   );
 
   return (
@@ -53,20 +65,17 @@ function InputFilter() {
       <select data-testid="column-filter" onChange={ (e) => setColumn(e.target.value) }>
         {renderOptions(columnOptions)}
       </select>
-      { revertFilterButton() }
       <select
         data-testid="comparison-filter"
         onChange={ (e) => setComparison(e.target.value) }
       >
         {renderOptions(comparationOptions)}
       </select>
-      { revertFilterButton() }
       <input
         type="number"
         data-testid="value-filter"
         onChange={ (e) => setValueFilter(e.target.value) }
       />
-      { revertFilterButton() }
       <button
         type="button"
         data-testid="button-filter"
@@ -74,6 +83,7 @@ function InputFilter() {
       >
         Filtrar
       </button>
+      { revertFilterButton() }
     </div>
   );
 }
