@@ -132,15 +132,17 @@ function TableHeader() {
     const outroValor = filterByNumericValues
       .find((filter) => filter.column === eventValue);
 
-    setFilters({
-      ...filters,
-      filterByNumericValues: [...newArray],
-    });
+    console.log(outroValor.column);
 
     setFiltersArray([
       ...filtersArray,
       outroValor.column,
     ]);
+
+    setFilters({
+      ...filters,
+      filterByNumericValues: [...newArray],
+    });
 
     setData(dataOrigin);
   };
@@ -148,22 +150,24 @@ function TableHeader() {
   const filterUsed = () => {
     const { filterByNumericValues } = filters;
     return (
-      <table>
-        <InputsComponents />
+      <>
+        <table>
+          <InputsComponents />
+        </table>
         <div>
           {selectsFilter()}
           {inputFilter()}
           {btn()}
         </div>
         <div>
-          {filterByNumericValues.map((filter) => (
+          {filterByNumericValues.map((filter, index) => (
             <>
-              <button
+              <p
                 type="button"
-                key={ filter.column }
+                key={ index }
               >
                 {filter.column}
-              </button>
+              </p>
               <button
                 data-testid="filter"
                 key={ filter.column }
@@ -175,7 +179,7 @@ function TableHeader() {
             </>
           ))}
         </div>
-      </table>
+      </>
     );
   };
 
@@ -190,14 +194,16 @@ function TableHeader() {
   }
 
   return (
-    <table>
-      <InputsComponents />
+    <>
+      <table>
+        <InputsComponents />
+      </table>
       <div>
         {selectsFilter()}
         {inputFilter()}
         {btn()}
       </div>
-    </table>
+    </>
   );
 }
 

@@ -37,11 +37,11 @@ function tableComponents(data, filters, setFilters) {
   );
 
   return (
-    <table>
+    <>
       { headerTable() }
       { bodyTable() }
       { inputSearch() }
-    </table>
+    </>
   );
 }
 
