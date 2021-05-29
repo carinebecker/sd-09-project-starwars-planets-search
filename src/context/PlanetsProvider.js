@@ -32,6 +32,8 @@ function PlanetsProvider({ children }) {
     setColumnOptions(INITIAL_DROPCOLUMN);
   };
 
+  // ref: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/64
+  // ref para entender a função sort: https://pt.stackoverflow.com/questions/46600/como-ordenar-uma-array-de-objetos-com-array-sort
   function setOrder(tableData, column, sort) {
     let orderedData = tableData;
     const magicNumber = -1;
