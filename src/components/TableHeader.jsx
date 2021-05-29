@@ -160,12 +160,13 @@ function TableHeader() {
             <>
               <button
                 type="button"
-                data-testid={ filter.column }
+                data-testid="filter"
                 key={ filter.column }
               >
                 {filter.column}
               </button>
               <button
+                data-testid="filter"
                 key={ filter.column }
                 type="button"
                 onClick={ handleClick }
