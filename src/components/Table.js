@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import AppContext from '../appContext/Context';
 import headerNames from '../data/headerNames';
+import FilterAscOrDesc from './FilterAscOrDesc';
 
 const Table = () => {
   const { data,
@@ -11,6 +12,7 @@ const Table = () => {
     value,
     activateButton,
     setActivateButton } = useContext(AppContext);
+
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -59,7 +61,7 @@ const Table = () => {
     if (data !== undefined) {
       const noFilter = filtered.map((planets) => (
         <tr key={ planets.name }>
-          <td>{ planets.name }</td>
+          <td data-testid="planet-name">{ planets.name }</td>
           <td>{ planets.rotation_period }</td>
           <td>{ planets.orbital_period }</td>
           <td>{ planets.diameter }</td>
@@ -84,6 +86,7 @@ const Table = () => {
         { renderRow() }
       </tbody>
       { clearFilter() }
+      <FilterAscOrDesc />
     </table>
   );
 };

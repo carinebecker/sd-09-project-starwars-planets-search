@@ -5,10 +5,12 @@ import AppContext, { initialState } from './Context';
 const AppProvider = ({ children }) => {
   const [data, setData] = useState();
   const [name, setFilter] = useState(initialState);
-  const [column, setColumn] = useState(initialState);
+  const [column, setColumn] = useState('name');
   const [comparison, setComparison] = useState(initialState);
   const [value, setValue] = useState(initialState);
   const [activateButton, setActivateButton] = useState(false);
+  const [sequence, setSequence] = useState(initialState);
+  const [orderBool, setOrderBool] = useState(false);
   const contextValue = {
     data,
     setData,
@@ -22,6 +24,10 @@ const AppProvider = ({ children }) => {
     setValue,
     activateButton,
     setActivateButton,
+    sequence,
+    setSequence,
+    orderBool,
+    setOrderBool,
   };
 
   return (
