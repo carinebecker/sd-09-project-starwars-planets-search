@@ -1,5 +1,5 @@
 import React from 'react';
-import Context from '../context/Context';
+import { Context } from '../context/Context';
 import { createDropDown, createRadioInput, createButton, COLUMNS } from './Store';
 
 const STATE_ORDER = { column: 'name', sort: 'ASC' };
