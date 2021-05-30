@@ -122,17 +122,14 @@ function TableHeader() {
     deleteFilterArray();
   };
 
-  const handleClick = (e) => {
-    const eventValue = e.target.previousSibling.innerText;
+  const handleClick = (currentColumn) => {
     const { filterByNumericValues } = filters;
 
     const newArray = filterByNumericValues
-      .filter((filter) => filter.column !== eventValue);
+      .filter((filter) => filter.column !== currentColumn);
 
     const outroValor = filterByNumericValues
-      .find((filter) => filter.column === eventValue);
-
-    console.log(outroValor.column);
+      .find((filter) => filter.column === currentColumn);
 
     setFiltersArray([
       ...filtersArray,
@@ -160,23 +157,20 @@ function TableHeader() {
           {btn()}
         </div>
         <div>
-          {filterByNumericValues.map((filter, index) => (
-            <>
-              <span
-                data-testid="filter"
-                type="button"
-                key={ index }
-              >
-                {filter.column}
-              </span>
+          {filterByNumericValues.map((filter) => (
+            <span
+              data-testid="filter"
+              type="button"
+              key={ filter.column }
+            >
+              {filter.column}
               <button
-                key={ filter.column }
                 type="button"
-                onClick={ handleClick }
+                onClick={ () => handleClick(filter.column) }
               >
                 X
               </button>
-            </>
+            </span>
           ))}
         </div>
       </>
