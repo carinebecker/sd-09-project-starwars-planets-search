@@ -9,7 +9,7 @@ function Table() {
 
   useEffect(() => {
     getPlanets();
-  }, []);
+  }, [results]);
 
   const createPlanetsTable = (data = results) => {
     if (filteredPlanets.length) { data = filteredPlanets; }

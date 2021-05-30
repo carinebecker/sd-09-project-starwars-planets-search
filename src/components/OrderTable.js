@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 function OrderTable() {
@@ -8,7 +8,13 @@ function OrderTable() {
     setInputFilter,
     inputFilter: { filters },
     inputFilter: { filters: { order } },
+    planetsFilter: { filteredPlanets },
+    sortPlanets,
   } = useContext(StarWarsContext);
+
+  useEffect(() => {
+    sortPlanets();
+  }, [filteredPlanets]);
 
   const selectColumn = ({ target: { value } }) => {
     setInputFilter({
@@ -34,24 +40,10 @@ function OrderTable() {
     });
   };
 
-  const sortPlanets = (data = results) => {
-    const reorderByNumber = {
-      up: 1,
-      down: -1,
-    };
-
-    const sortedData = data
-      .sort((a, b) => (
-        a[order.column] < b[order.column]
-          ? reorderByNumber.down : reorderByNumber.up
-      ));
-
-    console.log(sortedData);
-  };
-
   const handleSubmit = () => {
     sortPlanets();
   };
+
   return loading
     ? (
       null
