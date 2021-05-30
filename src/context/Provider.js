@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import getPlanets from '../services/api';
+import getPlanetsAPI from '../services/api';
 
 import PlanetsContext from './PlanetsContext';
 
 function Provider({ children }) {
+  const [isFetching, setIsFetching] = useState(false);
   const [planets, setPlanets] = useState([]);
   const [filters, setFilters] = useState({
     filterByName: {
       name: '',
     },
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '100000',
-      },
-    ],
+    filterByNumericValues: [],
   });
 
-  useEffect(() => {
-    const connect = async () => {
-      const results = await getPlanets();
-      setPlanets(results);
-    };
-    connect();
-  }, []);
+  const fetchPlanetsAPI = async () => {
+    setIsFetching(true);
+    const planetsAPI = await getPlanetsAPI();
+    setPlanets(planetsAPI);
+    setIsFetching(false);
+  };
+  useEffect(fetchPlanetsAPI, []);
 
   const filterByName = (name) => {
     setFilters({
@@ -36,16 +31,21 @@ function Provider({ children }) {
     });
   };
 
-  const filterByNumericValues = (numericValues) => {
+  const filterByNumericValues = (filter) => {
     setFilters({
       ...filters,
-      filterByNumericValues: numericValues,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues,
+        filter,
+      ],
     });
   };
 
   const contextValue = {
+    isFetching,
     planets,
     filters,
+    fetchPlanetsAPI,
     filterByName,
     filterByNumericValues,
   };

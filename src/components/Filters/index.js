@@ -4,10 +4,9 @@ import PlanetsContext from '../../context/PlanetsContext';
 function Filters() {
   const { filterByName, filterByNumericValues } = useContext(PlanetsContext);
 
-  const [filters, setFilters] = useState([]);
   const [filter, setFilter] = useState({
-    column: '',
-    comparison: '',
+    column: 'population',
+    comparison: 'maior que',
     value: '',
   });
 
@@ -15,30 +14,45 @@ function Filters() {
     filterByName(value);
   };
 
-  const handlerColumnChange = ({ target: { value } }) => {
+  const handleFilterChange = ({ target: { name, value } }) => {
     setFilter({
       ...filter,
-      column: value,
+      [name]: value,
     });
   };
 
-  const handlerComparisonChange = ({ target: { value } }) => {
-    setFilter({
-      ...filter,
-      comparison: value,
-    });
+  const handleAddFilterClick = () => {
+    filterByNumericValues(filter);
   };
 
-  const handlerValueChange = ({ target: { value } }) => {
-    setFilter({
-      ...filter,
-      value,
-    });
+  const renderColumnFilter = () => {
+    const columnsFilter = [
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+    ];
+    return (
+      <select
+        name="column"
+        data-testid="column-filter"
+        onChange={ handleFilterChange }
+      >
+        { columnsFilter.map((column) => <option key={ column }>{ column }</option>) }
+      </select>
+    );
   };
 
-  const handleButtonClick = () => {
-    setFilters([...filters.concat(filter)]);
-    filterByNumericValues(filters);
+  const renderComparisonFilter = () => {
+    const comparisonsFilter = ['maior que', 'menor que', 'igual a'];
+    return (
+      <select
+        name="comparison"
+        data-testid="comparison-filter"
+        onChange={ handleFilterChange }
+      >
+        { comparisonsFilter.map(
+          (comparison) => <option key={ comparison }>{ comparison }</option>,
+        ) }
+      </select>
+    );
   };
 
   return (
@@ -49,24 +63,21 @@ function Filters() {
         placeholder="Digite um nome"
         onChange={ handleNameFilterChange }
       />
-      <select data-testid="column-filter" onChange={ handlerColumnChange }>
-        <option>{ filter.column }</option>
-      </select>
-      <select data-testid="comparison-filter" onChange={ handlerComparisonChange }>
-        <option>{ filter.comparison }</option>
-      </select>
+      { renderColumnFilter() }
+      { renderComparisonFilter() }
       <input
         type="text"
+        name="value"
         data-testid="value-filter"
         value={ filter.value }
-        onChange={ handlerValueChange }
+        onChange={ handleFilterChange }
       />
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ handleButtonClick }
+        onClick={ handleAddFilterClick }
       >
-        CLIQUE
+        Adicionar Filtro
       </button>
     </div>
   );

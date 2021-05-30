@@ -2,17 +2,38 @@ import React, { useContext } from 'react';
 
 import PlanetsContext from '../../context/PlanetsContext';
 
-function filterData(planets, filters) {
-  const { filterByName: { name } } = filters;
-  const filteredData = planets.filter((planet) => planet.name.includes(name));
-  return filteredData;
+function filterPlanets(planets, filters) {
+  const { filterByName: { name }, filterByNumericValues } = filters;
+  let filteredPlanets = planets.filter((planet) => planet.name.includes(name));
+
+  filterByNumericValues.forEach((filter) => {
+    filteredPlanets = filteredPlanets.filter((planet) => {
+      const planetColumnValue = parseFloat(planet[filter.column]);
+      const filterColumnValue = parseFloat(filter.value);
+
+      if (filter.comparison === 'maior que') return planetColumnValue > filterColumnValue;
+      if (filter.comparison === 'menor que') return planetColumnValue < filterColumnValue;
+      if (filter.comparison === 'igual a') return planetColumnValue === filterColumnValue;
+
+      return false;
+    });
+  });
+
+  return filteredPlanets;
 }
 
 function Table() {
-  const { planets, filters } = useContext(PlanetsContext);
+  const { isFetching, planets, filters } = useContext(PlanetsContext);
 
-  const filteredData = filterData(planets, filters);
-  console.log(filteredData);
+  // useEffect(() => {
+  //   fetchPlanetsAPI();
+  // }, []);
+
+  const filteredPlanets = filterPlanets(planets, filters);
+
+  console.log('planets filtrados - filteredPlanets');
+  console.log(filteredPlanets);
+
   const render = () => (
     <table>
       <thead>
@@ -33,7 +54,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { filteredData.map((planet) => (
+        { filteredPlanets.map((planet) => (
           <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
@@ -62,7 +83,9 @@ function Table() {
     </table>
   );
 
-  return (render());
+  const renderLoading = () => <h3>Loading ...</h3>;
+
+  return (isFetching ? renderLoading() : render());
 }
 
 export default Table;
