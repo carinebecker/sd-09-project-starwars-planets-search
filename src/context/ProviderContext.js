@@ -10,6 +10,7 @@ function Provider({ children }) {
     filters: {
       filterByName: { search: '' },
       filterByNumericValues: [],
+      order: { column: 'name', sort: 'ASC' },
     },
   });
   const [loading, setLoading] = useState(true);

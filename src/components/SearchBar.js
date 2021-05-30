@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
-import FilterSearch from './FilterSearch';
 
 function SearchBar() {
   const {
@@ -33,20 +32,16 @@ function SearchBar() {
   };
 
   return (
-    <>
-      <label htmlFor="search-bar">
-        Pesquisar:
-
-        <input
-          type="text"
-          name="search"
-          id="search-bar"
-          data-testid="name-filter"
-          onChange={ handleChange }
-        />
-      </label>
-      <FilterSearch />
-    </>
+    <label htmlFor="search-bar">
+      Pesquisar:
+      <input
+        type="text"
+        name="search"
+        id="search-bar"
+        data-testid="name-filter"
+        onChange={ handleChange }
+      />
+    </label>
   );
 }
 
