@@ -3,16 +3,10 @@ import AppContext from '../appContext/Context';
 
 const FilterAscOrDesc = () => {
   const { setColumn,
-    column,
     setOrderBool,
-    OrderBool,
-    sequence,
     setSequence,
-    data,
-    setData,
   } = useContext(AppContext);
 
-  const teste = data && data.sort((a, b) => console.log(a[column]) - b[column]);
   return (
     <div>
       <select

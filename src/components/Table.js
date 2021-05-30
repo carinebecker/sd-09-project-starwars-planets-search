@@ -1,18 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import AppContext from '../appContext/Context';
-import headerNames from '../data/headerNames';
+import RenderRow from '../appContext/RenderRow';
+import ClearFilter from './ClearFilter';
 import FilterAscOrDesc from './FilterAscOrDesc';
+import Principal from './PrincipalFilter';
+import RenderHeader from './RenderHeader';
 
 const Table = () => {
-  const { data,
-    setData,
-    name,
-    column,
-    comparison,
-    value,
-    activateButton,
-    setActivateButton } = useContext(AppContext);
-
+  const { setData } = useContext(AppContext);
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -22,71 +17,17 @@ const Table = () => {
     getPlanets();
   }, [setData]);
 
-  const renderHeader = () => (
-    <tr>
-      {
-        headerNames.map((header) => (
-          <td key={ header }>
-            <th>{ header }</th>
-          </td>))
-      }
-    </tr>
-  );
-
-  const clearFilter = () => (
-    <div data-testid="filter">
-      <button
-        type="button"
-        onClick={ () => setActivateButton(false) }
-      >
-        x
-      </button>
-    </div>
-  );
-
-  const renderRow = () => {
-    let filtered = data;
-    if (data !== undefined && name.length > 0) {
-      filtered = data.filter((itens) => itens.name.includes(name));
-    }
-
-    if (activateButton && comparison === 'maior que') {
-      filtered = filtered.filter((itens) => itens[column] > Number(value));
-    } if (activateButton && comparison === 'igual a') {
-      filtered = filtered.filter((itens) => itens[column] === value);
-    } if (activateButton && comparison === 'menor que') {
-      filtered = filtered.filter((itens) => itens[column] < Number(value));
-    }
-
-    if (data !== undefined) {
-      const noFilter = filtered.map((planets) => (
-        <tr key={ planets.name }>
-          <td data-testid="planet-name">{ planets.name }</td>
-          <td>{ planets.rotation_period }</td>
-          <td>{ planets.orbital_period }</td>
-          <td>{ planets.diameter }</td>
-          <td>{ planets.climate }</td>
-          <td>{ planets.gravity }</td>
-          <td>{ planets.terrain }</td>
-          <td>{ planets.surface_water }</td>
-          <td>{ planets.population }</td>
-        </tr>
-      ));
-      return noFilter;
-    }
-    return <div>Loading...</div>;
-  };
-
   return (
     <table>
       <tbody>
-        { renderHeader() }
+        { RenderHeader() }
       </tbody>
       <tbody>
-        { renderRow() }
+        { RenderRow() }
       </tbody>
-      { clearFilter() }
-      <FilterAscOrDesc />
+      { ClearFilter() }
+      { FilterAscOrDesc() }
+      { Principal() }
     </table>
   );
 };
