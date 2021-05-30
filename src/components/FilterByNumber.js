@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import MyContext from '../context/MyContext';
 
 export default function FilterByNumber() {
@@ -11,22 +11,25 @@ export default function FilterByNumber() {
     setFilteredData,
     filters: { filterByNumericValues: number },
     setNumber,
+    options,
+    setOptions,
   } = useContext(MyContext);
+  const filterArray = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water'];
 
-  // const filterArray = [
-  //   'population',
-  //   'orbital_period',
-  //   'diameter',
-  //   'rotation_period',
-  //   'surface_water'];
-
-  // useEffect(() => {
-  //   console.log('Effect called');
-  //   number.map((filter) => {
-  //     setFilteredData(data.filter((item) => item[filter.column] > filter.value));
-  //     return null;
-  //   });
-  // }, []);
+  function handleOptions() {
+    setOptions(filterArray);
+    let updOptions = options;
+    number.map((filter) => {
+      updOptions = updOptions.filter((item) => item !== filter.column);
+      return null;
+    });
+    setOptions(updOptions);
+  }
 
   function handleChangeColumn({ target: { value } }) {
     setColumn(value);
@@ -41,26 +44,26 @@ export default function FilterByNumber() {
   }
 
   function filterData(filter) {
-    console.log('filterData called!');
-    console.log('Column:', filter.column);
-    console.log('Comparison:', filter.comparison);
-    console.log('Value:', filter.value);
-    setFilteredData(data);
+    console.log('2');
     if (filter.comparison === 'maior que') {
+      console.log('3');
       setFilteredData(filteredData
         .filter((item) => Number(item[filter.column]) > filter.value));
     }
     if (filter.comparison === 'menor que') {
+      console.log('3');
       setFilteredData(filteredData
         .filter((item) => Number(item[filter.column]) < filter.value));
     }
     if (filter.comparison === 'igual a') {
+      console.log('3');
       setFilteredData(filteredData
         .filter((item) => item[filter.column] === filter.value));
     }
   }
 
   function handleFilter() {
+    setFilteredData(data);
     const numberFilters = number;
     numberFilters.push({
       column,
@@ -68,12 +71,44 @@ export default function FilterByNumber() {
       value: numberValue,
     });
     setNumber(numberFilters);
+    console.log('1');
     number.map((filter) => {
       console.log('Map called!');
       filterData(filter);
       return null;
     });
+    handleOptions();
   }
+
+  function handleDelete(filter) {
+    setFilteredData(data);
+    const filters = number;
+    setNumber(filters.filter((item) => item !== filter));
+    handleOptions();
+    return null;
+  }
+
+  useEffect(() => {
+    number.map((f) => {
+      console.log('Map called!');
+      filterData(f);
+      return null;
+    });
+    handleOptions();
+  }, [number]);
+
+  function renderFilterCards() {
+    return (
+      <ul>
+        {number.map((filter, index) => (
+          <li data-testid="filter" key={ index }>
+            {`${filter.column} | ${filter.comparison} | ${filter.value}`}
+            <button onClick={ () => handleDelete(filter) } type="button">X</button>
+          </li>))}
+      </ul>
+    );
+  }
+
   return (
     <>
       <select
@@ -81,11 +116,7 @@ export default function FilterByNumber() {
         data-testid="column-filter"
         onChange={ handleChangeColumn }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
+        {options.map((item) => <option key={ item }>{item}</option>)}
       </select>
       <select
         name="comparison"
@@ -109,6 +140,7 @@ export default function FilterByNumber() {
       >
         Filtrar
       </button>
+      {renderFilterCards()}
     </>
   );
 }

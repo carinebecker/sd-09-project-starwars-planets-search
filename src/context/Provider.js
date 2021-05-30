@@ -9,6 +9,12 @@ function Provider({ children }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
   const contextValue = {
     data,
     setData,
@@ -22,32 +28,9 @@ function Provider({ children }) {
     setNumber,
     isFetching,
     setIsFetching,
+    options,
+    setOptions,
   };
-
-  // function filterData() {
-  //   console.log('Passo1');
-  //   const planets = data;
-  //   const filters = number;
-  //   for (let index = 0; index < filters.lenght; index += 1) {
-  //     console.log('Passo2 - ', index);
-  //     if (filters[index].comparison === 'maior que') {
-  //       setFilteredData(planets
-  //         .filter((item) => item[filters[index].column] > filters[index].value));
-  //     }
-  //     if (filters[index].comparison === 'menor que') {
-  //       setFilteredData(planets
-  //         .filter((item) => item[filters[index].column] < filters[index].value));
-  //     }
-  //     if (filters[index].comparison === 'igual a') {
-  //       setFilteredData(planets
-  //         .filter((item) => item[filters[index].column] === filters[index].value));
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   filterData();
-  // }, [number]);
 
   return (
     <MyContext.Provider value={ contextValue }>
