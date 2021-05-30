@@ -1,7 +1,7 @@
 import React from 'react';
+import Form from '../components/FilterForm';
 import Filters from '../components/Filters';
 import OrderForm from '../components/OrderForm';
-import Form from '../components/Store';
 import Table from '../components/Table';
 
 function Index() {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Context } from '../context/Context';
 import { createDropDown, createRadioInput, createButton, COLUMNS } from './Store';
 
