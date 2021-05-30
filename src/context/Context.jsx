@@ -41,6 +41,8 @@ export function ContextProvider({ children }) {
     setFilters({ ...filters, order: value });
   };
 
+  useEffect(() => { getData(); }, []);
+
   return (
     <ContextProvider
       value={ {
