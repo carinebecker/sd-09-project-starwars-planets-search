@@ -31,8 +31,14 @@ export function ContextProvider({ children }) {
   const removeFilter = (filter) => {
     setFilters({
       ...filters,
-      filterByNumericValues: filters.filterByNumericValues.filter((el) => el !== filter),
+      filterByNumericValues: filters
+        .filterByNumericValues
+        .filter((element) => element !== filter),
     });
+  };
+
+  const changeOrder = (value) => {
+    setFilters({ ...filters, order: value });
   };
 
   return (
@@ -46,6 +52,7 @@ export function ContextProvider({ children }) {
         nameFilter,
         changeFilters,
         removeFilter,
+        changeOrder,
       } }
     >
       { children }
