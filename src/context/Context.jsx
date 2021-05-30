@@ -22,6 +22,12 @@ export function ContextProvider({ children }) {
     setFilters({ ...filters, filterByName: { name: value.toLowerCase() } });
   };
 
+  const changeFilters = (value) => {
+    setFilters(
+      { ...filters, filterByNumericValues: [...filters.filterByNumericValues, value] },
+    );
+  };
+
   return (
     <ContextProvider
       value={ {
@@ -31,6 +37,7 @@ export function ContextProvider({ children }) {
         filters,
         setFilters,
         nameFilter,
+        changeFilters,
       } }
     >
       { children }
