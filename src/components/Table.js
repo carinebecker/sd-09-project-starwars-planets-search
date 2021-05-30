@@ -7,7 +7,10 @@ import Principal from './PrincipalFilter';
 import RenderHeader from './RenderHeader';
 
 const Table = () => {
-  const { setData } = useContext(AppContext);
+  const { setData, column, data, sequence } = useContext(AppContext);
+  const negativeOne = -1;
+  let negative = negativeOne;
+  let positive = 1;
   useEffect(() => {
     const getPlanets = async () => {
       const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -16,6 +19,22 @@ const Table = () => {
     };
     getPlanets();
   }, [setData]);
+
+  if (sequence === 'DESC') {
+    negative = 1;
+    positive = negativeOne;
+  }
+  const orderBy = () => {
+    if (column === 'name') {
+      data.sort((a, b) => {
+        if (a.name < b.name) return negative;
+        if (a.name > b.name) return positive;
+        return 0;
+      });
+    }
+  };
+
+  if (data) orderBy();
 
   return (
     <table>
@@ -26,8 +45,8 @@ const Table = () => {
         { RenderRow() }
       </tbody>
       { ClearFilter() }
-      { FilterAscOrDesc() }
       { Principal() }
+      { FilterAscOrDesc() }
     </table>
   );
 };
