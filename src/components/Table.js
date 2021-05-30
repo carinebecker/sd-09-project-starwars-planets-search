@@ -32,9 +32,16 @@ function Table() {
             <tr key={ index }>
               {Object.values(result)
                 .map((planet, position) => (
-                  <td className="table" key={ position }>
-                    { planet }
-                  </td>
+                  position === 0
+                    ? (
+                      <td className="table" data-testid="planet-name" key={ position }>
+                        { planet }
+                      </td>
+                    ) : (
+                      <td className="table" key={ position }>
+                        { planet }
+                      </td>
+                    )
                 ))}
             </tr>
           ))}

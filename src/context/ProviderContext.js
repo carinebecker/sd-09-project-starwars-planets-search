@@ -34,8 +34,9 @@ function Provider({ children }) {
         ))
       : data
         .sort((a, b) => (
-          a[order.column] < b[order.column]
-            ? reorderByNumber.up : reorderByNumber.down
+          b[order.column] - a[order.column]
+          // a[order.column] < b[order.column]
+          //   ? reorderByNumber.up : reorderByNumber.down
         ));
 
     if (!filteredPlanets.length) {
