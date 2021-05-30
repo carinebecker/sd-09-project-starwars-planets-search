@@ -33,12 +33,21 @@ function Provider({ children }) {
     });
   };
 
-  const filterByNumericValues = (filter) => {
+  const addFilterByNumericValues = (filter) => {
     setFilters({
       ...filters,
       filterByNumericValues: [
         ...filters.filterByNumericValues,
         filter,
+      ],
+    });
+  };
+
+  const removeFilterByNumericValues = (name) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: [
+        ...filters.filterByNumericValues.filter((filter) => filter.column !== name),
       ],
     });
   };
@@ -49,7 +58,8 @@ function Provider({ children }) {
     filters,
     fetchPlanetsAPI,
     filterByName,
-    filterByNumericValues,
+    addFilterByNumericValues,
+    removeFilterByNumericValues,
   };
 
   return (

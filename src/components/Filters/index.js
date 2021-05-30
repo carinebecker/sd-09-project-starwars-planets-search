@@ -2,8 +2,11 @@ import React, { useContext, useState } from 'react';
 import PlanetsContext from '../../context/PlanetsContext';
 
 function Filters() {
-  const { filterByName, filterByNumericValues } = useContext(PlanetsContext);
+  const {
+    filterByName,
+    addFilterByNumericValues, removeFilterByNumericValues } = useContext(PlanetsContext);
 
+  const [usedFilters, setUsedFilters] = useState([]);
   const [filter, setFilter] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -22,20 +25,31 @@ function Filters() {
   };
 
   const handleAddFilterClick = () => {
-    filterByNumericValues(filter);
+    addFilterByNumericValues(filter);
+    setUsedFilters([...usedFilters, filter.column]);
+  };
+
+  const handleRemoveFilterClick = ({ target: { name } }) => {
+    removeFilterByNumericValues(name);
+    setUsedFilters([...usedFilters.filter((usedFilter) => usedFilter !== name)]);
   };
 
   const renderColumnFilter = () => {
-    const columnsFilter = [
+    const allColumns = [
       'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
     ];
+
+    const availableColumns = allColumns.filter((column) => !usedFilters.includes(column));
+    console.log('avaiableColumns');
+    console.log(availableColumns);
+
     return (
       <select
         name="column"
         data-testid="column-filter"
         onChange={ handleFilterChange }
       >
-        { columnsFilter.map((column) => <option key={ column }>{ column }</option>) }
+        { availableColumns.map((column) => <option key={ column }>{ column }</option>) }
       </select>
     );
   };
@@ -54,6 +68,23 @@ function Filters() {
       </select>
     );
   };
+
+  const renderUsedFilters = () => (
+    <div>
+      { usedFilters.map((usedFilter) => (
+        <h3 data-testid="filter" key={ usedFilter }>
+          { usedFilter }
+          <button
+            type="button"
+            name={ usedFilter }
+            onClick={ handleRemoveFilterClick }
+          >
+            X
+          </button>
+        </h3>
+      ))}
+    </div>
+  );
 
   return (
     <div>
@@ -79,6 +110,7 @@ function Filters() {
       >
         Adicionar Filtro
       </button>
+      { renderUsedFilters() }
     </div>
   );
 }
