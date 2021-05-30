@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
+import './FilterSearch.css';
 
 function FilterSearch() {
   const {
-    planetsFilter: { filteredPlanets },
     setPlanetsFilter,
     dataFromApi: { planets: { results } },
     inputFilter,
@@ -24,6 +23,43 @@ function FilterSearch() {
   ]);
   const { column, comparison, value } = submittedFilters;
 
+  const setFilteredPlanets = () => {
+    filterByNumericValues.forEach((filter) => {
+      switch (filter.comparison) {
+      case 'menor que':
+        setPlanetsFilter({
+          filteredPlanets: results
+            .filter((planet) => parseInt(planet[filter.column], 10) < filter.value),
+        });
+        break;
+
+      case 'igual a':
+        setPlanetsFilter({
+          filteredPlanets: results
+            .filter((planet) => (
+              parseInt(planet[filter.column], 10) === parseInt(filter.value, 10))),
+        });
+        break;
+
+      default:
+        setPlanetsFilter({
+          filteredPlanets: results
+            .filter((planet) => parseInt(planet[filter.column], 10) > filter.value),
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (filterByNumericValues.length) {
+      setFilteredPlanets();
+    } else {
+      setPlanetsFilter({
+        filteredPlanets: results,
+      });
+    }
+  }, [filterByNumericValues]);
+
   const handleChange = ({ target }) => {
     setSubmittedFilters({
       ...submittedFilters, [target.name]: target.value,
@@ -34,9 +70,8 @@ function FilterSearch() {
     const leftEl = state.slice(0, state.indexOf(element));
     const rightEl = state.slice(state.indexOf(element) + 1);
 
-    const newArr = [...leftEl, ...rightEl];
-    setState(newArr);
-    return newArr;
+    const updatedFilters = [...leftEl, ...rightEl];
+    setState(updatedFilters);
   };
 
   const handleSubmit = () => {
@@ -47,40 +82,20 @@ function FilterSearch() {
       },
     });
 
-    let data = results;
-    if (filteredPlanets.length) { data = filteredPlanets; }
-
-    switch (comparison) {
-    case 'menor que':
-      setPlanetsFilter({
-        filteredPlanets: data.filter((planet) => parseInt(planet[column], 10) < value),
-      });
-      break;
-
-    case 'igual a':
-      setPlanetsFilter({
-        filteredPlanets: data
-          .filter((planet) => parseInt(planet[column], 10) === parseInt(value, 10)),
-      });
-      break;
-
-    default:
-      setPlanetsFilter({
-        filteredPlanets: data.filter((planet) => parseInt(planet[column], 10) > value),
-      });
-    }
-
-    setSubmittedFilters({
-      column: 'population', comparison: 'maior que', value: '',
-    });
-
     deleteElInArray(setOptions, options, column);
+    setSubmittedFilters({
+      ...submittedFilters, value: '',
+    });
   };
 
   const deleteFilter = (filter) => {
     const filterToDelete = filterByNumericValues[filter];
 
-    const newArr = [
+    setOptions([
+      filterToDelete.column, ...options,
+    ]);
+
+    const updatedFilters = [
       ...filterByNumericValues.slice(0, filterByNumericValues.indexOf(filterToDelete)),
       ...filterByNumericValues.slice(filterByNumericValues.indexOf(filterToDelete) + 1),
     ];
@@ -88,7 +103,7 @@ function FilterSearch() {
     setInputFilter({
       filters: {
         ...inputFilter.filters,
-        filterByNumericValues: newArr,
+        filterByNumericValues: updatedFilters,
       },
     });
   };
@@ -132,39 +147,34 @@ function FilterSearch() {
           Filtrar
         </button>
       </form>
-      <table>
-        <thead>
-          <tr>
-            <th>Filtros selecionados</th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <div className="selected-filters">
+        <h3>Filtros selecionados</h3>
+        <div>
           {filterByNumericValues
             .map((filter, index) => (
-              <tr key={ index }>
-                <td>{ filter.column }</td>
-                <td>{ filter.comparison }</td>
-                <td>{ filter.value }</td>
-                <td>
-                  <button
-                    type="button"
-                    data-testid="filter"
-                    onClick={ () => deleteFilter(index) }
-                  >
-                    x
-                  </button>
-                </td>
-              </tr>
+              <div
+                key={ index }
+                className="filter-row"
+                data-testid="filter"
+              >
+                <p>{ filter.column }</p>
+                <p>{ filter.comparison }</p>
+                <p>{ filter.value }</p>
+                <button
+                  type="button"
+                  data-testid="filter"
+                  className="exclude"
+                  onClick={ () => deleteFilter(index) }
+                >
+                  X
+                </button>
+              </div>
             ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </>
   );
 }
-
-FilterSearch.propTypes = {
-  filter: PropTypes.shape({ }),
-  setFilter: PropTypes.func,
-}.isRequired;
 
 export default FilterSearch;

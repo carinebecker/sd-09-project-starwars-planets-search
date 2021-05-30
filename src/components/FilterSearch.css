@@ -1,0 +1,17 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.filter-row {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.exclude {
+  width: 35px;
+}
