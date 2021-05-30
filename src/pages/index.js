@@ -1,13 +1,17 @@
 import React, { useContext } from 'react';
 import { Context } from '../context/Context';
-import { planetsDataAPI } from '../services/StarWarsAPI';
+import planetsDataAPI from '../services/StarWarsAPI';
 
 function Index() {
   const { data, setData } = useContext(Context);
 
-  return(
+  return (
     <table>
-      <input value={data} onChange={({ target }) => setData(target.value)} type="text" />
+      <input
+        value={ data }
+        onChange={ ({ target }) => setData(target.value) }
+        type="text"
+      />
       <button type="submit" onClick={ () => planetsDataAPI(data) }>Submit</button>
     </table>
   );
