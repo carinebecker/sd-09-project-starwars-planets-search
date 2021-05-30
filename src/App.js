@@ -1,14 +1,14 @@
 import React from 'react';
-import Routes from './routes/index';
-import PlanetsContext from './context/PlanetsContext';
+import Provider from './context/Provider';
+import Planets from './pages/Planets';
 
 import './App.css';
 
 function App() {
   return (
-    <PlanetsContext>
-      <Routes />
-    </PlanetsContext>
+    <Provider>
+      <Planets />
+    </Provider>
   );
 }
 

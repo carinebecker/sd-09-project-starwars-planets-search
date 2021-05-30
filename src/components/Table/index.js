@@ -1,18 +1,17 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 
-import { ContextPlanets } from '../../context/PlanetsContext';
+import PlanetsContext from '../../context/PlanetsContext';
 
-function filterData(data, filters) {
+function filterData(planets, filters) {
   const { filterByName: { name } } = filters;
-  const filteredData = data.filter((planet) => planet.name.includes(name));
+  const filteredData = planets.filter((planet) => planet.name.includes(name));
   return filteredData;
 }
 
 function Table() {
-  const { data, filters } = useContext(ContextPlanets);
+  const { planets, filters } = useContext(PlanetsContext);
 
-  const filteredData = filterData(data, filters);
+  const filteredData = filterData(planets, filters);
   console.log(filteredData);
   const render = () => (
     <table>
@@ -47,12 +46,12 @@ function Table() {
             <td>{ planet.population }</td>
             <td>
               { planet.films.map((film) => (
-                <Link
-                  to={ film }
+                <a
+                  href={ film }
                   key={ film }
                 >
                   { film }
-                </Link>))}
+                </a>))}
             </td>
             <td>{ planet.created }</td>
             <td>{ planet.edited }</td>
