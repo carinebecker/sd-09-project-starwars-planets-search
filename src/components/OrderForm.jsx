@@ -6,7 +6,7 @@ const STATE_ORDER = { column: 'name', sort: 'ASC' };
 
 const columns = ['name', ...COLUMNS];
 
-export default function OrderForm() {
+function OrderForm() {
   const { changeOrder } = useContext(Context);
   const [state, setState] = useState(STATE_ORDER);
 
@@ -27,3 +27,5 @@ export default function OrderForm() {
     </section>
   );
 }
+
+export default OrderForm;

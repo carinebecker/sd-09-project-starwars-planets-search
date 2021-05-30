@@ -77,7 +77,7 @@ export const createButton = (testid, name, onClick) => (
 
 const STATE = { column: 'population', comparison: 'maior que', value: 0 };
 
-export default function Form() {
+function Form() {
   const { nameFilter, changeFilters } = useContext(Context);
   const [state, setState] = useState(STATE);
   const [columns, setColumns] = useState(COLUMNS);
@@ -105,3 +105,5 @@ export default function Form() {
     </section>
   );
 }
+
+export default Form;

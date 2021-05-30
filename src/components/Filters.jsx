@@ -1,7 +1,7 @@
 import React from 'react';
 import Context from '../context/Context';
 
-export default function Filters() {
+function Filters() {
   const { filters, removeFilter } = useContext(Context);
   const { filterByNumericValues } = filters;
 
@@ -20,3 +20,5 @@ export default function Filters() {
     </section>
   );
 }
+
+export default Filters;

@@ -6,12 +6,12 @@ import Table from '../components/Table';
 
 function Index() {
   return (
-    <div>
+    <>
       <Form />
       <OrderForm />
       <Filters />
       <Table />
-    </div>
+    </>
   );
 }
 

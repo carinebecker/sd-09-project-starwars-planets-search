@@ -1,9 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import planetsDataAPI from '../services/StarWarsAPI';
 
 export const Context = createContext({});
 
-export function ContextProvider({ children }) {
+function ContextProvider({ children }) {
   const initialStateFilters = {
     filterByName: { name: '' },
     filterByNumericValues: [],
@@ -62,4 +63,6 @@ export function ContextProvider({ children }) {
   );
 }
 
-ContextProvider.propTypes = { children: React.ReactNode }.isRequired;
+ContextProvider.propTypes = { children: PropTypes.node }.isRequired;
+
+export default ContextProvider;
