@@ -2,8 +2,20 @@ import React, { useContext } from 'react';
 
 import PlanetsContext from '../../context/PlanetsContext';
 
+const checkSortMethod = (column, a, b) => {
+  const NEGATIVE_NUMBER = -1;
+  const POSITIVE_NUMBER = 1;
+
+  if (column === 'name' || column === 'climate'
+   || column === 'terrain' || column === 'films' || column === 'url') {
+    return a < b ? NEGATIVE_NUMBER : POSITIVE_NUMBER;
+  }
+  return a - b;
+};
+
 function filterPlanets(planets, filters) {
-  const { filterByName: { name }, filterByNumericValues } = filters;
+  const { filterByName: { name },
+    filterByNumericValues, order: { column, sort } } = filters;
   let filteredPlanets = planets.filter((planet) => planet.name.includes(name));
 
   filterByNumericValues.forEach((filter) => {
@@ -19,21 +31,20 @@ function filterPlanets(planets, filters) {
     });
   });
 
-  return filteredPlanets;
+  switch (sort) {
+  case 'ASC':
+    return filteredPlanets.sort((a, b) => checkSortMethod(column, a[column], b[column]));
+  case 'DESC':
+    return filteredPlanets.sort((a, b) => checkSortMethod(column, b[column], a[column]));
+  default:
+    return filteredPlanets;
+  }
 }
 
 function Table() {
   const { isFetching, planets, filters } = useContext(PlanetsContext);
 
-  // useEffect(() => {
-  //   fetchPlanetsAPI();
-  // }, []);
-
   const filteredPlanets = filterPlanets(planets, filters);
-
-  console.log('planets filtrados - filteredPlanets');
-  console.log(filteredPlanets);
-
   const render = () => (
     <table>
       <thead>
@@ -56,7 +67,7 @@ function Table() {
       <tbody>
         { filteredPlanets.map((planet) => (
           <tr key={ planet.name }>
-            <td>{ planet.name }</td>
+            <td data-testid="planet-name">{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
             <td>{ planet.orbital_period }</td>
             <td>{ planet.diameter }</td>

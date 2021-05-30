@@ -12,6 +12,10 @@ function Provider({ children }) {
       name: '',
     },
     filterByNumericValues: [],
+    order: {
+      column: 'name',
+      sort: 'ASC',
+    },
   });
 
   const fetchPlanetsAPI = async () => {
@@ -52,6 +56,16 @@ function Provider({ children }) {
     });
   };
 
+  const changeOrder = ({ column, sort }) => {
+    setFilters({
+      ...filters,
+      order: {
+        column,
+        sort,
+      },
+    });
+  };
+
   const contextValue = {
     isFetching,
     planets,
@@ -60,6 +74,7 @@ function Provider({ children }) {
     filterByName,
     addFilterByNumericValues,
     removeFilterByNumericValues,
+    changeOrder,
   };
 
   return (
