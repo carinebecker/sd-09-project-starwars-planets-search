@@ -20,7 +20,9 @@ function Provider({ children }) {
     setPlanets(planetsAPI);
     setIsFetching(false);
   };
-  useEffect(fetchPlanetsAPI, []);
+  useEffect(() => {
+    fetchPlanetsAPI();
+  }, []);
 
   const filterByName = (name) => {
     setFilters({
