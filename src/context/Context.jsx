@@ -28,6 +28,13 @@ export function ContextProvider({ children }) {
     );
   };
 
+  const removeFilter = (filter) => {
+    setFilters({
+      ...filters,
+      filterByNumericValues: filters.filterByNumericValues.filter((el) => el !== filter),
+    });
+  };
+
   return (
     <ContextProvider
       value={ {
@@ -38,6 +45,7 @@ export function ContextProvider({ children }) {
         setFilters,
         nameFilter,
         changeFilters,
+        removeFilter,
       } }
     >
       { children }
