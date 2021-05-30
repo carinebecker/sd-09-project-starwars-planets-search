@@ -4,11 +4,22 @@ import planetsDataAPI from '../services/StarWarsAPI';
 export const Context = createContext({});
 
 export function ContextProvider({ children }) {
+  const initialStateFilters = {
+    filterByName: { name: '' },
+    filterByNumericValues: [],
+    order: { column: 'name', sort: 'ASC' },
+  };
+
   const [data, setData] = useState([]);
+  const [filters, setFilters] = useState(initialStateFilters);
 
   const getData = async () => {
     const result = await planetsDataAPI();
     setData(result);
+  };
+
+  const nameFilter = ({ target: { value } }) => {
+    setFilters({ ...filters, filterByName: { name: value.toLowerCase() } });
   };
 
   return (
@@ -17,6 +28,9 @@ export function ContextProvider({ children }) {
         data,
         setData,
         getData,
+        filters,
+        setFilters,
+        nameFilter,
       } }
     >
       { children }
