@@ -2,11 +2,9 @@ import React, { useContext, useState } from 'react';
 import { Context } from '../context/Context';
 import { createDropDown, createRadioInput, createButton, COLUMNS } from './Store';
 
-const STATE_ORDER = { column: 'name', sort: 'ASC' };
-
-const columns = ['name', ...COLUMNS];
-
 function OrderForm() {
+  const STATE_ORDER = { column: 'name', sort: 'ASC' };
+  const columns = ['name', ...COLUMNS];
   const { changeOrder } = useContext(Context);
   const [state, setState] = useState(STATE_ORDER);
 

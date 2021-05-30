@@ -45,7 +45,7 @@ function ContextProvider({ children }) {
   useEffect(() => { getData(); }, []);
 
   return (
-    <ContextProvider
+    <Context.Provider
       value={ {
         data,
         setData,
@@ -59,7 +59,7 @@ function ContextProvider({ children }) {
       } }
     >
       { children }
-    </ContextProvider>
+    </Context.Provider>
   );
 }
 

@@ -2,9 +2,8 @@ import React, { useContext, useState } from 'react';
 import { Context } from '../context/Context';
 import { createInput, createDropDown, createButton, COLUMNS } from './Store';
 
-const STATE = { column: 'population', comparison: 'maior que', value: 0 };
-
 function Form() {
+  const STATE = { column: 'population', comparison: 'maior que', value: 0 };
   const { nameFilter, changeFilters } = useContext(Context);
   const [state, setState] = useState(STATE);
   const [columns, setColumns] = useState(COLUMNS);
