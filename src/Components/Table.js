@@ -10,7 +10,6 @@ export default function Table() {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => result.json())
       .then((json) => {
-        console.log(json);
         setData(json.results);
         setNewData(json.results);
       });

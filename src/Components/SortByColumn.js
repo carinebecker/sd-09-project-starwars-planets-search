@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import PlanetContext from '../Context/ContextPlanets';
 
 const options = [
   'name',
@@ -14,7 +15,8 @@ const options = [
 const one = 1;
 
 export default function SortByColumn() {
-  const filteringColumnSort = (order, newData) => {
+  const { order, newData } = useContext(PlanetContext);
+  const filteringColumnSort = () => {
     const { column, sort } = order;
     const firstPlanet = newData[0];
     if (Number(firstPlanet[column])) {
@@ -97,7 +99,7 @@ export default function SortByColumn() {
       <button
         data-testid="column-sort-button"
         type="button"
-        onClick={ () => filteringColumnSort }
+        onClick={ filteringColumnSort }
       >
         Ordenar
       </button>
