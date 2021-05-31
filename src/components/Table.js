@@ -23,7 +23,8 @@ function Table() {
   }, []);
 
   useEffect(() => {
-    setFilteredData(data);
+    const minus1 = -1;
+    setFilteredData(data.sort((a, b) => (a.name > b.name ? 1 : minus1)));
   }, [data]);
 
   function planets(a) {
@@ -31,7 +32,7 @@ function Table() {
       <tbody>
         {a.map((e) => (
           <tr key={ e.name }>
-            <td>{ e.name }</td>
+            <td data-testid="planet-name">{ e.name }</td>
             <td>{ e.rotation_period }</td>
             <td>{ e.orbital_period }</td>
             <td>{ e.diameter }</td>

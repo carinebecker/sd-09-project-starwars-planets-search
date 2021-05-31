@@ -5,6 +5,7 @@ export default function FilterByNumber() {
   const [column, setColumn] = useState();
   const [comparison, setComparison] = useState();
   const [numberValue, setNumberValue] = useState();
+  const [order, setOrder] = useState({ column: 'name', sort: 'ASC' });
   const {
     data,
     filteredData,
@@ -13,6 +14,7 @@ export default function FilterByNumber() {
     setNumber,
     options,
     setOptions,
+    setIsFetching,
   } = useContext(MyContext);
   const filterArray = [
     'population',
@@ -109,6 +111,81 @@ export default function FilterByNumber() {
     );
   }
 
+  function handleSortSelect({ target: { value } }) {
+    setOrder({ ...order, column: value });
+  }
+
+  function handleSortRadio({ target: { value } }) {
+    setOrder({ ...order, sort: value });
+  }
+
+  function sortTable(columnN, sortN) {
+    setIsFetching(true);
+    const minus1 = -1;
+    const originalOrder = filteredData;
+    // let sortedData = [];
+    if (sortN === 'ASC') {
+      // sortedData = originalOrder
+      //   .sort((a, b) => (a[columnN] > b[columnN] ? 1 : -1));
+      // console.log(sortedData);
+      setFilteredData([...originalOrder
+        .sort((a, b) => (a[columnN] > b[columnN] ? 1 : minus1))]);
+    }
+    if (sortN === 'DESC') {
+      // sortedData = originalOrder
+      //   .sort((a, b) => (a[columnN] < b[columnN] ? 1 : -1));
+      // console.log(sortedData);
+      setFilteredData([...originalOrder
+        .sort((a, b) => (Number(a[columnN]) < Number(b[columnN]) ? 1 : minus1))]);
+    }
+    setIsFetching(false);
+  }
+
+  useEffect(() => {
+    sortTable(order.column, order.sort);
+  }, []);
+
+  function renderOrderOptions() {
+    return (
+      <>
+        <select onChange={ handleSortSelect } data-testid="column-sort">
+          <option>name</option>
+          <option>rotation_period</option>
+          <option>orbital_period</option>
+          <option>diameter</option>
+          <option>climate</option>
+          <option>gravity</option>
+          <option>terrain</option>
+          <option>surface_water</option>
+          <option>population</option>
+        </select>
+        <input
+          data-testid="column-sort-input-asc"
+          type="radio"
+          name="sort"
+          value="ASC"
+          onChange={ handleSortRadio }
+        />
+        ASC
+        <input
+          data-testid="column-sort-input-desc"
+          type="radio"
+          name="sort"
+          value="DESC"
+          onChange={ handleSortRadio }
+        />
+        DESC
+        <button
+          onClick={ () => sortTable(order.column, order.sort) }
+          data-testid="column-sort-button"
+          type="button"
+        >
+          Sort
+        </button>
+      </>
+    );
+  }
+
   return (
     <>
       <select
@@ -140,6 +217,9 @@ export default function FilterByNumber() {
       >
         Filtrar
       </button>
+      <div>
+        {renderOrderOptions()}
+      </div>
       {renderFilterCards()}
     </>
   );
