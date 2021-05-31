@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
-import fetchPlanets from '../services/serviceAPI.js/index.js';
+import fetchPlanets from '../services/serviceAPI';
 
 const StarWarsContext = createContext();
 
