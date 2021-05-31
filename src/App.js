@@ -1,16 +1,14 @@
 import React from 'react';
 import './App.css';
-import Table from './components/Table';
 import SWProvider from './context/SWProvider';
+import Table from './components/Table';
+import InputFilter from './components/InputFilter';
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <SWProvider>
-        <Table />
-      </SWProvider>
-    </div>
+    <SWProvider>
+      <InputFilter />
+      <Table />
+    </SWProvider>
   );
 }
-
-export default App;
