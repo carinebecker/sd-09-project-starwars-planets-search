@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import SWProvider from '../context/SWContext';
 
 export default function Table() {
-  const { data, tableHeader } = useContext(SWProvider);
+  const { data, tableHeader, filters, setOrder } = useContext(SWProvider);
   const { results } = data;
 
   const talbeHead = () => (
@@ -13,9 +13,34 @@ export default function Table() {
     </thead>
   );
 
+  const filterData = () => {
+    let planetFiltered = results
+      .filter((planet) => planet.name.toLowerCase().includes(filters.filterByName.name));
+    if (filters.filterByNumericValues.length > 0) {
+      filters.filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+        switch (comparison) {
+        case 'maior que':
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) > +(value));
+          break;
+        case 'menor que':
+          console.log(value);
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) < +(value));
+          break;
+        default:
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) === +(value));
+        }
+      });
+    }
+    return setOrder(planetFiltered, filters.order.column, filters.order.sort);
+  };
+
   const tableBody = () => (
     <tbody>
-      {results.map((e) => (
+      {filterData().map((e) => (
         <tr key={ e.name }>
           <td data-testid="planet-name">{e.name}</td>
           <td>{e.rotation_period}</td>

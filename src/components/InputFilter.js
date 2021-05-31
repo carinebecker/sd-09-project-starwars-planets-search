@@ -12,7 +12,7 @@ export default function InputFilter() {
     setFilters,
     columnOptions,
     setColumnOptions,
-    resetFilter } = useContext(SWContext);
+    cleanFilter } = useContext(SWContext);
 
   const handleChange = ({ target: { value } }) => {
     setFilters({ ...filters, filterByName: { name: value } });
@@ -25,7 +25,7 @@ export default function InputFilter() {
   const newFilter = (c) => {
     const result = filters.filterByNumericValues
       .filter((filter) => filter.column !== c);
-    resetFilter(result);
+    cleanFilter(result);
   };
 
   const changeFilter = () => (
@@ -52,7 +52,7 @@ export default function InputFilter() {
   };
 
   return (
-    <div>
+    <>
       <label htmlFor="name-filter">
         <input
           type="text"
@@ -85,6 +85,6 @@ export default function InputFilter() {
         Filtrar
       </button>
       { changeFilter() }
-    </div>
+    </>
   );
 }

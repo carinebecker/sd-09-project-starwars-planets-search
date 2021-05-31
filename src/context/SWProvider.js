@@ -28,10 +28,29 @@ export default function SWProvider({ children }) {
     setTableHeader(Object.keys(planets.results[0]));
   };
 
-  const resetFilter = (newFilter) => {
+  const cleanFilter = (newFilter) => {
     setFilters({ ...filters, filterByNumericValues: newFilter });
     setColumnOptions(columnFilter);
   };
+
+  function setOrder(tableData, c, sort) {
+    let orderedData = tableData;
+    const menosUm = -1;
+    if (c === 'name') {
+      orderedData = tableData.sort((a, b) => {
+        if (a[c] > b[c]) {
+          return 1;
+        }
+        return menosUm;
+      });
+    } else {
+      orderedData = tableData.sort((a, b) => +(a[c]) - +(b[c]));
+    }
+    if (sort === 'DESC') {
+      orderedData = orderedData.reverse();
+    }
+    return orderedData;
+  }
 
   useEffect(() => {
     getPlanets();
@@ -44,7 +63,8 @@ export default function SWProvider({ children }) {
     setFilters,
     columnOptions,
     setColumnOptions,
-    resetFilter,
+    cleanFilter,
+    setOrder,
   };
 
   return (
