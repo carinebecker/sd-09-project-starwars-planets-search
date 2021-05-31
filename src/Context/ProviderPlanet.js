@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Proptypes from 'prop-types';
-import contextPlanet from './ContextPlanets';
+import PlanetContext from './ContextPlanets';
 
 function ProviderPlanet({ children }) {
   const [data, setData] = useState([]);
@@ -26,9 +26,9 @@ function ProviderPlanet({ children }) {
   };
 
   return (
-    <contextPlanet.Provider value={ val }>
+    <PlanetContext.Provider value={ val }>
       {children}
-    </contextPlanet.Provider>
+    </PlanetContext.Provider>
   );
 }
 

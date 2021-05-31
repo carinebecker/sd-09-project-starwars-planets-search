@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import contextPlanet from '../Context/ContextPlanets';
-import ProviderPlanet from './PlanetsFilter';
+import PlanetContext from '../Context/ContextPlanets';
+import FilteringPlanets from './PlanetsFilter';
 
 export default function Table() {
-  const { data, newData, setData, setNewData } = useContext(contextPlanet);
+  const { data, newData, setData, setNewData } = useContext(PlanetContext);
 
   const getApi = () => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
@@ -36,7 +36,7 @@ export default function Table() {
           data-testid="name-filter"
         />
       </label>
-      <ProviderPlanet />
+      <FilteringPlanets />
       <table>
         <thead>
           <tr>

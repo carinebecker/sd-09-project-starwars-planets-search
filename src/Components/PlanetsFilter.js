@@ -3,7 +3,7 @@ import PlanetContext from '../Context/ContextPlanets';
 
 function FilteringPlanets() {
   const { column, setColumn, newData, setNewData, ValueColumn, setValueColumn,
-    number, setNumber, comparison, setComparison } = useContext(PlanetContext);
+    number, comparison, setComparison, setNumber } = useContext(PlanetContext);
   const bigOrNot = ['maior que', 'menor que', 'igual a'];
 
   const filteringValue = ({ target }) => {
@@ -15,21 +15,25 @@ function FilteringPlanets() {
   const filteringThree = () => {
     let planetWithFilter = [];
     if (comparison === 'maior que') {
-      planetWithFilter = newData.filter((col) => parseFloat(col[column]) > number);
+      planetWithFilter = newData.filter((val) => parseFloat(val[column]) > number);
       setNewData(planetWithFilter);
     }
     if (comparison === 'menor que') {
-      planetWithFilter = newData.filter((col) => parseFloat(col[column]) < number);
+      planetWithFilter = newData.filter((val) => parseFloat(val[column]) < number);
       setNewData(planetWithFilter);
     }
     if (comparison === 'igual a') {
-      planetWithFilter = newData.filter((col) => col[column] === number);
+      planetWithFilter = newData.filter((val) => val[column] === number);
       setNewData(planetWithFilter);
     }
     if (ValueColumn.length > 1) {
-      const valueNew = ValueColumn.filter((col) => col !== column);
+      const valueNew = ValueColumn.filter((val) => val !== column);
       setValueColumn(valueNew);
     }
+  };
+
+  const clearingFilters = () => {
+
   };
 
   return (
@@ -37,7 +41,6 @@ function FilteringPlanets() {
       <select
         name="column"
         data-testid="column-filter"
-        id="column"
         onChange={ filteringValue }
       >
         {ValueColumn.map((val, index) => (
@@ -51,7 +54,6 @@ function FilteringPlanets() {
       </select>
       <select
         name="comparison"
-        id="comparison"
         data-testid="comparison-filter"
         onChange={ filteringValue }
       >
@@ -68,7 +70,6 @@ function FilteringPlanets() {
         <input
           name="num"
           type="number"
-          id="num"
           data-testid="value-filter"
           onChange={ filteringValue }
         />
@@ -79,6 +80,14 @@ function FilteringPlanets() {
         onClick={ filteringThree }
       >
         Filtrar
+      </button>
+      <button
+        type="button"
+        value="X"
+        data-testid="filter"
+        onClick={ clearingFilters }
+      >
+        X
       </button>
     </div>
   );
