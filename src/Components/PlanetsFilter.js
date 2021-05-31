@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PlanetContext from '../Context/ContextPlanets';
 
 function FilteringPlanets() {
-  const { column, setColumn, newData, setNewData, ValueColumn, setValueColumn,
+  const { column, setColumn, data, newData, setNewData, ValueColumn, setValueColumn,
     number, comparison, setComparison, setNumber } = useContext(PlanetContext);
   const bigOrNot = ['maior que', 'menor que', 'igual a'];
 
@@ -33,7 +33,8 @@ function FilteringPlanets() {
   };
 
   const clearingFilters = () => {
-
+    const initialState = data;
+    setNewData(initialState);
   };
 
   return (
@@ -81,14 +82,17 @@ function FilteringPlanets() {
       >
         Filtrar
       </button>
-      <button
-        type="button"
-        value="X"
+      <div
         data-testid="filter"
-        onClick={ clearingFilters }
       >
-        X
-      </button>
+        <button
+          type="button"
+          value="X"
+          onClick={ clearingFilters }
+        >
+          X
+        </button>
+      </div>
     </div>
   );
 }

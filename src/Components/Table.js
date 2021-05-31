@@ -1,22 +1,21 @@
 import React, { useContext, useEffect } from 'react';
 import PlanetContext from '../Context/ContextPlanets';
 import FilteringPlanets from './PlanetsFilter';
+import SortByColumn from './SortByColumn';
 
 export default function Table() {
   const { data, newData, setData, setNewData } = useContext(PlanetContext);
 
-  const getApi = () => {
+  useEffect(() => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => result.json())
       .then((json) => {
+        console.log(json);
         setData(json.results);
         setNewData(json.results);
       });
-  };
-
-  useEffect(() => {
-    getApi();
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteringPlanetsName = ({ target }) => {
     const filtered = data.filter(({ name }) => name.toUpperCase()
@@ -37,6 +36,7 @@ export default function Table() {
         />
       </label>
       <FilteringPlanets />
+      <SortByColumn />
       <table>
         <thead>
           <tr>
