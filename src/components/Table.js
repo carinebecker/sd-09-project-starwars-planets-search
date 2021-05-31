@@ -2,7 +2,49 @@ import React, { useContext } from 'react';
 import PlanetContext from '../context/planetContext';
 
 export default function Table() {
-  const { filterPlanets } = useContext(PlanetContext);
+  const { filters, planets } = useContext(PlanetContext);
+
+  const renderPlanets = (filteredPlanets) => (
+    filteredPlanets.map((element) => (
+      <tr key={ element.name }>
+        <td>{element.name}</td>
+        <td>{element.rotation_period}</td>
+        <td>{element.orbital_period}</td>
+        <td>{element.diameter}</td>
+        <td>{element.climate}</td>
+        <td>{element.gravity}</td>
+        <td>{element.terrain}</td>
+        <td>{element.surface_water}</td>
+        <td>{element.population}</td>
+        <td>{element.residents.length}</td>
+        <td>{element.films.length}</td>
+        <td>{element.created}</td>
+        <td>{element.edited}</td>
+      </tr>
+    ))
+  );
+
+  const filterPlanets = () => {
+    const filterName = planets.filter(({ name }) => name.toLowerCase()
+      .includes(filters.filterByName.name.toLowerCase()));
+
+    console.log(filters.filterByNumericValues);
+    if (filters.filterByNumericValues) {
+      const { comparison, column, value } = filters.filterByNumericValues[0];
+      if (comparison === 'menor') {
+        return renderPlanets(filterName.filter((planet) => +Number(planet[column])
+        < Number(value)));
+      }
+      if (comparison === 'maior') {
+        return renderPlanets(filterName.filter((planet) => +Number(planet[column])
+        > Number(value)));
+      } if (comparison === 'igual') {
+        return renderPlanets(filterName.filter((planet) => +Number(planet[column])
+        === Number(value)));
+      }
+    }
+    return renderPlanets(filterName);
+  };
 
   return (
     <div>
@@ -25,23 +67,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          { filterPlanets.map((element) => (
-            <tr key={ element.name }>
-              <td>{element.name}</td>
-              <td>{element.rotation_period}</td>
-              <td>{element.orbital_period}</td>
-              <td>{element.diameter}</td>
-              <td>{element.climate}</td>
-              <td>{element.gravity}</td>
-              <td>{element.terrain}</td>
-              <td>{element.surface_water}</td>
-              <td>{element.population}</td>
-              <td>{element.residents.length}</td>
-              <td>{element.films.length}</td>
-              <td>{element.created}</td>
-              <td>{element.edited}</td>
-            </tr>
-          ))}
+          { filterPlanets() }
         </tbody>
       </table>
 

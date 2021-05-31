@@ -7,7 +7,7 @@ function FilterForm() {
 
   return (
     <div>
-      <form onSubmit={ filterPlanetsByNumber }>
+      <form>
         <input type="text" data-testid="name-filter" onChange={ filterPlanetsByName } />
         <select
           name="column"
@@ -35,7 +35,13 @@ function FilterForm() {
           data-testid="value-filter"
           onChange={ saveNumericInput }
         />
-        <button type="submit" data-testid="button-filter">Buscar</button>
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ filterPlanetsByNumber }
+        >
+          Buscar
+        </button>
       </form>
     </div>
   );

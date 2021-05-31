@@ -7,11 +7,10 @@ export default function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [saveNumericInputs, setSaveNumericInputs] = useState({
     column: 'population',
-    comparison: 'maior que',
+    comparison: 'maior',
     value: '',
   });
 
-  const [filterPlanets, setFilterPlanets] = useState([]);
   const [filters, setFilter] = useState({
     filterByName: { name: '' },
     filterByNumericValues: [
@@ -28,7 +27,6 @@ export default function PlanetProvider({ children }) {
       try {
         const data = await Api();
         setPlanets(data);
-        setFilterPlanets(data);
       } catch (error) {
         console.log(error);
       }
@@ -37,12 +35,7 @@ export default function PlanetProvider({ children }) {
   }, []);
 
   const filterPlanetsByName = ({ target: { value } }) => {
-    const filteredData = planets.filter(({ name }) => name.includes(value));
-
-    setFilter({
-      filterByName: { name: value },
-    });
-    setFilterPlanets(filteredData);
+    setFilter({ filterByName: { name: value } });
   };
 
   const saveNumericInput = ({ target: { name, value } }) => {
@@ -52,40 +45,20 @@ export default function PlanetProvider({ children }) {
     });
   };
 
-  const filterPlanetsByNumber = (event) => {
-    event.preventDefault();
-
-    const filterName = planets
-      .filter(({ name }) => name.includes(filters.filterByName.name));
-
-    const { column, comparison, value } = saveNumericInputs;
-
-    const menor = filterName
-      .filter((planet) => Number(planet[column]) < +Number(value)
-      || planet[column] === 'unknown');
-    const maior = filterName
-      .filter((planet) => Number(planet[column]) > +Number(value)
-      || planet[column] === 'unknown');
-    const igual = filterName
-      .filter((planet) => Number(planet[column]) === +Number(value)
-      || planet[column] === 'unknown');
-
-    if (comparison === 'menor') {
-      setFilterPlanets(menor);
-    }
-    if (comparison === 'maior') {
-      setFilterPlanets(maior);
-    }
-    if (comparison === 'igual') {
-      setFilterPlanets(igual);
-    }
+  const filterPlanetsByNumber = () => {
+    console.log(saveNumericInputs);
+    setFilter({
+      ...filters,
+      filterByNumericValues: [
+        saveNumericInputs,
+      ],
+    });
   };
 
   const contextValue = {
     planets,
     filterPlanetsByName,
     filterPlanetsByNumber,
-    filterPlanets,
     filters,
     saveNumericInput,
   };
