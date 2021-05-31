@@ -9,7 +9,7 @@ function Provider({ children }) {
     filterByName: '',
     filterByNumericValues: [],
     order: {
-      column: 'Name',
+      column: 'name',
       sort: 'ASC',
     },
   };
@@ -22,8 +22,20 @@ function Provider({ children }) {
     setData(result);
   };
 
+  const numbersToOrdened = {
+    max: 1,
+    min: -1,
+  };
+
   useEffect(() => {
     fetchData();
+    const { order: { column } } = initial;
+    data.sort((var1, var2) => {
+      if (var1[column] > var2[column]) {
+        return numbersToOrdened.max;
+      }
+      return numbersToOrdened.min;
+    });
   }, []);
 
   const contextValue = { data, filters, setFilters, setData };

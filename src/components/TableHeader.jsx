@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StarWarsContext } from '../provider/Provider';
 import reqPlanets from '../services/serviceAPis';
-import InputsComponents from './inputs';
+import InputsComponents from './InputsComponents';
+import OrderTable from './OrderTable';
 
 function TableHeader() {
   const valuesArray = [
@@ -197,6 +198,7 @@ function TableHeader() {
         {inputFilter()}
         {btn()}
       </div>
+      <OrderTable />
     </>
   );
 }
