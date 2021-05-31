@@ -1,50 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import planetsAPI from '../service/api';
+import React, { useContext } from 'react';
+import AppContext from '../context/context';
 
 function Table() {
-  const [planets, setPlanets] = useState([]);
+  const { data, tableHeader, filters, setOrder } = useContext(AppContext);
+  const { results } = data;
 
-  useEffect(() => {
-    const fetch = async () => {
-      const response = await planetsAPI();
-      setPlanets(response.results);
-    };
-    fetch();
-  }, []);
+  const tablePlanets = () => (
+    <tr>
+      {tableHeader.map((title) => <th key={ title }>{ title }</th>)}
+    </tr>
+  );
 
+  const planetFilter = () => {
+    let planetFiltered = results
+      .filter((planet) => planet.name.toLowerCase().includes(filters.filterByName.name));
+    if (filters.filterByNumericValues.length > 0) {
+      filters.filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+        switch (comparison) {
+        case 'maior que':
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) > +(value));
+          break;
+        case 'menor que':
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) < +(value));
+          break;
+        default:
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) === +(value));
+        }
+      });
+    }
+    return setOrder(planetFiltered, filters.order.column, filters.order.sort);
+  };
+
+  const renderTablePlanets2 = () => (
+    <tbody>
+      {planetFilter().map((planet) => (
+        <tr key={ planet.name }>
+          <td data-testid="planet-name">{planet.name}</td>
+          <td>{planet.rotation_period}</td>
+          <td>{planet.orbital_period}</td>
+          <td>{planet.diameter}</td>
+          <td>{planet.climate}</td>
+          <td>{planet.gravity}</td>
+          <td>{planet.terrain}</td>
+          <td>{planet.surface_water}</td>
+          <td>{planet.population}</td>
+          <td>{planet.films}</td>
+          <td>{planet.created}</td>
+          <td>{planet.edited}</td>
+          <td>{planet.url}</td>
+        </tr>))}
+    </tbody>
+  );
+
+  if (!data.results) {
+    return <p>Loading...</p>;
+  }
   return (
-    <div>
-      <h1>Tabela</h1>
-      <table>
-        <thead>
-          <tr>
-            { planets[0]
-           && Object.keys(planets[0])
-             .filter((key) => key !== 'residents')
-             .map((key) => <th key={ key }>{ key }</th>) }
-          </tr>
-        </thead>
-        <tbody>
-          {planets.map((result, index) => (
-            <tr key={ index }>
-              <td>{result.name}</td>
-              <td>{result.rotation_period}</td>
-              <td>{result.orbital_period}</td>
-              <td>{result.diameter}</td>
-              <td>{result.climate}</td>
-              <td>{result.gravity}</td>
-              <td>{result.terrain}</td>
-              <td>{result.surface_water}</td>
-              <td>{result.population}</td>
-              <td>{result.films}</td>
-              <td>{result.created}</td>
-              <td>{result.edited}</td>
-              <td>{result.url}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <thead>
+        {tablePlanets()}
+      </thead>
+      {renderTablePlanets2()}
+    </table>
   );
 }
 

@@ -1,10 +1,7 @@
 const planetsAPI = async () => {
-  const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
-  const response = await fetch(url);
+  const response = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
   const planets = await response.json();
-
-  delete planets.residents;
-
+  planets.results.forEach((result) => delete result.residents);
   return planets;
 };
 
