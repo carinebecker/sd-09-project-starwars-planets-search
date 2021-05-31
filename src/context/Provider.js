@@ -4,72 +4,64 @@ import StarwarsContext from './StarwarsContext';
 import fetchApiPlanets from '../services/fetchPlanet';
 
 function Provider({ children }) {
-  const filterByName = {
-    filters: {
-      filterByName: {
-        name: '',
-      },
+  const filter = {
+    filterByName: {
+      name: '',
+    },
+    filterByNumericValues: [],
+    order: {
+      column: 'name', sort: 'ASC',
     },
   };
-
-  const filterByNumeric = {
-    filterByNumeric: {
-      column: '',
-      comparison: '',
-      value: 0,
-    },
-  };
-
+  const compareValues = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
   const [data, setData] = useState({});
-  const [filteredByName, setFilteredByName] = useState(filterByName);
-  const [filteredByNumeric, setFilteredByNumeric] = useState(filterByNumeric);
-  // const [numericFiltered, setNumericFiltered] = useState([]);
+  const [comparisonValues, setComparisonValues] = useState(compareValues);
+  const [filteredContent, setFilteredContent] = useState(filter);
 
   async function getPlanets() {
     const apiResponse = await fetchApiPlanets();
     setData(apiResponse);
   }
+  // Referência: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/121
+  function setOrder(tableData, column, sort) {
+    let orderedData = tableData;
+    const magicNumber = -1;
+    if (column === 'name') {
+      orderedData = tableData.sort((a, b) => {
+        if (a[column] > b[column]) {
+          return 1;
+        }
+        return magicNumber;
+      });
+    } else {
+      orderedData = tableData.sort((a, b) => +(a[column]) - +(b[column]));
+    }
+    if (sort === 'DESC') {
+      orderedData = orderedData.reverse();
+    }
+    return orderedData;
+  }
 
-  const filteredPlanets = (data.results)
-    ? data.results.filter((planets) => (
-      planets.name.includes(filteredByName.filters.filterByName.name)
-    ))
-    : '';
-
-  // const filterByNumericValues = () => {
-  //   const searchColumn = filteredByNumeric.filterByNumeric.column;
-  //   const searchValue = filteredByNumeric.filterByNumeric.value;
-  //   const searchComparison = filteredByNumeric.filterByNumeric.comparison;
-  //   console.log(searchColumn, searchComparison, searchValue, numericFiltered);
-  //   if (data.results !== undefined) {
-  //     setNumericFiltered(filteredPlanets.filter((planet) => {
-  //       switch (searchComparison) {
-  //       case 'maior que':
-  //         return parseInt(planet[searchColumn], 10) > parseInt(searchValue, 10);
-  //       case 'menor que':
-  //         return parseInt(planet[searchColumn], 10) < parseInt(searchValue, 10);
-  //       case 'igual a':
-  //         return parseInt(planet[searchColumn], 10) === parseInt(searchValue, 10);
-  //       default:
-  //         return console.log('Erro');
-  //       }
-  //     }));
-  //   }
-  // };
+  // Referência: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/121
+  const resetFilter = (newFilter) => {
+    setFilteredContent({ ...filteredContent, filterByNumericValues: newFilter });
+    setComparisonValues(compareValues);
+  };
 
   useEffect(() => {
     getPlanets();
-    // filterByNumericValues();
-  }, [filteredByNumeric, filteredByName]);
+  }, []);
 
   const contextValue = {
     data,
-    filteredPlanets,
-    filteredByName,
-    setFilteredByName,
-    filteredByNumeric,
-    setFilteredByNumeric,
-    // numericFiltered,
+    setOrder,
+    resetFilter,
+    compareValues,
+    filteredContent,
+    setComparisonValues,
+    setFilteredContent,
+    comparisonValues,
   };
   return (
     <StarwarsContext.Provider value={ contextValue }>

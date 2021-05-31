@@ -2,37 +2,65 @@ import React, { useContext } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function Table() {
-  const { data, filteredPlanets } = useContext(StarwarsContext);
-  // const filteredPlanets = (filteredByNumeric.filterByNumeric.column)
-  //   ? data.results.filter((planet) => (
-  //     planet.filteredByNumeric.filterByNumeric.column
-  //       >= filteredByNumeric.filterByNumeric.value))
-  //   : '';
+  const { data, filteredContent, setOrder } = useContext(StarwarsContext);
+  // Referência: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/12
+  const filteredPlanets = () => {
+    let planetFiltered = data.results
+      .filter((planet) => (
+        planet.name.toLowerCase().includes(filteredContent.filterByName.name)));
+    if (filteredContent.filterByNumericValues.length > 0) {
+      filteredContent.filterByNumericValues.forEach((filter) => {
+        const { column, comparison, value } = filter;
+        switch (comparison) {
+        case 'maior que':
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) > +(value));
+          break;
+        case 'menor que':
+          console.log(value);
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) < +(value));
+          break;
+        default:
+          planetFiltered = planetFiltered
+            .filter((planet) => +(planet[column]) === +(value));
+        }
+      });
+    }
+    return setOrder(planetFiltered,
+      filteredContent.order.column, filteredContent.order.sort);
+  };
+
+  const renderFilteredPlanets = () => (
+    filteredPlanets().map((planet) => (
+      <tr key={ planet.name }>
+        <td data-testid="planet-name">{planet.name}</td>
+        <td>{planet.rotation_period}</td>
+        <td>{planet.orbital_period}</td>
+        <td>{planet.diameter}</td>
+        <td>{planet.climate}</td>
+        <td>{planet.gravity}</td>
+        <td>{planet.terrain}</td>
+        <td>{planet.surface_water}</td>
+        <td>{planet.population}</td>
+        <td>{planet.films}</td>
+        <td>{planet.created}</td>
+        <td>{planet.edited}</td>
+        <td>{planet.url}</td>
+      </tr>))
+  );
+
+  if (!data.results) return <p>Loading</p>;
+
   return (
     <table>
       <thead>
         <tr>
-          { !data.results ? <td />
-            : Object.keys(data.results[0]).map((value) => <th key={ value }>{value}</th>)}
+          {Object.keys(data.results[0]).map((value) => <th key={ value }>{value}</th>)}
         </tr>
       </thead>
       <tbody>
-        {filteredPlanets.length
-          && filteredPlanets.map((planet) => (
-            <tr key={ planet.name }>
-              {Object.values(planet).map((planetItem) => (
-                <td key={ planetItem }>{planetItem}</td>))}
-            </tr>))}
-        {/* { filteredPlanets && numericFiltered.length === 0
-          ? filteredPlanets.map((planet) => (
-            <tr key={ planet.name }>
-              {Object.values(planet).map((value) => (<td key={ value }>{value}</td>))}
-            </tr>))
-          : numericFiltered.map((planet) => (
-            <tr key={ planet.name }>
-              {!planet ? <td />
-                : Object.values(planet).map((value) => <td key={ value }>{value}</td>)}
-            </tr>))} */}
+        {renderFilteredPlanets()}
       </tbody>
     </table>
   );

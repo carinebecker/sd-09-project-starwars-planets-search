@@ -1,46 +1,57 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarwarsContext from '../context/StarwarsContext';
 
 function FilterNumeric() {
-  const { setFilteredByNumeric, filterByNumeric } = useContext(StarwarsContext);
-  const columnSearchItems = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-  const columnSearchValues = [
-    'População', 'Período de Órbita',
-    'Diâmetro', 'Período de Rotação',
-    'Quantidade de água na superfície'];
-  const columnComparisonValues = ['Maior que', 'Menor que', 'Igual a'];
-  let column = '';
-  let comparison = '';
-  let contextvalue = 0;
-  function handleChange({ target }) {
-    const { name, value } = target;
-    switch (name) {
-    case 'column':
-      column = value;
-      break;
-    case 'comparison':
-      comparison = value;
-      break;
-    case 'value':
-      contextvalue = value;
-      break;
-    default:
-      console.log('Sem valores númericos');
-    }
-  }
+  const {
+    setFilteredContent,
+    filteredContent,
+    comparisonValues,
+    setComparisonValues,
+    resetFilter,
+  } = useContext(StarwarsContext);
+
+  const [column, setColumn] = useState('');
+  const [comparison, setComparison] = useState('');
+  const [contextValue, setContextValue] = useState('');
+  const columnComparisonValues = ['maior que', 'menor que', 'igual a'];
+
+  // Referência: https://github.com/tryber/sd-09-project-starwars-planets-search/pull/121
 
   function submit() {
-    console.log(contextvalue);
-    setFilteredByNumeric({
-      ...filterByNumeric,
-      filterByNumeric: {
-        column,
-        comparison,
-        value: contextvalue,
-      },
+    setFilteredContent({
+      ...filteredContent,
+      filterByNumericValues: [
+        ...filteredContent.filterByNumericValues,
+        {
+          column,
+          comparison,
+          value: contextValue,
+        },
+      ],
     });
+    const unFilteredColumns = comparisonValues.filter((columns) => (
+      columns !== column));
+    setComparisonValues(unFilteredColumns);
   }
+
+  const newFilter = (currentColumn) => {
+    const result = filteredContent.filterByNumericValues
+      .filter((filter) => filter.column !== currentColumn);
+    resetFilter(result);
+  };
+
+  const revertFilterButton = () => (
+    filteredContent.filterByNumericValues.map((filter) => (
+      <p key={ filter.column } data-testid="filter">
+        <button
+          type="button"
+          onClick={ () => newFilter(filter.column) }
+        >
+          X
+        </button>
+      </p>
+    ))
+  );
 
   return (
     <div>
@@ -50,10 +61,9 @@ function FilterNumeric() {
           id="columnSearch"
           data-testid="column-filter"
           name="column"
-          onChange={ handleChange }
+          onChange={ (e) => setColumn(e.target.value) }
         >
-          {columnSearchItems.map((item, index) => (
-            <option value={ item } key={ item }>{columnSearchValues[[index]]}</option>))}
+          {comparisonValues.map((item) => <option key={ item }>{item}</option>)}
         </select>
       </label>
       <label htmlFor="columnComparison">
@@ -61,7 +71,7 @@ function FilterNumeric() {
           id="columnComparison"
           data-testid="comparison-filter"
           name="comparison"
-          onChange={ handleChange }
+          onChange={ (e) => setComparison(e.target.value) }
         >
           {columnComparisonValues.map((item) => <option key={ item }>{item}</option>)}
         </select>
@@ -71,14 +81,18 @@ function FilterNumeric() {
         data-testid="value-filter"
         placeholder="Digite o número para comparação"
         name="value"
-        onChange={ handleChange }
+        onChange={ (e) => setContextValue(e.target.value) }
       />
       <button
         type="button"
+        data-testid="button-filter"
         onClick={ submit }
       >
         Buscar
       </button>
+      <div>
+        {revertFilterButton()}
+      </div>
     </div>
   );
 }
