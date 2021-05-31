@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import contextPlanet from '../Context/ContextPlanets';
+import ProviderPlanet from './PlanetsFilter';
 
 export default function Table() {
-  const [apiData, setApiData] = useState([]);
-  const [planetsList, setPlanetsList] = useState([]);
+  const { data, newData, setData, setNewData } = useContext(contextPlanet);
 
   const getApi = () => {
     fetch('https://swapi-trybe.herokuapp.com/api/planets/')
       .then((result) => result.json())
       .then((json) => {
-        setApiData(json.results);
-        setPlanetsList(json.results);
+        setData(json.results);
+        setNewData(json.results);
       });
   };
 
   useEffect(() => {
     getApi();
-  }, []);
+  });
 
-  const filterText = ({ target }) => {
-    const filtered = apiData.filter(({ name }) => name.toUpperCase()
+  const filteringPlanetsName = ({ target }) => {
+    const filtered = data.filter(({ name }) => name.toUpperCase()
       .includes(target.value.toUpperCase()));
-    setPlanetsList(filtered);
+    setNewData(filtered);
   };
 
-  if (apiData.length === 0) return <h2>Loading</h2>;
+  if (data.length === 0) return <h2>Loading</h2>;
   return (
     <div>
       <label htmlFor="planet">
@@ -31,10 +32,11 @@ export default function Table() {
         <input
           type="text"
           id="planet"
-          onChange={ filterText }
+          onChange={ filteringPlanetsName }
           data-testid="name-filter"
         />
       </label>
+      <ProviderPlanet />
       <table>
         <thead>
           <tr>
@@ -54,7 +56,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {planetsList.map((planet, index) => (
+          {newData.map((planet, index) => (
             <tr key={ index }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
