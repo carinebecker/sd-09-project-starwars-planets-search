@@ -5,9 +5,11 @@ import Api from '../services/api';
 
 export default function PlanetProvider({ children }) {
   const [planets, setPlanets] = useState([]);
-  const [saveColumn, setSaveColumn] = useState('population');
-  const [saveComparison, setSaveComparison] = useState('maior que');
-  const [saveValue, setSaveValue] = useState('');
+  const [saveNumericInputs, setSaveNumericInputs] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '',
+  });
 
   const [filterPlanets, setFilterPlanets] = useState([]);
   const [filters, setFilter] = useState({
@@ -43,26 +45,38 @@ export default function PlanetProvider({ children }) {
     setFilterPlanets(filteredData);
   };
 
+  const saveNumericInput = ({ target: { name, value } }) => {
+    setSaveNumericInputs({
+      ...saveNumericInputs,
+      [name]: value,
+    });
+  };
+
   const filterPlanetsByNumber = (event) => {
     event.preventDefault();
 
-    const menor = filterPlanets
-      .filter((planet) => Number(planet[saveColumn]) < Number(saveValue)
-      || planet[saveColumn] === 'unknown');
-    const maior = filterPlanets
-      .filter((planet) => Number(planet[saveColumn]) > Number(saveValue)
-      || planet[saveColumn] === 'unknown');
-    const igual = filterPlanets
-      .filter((planet) => Number(planet[saveColumn]) === Number(saveValue)
-      || planet[saveColumn] === 'unknown');
+    const filterName = planets
+      .filter(({ name }) => name.includes(filters.filterByName.name));
 
-    if (saveComparison === 'menor') {
+    const { column, comparison, value } = saveNumericInputs;
+
+    const menor = filterName
+      .filter((planet) => Number(planet[column]) < +Number(value)
+      || planet[column] === 'unknown');
+    const maior = filterName
+      .filter((planet) => Number(planet[column]) > +Number(value)
+      || planet[column] === 'unknown');
+    const igual = filterName
+      .filter((planet) => Number(planet[column]) === +Number(value)
+      || planet[column] === 'unknown');
+
+    if (comparison === 'menor') {
       setFilterPlanets(menor);
     }
-    if (saveComparison === 'maior') {
+    if (comparison === 'maior') {
       setFilterPlanets(maior);
     }
-    if (saveComparison === 'igual') {
+    if (comparison === 'igual') {
       setFilterPlanets(igual);
     }
   };
@@ -73,9 +87,7 @@ export default function PlanetProvider({ children }) {
     filterPlanetsByNumber,
     filterPlanets,
     filters,
-    setSaveColumn,
-    setSaveComparison,
-    setSaveValue,
+    saveNumericInput,
   };
 
   return (

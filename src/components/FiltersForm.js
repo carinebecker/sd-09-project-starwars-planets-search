@@ -3,8 +3,7 @@ import PlanetContext from '../context/planetContext';
 
 function FilterForm() {
   const { filterPlanetsByName, filterPlanetsByNumber,
-    setSaveColumn, setSaveComparison,
-    setSaveValue } = useContext(PlanetContext);
+    saveNumericInput } = useContext(PlanetContext);
 
   return (
     <div>
@@ -13,7 +12,7 @@ function FilterForm() {
         <select
           name="column"
           data-testid="column-filter"
-          onChange={ ({ target }) => setSaveColumn(target.value) }
+          onChange={ saveNumericInput }
         >
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
@@ -22,9 +21,9 @@ function FilterForm() {
           <option value="surface_water">surface_water</option>
         </select>
         <select
-          name="comparison-filter"
+          name="comparison"
           data-testid="comparison-filter"
-          onChange={ ({ target }) => setSaveComparison(target.value) }
+          onChange={ saveNumericInput }
         >
           <option value="maior">maior que</option>
           <option value="menor">menor que</option>
@@ -32,9 +31,9 @@ function FilterForm() {
         </select>
         <input
           type="text"
-          name="value-filter"
+          name="value"
           data-testid="value-filter"
-          onChange={ ({ target }) => setSaveValue(target.value) }
+          onChange={ saveNumericInput }
         />
         <button type="submit" data-testid="button-filter">Buscar</button>
       </form>
